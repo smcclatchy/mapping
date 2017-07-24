@@ -124,27 +124,27 @@ The code above copies the rownames(pheno) to rownames(addcovar).
 
 In order to map prop.bm.MN.RET, you will use the scanone() function. To see the arguments for `scanone`, you can type 'help(scanone)'.
 
-```{r QTL,warning=FALSE,error=FALSE}
+```{r QTL,warning=FALSE,error=FALSE, eval=FALSE}
 qtl = scanone(pheno = pheno, pheno.col = "prop.bm.MN.RET", probs = probs, K = K, 
       addcovar = addcovar, snps = muga_snps)
 ```
 
 We can then plot the QTL scan.         
 
-```{r qtl_plot,fig.width=8, fig.height=6, warning=FALSE}
+```{r qtl_plot,fig.width=8, fig.height=6, warning=FALSE,eval=FALSE}
 plot(qtl, main = "prop.bm.MN.RET")
 ```
 
 There is clearly a large peak on Chr 10. Next, we must assess its statistical significance. This is most commonly done via [permutation](http://www.genetics.org/content/178/1/609.long). We advise running at least 1,000 permutations to obtain significance thresholds. In the interest of time, we preform 100 permutations here.
 
-```{r perms,message=FALSE,results='hide', warning=FALSE}
+```{r perms,message=FALSE,results='hide', warning=FALSE, eval=FALSE}
 perms = scanone.perm(pheno = pheno, pheno.col = "prop.bm.MN.RET", probs = probs,
         addcovar = addcovar, snps = muga_snps, nperm = 100)
 ```
 
 We can now add thresholds to the previous QTL plot. We use significance thresholds at the p < 0.05, 0.10 and 0.63 levels.
            
-```{r qtl_plot_thr,fig.width=8, fig.height=6, warning=FALSE}
+```{r qtl_plot_thr,fig.width=8, fig.height=6, warning=FALSE, eval=FALSE}
 thr = get.sig.thr(perms[,,1], alpha = c(0.05, 0.1, 0.63), Xchr = FALSE)
 plot(qtl, sig.thr = thr, sig.col = c("red", "orange", "goldenrod"), main = "prop.bm.MN.RET")
 ```
@@ -153,13 +153,13 @@ The peak on Chr 10 is clearly well above the red p < 0.05 significance line.
 
 We will now zoom in on Chr 10 and look at the contribution of each of the eight founder alleles to prop.bm.MN.RET. The mapping model fits a term for each of the eight DO founders. We can plot these coefficients across Chr 10.
 
-```{r coef_plot,fig.width=8, fig.height=6}
+```{r coef_plot,fig.width=8, fig.height=6, eval=FALSE}
 coefplot(qtl, chr = 10, main = "prop.bm.MN.RET")
 ```
 
 The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele around 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective allele. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. The support interval is determined using the [Bayesian Credible Interval](http://www.ncbi.nlm.nih.gov/pubmed/11560912) and represents the region most likely to contain the causative polymorphism(s). We can obtain this interval using the 'bayesint' function.
 
-```{r interval}
+```{r interval,eval=FALSE}
 interval = bayesint(qtl, chr = 10)
 knitr::kable(interval)
 ```
@@ -168,7 +168,7 @@ From the table above (column 3), you can see that the support interval is 6 Mb w
 
 Next, let's look at the distribution of prop.bm.MN.RET across the 36 possible DO genotypes at the maximum peak location. This can be obtained from the second row of the first column of the interval table (interval[2,1]).
 
-```{r effect_plot,fig.width=8, fig.height=6}
+```{r effect_plot,fig.width=8, fig.height=6, eval=FALSE}
 pxg.plot(pheno = pheno, pheno.col = "prop.bm.MN.RET", probs = probs, 
          snp.id = interval[2,1], snps = muga_snps)
 ```
@@ -184,20 +184,20 @@ Above, we performed an analysis called linkage mapping in which we regressed the
 
 The GWAS function is called `scanone.assoc` and it takes arguments that are similar to `scanone` above. There are two new arguments.  `sdp.file`, which is available from [ftp.jax.org](ftp://ftp.jax.org/MUGA/), is a file that contains compressed SNP information for the 8 DO founder strains.  `ncl` tells the function how many parallel jobs to run to perform the genome scan.  Obviously, don't set this number higher than the number of cores on your computer.  You can find out more about this function using `help(scanone.assoc)`.  
 
-```{r GWAS,warning=FALSE}
+```{r GWAS,warning=FALSE,eval=FALSE}
 gwas = scanone.assoc(pheno = pheno, pheno.col = "prop.bm.MN.RET", probs = probs, K = K, 
        addcovar = addcovar, markers = muga_snps,  sdp.file = "/data/DO_Sanger_SDPs.txt.bgz", ncl = 3)
 ```
 
 Next, we plot the association mapping results.
 
-```{r plot_GWAS,warning=FALSE}
+```{r plot_GWAS,warning=FALSE,eval=FALSE}
 plot(gwas, main = "prop.bm.MN.RET")
 ```
 
 Once again, we should perform permutations of the data to obtain a significance threshold.  This is too time comsuming for this tutorial.  So we will load in pre-computed permutation values and use them to plot significance thresholds.
 
-```{r plot_GWAS_with_thr,warning=FALSE}
+```{r plot_GWAS_with_thr,warning=FALSE,eval=FALSE}
 assoc.perms = readRDS("/data/assoc_perms.rds")
 assoc.thr = get.sig.thr(-log10(assoc.perms), Xchr = FALSE)
 plot(gwas, sig.thr = assoc.thr, main = "prop.bm.MN.RET")
@@ -205,13 +205,13 @@ plot(gwas, sig.thr = assoc.thr, main = "prop.bm.MN.RET")
 
 You can also zoom in on one chromosome.
 
-```{r plot_GWAS_chr10,warning=FALSE}
+```{r plot_GWAS_chr10,warning=FALSE,eval=FALSE}
 plot(gwas, chr = 10, main = "prop.bm.MN.RET")
 ```
 
 And you can increase the plotting resolution with the `bin.size` argument.
 
-```{r plot_GWAS_chr10_moe_bins,warning=FALSE}
+```{r plot_GWAS_chr10_moe_bins,warning=FALSE,eval=FALSE}
 plot(gwas, chr = 10, bin.size = 10, main = "prop.bm.MN.RET")
 ```
 
@@ -220,7 +220,7 @@ Searching for Candidate Genes
 
 At this point, we have a 6 Mb wide support interval that contains a polymorphism(s) that influences benzene induced DNA damage. Next, we will impute the DO founder sequences onto the DO genomes. The [Sanger Mouse Genomes Project](http://www.sanger.ac.uk/resources/mouse/genomes/) has sequenced the eight DO founders and provides SNP, Indel and structural variant files for the strains (see [Baud et.al., Nat. Gen., 2013](http://www.nature.com/ng/journal/v45/n7/full/ng.2644.html)). We can impute these SNPs onto the DO genomes and then perform association mapping. The function `assoc.map` performs this analysis.
 
-```{r assoc_map,warning=FALSE}
+```{r assoc_map,warning=FALSE,eval=FALSE}
 chr = 10
 assoc = assoc.map(pheno = pheno, pheno.col ="prop.bm.MN.RET", probs = probs, K = K[[chr]],
                   addcovar = addcovar, snps = muga_snps, chr = chr, start = interval[1,3],
@@ -229,7 +229,7 @@ assoc = assoc.map(pheno = pheno, pheno.col ="prop.bm.MN.RET", probs = probs, K =
 
 We can plot the results of the association mapping using assoc.plot().  We set a threshold of 10 to highlight the SNPs with high LOD scores.
 
-```{r assoc_fig,fig.width=9, fig.height=6, results='hide'}
+```{r assoc_fig,fig.width=9, fig.height=6, results='hide',eval=FALSE}
 tmp = assoc.plot(assoc, thr = 10, show.sdps = TRUE)
 ```
 
