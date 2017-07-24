@@ -29,3 +29,36 @@ probabilities produced by DOQTL to the format needed by qtl2scan, or
 to convert qtl2scan results to the format produced by `scanone` in
 R/qtl, so that they may be graphed with the R/qtl functions.
 
+## Sample data sets
+
+The R/qtl2 web site includes
+[sample data files](http://kbroman.org/qtl2/pages/sampledata.html) in
+the new format. Zipped versions of these datasets are included with
+the [qtl2geno](https://github.com/rqtl/qtl2geno) package and can be
+loaded into R using the `read_cross2()` function.
+
+In the [qtl2geno package source](https://github.com/rqtl/qtl2geno),
+the sample zip files are located in
+[`qtl2geno/inst/extdata`](https://github.com/rqtl/qtl2geno/tree/master/inst/extdata).
+In the installed version of the package, they are in
+`qtl2geno/extdata`, within whatever directory your R packages were
+installed. The R function `system.file()` can be used to construct the
+path to these files.
+
+For example, one of the sample data sets concerns a gravitropism
+phenotype in a set of Arabidopsis recombinant inbred lines (RIL), from
+[Moore et al. (2013) Genetics 195:1077-1086](http://www.genetics.org/content/195/3/1077.abstract).
+The data are in `qtl2geno/extdata/grav2.zip`, which can be loaded as
+follows:
+
+~~~
+library(qtl2geno)
+grav2 <- read_cross2( system.file("extdata", "grav2.zip", package="qtl2geno") )
+~~~
+{: r}
+
+Additional sample data sets, including data on Diversity Outbred (DO)
+mice, are available at <https://github.com/rqtl/qtl2data>.
+
+
+
