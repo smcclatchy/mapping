@@ -1,0 +1,161 @@
+---
+title: "Estimated QTL effects"
+teaching: 0
+exercises: 0
+questions:
+- "?"
+objectives:
+- 
+- 
+keypoints:
+- "."
+- "."
+source: Rmd
+---
+
+```{r, include=FALSE}
+source("../bin/chunk-options.R")
+knitr_fig_path("10-")
+```
+
+
+## Estimated QTL effects
+
+The `scan1()` function return only LOD scores. To
+obtain estimated QTL effects, use the function `scan1coef()`.
+This function takes a single phenotype and the
+genotype probabilities for a single chromosome and returns a matrix
+with the estimated coefficients at each putative QTL location along
+the chromosome.
+
+For example, to get the estimated effects on chromosome 2 for the
+liver phenotype, we'd do the following:
+
+```{r est_effects_liver_c2}
+c2eff <- scan1coef(pr[,"2"], iron$pheno[,"liver"])
+```
+
+The result is a matrix, `r nrow(c2eff)` positions &times; `r ncol(c2eff)`
+genotypes. An attribute, `"map"` contains the positions of the
+calculations. To plot the effects, use the function `plot_coef()` from
+the [qtl2plot](https://github.com/rqtl/qtl2plot). There is again an S3
+method function `plot.scan1coef()`, so one can just type `plot()`.
+Use the argument `columns` to indicate which coefficient columns to plot.
+
+```{r plot_effects_liver_c2}
+par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
+col <- c("slateblue", "violetred", "green3")
+plot(c2eff, map["2"], columns=1:3, col=col)
+last_coef <- unclass(c2eff)[nrow(c2eff),] # pull out last coefficients
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
+```
+
+The default is to provide phenotype averages for each genotype
+group. If instead you want additive and dominance effects, you can
+provide a square matrix of _contrasts_, as follows:
+
+```{r est_effects_liver_c2_contr}
+c2effB <- scan1coef(pr[,"2"], iron$pheno[,"liver"],
+                    contrasts=cbind(mu=c(1,1,1), a=c(-1, 0, 1), d=c(-0.5, 1, -0.5)))
+
+```
+
+The result will then contain the estimates of `mu`, `a`, and `d`.
+Here's a plot of the additive and dominance effects, which are in the
+second and third columns.
+
+
+```{r plot_effects_liver_c2_contr}
+par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
+plot(c2effB, map["2"], columns=2:3, col=col)
+last_coef <- unclass(c2effB)[nrow(c2effB),2:3] # last two coefficients
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
+```
+
+If you provide a kinship matrix to `scan1coef()`, it fits a linear
+mixed model (LMM) to account for a residual polygenic effect. Here
+let's use the kinship matrix from the LOCO method.
+
+```{r est_effects_pg_liver_c2}
+c2eff_pg <- scan1coef(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
+```
+
+Here's a plot of the estimates.
+
+```{r plot_effects_pg_liver_c2}
+par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
+col <- c("slateblue", "violetred", "green3")
+plot(c2eff_pg, map["2"], columns=1:3, col=col, ylab="Phenotype average")
+last_coef <- unclass(c2eff_pg)[nrow(c2eff_pg),]
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
+```
+
+You can also get estimated additive and dominance effects, using a
+matrix of contrasts.
+
+```{r est_effects_pg_liver_c2_contr}
+c2effB_pg <- scan1coef(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]],
+                       contrasts=cbind(mu=c(1,1,1), a=c(-1, 0, 1), d=c(-0.5, 1, -0.5)))
+```
+
+Here's a plot of the results.
+
+```{r plot_effects_pg_liver_c2_contr}
+par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
+plot(c2effB_pg, map["2"], columns=2:3, col=col)
+last_coef <- unclass(c2effB_pg)[nrow(c2effB_pg),2:3]
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
+```
+
+Another option for estimating the QTL effects is to treat them as
+random effects and calculate Best Linear Unbiased Predictors
+(BLUPs). This is particularly valuable for multi-parent populations
+such as the Collaborative Cross and Diversity Outbred mice, where the
+large number of possible genotypes at a QTL lead to considerable
+variability in the effect estimates. To calculate BLUPs, use
+`scan1blup()`; it takes the same arguments as `scan1coef()`, including
+the option of a kinship matrix to account for a residual polygenic
+effect.
+
+```{r scan1blup}
+c2blup <- scan1blup(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
+```
+
+Here is a plot of the BLUPs (as dashed curves) alongside the standard
+estimates. Note that
+
+```{r plot_scan1blup}
+par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
+col <- c("slateblue", "violetred", "green3")
+ylim <- range(c(c2blup, c2eff))+c(-1,1)
+plot(c2eff, map["2"], columns=1:3, col=col, ylab="Phenotype average", ylim=ylim,
+     xlab="Chr 2 position")
+plot(c2blup, map["2"], columns=1:3, col=col, add=TRUE, lty=2)
+last_coef <- unclass(c2eff)[nrow(c2eff),]
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
+```
+
+The `scan1coef` function can also provide estimated QTL effects for
+binary traits, with `model="binary"`. (However, `scan1blup` has not
+yet been implemented for binary traits.)
+
+```{r scan1coef_binary}
+c2eff_bin <- scan1coef(pr[,"2"], bin_pheno[,"liver"], model="binary")
+```
+
+Here's a plot of the effects. They're a bit tricky to interpret, as
+their basically log odds ratios.
+
+```{r plot_effects_binary}
+par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
+col <- c("slateblue", "violetred", "green3")
+plot(c2eff_bin, map["2"], columns=1:3, col=col)
+last_coef <- unclass(c2eff_bin)[nrow(c2eff_bin),] # pull out last coefficients
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
+```
