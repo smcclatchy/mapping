@@ -26,6 +26,6 @@ The particular X chromosome covariates depends on the cross, and can
 be obtained with the [qtl2geno](https://github.com/rqtl/qtl2geno)
 function `get_x_covar()`.
 
-```{r x_covar, message=FALSE}
+```{r x_covar, eval=FALSE}
 Xcovar <- get_x_covar(iron)
 ```

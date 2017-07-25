@@ -26,7 +26,7 @@ kinship matrix for the individuals. This is accomplished with the
 [qtl2geno](https://github.com/rqtl/qtl2geno).
 It takes the genotype probabilities as input.
 
-```{r calc_kinship, message=FALSE}
+```{r calc_kinship, eval=FALSE}
 kinship <- calc_kinship(pr)
 ```
 
@@ -45,7 +45,7 @@ argument to `insert_pseudomarkers()`. To do so, we need to first use
 `probs_to_grid()` to probabilities for positions that are not on the
 grid.
 
-```{r calc_kinship_grid, message=FALSE}
+```{r calc_kinship_grid, eval=FALSE}
 grid <- calc_grid(iron$gmap, step=1)
 pr_grid <- probs_to_grid(pr, grid)
 kinship_grid <- calc_kinship(pr_grid)
@@ -57,12 +57,12 @@ chromosome using a kinship matrix that is calculated using data from
 all other chromosomes), use `type="loco"` in the call to
 `calc_kinship()`.
 
-```{r calc_kinship_loco, message=FALSE}
+```{r calc_kinship_loco, eval=FALSE}
 kinship_loco <- calc_kinship(pr, "loco")
 ```
 
 On a multi-core machine, you can get some speed-up via the `cores`
 argument, as with `calc_genoprob()`.
 
-```{r calc_kinship_loco_multicore, eval=FALSE, message=FALSE}
+```{r calc_kinship_loco_multicore, eval=FALSE, eval=FALSE}
 kinship_loco <- calc_kinship(pr, "loco", cores=4)

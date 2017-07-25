@@ -28,10 +28,3 @@ function `get_x_covar()`.
 Xcovar <- get_x_covar(iron)
 ~~~
 {: .r}
-
-
-
-~~~
-Error in "cross2" %in% class(x): object 'iron' not found
-~~~
-{: .error}

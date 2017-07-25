@@ -29,13 +29,6 @@ kinship <- calc_kinship(pr)
 ~~~
 {: .r}
 
-
-
-~~~
-Error in "cross2" %in% class(probs): object 'pr' not found
-~~~
-{: .error}
-
 By default, the genotype probabilities are converted to allele
 probabilities, and the kinship matrix is calculated as the proportion
 of shared alleles. To use genotype probabilities instead, use
@@ -54,43 +47,10 @@ grid.
 
 ~~~
 grid <- calc_grid(iron$gmap, step=1)
-~~~
-{: .r}
-
-
-
-~~~
-Error in calc_grid(iron$gmap, step = 1): object 'iron' not found
-~~~
-{: .error}
-
-
-
-~~~
 pr_grid <- probs_to_grid(pr, grid)
-~~~
-{: .r}
-
-
-
-~~~
-Error in "cross2" %in% class(probs): object 'pr' not found
-~~~
-{: .error}
-
-
-
-~~~
 kinship_grid <- calc_kinship(pr_grid)
 ~~~
 {: .r}
-
-
-
-~~~
-Error in "cross2" %in% class(probs): object 'pr_grid' not found
-~~~
-{: .error}
 
 If, for your linear mixed model genome scan, you wish to use the
 "leave one chromosome out" (LOCO) method (scan each
@@ -103,13 +63,6 @@ all other chromosomes), use `type="loco"` in the call to
 kinship_loco <- calc_kinship(pr, "loco")
 ~~~
 {: .r}
-
-
-
-~~~
-Error in "cross2" %in% class(probs): object 'pr' not found
-~~~
-{: .error}
 
 On a multi-core machine, you can get some speed-up via the `cores`
 argument, as with `calc_genoprob()`.
