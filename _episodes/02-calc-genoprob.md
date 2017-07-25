@@ -3,19 +3,22 @@ title: "Calculating Genotype Probabilities"
 teaching: 0
 exercises: 0
 questions:
-- "?"
+- "How do I calculate QTL at positions between genotyped markers?"
+- "How do I calculate QTL genotype probabilities?"
+- "How do I calculate allele probabilities?"
 objectives:
-- 
-- 
+- To understand that the first step in QTL analysis is to calculate genotype probabilities.
+- To insert pseudomarkers between genotyped markers.
+- To calculate genotype probabilities.
+- To specify the number of cores to use in order to speed up calculations.
 keypoints:
-- "."
-- "."
+- "The first step in QTL analysis is to calculate genotype probabilities."
+- "Insert pseudomarkers to calculate QTL at positions between genotyped markers."
+- "Calculate genotype or allele probabilities between genotyped markers with calc_genoprob() or genoprob_to_alleleprob()."
 source: Rmd
 ---
 
 
-
-## Calculating genotype probabilities
 
 The first basic task in QTL analysis is to calculate conditional
 genotype probabilities, given the observed marker data, at each
@@ -82,7 +85,7 @@ pr <- calc_genoprob(iron, map, err=0.002, cores=4)
 ~~~
 {: .r}
 
-The genome scan functions (see below) use genotype probabilities as
+The genome scan functions use genotype probabilities as
 well as a matrix of phenotypes.
 If you wished to perform a genome scan via an additive allele model,
 you would first convert the genotype probabilities to allele
