@@ -3,19 +3,17 @@ title: "Calculating A Kinship Matrix"
 teaching: 0
 exercises: 0
 questions:
-- "?"
+- "How to I calculate kinship between individuals?"
 objectives:
-- 
-- 
+- Create a kinship matrix for individuals.
 keypoints:
-- "."
-- "."
+- "Kinship matrices account for relationships among individuals."
+- "Kinship is calculated as the proportion of shared alleles between individuals."
+- "Kinship calculation is a precursor to a genome scan via linear mixed model."
 source: Rmd
 ---
 
 
-
-## Calculating a kinship matrix
 
 If you wish to perform a genome scan by a linear mixed model,
 accounting for the relationships among individuals (in other words,

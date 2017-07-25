@@ -15,8 +15,6 @@ source: Rmd
 
 
 
-## Performing a genome scan
-
 To perform a genome scan by Haley-Knott regression
 ([Haley and Knott 1992](https://www.ncbi.nlm.nih.gov/pubmed/16718932)),
 use the function `scan1()` in
