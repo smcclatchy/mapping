@@ -35,13 +35,6 @@ out <- scan1(pr, iron$pheno, Xcovar=Xcovar)
 ~~~
 {: .r}
 
-
-
-~~~
-Error in check4names(pheno, addcovar, Xcovar, intcovar): object 'iron' not found
-~~~
-{: .error}
-
 On a multi-core machine, you can get some speed-up via the `cores`
 argument, as with `calc_genoprob()` and `calc_kinship()`.
 
@@ -71,55 +64,9 @@ time, and you need to provide the marker/pseudomarker map (created by
 library(qtl2plot)
 par(mar=c(5.1, 4.1, 1.1, 1.1))
 ymx <- maxlod(out) # overall maximum LOD score
-~~~
-{: .r}
-
-
-
-~~~
-Error in "scan1coef" %in% class(scan1_output): object 'out' not found
-~~~
-{: .error}
-
-
-
-~~~
 plot(out, map, lodcolumn=1, col="slateblue", ylim=c(0, ymx*1.02))
-~~~
-{: .r}
-
-
-
-~~~
-Error in plot(out, map, lodcolumn = 1, col = "slateblue", ylim = c(0, : object 'out' not found
-~~~
-{: .error}
-
-
-
-~~~
 plot(out, map, lodcolumn=2, col="violetred", add=TRUE)
-~~~
-{: .r}
-
-
-
-~~~
-Error in plot(out, map, lodcolumn = 2, col = "violetred", add = TRUE): object 'out' not found
-~~~
-{: .error}
-
-
-
-~~~
 legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gray90")
 ~~~
 {: .r}
-
-
-
-~~~
-Error in is.data.frame(x): object 'out' not found
-~~~
-{: .error}
 

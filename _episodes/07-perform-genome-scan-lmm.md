@@ -32,7 +32,7 @@ out_pg <- scan1(pr, iron$pheno, kinship, Xcovar=Xcovar)
 
 
 ~~~
-Error in scan1(pr, iron$pheno, kinship, Xcovar = Xcovar): object 'kinship' not found
+Error in scan1(pr, iron$pheno, kinship, Xcovar = Xcovar): could not find function "scan1"
 ~~~
 {: .error}
 
@@ -58,7 +58,7 @@ out_pg_loco <- scan1(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
 
 
 ~~~
-Error in scan1(pr, iron$pheno, kinship_loco, Xcovar = Xcovar): object 'kinship_loco' not found
+Error in scan1(pr, iron$pheno, kinship_loco, Xcovar = Xcovar): could not find function "scan1"
 ~~~
 {: .error}
 
@@ -80,7 +80,7 @@ ymx <- max(maxlod(out), maxlod(out_pg), maxlod(out_pg_loco))
 
 
 ~~~
-Error in "scan1coef" %in% class(scan1_output): object 'out' not found
+Error in maxlod(out): could not find function "maxlod"
 ~~~
 {: .error}
 

@@ -71,7 +71,7 @@ out_bin <- scan1(pr, bin_pheno, Xcovar=Xcovar, model="binary")
 
 
 ~~~
-Error in check4names(pheno, addcovar, Xcovar, intcovar): object 'bin_pheno' not found
+Error in scan1(pr, bin_pheno, Xcovar = Xcovar, model = "binary"): could not find function "scan1"
 ~~~
 {: .error}
 
@@ -87,7 +87,7 @@ ymx <- maxlod(out_bin)
 
 
 ~~~
-Error in "scan1coef" %in% class(scan1_output): object 'out_bin' not found
+Error in maxlod(out_bin): could not find function "maxlod"
 ~~~
 {: .error}
 
@@ -144,6 +144,6 @@ find_peaks(out_bin, map, threshold=3.5, drop=1.5)
 
 
 ~~~
-Error in nrow(scan1_output): object 'out_bin' not found
+Error in find_peaks(out_bin, map, threshold = 3.5, drop = 1.5): could not find function "find_peaks"
 ~~~
 {: .error}

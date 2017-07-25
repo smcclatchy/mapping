@@ -88,9 +88,13 @@ summary(operm)
 
 
 ~~~
-LOD thresholds (1000 permutations)
+        liver   spleen
+0.05 3.461161 3.463352
+attr(,"class")
+[1] "summary.scan1perm" "matrix"           
+attr(,"n_perm")
      liver spleen
-0.05  3.46   3.46
+[1,]  1000   1000
 ~~~
 {: .output}
 
@@ -108,10 +112,14 @@ summary(operm, alpha=c(0.2, 0.05))
 
 
 ~~~
-LOD thresholds (1000 permutations)
+        liver   spleen
+0.2  2.625936 2.636614
+0.05 3.461161 3.463352
+attr(,"class")
+[1] "summary.scan1perm" "matrix"           
+attr(,"n_perm")
      liver spleen
-0.2   2.63   2.64
-0.05  3.46   3.46
+[1,]  1000   1000
 ~~~
 {: .output}
 
@@ -146,15 +154,22 @@ summary(operm2, alpha=c(0.2, 0.05))
 
 
 ~~~
-Autosome LOD thresholds (1000 permutations)
-     liver spleen
-0.2   2.65   2.54
-0.05  3.42   3.22
+$A
+        liver   spleen
+0.2  2.654181 2.543013
+0.05 3.424862 3.224816
 
-X chromosome LOD thresholds (28243 permutations)
-     liver spleen
-0.2    3.1   4.02
-0.05   3.9   5.18
+$X
+        liver   spleen
+0.2  3.097920 4.017580
+0.05 3.896456 5.179283
+
+attr(,"class")
+[1] "summary.scan1perm" "list"             
+attr(,"n_perm")
+  liver spleen
+A  1000   1000
+X 28243  28243
 ~~~
 {: .output}
 
@@ -185,15 +200,22 @@ summary(operm3, alpha=c(0.2, 0.05))
 
 
 ~~~
-Autosome LOD thresholds (1000 permutations)
-     liver spleen
-0.2   2.64   2.62
-0.05  3.29   3.29
+$A
+        liver   spleen
+0.2  2.641581 2.623347
+0.05 3.286362 3.285426
 
-X chromosome LOD thresholds (28243 permutations)
-     liver spleen
-0.2   3.14   4.37
-0.05  3.82   5.50
+$X
+        liver   spleen
+0.2  3.138534 4.365114
+0.05 3.816997 5.496583
+
+attr(,"class")
+[1] "summary.scan1perm" "list"             
+attr(,"n_perm")
+  liver spleen
+A  1000   1000
+X 28243  28243
 ~~~
 {: .output}
 
@@ -220,14 +242,21 @@ summary(operm_bin, alpha=c(0.2, 0.05))
 
 
 ~~~
-Autosome LOD thresholds (1000 permutations)
-     liver spleen
-0.2   2.60   2.63
-0.05  3.33   3.41
+$A
+        liver   spleen
+0.2  2.598312 2.629139
+0.05 3.329495 3.409336
 
-X chromosome LOD thresholds (28243 permutations)
-     liver spleen
-0.2   3.16   3.06
-0.05  3.86   3.77
+$X
+        liver   spleen
+0.2  3.161158 3.061490
+0.05 3.858628 3.766575
+
+attr(,"class")
+[1] "summary.scan1perm" "list"             
+attr(,"n_perm")
+  liver spleen
+A  1000   1000
+X 28243  28243
 ~~~
 {: .output}

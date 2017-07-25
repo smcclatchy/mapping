@@ -36,7 +36,7 @@ find_peaks(out, map, threshold=4, drop=1.5)
 
 
 ~~~
-Error in nrow(scan1_output): object 'out' not found
+Error in find_peaks(out, map, threshold = 4, drop = 1.5): could not find function "find_peaks"
 ~~~
 {: .error}
 
@@ -55,7 +55,7 @@ find_peaks(out, map, threshold=4, peakdrop=1.8, drop=1.5)
 
 
 ~~~
-Error in nrow(scan1_output): object 'out' not found
+Error in find_peaks(out, map, threshold = 4, peakdrop = 1.8, drop = 1.5): could not find function "find_peaks"
 ~~~
 {: .error}
 
@@ -74,7 +74,7 @@ bayes_int(out, map, lodcolumn=2, chr=9, prob=0.95)
 
 
 ~~~
-Error in nrow(scan1_output): object 'out' not found
+Error in bayes_int(out, map, lodcolumn = 2, chr = 9, prob = 0.95): could not find function "bayes_int"
 ~~~
 {: .error}
 
@@ -91,7 +91,7 @@ lod_int(out, map, lodcolumn=1, chr=7, peakdrop=1.8, drop=1.5)
 
 
 ~~~
-Error in nrow(scan1_output): object 'out' not found
+Error in lod_int(out, map, lodcolumn = 1, chr = 7, peakdrop = 1.8, drop = 1.5): could not find function "lod_int"
 ~~~
 {: .error}
 

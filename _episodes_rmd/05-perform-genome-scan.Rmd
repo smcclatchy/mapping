@@ -31,7 +31,7 @@ phenotypes, and then optional additive and interactive covariates, and
 the special X chromosome covariates. Another option is to provide a
 vector of weights.
 
-```{r scan1}
+```{r scan1, eval=FALSE}
 library(qtl2scan)
 out <- scan1(pr, iron$pheno, Xcovar=Xcovar)
 ```
@@ -58,7 +58,7 @@ Use the argument `lodcolumn` to indicate which column to plot. Unlike the
 time, and you need to provide the marker/pseudomarker map (created by
 `insert_pseudomarkers()`).
 
-```{r plot_lod}
+```{r plot_lod, eval=FALSE}
 library(qtl2plot)
 par(mar=c(5.1, 4.1, 1.1, 1.1))
 ymx <- maxlod(out) # overall maximum LOD score
