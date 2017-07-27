@@ -3,13 +3,15 @@ title: "Performing a genome scan"
 teaching: 0
 exercises: 0
 questions:
-- "?"
+- "How do I perform a genome scan?"
+- "How do I plot a genome scan?"
 objectives:
-- 
-- 
+- Create a genome scan for a set of traits.
+- Plot a genome scan.
 keypoints:
-- "."
-- "."
+- "A qtl2 genome scan requires genotype probabilities and a phenotype matrix."
+- "The output from a genome scan contains a LOD score matrix, map positions, and phenotypes."
+- "LOD curve plots for a genome scan can be viewed with plot_scan1()."
 source: Rmd
 ---
 
@@ -21,7 +23,7 @@ knitr_fig_path("05-")
 To perform a genome scan by Haley-Knott regression
 ([Haley and Knott 1992](https://www.ncbi.nlm.nih.gov/pubmed/16718932)),
 use the function `scan1()` in
-[qtl2scan](https://github.com/rqtl/qtl2scan). (The functions above
+[qtl2scan](https://github.com/rqtl/qtl2scan). (The previous functions 
 were all from [qtl2geno](https://github.com/rqtl/qtl2geno); from here
 forward, the functions are all from
 [qtl2scan](https://github.com/rqtl/qtl2scan).)

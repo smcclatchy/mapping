@@ -18,8 +18,6 @@ source("../bin/chunk-options.R")
 knitr_fig_path("08-")
 ```
 
-## Performing a genome scan with binary traits
-
 The genome scans above were performed assuming that the residual
 variation followed a normal distribution. This will often provide
 reasonable results even if the residuals are not normal, but an
@@ -34,7 +32,7 @@ Let's first turn our two phenotypes into binary traits by thresholding
 at the median. One would generally _not_ do this in practice;
 this is just for illustration.
 
-```{r threshold_phenotypes}
+```{r threshold_phenotypes, eval=FALSE}
 bin_pheno <- apply(iron$pheno, 2, function(a) as.numeric(a > median(a)))
 rownames(bin_pheno) <- rownames(iron$pheno)
 ```
@@ -43,13 +41,13 @@ We now perform the genome scan as before, including `model="binary"`
 to indicates that the phenotypes are binary traits with values 0 and
 1.
 
-```{r binary_trait_scan}
+```{r binary_trait_scan, eval=FALSE}
 out_bin <- scan1(pr, bin_pheno, Xcovar=Xcovar, model="binary")
 ```
 
 Here is a plot of the two LOD curves.
 
-```{r plot_bin_scan}
+```{r plot_bin_scan, eval=FALSE}
 par(mar=c(5.1, 4.1, 1.1, 1.1))
 ymx <- maxlod(out_bin)
 plot(out_bin, map, lodcolumn=1, col="slateblue", ylim=c(0, ymx*1.02))
@@ -59,6 +57,6 @@ legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out_bin), bg=
 
 We can use `find_peaks` as before.
 
-```{r find_peaks_bin_scan}
+```{r find_peaks_bin_scan, eval=FALSE}
 find_peaks(out_bin, map, threshold=3.5, drop=1.5)
 ```

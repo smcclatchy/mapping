@@ -6,5 +6,5 @@ FIXME: home page introduction
 
 > ## Prerequisites
 >
-> Understand that computers store data and instructions (programs, scripts etc.) in files. Files are organised in directories (folders). Know how to access files not in the working directory by specifying the path. Know how to install a R package.
+> Know how to access files not in the working directory by specifying the path. Know how to install a R package. Know how to assign a value to a variable. Know how to create a plot. Know how to use a for loop. Know how to create a vector or list with the c() function. Know how to subset a vector with index notation.
 {: .prereq}

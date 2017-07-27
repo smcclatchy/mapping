@@ -3,13 +3,15 @@ title: "Performing a genome scan with a linear mixed model"
 teaching: 0
 exercises: 0
 questions:
-- "?"
+- "How do I use a linear mixed model in a genome scan?"
+- "How do different mapping and kinship calculation methods differ?"
 objectives:
-- 
-- 
+- Create a genome scan with a linear mixed model.
+- Compare LOD plots for Haley-Knott regression and linear mixed model methods.
+- Compare LOD plots for the standard kinship matrix with the leave-one-chromosome-out (LOCO) method.
 keypoints:
-- "."
-- "."
+- "To perform a genome scan with a linear mixed model, supply a kinship matrix."
+- "Different mapping and kinship calculation methods give different results."
 source: Rmd
 ---
 
@@ -18,15 +20,13 @@ source("../bin/chunk-options.R")
 knitr_fig_path("07-")
 ```
 
-## Performing a genome scan with a linear mixed model
-
 To perform a genome scan using a linear mixed model, accounting for
 relationships among individuals using a random polygenic effect, you also use
 the function `scan1`; you just need to provide the argument `kinship`,
 a kinship matrix (or, for the LOCO method, a list of kinship
 matrices).
 
-```{r scan1_pg}
+```{r scan1_pg, eval=FALSE}
 out_pg <- scan1(pr, iron$pheno, kinship, Xcovar=Xcovar)
 ```
 
@@ -41,7 +41,7 @@ For the LOCO (leave one chromosome out) method, provide the list of
 kinship matrices as obtained from `calc_kinship()` with
 `method="loco"`.
 
-```{r scan1_pg_loco}
+```{r scan1_pg_loco, eval=FALSE}
 out_pg_loco <- scan1(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
 ```
 
@@ -52,7 +52,7 @@ Here is a plot of the LOD scores, by Haley-Knott regression and the linear
 mixed model using either the standard kinship matrix or the LOCO
 method.
 
-```{r plot_lod_scan1_vs_pg}
+```{r plot_lod_scan1_vs_pg, eval=FALSE}
 color <- c("slateblue", "violetred", "green3")
 par(mar=c(4.1, 4.1, 1.6, 1.1))
 ymx <- max(maxlod(out), maxlod(out_pg), maxlod(out_pg_loco))

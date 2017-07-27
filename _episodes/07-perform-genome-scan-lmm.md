@@ -3,19 +3,19 @@ title: "Performing a genome scan with a linear mixed model"
 teaching: 0
 exercises: 0
 questions:
-- "?"
+- "How do I use a linear mixed model in a genome scan?"
+- "How do different mapping and kinship calculation methods differ?"
 objectives:
-- 
-- 
+- Create a genome scan with a linear mixed model.
+- Compare LOD plots for Haley-Knott regression and linear mixed model methods.
+- Compare LOD plots for the standard kinship matrix with the leave-one-chromosome-out (LOCO) method.
 keypoints:
-- "."
-- "."
+- "To perform a genome scan with a linear mixed model, supply a kinship matrix."
+- "Different mapping and kinship calculation methods give different results."
 source: Rmd
 ---
 
 
-
-## Performing a genome scan with a linear mixed model
 
 To perform a genome scan using a linear mixed model, accounting for
 relationships among individuals using a random polygenic effect, you also use
@@ -28,13 +28,6 @@ matrices).
 out_pg <- scan1(pr, iron$pheno, kinship, Xcovar=Xcovar)
 ~~~
 {: .r}
-
-
-
-~~~
-Error in scan1(pr, iron$pheno, kinship, Xcovar = Xcovar): could not find function "scan1"
-~~~
-{: .error}
 
 Again, on a multi-core machine, you can get some speed-up using the
 `cores` argument.
@@ -55,13 +48,6 @@ out_pg_loco <- scan1(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
 ~~~
 {: .r}
 
-
-
-~~~
-Error in scan1(pr, iron$pheno, kinship_loco, Xcovar = Xcovar): could not find function "scan1"
-~~~
-{: .error}
-
 To plot the results, we again use `plot_scan1()` from the
 [qtl2plot](https://github.com/rqtl/qtl2plot) package, or just type `plot()`.
 
@@ -74,19 +60,6 @@ method.
 color <- c("slateblue", "violetred", "green3")
 par(mar=c(4.1, 4.1, 1.6, 1.1))
 ymx <- max(maxlod(out), maxlod(out_pg), maxlod(out_pg_loco))
-~~~
-{: .r}
-
-
-
-~~~
-Error in maxlod(out): could not find function "maxlod"
-~~~
-{: .error}
-
-
-
-~~~
 for(i in 1:2) {
     plot(out, map, lodcolumn=i, col=color[1], main=colnames(iron$pheno)[i],
               ylim=c(0, ymx*1.02))
@@ -96,13 +69,6 @@ for(i in 1:2) {
 }
 ~~~
 {: .r}
-
-
-
-~~~
-Error in plot(out, map, lodcolumn = i, col = color[1], main = colnames(iron$pheno)[i], : object 'out' not found
-~~~
-{: .error}
 
 For the liver phenotype (top panel), the three methods give quite
 different results. The linear mixed model with an overall kinship

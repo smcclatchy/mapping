@@ -3,13 +3,13 @@ title: "Finding LOD peaks"
 teaching: 0
 exercises: 0
 questions:
-- "?"
+- "How do I locate LOD peaks above a certain threshold value?"
 objectives:
-- 
-- 
+- Locate LOD peaks above a threshold value throughout the genome.
+- Identify the LOD support or Bayes credible interval for QTL.
 keypoints:
-- "."
-- "."
+- "LOD peaks can be located with find_peaks()."
+- "QTL intervals can be located with lod_int() or bayes_int()."
 source: Rmd
 ---
 
@@ -17,8 +17,6 @@ source: Rmd
 source("../bin/chunk-options.R")
 knitr_fig_path("06-")
 ```
-
-## Finding LOD peaks
 
 The function `find_peaks()` in the
 [qtl2scan](https://github.com/rqtl/qtl2scan) package can be used to
@@ -30,7 +28,7 @@ or `prob` (the nominal coverage for the Bayes credible intervals).
 You need to provide both the `scan1()` output as well as the
 marker/pseudomarker map.
 
-```{r find_peaks}
+```{r find_peaks, eval=FALSE}
 find_peaks(out, map, threshold=4, drop=1.5)
 ```
 
@@ -40,7 +38,7 @@ argument `peakdrop` indicates the amount that the LOD curve must drop
 between the lowest of two adjacent peaks.  Use this feature with
 caution.
 
-```{r find_multiple_peaks}
+```{r find_multiple_peaks, eval=FALSE}
 find_peaks(out, map, threshold=4, peakdrop=1.8, drop=1.5)
 ```
 
@@ -50,7 +48,7 @@ chromosome and LOD score column. For example, to obtain the Bayes
 interval for the locus on chromosome 9 for the second phenotype
 ("spleen"):
 
-```{r bayes_int}
+```{r bayes_int, eval=FALSE}
 bayes_int(out, map, lodcolumn=2, chr=9, prob=0.95)
 ```
 
@@ -58,7 +56,7 @@ Both `lod_int()` and `bayes_int()` take a `peakdrop` argument, if you
 wish to try to identify multiple peaks on a chromosome. Again, use
 this feature with caution.
 
-```{r lod_int_multiple}
+```{r lod_int_multiple, eval=FALSE}
 lod_int(out, map, lodcolumn=1, chr=7, peakdrop=1.8, drop=1.5)
 ```
 
