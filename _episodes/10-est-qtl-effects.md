@@ -3,10 +3,10 @@ title: "Estimated QTL effects"
 teaching: 0
 exercises: 0
 questions:
-- "?"
+- "How do I find the estimated effects of a QTL on a phenotype?"
 objectives:
-- 
-- 
+- Obtain estimated QTL effects.
+- Plot estimated QTL effects.
 keypoints:
 - "."
 - "."
@@ -15,10 +15,7 @@ source: Rmd
 
 
 
-
-## Estimated QTL effects
-
-The `scan1()` function return only LOD scores. To
+The `scan1()` function returns only LOD scores. To
 obtain estimated QTL effects, use the function `scan1coef()`.
 This function takes a single phenotype and the
 genotype probabilities for a single chromosome and returns a matrix

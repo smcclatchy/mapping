@@ -3,13 +3,14 @@ title: "Performing a genome scan with binary traits"
 teaching: 0
 exercises: 0
 questions:
-- "?"
+- "How do I create a genome scan for binary traits?"
 objectives:
-- 
-- 
+- Convert phenotypes to binary values.
+- Use logistic regression for genome scans with binary traits.
+- Plot and compare genome scans for binary traits.
 keypoints:
-- "."
-- "."
+- "A genome scan for binary traits (0 and 1) requires special handling; scans for non-binary traits assume normal variation of the residuals."
+- "A genome scan for binary traits  is performed with logistic regression."
 source: Rmd
 ---
 

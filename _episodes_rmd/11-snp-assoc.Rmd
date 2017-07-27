@@ -18,8 +18,6 @@ source("../bin/chunk-options.R")
 knitr_fig_path("11-")
 ```
 
-## SNP association
-
 For multi-parent crosses, it can be useful to collapse the genotype or
 allele probabilities according to the founder genotypes of the various
 SNPs in the region of a QTL.
@@ -92,13 +90,13 @@ names(sex) <- rownames(DOex$covar)
 We perform a genome scan with a linear mixed model (adjusting for
 a residual polygenic effect), with sex as an additive covariate.
 
-```{r DOex_scan1_pg}
+```{r DOex_scan1_pg, eval=FALSE}
 out <- scan1(apr, DOex$pheno, k, sex)
 ```
 
 Here's a plot of the results.
 
-```{r plot_DOex_scan}
+```{r plot_DOex_scan, eval=FALSE}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot(out, DOex$gmap)
 ```
@@ -107,7 +105,7 @@ There's a strong peak on chromosome 2. Let's look at the QTL effects.
 We estimate them with `scan1coef()`. We need to subset the allele
 probabilities and the list of kinship matrices.
 
-```{r DOex_effects_c2}
+```{r DOex_effects_c2, eval=FALSE}
 coef_c2 <- scan1coef(apr[,"2"], DOex$pheno, k[["2"]], sex)
 ```
 
@@ -120,7 +118,7 @@ due to the NZO allele. Note that `CCcolors` is a vector of colors
 included in the qtl2plot package; there's also a `CCorigcolors` object
 with the _official_ colors.
 
-```{r plot_DOex_effects}
+```{r plot_DOex_effects, eval=FALSE}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_coefCC(coef_c2, DOex$gmap["2"], bgcolor="gray95")
 legend("bottomleft", col=CCcolors, names(CCcolors), ncol=2, lwd=2, bg="gray95")
@@ -134,20 +132,21 @@ of the locus.
 
 Well, actually, we first need to find the location of the inferred
 QTL.  The peak LOD score on chromosome 2 occurs at
-`r round(max(out, DOex$gmap, chr="2")$pos, 1)` cM. But to find nearby SNPs, we really want
+r round(max(out, DOex$gmap, chr="2")$pos, 1) cM. But to find nearby SNPs, we really want
 to know the Mbp position. The calculations were only performed at the
 marker positions, and so we need to find the peak marker and then
 find it's physical location:
 
-```{r DOex_find_peak_in_Mbp}
+```{r DOex_find_peak_in_Mbp, eval=FALSE}
 marker <- rownames(max(out, DOex$gmap, chr="2"))
 peak_Mbp <- DOex$pmap[["2"]][marker]
 ```
 
-The marker is at `r round(peak_Mbp, 1)` Mbp.
+The marker is at r round(peak_Mbp, 1) Mbp.
 
 Now we need to identify the SNPs in this region. We'll focus on a 2
-Mbp interval centered at `r round(peak_Mbp, 1)` Mbp. We're still
+Mbp interval centered at r round(peak_Mbp, 1) Mbp. 
+We're still
 working on how best to quickly access SNP data. In the meantime, we
 can grab a predefined table of SNPs that's available in the
 [qtl2data repository](https://github.com/rqtl/qtl2data). It's saved as

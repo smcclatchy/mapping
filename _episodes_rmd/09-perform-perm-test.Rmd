@@ -3,13 +3,11 @@ title: "Performing a permutation test"
 teaching: 0
 exercises: 0
 questions:
-- "?"
+- "How can I evaluate the statistical significance of genome scan results?"
 objectives:
-- 
-- 
+- Run a permutation test to establish LOD score thresholds.
 keypoints:
-- "."
-- "."
+- "A permutation test establishes the statistical  significance of a genome scan."
 source: Rmd
 ---
 

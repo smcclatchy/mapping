@@ -15,8 +15,6 @@ source: Rmd
 
 
 
-## SNP association
-
 For multi-parent crosses, it can be useful to collapse the genotype or
 allele probabilities according to the founder genotypes of the various
 SNPs in the region of a QTL.
@@ -96,13 +94,6 @@ out <- scan1(apr, DOex$pheno, k, sex)
 ~~~
 {: .r}
 
-
-
-~~~
-Error in scan1(apr, DOex$pheno, k, sex): could not find function "scan1"
-~~~
-{: .error}
-
 Here's a plot of the results.
 
 
@@ -111,13 +102,6 @@ par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot(out, DOex$gmap)
 ~~~
 {: .r}
-
-
-
-~~~
-Error in plot(out, DOex$gmap): object 'out' not found
-~~~
-{: .error}
 
 There's a strong peak on chromosome 2. Let's look at the QTL effects.
 We estimate them with `scan1coef()`. We need to subset the allele
@@ -128,13 +112,6 @@ probabilities and the list of kinship matrices.
 coef_c2 <- scan1coef(apr[,"2"], DOex$pheno, k[["2"]], sex)
 ~~~
 {: .r}
-
-
-
-~~~
-Error in scan1coef(apr[, "2"], DOex$pheno, k[["2"]], sex): could not find function "scan1coef"
-~~~
-{: .error}
 
 For the DO, with 8 QTL alleles, we can use the function `plot_coefCC`
 in the [R/qtl2plot](https://github.com/rqtl/qtl2plot) package, which
@@ -149,48 +126,266 @@ with the _official_ colors.
 ~~~
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_coefCC(coef_c2, DOex$gmap["2"], bgcolor="gray95")
-~~~
-{: .r}
-
-
-
-~~~
-Error in plot_coefCC(coef_c2, DOex$gmap["2"], bgcolor = "gray95"): could not find function "plot_coefCC"
-~~~
-{: .error}
-
-
-
-~~~
 legend("bottomleft", col=CCcolors, names(CCcolors), ncol=2, lwd=2, bg="gray95")
 ~~~
 {: .r}
 
+### SNP associations
+
+Okay, now finally we get to the SNP associations. We have a large peak
+on chromosome 2, and we want to look at individual SNPs in the region
+of the locus.
+
+Well, actually, we first need to find the location of the inferred
+QTL.  The peak LOD score on chromosome 2 occurs at
+r round(max(out, DOex$gmap, chr="2")$pos, 1) cM. But to find nearby SNPs, we really want
+to know the Mbp position. The calculations were only performed at the
+marker positions, and so we need to find the peak marker and then
+find it's physical location:
 
 
 ~~~
-Error in legend("bottomleft", col = CCcolors, names(CCcolors), ncol = 2, : object 'CCcolors' not found
+marker <- rownames(max(out, DOex$gmap, chr="2"))
+peak_Mbp <- DOex$pmap[["2"]][marker]
+~~~
+{: .r}
+
+The marker is at r round(peak_Mbp, 1) Mbp.
+
+Now we need to identify the SNPs in this region. We'll focus on a 2
+Mbp interval centered at r round(peak_Mbp, 1) Mbp. 
+We're still
+working on how best to quickly access SNP data. In the meantime, we
+can grab a predefined table of SNPs that's available in the
+[qtl2data repository](https://github.com/rqtl/qtl2data). It's saved as
+an RDS file, which is a slight hassle to load over the web.
+
+
+~~~
+tmpfile <- tempfile()
+file <- "https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/c2_snpinfo.rds"
+download.file(file, tmpfile, quiet=TRUE)
+snpinfo <- readRDS(tmpfile)
+unlink(tmpfile)
+~~~
+{: .r}
+
+Here's the first few rows of the data. The columns are the SNP name,
+the chromosome, the Mbp position (in Mouse genome build 38), the
+alleles (with the B6 allele before the `|` and any other alleles
+after; in the case of multiple alternate alleles, they are separated
+by `/`). Finally, there are eight columns of genotypes for the 8 CC
+founder strains, coded as `1`/`3`.
+
+
+~~~
+head(snpinfo)
+~~~
+{: .r}
+
+
+
+~~~
+       snp_id chr  pos_Mbp alleles AJ B6 129 NOD NZO CAST PWK WSB
+1 rs221396738   2 96.50001     C|T  1  1   1   1   1    3   1   1
+2 rs264175039   2 96.50022     A|C  1  1   1   1   3    1   1   1
+3 rs227493750   2 96.50028     C|T  1  1   1   1   3    1   1   1
+4 rs229722012   2 96.50034     C|G  1  1   1   1   3    3   1   3
+5  rs27379137   2 96.50044     C|T  1  1   1   1   1    3   1   1
+6 rs227574143   2 96.50067     A|C  1  1   1   1   3    1   1   3
+~~~
+{: .output}
+
+We first convert the founder genotypes to a "strain distribution
+pattern" (SDP): an integer whose binary encoding corresponds to the 8
+founders' genotypes.
+
+
+~~~
+snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
+~~~
+{: .r}
+
+
+
+~~~
+Error in calc_sdp(snpinfo[, -(1:4)]): could not find function "calc_sdp"
 ~~~
 {: .error}
 
+We've added the SDP as an additional column.
+
+
+~~~
+head(snpinfo)
+~~~
+{: .r}
 
 
 
+~~~
+       snp_id chr  pos_Mbp alleles AJ B6 129 NOD NZO CAST PWK WSB
+1 rs221396738   2 96.50001     C|T  1  1   1   1   1    3   1   1
+2 rs264175039   2 96.50022     A|C  1  1   1   1   3    1   1   1
+3 rs227493750   2 96.50028     C|T  1  1   1   1   3    1   1   1
+4 rs229722012   2 96.50034     C|G  1  1   1   1   3    3   1   3
+5  rs27379137   2 96.50044     C|T  1  1   1   1   1    3   1   1
+6 rs227574143   2 96.50067     A|C  1  1   1   1   3    1   1   3
+~~~
+{: .output}
+
+(Note that there's also a function `invert_sdp()` for converting the
+SDPs back into founder genotypes.)
+
+To perform the SNP association analysis, we first use the allele
+probabilities and the founder SNP genotypes to infer the SNP genotypes
+for the DO mice. That is, at each SNP, we want to collapse the eight
+founder allele probabilities to two SNP allele probabilities, using
+the the SNP genotypes of the founders.
+
+We do this assuming that the allele probabilities were
+calculated sufficiently densely that they can be assumed to be
+constant in intervals. With this assumption, we then:
+
+- Find the interval for each SNP.
+- Reduce the SNPs to a "distinct" set: if two SNPs have the same SDP
+  and are in the same interval, by our assumption their allele
+  probabilities will be the same.
+- Take the average of the allele probabilities at the two endpoints of
+  each interval.
+- Collapse the 8 allele probabilities to two according to each
+  observed SDP in the interval.
+
+We further create a look-up table relating the full set of SNPs to the
+reduced set (one of each observed SDP in each interval).
+
+We first need to identify the equivalent SNPs, using the function
+`index_snps()`. This requires a physical map of the
+markers/pseudomarkers used to calculate the genotype probabilities.
+We take this directly from the `DOex`
+object, as we'd calculated the allele
+probabilities only at the observed markers. If we'd also calculated
+probabilities at pseudomarker positions between markers, we'd need to
+use interpolation to get Mbp positions for the
+pseudomarkers. There's a function `interp_map()` for assisting with
+that.
+
+The `index_snps()` function takes the physical map and the `snpinfo`
+data frame, include the strain distribution patterns we calculated above.
+It inserts three new columns into the data frame (`"index"`,
+`"interval"`, and `"on_map"`: indexes to a set of non-equivalent SNPs,
+map intervals in which the SNPs lie, and whether the SNPs correspond
+to marker/pseudomarker positions).
+
+
+~~~
+snpinfo <- index_snps(DOex$pmap, snpinfo)
+~~~
+{: .r}
 
 
 
+~~~
+Error in index_snps(DOex$pmap, snpinfo): could not find function "index_snps"
+~~~
+{: .error}
+
+We can then use the function `genoprob_to_snpprob()`,
+which takes the allele probabilities (or the full genotype
+probabilities, if you want to use a full 3-genotype model at each
+SNP), to collapse the genotype probabilities to SNP genotype
+probabilities.
+
+
+~~~
+snp_pr <- genoprob_to_snpprob(apr, snpinfo)
+~~~
+{: .r}
 
 
 
+~~~
+Error in genoprob_to_snpprob(apr, snpinfo): could not find function "genoprob_to_snpprob"
+~~~
+{: .error}
+
+The output of this function, `snp_pr`, has the same form as the input
+`apr` object with allele probabilities, and can be used directly in a
+call to `scan1()`. And so we can now use the object to perform the SNP
+association analysis in the region, using the same linear mixed model.
+We need to be sure to use the correct kinship matrix.
+
+
+~~~
+out_snps <- scan1(snp_pr, DOex$pheno, k[["2"]], sex)
+~~~
+{: .r}
 
 
 
+~~~
+Error in scan1(snp_pr, DOex$pheno, k[["2"]], sex): could not find function "scan1"
+~~~
+{: .error}
+
+The function `plot_snpasso()` in the qtl2plot package can be used to
+plot the results, with points at each of the SNPs. The default is to
+plot **all** SNPs: We calculated LOD scores only at a set of distinct
+SNPs, but SNPs in the same interval with the same SDP will have the
+same LOD score. It takes the `scan1()` output plus the `snpinfo` data
+frame.
+
+
+~~~
+par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot_snpasso(out_snps, snpinfo)
+~~~
+{: .r}
 
 
 
+~~~
+Error in plot_snpasso(out_snps, snpinfo): could not find function "plot_snpasso"
+~~~
+{: .error}
+
+To get a table of the SNPs with the largest LOD scores, use the
+function `top_snps()`. This will show all SNPs with LOD score within
+some amount (the default is 1.5) of the maximum SNP LOD score.
+
+
+~~~
+top_snps(out_snps, snpinfo)
+~~~
+{: .r}
 
 
 
+~~~
+Error in top_snps(out_snps, snpinfo): could not find function "top_snps"
+~~~
+{: .error}
+
+The top SNPs all have NZO and CAST with a common allele, different
+from the other 6 founders. The next-best SNPs have NZO with a unique
+allele. Note that there's one SNP with two alternate alleles
+(`C|G/T`). We are requiring that SNPs have just two alleles, and so we
+group the alternate alleles together, though there's not a good reason
+for this.
+
+We can highlight these top SNPs in the SNP association plot using the
+`drop` argument.
+
+
+~~~
+par(mar=c(4.1, 4.1, 0.6, 0.6))
+plot_snpasso(out_snps, snpinfo, drop=1.5)
+~~~
+{: .r}
 
 
 
+~~~
+Error in plot_snpasso(out_snps, snpinfo, drop = 1.5): could not find function "plot_snpasso"
+~~~
+{: .error}
