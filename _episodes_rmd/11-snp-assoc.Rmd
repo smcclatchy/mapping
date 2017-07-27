@@ -175,13 +175,13 @@ We first convert the founder genotypes to a "strain distribution
 pattern" (SDP): an integer whose binary encoding corresponds to the 8
 founders' genotypes.
 
-```{r calc_sdp}
+```{r calc_sdp, eval=FALSE}
 snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
 ```
 
 We've added the SDP as an additional column.
 
-```{r head_snpinfo_with_sdp}
+```{r head_snpinfo_with_sdp, eval=FALSE}
 head(snpinfo)
 ```
 
@@ -228,7 +228,7 @@ It inserts three new columns into the data frame (`"index"`,
 map intervals in which the SNPs lie, and whether the SNPs correspond
 to marker/pseudomarker positions).
 
-```{r index_snps}
+```{r index_snps, eval=FALSE}
 snpinfo <- index_snps(DOex$pmap, snpinfo)
 ```
 
@@ -238,7 +238,7 @@ probabilities, if you want to use a full 3-genotype model at each
 SNP), to collapse the genotype probabilities to SNP genotype
 probabilities.
 
-```{r calc_snpprobs}
+```{r calc_snpprobs, eval=FALSE}
 snp_pr <- genoprob_to_snpprob(apr, snpinfo)
 ```
 
@@ -248,7 +248,7 @@ call to `scan1()`. And so we can now use the object to perform the SNP
 association analysis in the region, using the same linear mixed model.
 We need to be sure to use the correct kinship matrix.
 
-```{r perform_snp_scan}
+```{r perform_snp_scan, eval=FALSE}
 out_snps <- scan1(snp_pr, DOex$pheno, k[["2"]], sex)
 ```
 
@@ -259,7 +259,7 @@ SNPs, but SNPs in the same interval with the same SDP will have the
 same LOD score. It takes the `scan1()` output plus the `snpinfo` data
 frame.
 
-```{r plot_snp_asso}
+```{r plot_snp_asso, eval=FALSE}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_snpasso(out_snps, snpinfo)
 ```
@@ -268,7 +268,7 @@ To get a table of the SNPs with the largest LOD scores, use the
 function `top_snps()`. This will show all SNPs with LOD score within
 some amount (the default is 1.5) of the maximum SNP LOD score.
 
-```{r top_snps}
+```{r top_snps, eval=FALSE}
 top_snps(out_snps, snpinfo)
 ```
 
@@ -282,7 +282,7 @@ for this.
 We can highlight these top SNPs in the SNP association plot using the
 `drop` argument.
 
-```{r plot_snp_asso_hilit}
+```{r plot_snp_asso_hilit, eval=FALSE}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_snpasso(out_snps, snpinfo, drop=1.5)
 ```

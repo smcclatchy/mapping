@@ -206,13 +206,6 @@ snpinfo$sdp <- calc_sdp(snpinfo[,-(1:4)])
 ~~~
 {: .r}
 
-
-
-~~~
-Error in calc_sdp(snpinfo[, -(1:4)]): could not find function "calc_sdp"
-~~~
-{: .error}
-
 We've added the SDP as an additional column.
 
 
@@ -220,19 +213,6 @@ We've added the SDP as an additional column.
 head(snpinfo)
 ~~~
 {: .r}
-
-
-
-~~~
-       snp_id chr  pos_Mbp alleles AJ B6 129 NOD NZO CAST PWK WSB
-1 rs221396738   2 96.50001     C|T  1  1   1   1   1    3   1   1
-2 rs264175039   2 96.50022     A|C  1  1   1   1   3    1   1   1
-3 rs227493750   2 96.50028     C|T  1  1   1   1   3    1   1   1
-4 rs229722012   2 96.50034     C|G  1  1   1   1   3    3   1   3
-5  rs27379137   2 96.50044     C|T  1  1   1   1   1    3   1   1
-6 rs227574143   2 96.50067     A|C  1  1   1   1   3    1   1   3
-~~~
-{: .output}
 
 (Note that there's also a function `invert_sdp()` for converting the
 SDPs back into founder genotypes.)
@@ -283,13 +263,6 @@ snpinfo <- index_snps(DOex$pmap, snpinfo)
 ~~~
 {: .r}
 
-
-
-~~~
-Error in index_snps(DOex$pmap, snpinfo): could not find function "index_snps"
-~~~
-{: .error}
-
 We can then use the function `genoprob_to_snpprob()`,
 which takes the allele probabilities (or the full genotype
 probabilities, if you want to use a full 3-genotype model at each
@@ -302,13 +275,6 @@ snp_pr <- genoprob_to_snpprob(apr, snpinfo)
 ~~~
 {: .r}
 
-
-
-~~~
-Error in genoprob_to_snpprob(apr, snpinfo): could not find function "genoprob_to_snpprob"
-~~~
-{: .error}
-
 The output of this function, `snp_pr`, has the same form as the input
 `apr` object with allele probabilities, and can be used directly in a
 call to `scan1()`. And so we can now use the object to perform the SNP
@@ -320,13 +286,6 @@ We need to be sure to use the correct kinship matrix.
 out_snps <- scan1(snp_pr, DOex$pheno, k[["2"]], sex)
 ~~~
 {: .r}
-
-
-
-~~~
-Error in scan1(snp_pr, DOex$pheno, k[["2"]], sex): could not find function "scan1"
-~~~
-{: .error}
 
 The function `plot_snpasso()` in the qtl2plot package can be used to
 plot the results, with points at each of the SNPs. The default is to
@@ -342,13 +301,6 @@ plot_snpasso(out_snps, snpinfo)
 ~~~
 {: .r}
 
-
-
-~~~
-Error in plot_snpasso(out_snps, snpinfo): could not find function "plot_snpasso"
-~~~
-{: .error}
-
 To get a table of the SNPs with the largest LOD scores, use the
 function `top_snps()`. This will show all SNPs with LOD score within
 some amount (the default is 1.5) of the maximum SNP LOD score.
@@ -358,13 +310,6 @@ some amount (the default is 1.5) of the maximum SNP LOD score.
 top_snps(out_snps, snpinfo)
 ~~~
 {: .r}
-
-
-
-~~~
-Error in top_snps(out_snps, snpinfo): could not find function "top_snps"
-~~~
-{: .error}
 
 The top SNPs all have NZO and CAST with a common allele, different
 from the other 6 founders. The next-best SNPs have NZO with a unique
@@ -382,10 +327,3 @@ par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_snpasso(out_snps, snpinfo, drop=1.5)
 ~~~
 {: .r}
-
-
-
-~~~
-Error in plot_snpasso(out_snps, snpinfo, drop = 1.5): could not find function "plot_snpasso"
-~~~
-{: .error}
