@@ -15,34 +15,12 @@ source: Rmd
 
 
 
-DO QTL Mapping Tutorial
-========================================================
-Introduction
---------------------------------------------------------
-
-This tutorial will take you through the process of mapping a QTL and searching for candidate genes. It assumes that you have already phenotyped and genotyped your mice, and have reconstructed their genomes using the DOQTL calc.genoprob() function. DOQTL runs in the R statistical package and this demo assumes some familiarity with that software. You should have been provided the following files for the demo:
-
-* DOQTL_demo.Rdata: contianing the phenotype and genotype data.
+This tutorial will take you through the process of mapping a QTL and searching for candidate genes.
 
 The data comes from a toxicology study in which mice were exposed to benzene via inhalation for 6 hours a day, 5 days a week for 4 weeks. The study was conducted in two equally sized cohort of 300 male mice each, for a total of 600 mice. They were then sacrificed and reticulocytes (red blood cell precursors) were isolated from bone marrow. The number of micro-nucleated reticulocytes, a measure of DNA damage, was then measured in each mouse. The goal is to map gene(s) that influence the level of DNA damage in the bone marrow.
 
 ![](figure/benzene_study_design.png)
 
-Loading the DOQTL package
---------------------------------------------------------
-
-The following code loads DOQTL's dependencie and installs DOQTL.  You do not need to run it now, but this is what you would run to install DOQTL on your computer at home.  Note that the installation of dependencies takes a while becuase the mouse and human genomes are downloaded.
-
-   source("http://bioconductor.org/biocLite.R")  
-   biocLite("DOQTL")
-
-First, we load DOQTL into the R environment.
-
-
-~~~
-library(DOQTL)
-~~~
-{: .r}
 
 Loading the data
 --------------------------------------------------------
@@ -51,15 +29,16 @@ The data for this tutorial has been saved as an R binary file that contains seve
 
 
 ~~~
-load("/data/DOQTL_demo.Rdata")
+load("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata")
 ~~~
 {: .r}
 
 
 
 ~~~
-Warning in readChar(con, 5L, useBytes = TRUE): cannot open compressed file
-'/data/DOQTL_demo.Rdata', probable reason 'No such file or directory'
+Warning in readChar(con, 5L, useBytes = TRUE): cannot open compressed
+file 'ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata', probable
+reason 'No such file or directory'
 ~~~
 {: .error}
 
