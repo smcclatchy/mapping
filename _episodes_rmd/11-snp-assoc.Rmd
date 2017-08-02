@@ -3,10 +3,14 @@ title: "SNP association"
 teaching: 0
 exercises: 0
 questions:
-- "?"
+- "How do I identify SNPs in a QTL?"
 objectives:
-- 
-- 
+- Perform a basic QTL analysis.
+- Identify QTL with a genome scan.
+- Find SNPs within a QTL.
+- Convert founder genotypes to a strain distribution pattern (SDP).
+- Infer SNP genotypes for Diversity Outbred mice.
+- Perform SNP association analysis 
 keypoints:
 - "."
 - "."
@@ -192,7 +196,7 @@ To perform the SNP association analysis, we first use the allele
 probabilities and the founder SNP genotypes to infer the SNP genotypes
 for the DO mice. That is, at each SNP, we want to collapse the eight
 founder allele probabilities to two SNP allele probabilities, using
-the the SNP genotypes of the founders.
+the SNP genotypes of the founders.
 
 We do this assuming that the allele probabilities were
 calculated sufficiently densely that they can be assumed to be

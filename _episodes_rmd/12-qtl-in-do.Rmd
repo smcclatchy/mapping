@@ -31,7 +31,7 @@ Loading the data
 The data for this tutorial has been saved as an R binary file that contains several data objects.  Load it in now by running the following command.
 
 ```{r load_data,message=FALSE,results='hide'}
-load("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata")
+download.file("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016", "DOQTL_demo.Rdata")
 ```
 
 This loaded in two data objects. Look in the Global Environment panel to see what was loaded.  You should see an obejct called `pheno` with 143 rows and 5 columns and an object called `probs`.
