@@ -6,7 +6,7 @@ questions:
 - "?"
 objectives:
 - 
-- 
+- Convert genotype and allele probabilities from DOQTL to qtl2 format.
 keypoints:
 - "."
 - "."
@@ -25,18 +25,18 @@ The data comes from a toxicology study in which mice were exposed to benzene via
 ![](figure/benzene_study_design.png)
 
 
-Loading the data
---------------------------------------------------------
+### Loading the data
 
 The data for this tutorial has been saved as an R binary file that contains several data objects.  Load it in now by running the following command.
 
 ```{r load_data,message=FALSE,results='hide'}
-download.file("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016", "DOQTL_demo.Rdata")
+library(qtl2)
+load(url("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata"))
 ```
 
-This loaded in two data objects. Look in the Global Environment panel to see what was loaded.  You should see an obejct called `pheno` with 143 rows and 5 columns and an object called `probs`.
+This loaded in two data objects. Look in the Environment pane to see what was loaded.  You should see an object called `pheno` with 143 rows and 5 columns and an object called `probs`.
 
-`pheno` is a data frame containing the phenotype data. `probs` is a 3 dimensional array containing the founder allele dosages for each sample at each marker on the array.  Double-click on `pheno` in the Global Environment panel to view its contents.
+`pheno` is a data frame containing the phenotype data. `probs` is a 3 dimensional array containing the founder allele dosages for each sample at each marker on the array.  Double-click on `pheno` in the Environment pane to view its contents.
 
 **NOTE:** the sample IDs must be in the rownames of `pheno`.
 
@@ -63,10 +63,9 @@ axis(side = 1, at = 0:5 * 100, labels = 0:5 * 100)
 axis(side = 2, at = 1:8, labels = LETTERS[8:1], las = 1, tick = F)
 ```
 
-In the plot above, the founder contributions, which range between 0 and 1, are colored from white (= 0) to black (= 1.0). A value of ~0.5 is grey. The markers are on the X-axis and the eight founders (denoted by the letters A through H) on the Y-axis. Starting at the left, we see that this sample has genotype CD because both rows C and D are grey, indicating values o 0.5 for each one. Moving along the genome to the right, the genotype becomes DD where row D is black, then CD, AC, CH, CD, CH, etc. The value at each marker sum to 1.0.
+In the plot above, the founder contributions, which range between 0 and 1, are colored from white (= 0) to black (= 1.0). A value of ~0.5 is grey. The markers are on the X-axis and the eight founders (denoted by the letters A through H) on the Y-axis. Starting at the left, we see that this sample has genotype CD because both rows C and D are grey, indicating values of 0.5 for each one. Moving along the genome to the right, the genotype becomes DD where row D is black, then CD, AC, CH, CD, CH, etc. The values at each marker sum to 1.0.
 
-QTL Mapping
--------------------------------------------------------
+### QTL Mapping
 
 First, we need the locations of the markers on the genotyping array. The array is called the Mouse Universal Genotyping Array (MUGA) and contain 7,856 SNP markers. Their locations are on [The Jackson Laboratory's FTP site](ftp://ftp.jax.org/MUGA):
 
@@ -74,10 +73,10 @@ First, we need the locations of the markers on the genotyping array. The array i
 load(url("ftp://ftp.jax.org/MUGA/muga_snps.Rdata"))
 ```
 
-Next, we need to create a matrix that accounts for the kinship relationships between the mice. We do this by looking at the correlation between the founder haplotypes for each sample at each SNP. For each chromosome, we create a kinship matrix using the all markers *except* the ones on the current chromosome. Simulations suggest that mapping using this approach increases the power to detect QTL.
+Next, we need to create a matrix that accounts for the kinship relationships between the mice. We do this by looking at the correlation between the founder haplotypes for each sample at each SNP. For each chromosome, we create a kinship matrix using all markers *except* the ones on the current chromosome. Simulations suggest that mapping using this approach increases the power to detect QTL.
            
 ```{r kinship,message=FALSE,results='hide'}
-K = kinship.probs(probs, snps = muga_snps, bychr = TRUE)
+K = calc_kinship(probs, type = "loco", use_allele_probs = FALSE)
 ```
 
 Kinship values between pairs of samples range between 0 (no relationship) and 1.0 (completely identical). Let's look at the kinship matrix.
@@ -91,22 +90,21 @@ axis(side = 2, at = 20 * 0:7, labels = 20 * 7:0, las = 1)
 
 The figure above shows kinship between all pairs of samples. White (= 1) indicates no kinship and red (= 0) indicates full kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
 
-Next, we need to create additive covariates that wil be used in the mapping model. We will use sex and study cohort as a covariate in the mapping model.  While all of the samples We must add the sample IDs to the rownames of the covariates becuase the 'scanone' function will match up sample IDs in all of the data.
+Next, we need to create additive covariates that wil be used in the mapping model. We will use sex and study cohort as a covariate in the mapping model. We must add the sample IDs to the rownames of the covariates because the `scan1` function will match up sample IDs in all of the data.
 
 ```{r covariates}
 addcovar = model.matrix(~Study, data = pheno)
 colnames(addcovar)[1] = "Sex"
 ```         
 
-The code above copies the rownames(pheno) to rownames(addcovar).
+The code above copies the `rownames(pheno)` to `rownames(addcovar)`.
 
 **NOTE:** the sample IDs must be in the rownames of `addcovar`.
 
-In order to map prop.bm.MN.RET, you will use the scanone() function. To see the arguments for `scanone`, you can type 'help(scanone)'.
+In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the `scan1()` function. To see the arguments for `scan1`, you can type `help(scan1)`.
 
 ```{r QTL,warning=FALSE,error=FALSE, eval=FALSE}
-qtl = scanone(pheno = pheno, pheno.col = "prop.bm.MN.RET", probs = probs, K = K, 
-      addcovar = addcovar, snps = muga_snps)
+qtl = scan1(genoprobs = probs, pheno = pheno$prop.bm.MN.RET, kinship = K, addcovar = addcovar, snps = muga_snps)
 ```
 
 We can then plot the QTL scan.         
@@ -115,11 +113,10 @@ We can then plot the QTL scan.
 plot(qtl, main = "prop.bm.MN.RET")
 ```
 
-There is clearly a large peak on Chr 10. Next, we must assess its statistical significance. This is most commonly done via [permutation](http://www.genetics.org/content/178/1/609.long). We advise running at least 1,000 permutations to obtain significance thresholds. In the interest of time, we preform 100 permutations here.
+There is clearly a large peak on Chr 10. Next, we must assess its statistical significance. This is most commonly done via [permutation](http://www.genetics.org/content/178/1/609.long). We advise running at least 1,000 permutations to obtain significance thresholds. In the interest of time, we perform 100 permutations here.
 
 ```{r perms,message=FALSE,results='hide', warning=FALSE, eval=FALSE}
-perms = scanone.perm(pheno = pheno, pheno.col = "prop.bm.MN.RET", probs = probs,
-        addcovar = addcovar, snps = muga_snps, nperm = 100)
+perms = scan1perm(genoprobs = probs, pheno = pheno$prop.bm.MN.RET, kinship = K, addcovar = addcovar, n_perm = 100, snps = muga_snps)
 ```
 
 We can now add thresholds to the previous QTL plot. We use significance thresholds at the p < 0.05, 0.10 and 0.63 levels.
@@ -131,16 +128,16 @@ plot(qtl, sig.thr = thr, sig.col = c("red", "orange", "goldenrod"), main = "prop
 
 The peak on Chr 10 is clearly well above the red p < 0.05 significance line.
 
-We will now zoom in on Chr 10 and look at the contribution of each of the eight founder alleles to prop.bm.MN.RET. The mapping model fits a term for each of the eight DO founders. We can plot these coefficients across Chr 10.
+We will now zoom in on Chr 10 and look at the contribution of each of the eight founder alleles to the proportion of bone marrow reticulocytes that were micro-nucleated. The mapping model fits a term for each of the eight DO founders. We can plot these coefficients across Chr 10.
 
 ```{r coef_plot,fig.width=8, fig.height=6, eval=FALSE}
-coefplot(qtl, chr = 10, main = "prop.bm.MN.RET")
+plot_coefCC(qtl, chr = 10, main = "prop.bm.MN.RET")
 ```
 
-The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele around 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective allele. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. The support interval is determined using the [Bayesian Credible Interval](http://www.ncbi.nlm.nih.gov/pubmed/11560912) and represents the region most likely to contain the causative polymorphism(s). We can obtain this interval using the 'bayesint' function.
+The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele around 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective allele. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. The support interval is determined using the [Bayesian Credible Interval](http://www.ncbi.nlm.nih.gov/pubmed/11560912) and represents the region most likely to contain the causative polymorphism(s). We can obtain this interval using the `bayesint` function.
 
 ```{r interval,eval=FALSE}
-interval = bayesint(qtl, chr = 10)
+interval = bayes_int(qtl, chr = 10)
 knitr::kable(interval)
 ```
 
@@ -155,14 +152,13 @@ pxg.plot(pheno = pheno, pheno.col = "prop.bm.MN.RET", probs = probs,
 
 This plot shows the phenotype value on the Y-axis plotted against the 36 DO genotypes on the X-axis, Note that several genotypes did not occur in this set of 143 samples. Next note that all of the samples with at least one CAST allele (denoted by **F**) have low values. This suggests that the mode of inheritance may be dominant. This is the effect that is driving the QTL.
 
-Genome-wide Association Mapping
--------------------------------------------------------------
+### Genome-wide Association Mapping
 
 Above, we performed an analysis called linkage mapping in which we regressed the phenotype on haplotype probabilities.  In this next analysis, we will impute the founder SNPs onto the DO haplotype plots and perform association mapping with 40.4 million SNPs.  For each haplotype block, we copy-and-paste the SNPs from the appropriate founder onto each DO genome.
 
 ![](figure/DO.impute.founders.sm.png)
 
-The GWAS function is called `scanone.assoc` and it takes arguments that are similar to `scanone` above. There are two new arguments.  `sdp.file`, which is available from [ftp.jax.org](ftp://ftp.jax.org/MUGA/), is a file that contains compressed SNP information for the 8 DO founder strains.  `ncl` tells the function how many parallel jobs to run to perform the genome scan.  Obviously, don't set this number higher than the number of cores on your computer.  You can find out more about this function using `help(scanone.assoc)`.  
+The GWAS function is called `scanone.assoc` and it takes arguments that are similar to `scanone` above. There are two new arguments.  `sdp.file`, or strain distribution pattern, which is available from [ftp.jax.org](ftp://ftp.jax.org/MUGA/), is a file that contains compressed SNP information for the 8 DO founder strains.  `ncl` tells the function how many parallel jobs to run to perform the genome scan.  Obviously, don't set this number higher than the number of cores on your computer.  You can find out more about this function using `help(scanone.assoc)`.  
 
 ```{r GWAS,warning=FALSE,eval=FALSE}
 gwas = scanone.assoc(pheno = pheno, pheno.col = "prop.bm.MN.RET", probs = probs, K = K, 
@@ -172,7 +168,7 @@ gwas = scanone.assoc(pheno = pheno, pheno.col = "prop.bm.MN.RET", probs = probs,
 Next, we plot the association mapping results.
 
 ```{r plot_GWAS,warning=FALSE,eval=FALSE}
-plot(gwas, main = "prop.bm.MN.RET")
+plot_snpasso(gwas, main = "prop.bm.MN.RET")
 ```
 
 Once again, we should perform permutations of the data to obtain a significance threshold.  This is too time comsuming for this tutorial.  So we will load in pre-computed permutation values and use them to plot significance thresholds.
@@ -195,8 +191,7 @@ And you can increase the plotting resolution with the `bin.size` argument.
 plot(gwas, chr = 10, bin.size = 10, main = "prop.bm.MN.RET")
 ```
 
-Searching for Candidate Genes
--------------------------------------------------------------
+### Searching for Candidate Genes
 
 At this point, we have a 6 Mb wide support interval that contains a polymorphism(s) that influences benzene induced DNA damage. Next, we will impute the DO founder sequences onto the DO genomes. The [Sanger Mouse Genomes Project](http://www.sanger.ac.uk/resources/mouse/genomes/) has sequenced the eight DO founders and provides SNP, Indel and structural variant files for the strains (see [Baud et.al., Nat. Gen., 2013](http://www.nature.com/ng/journal/v45/n7/full/ng.2644.html)). We can impute these SNPs onto the DO genomes and then perform association mapping. The function `assoc.map` performs this analysis.
 
