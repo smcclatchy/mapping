@@ -1,5 +1,5 @@
 ---
-title: "Covariates in QTL Scans"
+title: "QTL Effects"
 teaching: 0
 exercises: 0
 questions:
