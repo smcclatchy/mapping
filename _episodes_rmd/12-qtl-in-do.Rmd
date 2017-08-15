@@ -31,6 +31,7 @@ The data for this tutorial has been saved as an R binary file that contains seve
 
 ```{r load_data,message=FALSE,results='hide'}
 library(qtl2)
+library(qtl2convert)
 load(url("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata"))
 ```
 
@@ -73,10 +74,17 @@ First, we need the locations of the markers on the genotyping array. The array i
 load(url("ftp://ftp.jax.org/MUGA/muga_snps.Rdata"))
 ```
 
+Convert the genotype probabilities to qtl2 format. Convert the SNPs to a qtl2 map object.
+
+```{r}
+genoprobs = probs_doqtl_to_qtl2(probs = probs, map = muga_snps, pos_column="pos")
+map = map_df_to_list(map = muga_snps, pos_column="pos")
+```
+
 Next, we need to create a matrix that accounts for the kinship relationships between the mice. We do this by looking at the correlation between the founder haplotypes for each sample at each SNP. For each chromosome, we create a kinship matrix using all markers *except* the ones on the current chromosome. Simulations suggest that mapping using this approach increases the power to detect QTL.
            
 ```{r kinship,message=FALSE,results='hide'}
-K = calc_kinship(probs, type = "loco", use_allele_probs = FALSE)
+K = calc_kinship(probs = genoprobs, type = "loco", use_allele_probs = TRUE)
 ```
 
 Kinship values between pairs of samples range between 0 (no relationship) and 1.0 (completely identical). Let's look at the kinship matrix.
@@ -101,16 +109,16 @@ The code above copies the `rownames(pheno)` to `rownames(addcovar)`.
 
 **NOTE:** the sample IDs must be in the rownames of `addcovar`.
 
-In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the `scan1()` function. To see the arguments for `scan1`, you can type `help(scan1)`.
+In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the `scan1` function. To see the arguments for `scan1`, you can type `help(scan1)`.
 
 ```{r QTL,warning=FALSE,error=FALSE, eval=FALSE}
-qtl = scan1(genoprobs = probs, pheno = pheno$prop.bm.MN.RET, kinship = K, addcovar = addcovar, snps = muga_snps)
+qtl = scan1(genoprobs = genoprobs, pheno = pheno$prop.bm.MN.RET, kinship = K, addcovar = addcovar)
 ```
 
 We can then plot the QTL scan.         
 
 ```{r qtl_plot,fig.width=8, fig.height=6, warning=FALSE,eval=FALSE}
-plot(qtl, main = "prop.bm.MN.RET")
+plot(qtl, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ```
 
 There is clearly a large peak on Chr 10. Next, we must assess its statistical significance. This is most commonly done via [permutation](http://www.genetics.org/content/178/1/609.long). We advise running at least 1,000 permutations to obtain significance thresholds. In the interest of time, we perform 100 permutations here.

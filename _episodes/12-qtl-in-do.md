@@ -29,6 +29,7 @@ The data for this tutorial has been saved as an R binary file that contains seve
 
 ~~~
 library(qtl2)
+library(qtl2convert)
 load(url("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata"))
 ~~~
 {: .r}
@@ -87,20 +88,22 @@ load(url("ftp://ftp.jax.org/MUGA/muga_snps.Rdata"))
 ~~~
 {: .r}
 
+Convert the genotype probabilities to qtl2 format. Convert the SNPs to a qtl2 map object.
+
+
+~~~
+genoprobs = probs_doqtl_to_qtl2(probs = probs, map = muga_snps, pos_column="pos")
+map = map_df_to_list(map = muga_snps, pos_column="pos")
+~~~
+{: .r}
+
 Next, we need to create a matrix that accounts for the kinship relationships between the mice. We do this by looking at the correlation between the founder haplotypes for each sample at each SNP. For each chromosome, we create a kinship matrix using all markers *except* the ones on the current chromosome. Simulations suggest that mapping using this approach increases the power to detect QTL.
            
 
 ~~~
-K = calc_kinship(probs, type = "loco", use_allele_probs = FALSE)
+K = calc_kinship(probs = genoprobs, type = "loco", use_allele_probs = TRUE)
 ~~~
 {: .r}
-
-
-
-~~~
-Error in kinship[[1]]: subscript out of bounds
-~~~
-{: .error}
 
 Kinship values between pairs of samples range between 0 (no relationship) and 1.0 (completely identical). Let's look at the kinship matrix.
 
@@ -109,29 +112,11 @@ Kinship values between pairs of samples range between 0 (no relationship) and 1.
 image(1:nrow(K[[1]]), 1:ncol(K[[1]]), K[[1]][,ncol(K[[1]]):1], xlab = "Samples", 
       ylab = "Samples", yaxt = "n", main = "Kinship between samples", 
       breaks = 0:100/100, col = heat.colors(length(0:100) - 1))
-~~~
-{: .r}
-
-
-
-~~~
-Error in nrow(K[[1]]): object 'K' not found
-~~~
-{: .error}
-
-
-
-~~~
 axis(side = 2, at = 20 * 0:7, labels = 20 * 7:0, las = 1)
 ~~~
 {: .r}
 
-
-
-~~~
-Error in axis(side = 2, at = 20 * 0:7, labels = 20 * 7:0, las = 1): plot.new has not been called yet
-~~~
-{: .error}
+<img src="../fig/rmd-12-kinship_probs-1.png" title="plot of chunk kinship_probs" alt="plot of chunk kinship_probs" style="display: block; margin: auto;" />
 
 The figure above shows kinship between all pairs of samples. White (= 1) indicates no kinship and red (= 0) indicates full kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
 
@@ -148,11 +133,11 @@ The code above copies the `rownames(pheno)` to `rownames(addcovar)`.
 
 **NOTE:** the sample IDs must be in the rownames of `addcovar`.
 
-In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the `scan1()` function. To see the arguments for `scan1`, you can type `help(scan1)`.
+In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the `scan1` function. To see the arguments for `scan1`, you can type `help(scan1)`.
 
 
 ~~~
-qtl = scan1(genoprobs = probs, pheno = pheno$prop.bm.MN.RET, kinship = K, addcovar = addcovar, snps = muga_snps)
+qtl = scan1(genoprobs = genoprobs, pheno = pheno$prop.bm.MN.RET, kinship = K, addcovar = addcovar)
 ~~~
 {: .r}
 
@@ -160,7 +145,7 @@ We can then plot the QTL scan.
 
 
 ~~~
-plot(qtl, main = "prop.bm.MN.RET")
+plot(qtl, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ~~~
 {: .r}
 
