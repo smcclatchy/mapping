@@ -152,16 +152,14 @@ summary(out.icovar, threshold=3, format="allpeaks")
 
 
 ~~~
-plot(out.acovar, out.icovar, chr=c(2,5), col=c("blue",
-"red"))
+plot(out.acovar, out.icovar, chr=c(2,5), col=c("blue", "red"))
 ~~~
 {: .r}
 
 <img src="../fig/rmd-05-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
 
 ~~~
-plot(out.acovar, out.icovar, chr=c(2,5), lodcolumn=2,
-col=c("blue", "red"))
+plot(out.acovar, out.icovar, chr=c(2,5), lodcolumn=2, col=c("blue", "red"))
 ~~~
 {: .r}
 
@@ -269,8 +267,7 @@ plot(out.acovar, out.icovar, chr=c(2,5), col=c("blue", "red"))
 <img src="../fig/rmd-05-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
 
 ~~~
-plot(out.acovar, out.icovar, chr=c(2,5), lodcolumn=2,
-col=c("blue", "red"))
+plot(out.acovar, out.icovar, chr=c(2,5), lodcolumn=2, col=c("blue", "red"))
 ~~~
 {: .r}
 
@@ -383,8 +380,8 @@ summary(operm.sexint, alpha=c(0.05, 0.20))
 ~~~
 LOD thresholds (100 permutations)
     pheno1 pheno2
-5%    1.66   1.45
-20%   1.01   1.05
+5%   1.321  1.754
+20%  0.915  0.885
 ~~~
 {: .output}
 
@@ -402,7 +399,7 @@ format="allpeaks", pvalues=TRUE)
 ~~~
    chr  pos pheno1 pval  pos pheno2 pval
 2    2 50.2 2.4754 0.00 45.0  4.007 0.00
-7    7 42.6 0.0322 0.90 42.6  1.913 0.01
-17  17  9.9 1.7762 0.04  9.9  0.776 0.28
+7    7 42.6 0.0322 0.96 42.6  1.913 0.04
+17  17  9.9 1.7762 0.00  9.9  0.776 0.27
 ~~~
 {: .output}

@@ -63,10 +63,8 @@ The LOD score in the output is for the comparison of the full model with terms f
 
 ```{r}
 summary(out.icovar, threshold=3, format="allpeaks")
-plot(out.acovar, out.icovar, chr=c(2,5), col=c("blue",
-"red"))
-plot(out.acovar, out.icovar, chr=c(2,5), lodcolumn=2,
-col=c("blue", "red"))
+plot(out.acovar, out.icovar, chr=c(2,5), col=c("blue", "red"))
+plot(out.acovar, out.icovar, chr=c(2,5), lodcolumn=2, col=c("blue", "red"))
 ```
 
 The difference between the LOD score with sex as an interactive covariate and the LOD score with sex as an additive covariate concerns the test of the QTL
@@ -103,8 +101,7 @@ The LOD score in the output is for the comparison of the full model with terms f
 ```{r}
 summary(out.icovar, threshold=3, format="allpeaks")
 plot(out.acovar, out.icovar, chr=c(2,5), col=c("blue", "red"))
-plot(out.acovar, out.icovar, chr=c(2,5), lodcolumn=2,
-col=c("blue", "red"))
+plot(out.acovar, out.icovar, chr=c(2,5), lodcolumn=2, col=c("blue", "red"))
 ```
 
 The difference between the LOD score with sex as an interactive covariate and the LOD score with sex as an additive covariate concerns the test of the QTL ×

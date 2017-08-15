@@ -18,18 +18,18 @@ source("../bin/chunk-options.R")
 knitr_fig_path("03-")
 ```
 
-For the blood pressure phenotype, we’ve seen good evidence for QTL on chromosomes 7 and 15. Interval estimates of the location of QTL are commonly obtained via 1.5-LOD support intervals, which may be calculated via the function `lodint`. Alternatively, an approximate Bayes credible interval may be obtained with `bayesint`.
+For the blood pressure phenotype, we’ve seen good evidence for QTL on chromosomes 1 and 4. Interval estimates of the location of QTL are commonly obtained via 1.5-LOD support intervals, which may be calculated via the function `lodint`. Alternatively, an approximate Bayes credible interval may be obtained with `bayesint`.
 
 ```{r message=FALSE, echo=FALSE}
 hyper <- calc.genoprob(hyper, step=1, error.prob=0.01)
 out.hk <- scanone(hyper, method="hk")
 ```
 
-To obtain the 1.5-LOD support interval and 95% Bayes interval for the QTL on chromosome 7, type:
+To obtain the 1.5-LOD support interval and 95% Bayes interval for the QTL on chromosome 4, type:
 
 ```{r}
-lodint(out.hk, chr=7)
-bayesint(out.hk, chr=7)
+lodint(out.hk, chr=4)
+bayesint(out.hk, chr=4)
 ```
 
 The first and last rows define the ends of the intervals; the middle row is the estimated QTL location.
@@ -37,20 +37,20 @@ The first and last rows define the ends of the intervals; the middle row is the 
 It is sometimes useful to identify the closest flanking markers; use `expandtomarkers=TRUE`:
 
 ```{r}
-lodint(out.hk, chr=7, expandtomarkers=TRUE)
-bayesint(out.hk, chr=7, expandtomarkers=TRUE)
+lodint(out.hk, chr=4, expandtomarkers=TRUE)
+bayesint(out.hk, chr=4, expandtomarkers=TRUE)
 ```
 
 We can calculate the 2-LOD support interval and the 99% Bayes interval as follows.
 
 ```{r}
-lodint(out.hk, chr=7, drop=2)
-bayesint(out.hk, chr=7, prob=0.99)
+lodint(out.hk, chr=4, drop=2)
+bayesint(out.hk, chr=4, prob=0.99)
 ```
 
-The intervals for the chr 15 locus may be calculated as follows.
+The intervals for the chr 1 locus may be calculated as follows.
 
 ```{r}
-lodint(out.hk, chr=15)
-bayesint(out.hk, chr=15)
+lodint(out.hk, chr=1)
+bayesint(out.hk, chr=1)
 ```

@@ -38,7 +38,7 @@ D4Mit164   4 29.5 8.09
 
 
 ~~~
-mar <- find.marker(hyper, chr=7, pos=47.7)
+mar <- find.marker(hyper, chr=4, pos=29.5)
 plotPXG(hyper, marker=mar)
 ~~~
 {: .r}
@@ -64,43 +64,43 @@ Warning in effectplot(hyper, mname1 = mar): -Running sim.geno.
 
 <img src="../fig/rmd-04-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
 
-We may use `effectplot` at a position on the “grid” between markers, using "7@47.7" to indicate the position at 47.7 cM on chr 7.
+We may use `effectplot` at a position on the “grid” between markers, using "4@29.5" to indicate the position at 29.5 cM on chr 4.
 
 
 ~~~
-effectplot(hyper, mname1="7@47.7")
+effectplot(hyper, mname1="4@29.5")
 ~~~
 {: .r}
 
 
 
 ~~~
-Warning in effectplot(hyper, mname1 = "7@47.7"): -Running sim.geno.
+Warning in effectplot(hyper, mname1 = "4@29.5"): -Running sim.geno.
 ~~~
 {: .error}
 
 <img src="../fig/rmd-04-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
 
-Similar plots may be obtained for the locus on chr 15.
+Similar plots may be obtained for the locus on chr 1.
 
 
 ~~~
-max(out.hk, chr=15)
+max(out.hk, chr=1)
 ~~~
 {: .r}
 
 
 
 ~~~
-          chr  pos  lod
-c15.loc13  15 18.5 1.75
+         chr  pos  lod
+c1.loc45   1 48.3 3.55
 ~~~
 {: .output}
 
 
 
 ~~~
-mar2 <- find.marker(hyper, chr=15, pos=12)
+mar2 <- find.marker(hyper, chr=1, pos=48.3)
 plotPXG(hyper, marker=mar2)
 ~~~
 {: .r}
@@ -108,14 +108,14 @@ plotPXG(hyper, marker=mar2)
 <img src="../fig/rmd-04-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" />
 
 ~~~
-effectplot(hyper, mname1="15@12")
+effectplot(hyper, mname1="1@48.3")
 ~~~
 {: .r}
 
 
 
 ~~~
-Warning in effectplot(hyper, mname1 = "15@12"): -Running sim.geno.
+Warning in effectplot(hyper, mname1 = "1@48.3"): -Running sim.geno.
 ~~~
 {: .error}
 
@@ -143,30 +143,30 @@ The function `effectplot` gives more readable figures in this case; it’s often
 
 
 ~~~
-effectplot(hyper, mname1="7@47.7", mname2="15@12")
+effectplot(hyper, mname1="4@29.5", mname2="1@48.3")
 ~~~
 {: .r}
 
 
 
 ~~~
-Warning in effectplot(hyper, mname1 = "7@47.7", mname2 = "15@12"): -Running
-sim.geno.
+Warning in effectplot(hyper, mname1 = "4@29.5", mname2 = "1@48.3"): -
+Running sim.geno.
 ~~~
 {: .error}
 
 <img src="../fig/rmd-04-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
 
 ~~~
-effectplot(hyper, mname2="7@47.7", mname1="15@12")
+effectplot(hyper, mname2="4@29.5", mname1="1@48.3")
 ~~~
 {: .r}
 
 
 
 ~~~
-Warning in effectplot(hyper, mname2 = "7@47.7", mname1 = "15@12"): -Running
-sim.geno.
+Warning in effectplot(hyper, mname2 = "4@29.5", mname1 = "1@48.3"): -
+Running sim.geno.
 ~~~
 {: .error}
 

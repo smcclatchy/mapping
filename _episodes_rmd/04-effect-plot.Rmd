@@ -29,7 +29,7 @@ We may obtain plots indicating the estimated effects of the QTL via `plotPXG`, w
 
 ```{r}
 max(out.hk)
-mar <- find.marker(hyper, chr=7, pos=47.7)
+mar <- find.marker(hyper, chr=4, pos=29.5)
 plotPXG(hyper, marker=mar)
 ```
 
@@ -41,19 +41,19 @@ The function `effectplot` uses the multiple imputation results from `sim.geno`.
 effectplot(hyper, mname1=mar)
 ```
 
-We may use `effectplot` at a position on the “grid” between markers, using "7@47.7" to indicate the position at 47.7 cM on chr 7.
+We may use `effectplot` at a position on the “grid” between markers, using "4@29.5" to indicate the position at 29.5 cM on chr 4.
 
 ```{r}
-effectplot(hyper, mname1="7@47.7")
+effectplot(hyper, mname1="4@29.5")
 ```
 
-Similar plots may be obtained for the locus on chr 15.
+Similar plots may be obtained for the locus on chr 1.
 
 ```{r}
-max(out.hk, chr=15)
-mar2 <- find.marker(hyper, chr=15, pos=12)
+max(out.hk, chr=1)
+mar2 <- find.marker(hyper, chr=1, pos=48.3)
 plotPXG(hyper, marker=mar2)
-effectplot(hyper, mname1="15@12")
+effectplot(hyper, mname1="1@48.3")
 ```
 
 We may plot the joint effects of the two loci via
@@ -67,8 +67,8 @@ plotPXG(hyper, marker=c(mar2, mar))
 The function `effectplot` gives more readable figures in this case; it’s often useful to look at it in both ways.
 
 ```{r}
-effectplot(hyper, mname1="7@47.7", mname2="15@12")
-effectplot(hyper, mname2="7@47.7", mname1="15@12")
+effectplot(hyper, mname1="4@29.5", mname2="1@48.3")
+effectplot(hyper, mname2="4@29.5", mname1="1@48.3")
 ```
 
 The two loci do not appear to interact.
