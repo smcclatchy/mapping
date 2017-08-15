@@ -1,0 +1,70 @@
+---
+title: "Covariates in QTL Scans"
+teaching: 0
+exercises: 0
+questions:
+- "?"
+objectives:
+- 
+- 
+keypoints:
+- "."
+- "."
+source: Rmd
+---
+
+```{r, include=FALSE}
+source("../bin/chunk-options.R")
+knitr_fig_path("04-")
+```
+
+
+We may obtain plots indicating the estimated effects of the QTL via `plotPXG`, which creates a dot plot, or
+`effectplot`, which plots the average phenotype for each genotype group.For `plotPXG`, we must first identify the marker closest to the QTL peak. Use
+`find.marker`.
+
+```{r}
+max(out.hk)
+mar <- find.marker(, chr=7, pos=47.7)
+plotPXG(hyper, marker=mar)
+```
+
+Note that red dots correspond to inferred genotypes (based on a single imputation).
+
+The function `effectplot` uses the multiple imputation results from `sim.geno`.
+
+```{r}
+effectplot(hyper, mname1=mar)
+```
+
+We may use `effectplot` at a position on the “grid” between markers, using "7@47.7" to indicate the position at 47.7 cM on chr 7.
+
+```{r}
+effectplot(hyper, mname1="7@47.7")
+```
+
+Similar plots may be obtained for the locus on chr 15.
+
+```{r}
+max(out.hk, chr=15)
+mar2 <- find.marker(hyper, chr=15, pos=12)
+plotPXG(hyper, marker=mar2)
+effectplot(hyper, mname1="15@12")
+```
+
+We may plot the joint effects of the two loci via
+`plotPXG` as follows:
+
+```{r}
+plotPXG(hyper, marker=c(mar, mar2))
+plotPXG(hyper, marker=c(mar2, mar))
+```
+
+The function `effectplot` gives more readable figures in this case; it’s often useful to look at it in both ways.
+
+```{r}
+effectplot(hyper, mname1="7@47.7", mname2="15@12")
+effectplot(hyper, mname2="7@47.7", mname1="15@12")
+```
+
+The two loci do not appear to interact.
