@@ -1,5 +1,5 @@
 ---
-title: "QTL Effects"
+title: "QTL effects"
 teaching: 0
 exercises: 0
 questions:
@@ -18,6 +18,10 @@ source("../bin/chunk-options.R")
 knitr_fig_path("04-")
 ```
 
+```{r message=FALSE, echo=FALSE}
+hyper <- calc.genoprob(hyper, step=1, error.prob=0.01)
+out.hk <- scanone(hyper, method="hk")
+```
 
 We may obtain plots indicating the estimated effects of the QTL via `plotPXG`, which creates a dot plot, or
 `effectplot`, which plots the average phenotype for each genotype group.For `plotPXG`, we must first identify the marker closest to the QTL peak. Use
@@ -25,7 +29,7 @@ We may obtain plots indicating the estimated effects of the QTL via `plotPXG`, w
 
 ```{r}
 max(out.hk)
-mar <- find.marker(, chr=7, pos=47.7)
+mar <- find.marker(hyper, chr=7, pos=47.7)
 plotPXG(hyper, marker=mar)
 ```
 

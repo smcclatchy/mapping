@@ -90,7 +90,7 @@ plotPheno(hyper, pheno.col = 2)
 We now, finally, get to QTL mapping.The core of R/qtl is a set of functions which make use hidden Markov models to calculate QTL genotype probabilities, to simulate from the joint genotype distribution and to calculate the most likely sequence of underlying genotypes (all conditional on the observed mark
 er data). This is done in a quite general way, with possible allowance for the presence of genotyping errors. Of course, for convenience we assume no crossover interference.
 
-The function `calc.genoprob` calculates QTL genotype probabilities, conditional on the`available marker data. These`are needed for most of the QTL mapping functions. The argument `step` indicates the step size (in cM) at which the probabilities are calculated, and determines the step size at which later LOD scores are calculated.
+The function `calc.genoprob` calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. The argument `step` indicates the step size (in cM) at which the probabilities are calculated, and determines the step size at which later LOD scores are calculated.
 
 ```{r}
 hyper <- calc.genoprob(hyper, step=1, error.prob=0.01)
@@ -149,7 +149,7 @@ summary(out.hk, perms=operm.hk, alpha=0.05, pvalues=TRUE)
 
 The function `scantwo` performs a two-dimensional genome scan with a two-QTL model. For every pair of positions, it calculates a LOD score for the full model (two QTL plus interaction) and a LOD score for the additive model (two QTL but no interaction). This can be quite time consuming, and so you may wish to do the calculations on a coarser grid.
 
-```{r}
+```{r, results='hide'}
 hyper <- calc.genoprob(hyper, step=5, error.prob=0.01)
 out2.hk <- scantwo(hyper, method="hk")
 ```
