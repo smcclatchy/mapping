@@ -1,5 +1,5 @@
 ---
-title: "QTL Effects"
+title: "QTL effects"
 teaching: 0
 exercises: 0
 questions:
@@ -12,6 +12,7 @@ keypoints:
 - "."
 source: Rmd
 ---
+
 
 
 
@@ -29,37 +30,20 @@ max(out.hk)
 
 
 ~~~
-Error in eval(expr, envir, enclos): object 'out.hk' not found
+         chr  pos  lod
+D4Mit164   4 29.5 8.09
 ~~~
-{: .error}
-
-
-
-~~~
-mar <- find.marker(, chr=7, pos=47.7)
-~~~
-{: .r}
+{: .output}
 
 
 
 ~~~
-Error in find.marker(, chr = 7, pos = 47.7): argument "cross" is missing, with no default
-~~~
-{: .error}
-
-
-
-~~~
+mar <- find.marker(hyper, chr=7, pos=47.7)
 plotPXG(hyper, marker=mar)
 ~~~
 {: .r}
 
-
-
-~~~
-Error in b %in% colnames(a$data): object 'mar' not found
-~~~
-{: .error}
+<img src="../fig/rmd-04-unnamed-chunk-3-1.png" title="plot of chunk unnamed-chunk-3" alt="plot of chunk unnamed-chunk-3" style="display: block; margin: auto;" />
 
 Note that red dots correspond to inferred genotypes (based on a single imputation).
 
@@ -78,12 +62,7 @@ Warning in effectplot(hyper, mname1 = mar): -Running sim.geno.
 ~~~
 {: .error}
 
-
-
-~~~
-Error in grep(pmalt.pattern, mname): object 'mar' not found
-~~~
-{: .error}
+<img src="../fig/rmd-04-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
 
 We may use `effectplot` at a position on the “grid” between markers, using "7@47.7" to indicate the position at 47.7 cM on chr 7.
 
@@ -100,7 +79,7 @@ Warning in effectplot(hyper, mname1 = "7@47.7"): -Running sim.geno.
 ~~~
 {: .error}
 
-<img src="../fig/rmd-04-unnamed-chunk-4-1.png" title="plot of chunk unnamed-chunk-4" alt="plot of chunk unnamed-chunk-4" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
 
 Similar plots may be obtained for the locus on chr 15.
 
@@ -113,9 +92,10 @@ max(out.hk, chr=15)
 
 
 ~~~
-Error in eval(expr, envir, enclos): object 'out.hk' not found
+          chr  pos  lod
+c15.loc13  15 18.5 1.75
 ~~~
-{: .error}
+{: .output}
 
 
 
@@ -125,7 +105,7 @@ plotPXG(hyper, marker=mar2)
 ~~~
 {: .r}
 
-<img src="../fig/rmd-04-unnamed-chunk-5-1.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-6-1.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" />
 
 ~~~
 effectplot(hyper, mname1="15@12")
@@ -139,7 +119,7 @@ Warning in effectplot(hyper, mname1 = "15@12"): -Running sim.geno.
 ~~~
 {: .error}
 
-<img src="../fig/rmd-04-unnamed-chunk-5-2.png" title="plot of chunk unnamed-chunk-5" alt="plot of chunk unnamed-chunk-5" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-6-2.png" title="plot of chunk unnamed-chunk-6" alt="plot of chunk unnamed-chunk-6" style="display: block; margin: auto;" />
 
 We may plot the joint effects of the two loci via
 `plotPXG` as follows:
@@ -150,26 +130,14 @@ plotPXG(hyper, marker=c(mar, mar2))
 ~~~
 {: .r}
 
-
-
-~~~
-Error in b %in% colnames(a$data): object 'mar' not found
-~~~
-{: .error}
-
-
+<img src="../fig/rmd-04-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
 
 ~~~
 plotPXG(hyper, marker=c(mar2, mar))
 ~~~
 {: .r}
 
-
-
-~~~
-Error in b %in% colnames(a$data): object 'mar' not found
-~~~
-{: .error}
+<img src="../fig/rmd-04-unnamed-chunk-7-2.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
 
 The function `effectplot` gives more readable figures in this case; it’s often useful to look at it in both ways.
 
@@ -187,7 +155,7 @@ sim.geno.
 ~~~
 {: .error}
 
-<img src="../fig/rmd-04-unnamed-chunk-7-1.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-8-1.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
 
 ~~~
 effectplot(hyper, mname2="7@47.7", mname1="15@12")
@@ -202,6 +170,6 @@ sim.geno.
 ~~~
 {: .error}
 
-<img src="../fig/rmd-04-unnamed-chunk-7-2.png" title="plot of chunk unnamed-chunk-7" alt="plot of chunk unnamed-chunk-7" style="display: block; margin: auto;" />
+<img src="../fig/rmd-04-unnamed-chunk-8-2.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
 
 The two loci do not appear to interact.

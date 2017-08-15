@@ -217,7 +217,7 @@ plotPheno(hyper, pheno.col = 2)
 We now, finally, get to QTL mapping.The core of R/qtl is a set of functions which make use hidden Markov models to calculate QTL genotype probabilities, to simulate from the joint genotype distribution and to calculate the most likely sequence of underlying genotypes (all conditional on the observed mark
 er data). This is done in a quite general way, with possible allowance for the presence of genotyping errors. Of course, for convenience we assume no crossover interference.
 
-The function `calc.genoprob` calculates QTL genotype probabilities, conditional on the`available marker data. These`are needed for most of the QTL mapping functions. The argument `step` indicates the step size (in cM) at which the probabilities are calculated, and determines the step size at which later LOD scores are calculated.
+The function `calc.genoprob` calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. The argument `step` indicates the step size (in cM) at which the probabilities are calculated, and determines the step size at which later LOD scores are calculated.
 
 
 ~~~
@@ -387,7 +387,7 @@ summary(operm.hk, alpha=0.05)
 ~~~
 LOD thresholds (1000 permutations)
     lod
-5% 2.67
+5% 2.73
 ~~~
 {: .output}
 
@@ -403,7 +403,7 @@ summary(out.hk, perms=operm.hk, alpha=0.05, pvalues=TRUE)
 
 ~~~
          chr  pos  lod  pval
-c1.loc45   1 48.3 3.55 0.006
+c1.loc45   1 48.3 3.55 0.008
 D4Mit164   4 29.5 8.09 0.000
 ~~~
 {: .output}
@@ -416,224 +416,6 @@ hyper <- calc.genoprob(hyper, step=5, error.prob=0.01)
 out2.hk <- scantwo(hyper, method="hk")
 ~~~
 {: .r}
-
-
-
-~~~
- --Running scanone
- --Running scantwo
- (1,1)
- (1,2)
- (1,3)
- (1,4)
- (1,5)
- (1,6)
- (1,7)
- (1,8)
- (1,9)
- (1,10)
- (1,11)
- (1,12)
- (1,13)
- (1,14)
- (1,15)
- (1,16)
- (1,17)
- (1,18)
- (1,19)
- (1,X)
- (2,2)
- (2,3)
- (2,4)
- (2,5)
- (2,6)
- (2,7)
- (2,8)
- (2,9)
- (2,10)
- (2,11)
- (2,12)
- (2,13)
- (2,14)
- (2,15)
- (2,16)
- (2,17)
- (2,18)
- (2,19)
- (2,X)
- (3,3)
- (3,4)
- (3,5)
- (3,6)
- (3,7)
- (3,8)
- (3,9)
- (3,10)
- (3,11)
- (3,12)
- (3,13)
- (3,14)
- (3,15)
- (3,16)
- (3,17)
- (3,18)
- (3,19)
- (3,X)
- (4,4)
- (4,5)
- (4,6)
- (4,7)
- (4,8)
- (4,9)
- (4,10)
- (4,11)
- (4,12)
- (4,13)
- (4,14)
- (4,15)
- (4,16)
- (4,17)
- (4,18)
- (4,19)
- (4,X)
- (5,5)
- (5,6)
- (5,7)
- (5,8)
- (5,9)
- (5,10)
- (5,11)
- (5,12)
- (5,13)
- (5,14)
- (5,15)
- (5,16)
- (5,17)
- (5,18)
- (5,19)
- (5,X)
- (6,6)
- (6,7)
- (6,8)
- (6,9)
- (6,10)
- (6,11)
- (6,12)
- (6,13)
- (6,14)
- (6,15)
- (6,16)
- (6,17)
- (6,18)
- (6,19)
- (6,X)
- (7,7)
- (7,8)
- (7,9)
- (7,10)
- (7,11)
- (7,12)
- (7,13)
- (7,14)
- (7,15)
- (7,16)
- (7,17)
- (7,18)
- (7,19)
- (7,X)
- (8,8)
- (8,9)
- (8,10)
- (8,11)
- (8,12)
- (8,13)
- (8,14)
- (8,15)
- (8,16)
- (8,17)
- (8,18)
- (8,19)
- (8,X)
- (9,9)
- (9,10)
- (9,11)
- (9,12)
- (9,13)
- (9,14)
- (9,15)
- (9,16)
- (9,17)
- (9,18)
- (9,19)
- (9,X)
- (10,10)
- (10,11)
- (10,12)
- (10,13)
- (10,14)
- (10,15)
- (10,16)
- (10,17)
- (10,18)
- (10,19)
- (10,X)
- (11,11)
- (11,12)
- (11,13)
- (11,14)
- (11,15)
- (11,16)
- (11,17)
- (11,18)
- (11,19)
- (11,X)
- (12,12)
- (12,13)
- (12,14)
- (12,15)
- (12,16)
- (12,17)
- (12,18)
- (12,19)
- (12,X)
- (13,13)
- (13,14)
- (13,15)
- (13,16)
- (13,17)
- (13,18)
- (13,19)
- (13,X)
- (14,14)
- (14,15)
- (14,16)
- (14,17)
- (14,18)
- (14,19)
- (14,X)
- (15,15)
- (15,16)
- (15,17)
- (15,18)
- (15,19)
- (15,X)
- (16,16)
- (16,17)
- (16,18)
- (16,19)
- (16,X)
- (17,17)
- (17,18)
- (17,19)
- (17,X)
- (18,18)
- (18,19)
- (18,X)
- (19,19)
- (19,X)
- (X,X)
-~~~
-{: .output}
 
 One can also use method="em" or method="imp", but they are even more time consuming.
 
@@ -765,8 +547,8 @@ summary(operm2.hk)
 ~~~
 bp (100 permutations)
     full  fv1  int  add  av1  one
-5%  5.78 4.59 4.22 3.99 2.07 2.37
-10% 5.13 4.21 3.88 3.80 1.94 2.16
+5%  5.22 4.53 4.22 4.14 2.30 2.41
+10% 4.92 3.86 3.61 3.77 1.99 2.15
 ~~~
 {: .output}
 
@@ -784,27 +566,21 @@ alphas=c(0.05, 0.05, 0, 0.05, 0.05))
 
 ~~~
         pos1f pos2f lod.full pval lod.fv1 pval lod.int pval     pos1a
-c1 :c2   78.3  52.7     5.77 0.06    2.22 0.95  0.0383 1.00      78.3
-c1 :c4   68.3  30.0    14.13 0.00    6.51 0.00  0.2255 1.00      68.3
-c1 :c19  48.3   0.0     5.75 0.06    2.21 0.95  0.0327 1.00      48.3
-c2 :c2   72.7  77.7     4.63 0.23    3.05 0.63  0.2898 1.00      72.7
-c2 :c19  47.7   0.0     6.71 0.00    5.01 0.03  3.4580 0.21      52.7
-c3 :c3   37.2  42.2     6.10 0.01    5.08 0.03  0.2258 1.00      37.2
-c6 :c15  60.0  20.5     7.17 0.00    5.22 0.02  3.2372 0.32      25.0
-c9 :c18  67.0  37.2     6.31 0.00    4.79 0.04  4.0826 0.08      67.0
-c9 :cX   47.0  41.1     4.66 0.23    2.48 0.90  0.2701 1.00      67.0
-c12:c19   1.1  40.0     6.48 0.00    4.79 0.04  4.0903 0.08       1.1
+c1 :c4   68.3  30.0    14.13 0.00    6.51 0.00   0.225 1.00      68.3
+c2 :c2   72.7  77.7     4.63 0.18    3.05 0.60   0.290 1.00      72.7
+c2 :c19  47.7   0.0     6.71 0.00    5.01 0.02   3.458 0.22      52.7
+c3 :c3   37.2  42.2     6.10 0.01    5.08 0.02   0.226 1.00      37.2
+c6 :c15  60.0  20.5     7.17 0.00    5.22 0.01   3.237 0.29      25.0
+c9 :c18  67.0  37.2     6.31 0.00    4.79 0.02   4.083 0.06      67.0
+c12:c19   1.1  40.0     6.48 0.00    4.79 0.02   4.090 0.06       1.1
         pos2a lod.add pval lod.av1 pval
-c1 :c2   52.7    5.73 0.00   2.184 0.00
 c1 :c4   30.0   13.90 0.00   6.288 0.00
-c1 :c19   0.0    5.72 0.00   2.174 0.00
-c2 :c2   77.7    4.34 0.01   2.758 0.00
-c2 :c19   0.0    3.25 0.22   1.552 0.42
+c2 :c2   77.7    4.34 0.04   2.758 0.01
+c2 :c19   0.0    3.25 0.22   1.552 0.37
 c3 :c3   42.2    5.87 0.00   4.853 0.00
-c6 :c15  20.5    3.93 0.06   1.984 0.07
-c9 :c18  12.2    2.23 0.81   0.708 1.00
-c9 :cX   41.1    4.39 0.01   2.210 0.00
-c12:c19   0.0    2.39 0.69   0.697 1.00
+c6 :c15  20.5    3.93 0.06   1.984 0.11
+c9 :c18  12.2    2.23 0.85   0.708 1.00
+c12:c19   0.0    2.39 0.76   0.697 1.00
 ~~~
 {: .output}
 
