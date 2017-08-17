@@ -115,50 +115,56 @@ In order to map the proportion of bone marrow reticulocytes that were micro-nucl
 qtl = scan1(genoprobs = genoprobs, pheno = pheno[,"prop.bm.MN.RET", drop = FALSE], kinship = K, addcovar = addcovar)
 ```
 
-We can then plot the QTL scan.         
+We can then plot the QTL scan. Note that you must provide the marker map.
 
 ```{r qtl_plot,fig.width=8, fig.height=6, warning=FALSE,eval=FALSE}
-plot(qtl, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+plot(qtl, map, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ```
 
 There is clearly a large peak on Chr 10. Next, we must assess its statistical significance. This is most commonly done via [permutation](http://www.genetics.org/content/178/1/609.long). We advise running at least 1,000 permutations to obtain significance thresholds. In the interest of time, we perform 100 permutations here.
 
 ```{r perms,message=FALSE,results='hide', warning=FALSE, eval=FALSE}
-perms = scan1perm(genoprobs = probs, pheno = pheno$prop.bm.MN.RET, kinship = K, addcovar = addcovar, n_perm = 100, snps = muga_snps)
+perms = scan1perm(genoprobs = genoprobs, pheno = pheno[,"prop.bm.MN.RET", drop = FALSE], kinship = K, addcovar = addcovar, n_perm = 100)
 ```
 
 We can now add thresholds to the previous QTL plot. We use significance thresholds at the p < 0.05, 0.10 and 0.63 levels.
            
 ```{r qtl_plot_thr,fig.width=8, fig.height=6, warning=FALSE, eval=FALSE}
-thr = get.sig.thr(perms[,,1], alpha = c(0.05, 0.1, 0.63), Xchr = FALSE)
-plot(qtl, sig.thr = thr, sig.col = c("red", "orange", "goldenrod"), main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+plot(qtl, map,  main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+thr = quantile(perms, 0.95)
+abline(h = thr, col = "red", lwd = 2)
 ```
 
 The peak on Chr 10 is clearly well above the red p < 0.05 significance line.
 
-We will now zoom in on Chr 10 and look at the contribution of each of the eight founder alleles to the proportion of bone marrow reticulocytes that were micro-nucleated. The mapping model fits a term for each of the eight DO founders. We can plot these coefficients across Chr 10.
+We can find all of the peaks above the significance threshold using the `find_peaks` function.
 
-```{r coef_plot,fig.width=8, fig.height=6, eval=FALSE}
-plot_coefCC(qtl, chr = 10, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+```{r find_peaks}
+find_peaks(qtl, map, threshold = thr)
 ```
 
-The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele around 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective allele. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. The support interval is determined using the [Bayesian Credible Interval](http://www.ncbi.nlm.nih.gov/pubmed/11560912) and represents the region most likely to contain the causative polymorphism(s). We can obtain this interval using the `bayesint` function.
+The support interval is determined using the [Bayesian Credible Interval](http://www.ncbi.nlm.nih.gov/pubmed/11560912) and represents the region most likely to contain the causative polymorphism(s). We can obtain this interval using the `bayesint` function.  We can determine the support interval for the QTL peak using the `bayes_int` function.
 
 ```{r interval,eval=FALSE}
-interval = bayes_int(qtl, chr = 10)
-knitr::kable(interval)
+bayes_int(qtl, map, chr = 10)
 ```
 
-From the table above (column 3), you can see that the support interval is 6 Mb wide (29.7 to 35.7 Mb). Line 1 shows the proximal end of the peak and line 3 shows the distal end. The maximum LOD score and its location are in line 2 of the table.
+From the output above, you can see that the support interval is 5.5 Mb wide (30.16649 to 35.49352 Mb). The location of the maximum LOD score is 34.17711 Mb.
 
-Next, let's look at the distribution of prop.bm.MN.RET across the 36 possible DO genotypes at the maximum peak location. This can be obtained from the second row of the first column of the interval table (interval[2,1]).
+We will now zoom in on Chr 10 and look at the contribution of each of the eight founder alleles to the proportion of bone marrow reticulocytes that were micro-nucleated. The mapping model fits a term for each of the eight DO founders. We can plot these coefficients across Chr 10.
 
-```{r effect_plot,fig.width=8, fig.height=6, eval=FALSE}
-pxg.plot(pheno = pheno, pheno.col = "prop.bm.MN.RET", probs = probs, 
-         snp.id = interval[2,1], snps = muga_snps)
+```{r coef}
+chr = 10
+coef10 = scan1coef(genoprobs = genoprobs[,chr], pheno = pheno[,"prop.bm.MN.RET", drop = FALSE], kinship = K[[chr]], addcovar = addcovar)
 ```
 
-This plot shows the phenotype value on the Y-axis plotted against the 36 DO genotypes on the X-axis, Note that several genotypes did not occur in this set of 143 samples. Next note that all of the samples with at least one CAST allele (denoted by **F**) have low values. This suggests that the mode of inheritance may be dominant. This is the effect that is driving the QTL.
+This produces an object containing estimates of each of the eight DO founder allele effect. 
+
+```{r coef_plot,fig.width=8, fig.height=6, eval=FALSE}
+plot_coefCC(coef10, map, scan1_output = qtl, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+```
+
+The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele near 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective allele. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. 
 
 ### Genome-wide Association Mapping
 
