@@ -144,7 +144,15 @@ summary(operm.hk, alpha=0.05)
 In addition, if the permutations results are included in a call to `summary.scanone`, you can estimate genome-scan-adjusted p-values for inferred QTL, and can get a report of all chromosomes meeting a certain significance level, with the corresponding LOD threshold calculated automatically.
 
 ```{r}
-summary(out.hk, perms=operm.hk, alpha=0.05, pvalues=TRUE)
+summary(out.hk, perms=operm.hk, alpha=c(0.05, pvalues=TRUE)
+```
+
+We can also add the significance threshold to a genome scan.
+
+```{r}
+plot(out.em, chr=c(1,4,15))
+add.threshold(out.em, chr=c(1,4,15), operm.hk, alpha = 0.05, col = "red", lwd = 2)
+add.threshold(out.em, chr=c(1,4,15), operm.hk, alpha = 0.1, col = "blue", lwd = 2)
 ```
 
 The function `scantwo` performs a two-dimensional genome scan with a two-QTL model. For every pair of positions, it calculates a LOD score for the full model (two QTL plus interaction) and a LOD score for the additive model (two QTL but no interaction). This can be quite time consuming, and so you may wish to do the calculations on a coarser grid.
