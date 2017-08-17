@@ -8,7 +8,10 @@ permalink: /setup/
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
 it can be installed from a mini-CRAN at [rqtl.org](http://rqtl.org).
 
+~~~
 install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
+~~~
+{: .r}
 
 The [qtl2](https://github.com/rqtl/qtl2) package is
 inspired by the
@@ -38,12 +41,18 @@ package dependencies: [yaml](https://cran.r-project.org/package=yaml),
 and [RcppEigen](https://github.com/RcppCore/RcppEigen).
 (Additional, secondary dependencies will also be installed.)
 
+~~~
 install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen"))
+~~~
+{: .r}
 
 Finally, install R/qtl2 using `devtools::install_github()`.
 
+~~~
 library(devtools)
 install_github("rqtl/qtl2")
+~~~
+{: .r}
 
 
 ## Data file format
