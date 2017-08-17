@@ -386,8 +386,8 @@ summary(operm.hk, alpha=0.05)
 
 ~~~
 LOD thresholds (1000 permutations)
-   lod
-5% 2.7
+    lod
+5% 2.63
 ~~~
 {: .output}
 
@@ -395,18 +395,30 @@ In addition, if the permutations results are included in a call to `summary.scan
 
 
 ~~~
-summary(out.hk, perms=operm.hk, alpha=0.05, pvalues=TRUE)
+summary(out.hk, perms=operm.hk, alpha=c(0.05, pvalues=TRUE)
 ~~~
 {: .r}
 
 
 
 ~~~
-         chr  pos  lod  pval
-c1.loc45   1 48.3 3.55 0.007
-D4Mit164   4 29.5 8.09 0.000
+Error: <text>:2:0: unexpected end of input
+1: summary(out.hk, perms=operm.hk, alpha=c(0.05, pvalues=TRUE)
+   ^
 ~~~
-{: .output}
+{: .error}
+
+We can also add the significance threshold to a genome scan.
+
+
+~~~
+plot(out.em, chr=c(1,4,15))
+add.threshold(out.em, chr=c(1,4,15), operm.hk, alpha = 0.05, col = "red", lwd = 2)
+add.threshold(out.em, chr=c(1,4,15), operm.hk, alpha = 0.1, col = "blue", lwd = 2)
+~~~
+{: .r}
+
+<img src="../fig/rmd-02-unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" style="display: block; margin: auto;" />
 
 The function `scantwo` performs a two-dimensional genome scan with a two-QTL model. For every pair of positions, it calculates a LOD score for the full model (two QTL plus interaction) and a LOD score for the additive model (two QTL but no interaction). This can be quite time consuming, and so you may wish to do the calculations on a coarser grid.
 
@@ -492,14 +504,14 @@ plot(out2.hk)
 ~~~
 {: .r}
 
-<img src="../fig/rmd-02-unnamed-chunk-22-1.png" title="plot of chunk unnamed-chunk-22" alt="plot of chunk unnamed-chunk-22" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-23-1.png" title="plot of chunk unnamed-chunk-23" alt="plot of chunk unnamed-chunk-23" style="display: block; margin: auto;" />
 
 ~~~
 plot(out2.hk, chr=c(1,4,6,15))
 ~~~
 {: .r}
 
-<img src="../fig/rmd-02-unnamed-chunk-22-2.png" title="plot of chunk unnamed-chunk-22" alt="plot of chunk unnamed-chunk-22" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-23-2.png" title="plot of chunk unnamed-chunk-23" alt="plot of chunk unnamed-chunk-23" style="display: block; margin: auto;" />
 
 By default, the upper-left triangle contains epistasis LOD scores and the lower-right triangle contains the LOD scores for the full model. The color scale on the right indicates separate scales for the epistasis and joint LOD scores (on the left and right, respectively).
 
@@ -547,8 +559,8 @@ summary(operm2.hk)
 ~~~
 bp (100 permutations)
     full  fv1  int  add  av1  one
-5%  5.33 4.11 3.87 4.56 2.30 2.66
-10% 4.94 3.88 3.71 4.04 2.08 2.39
+5%  5.20 4.24 3.82 4.12 2.39 2.54
+10% 4.87 3.85 3.58 3.73 2.12 2.26
 ~~~
 {: .output}
 
@@ -566,19 +578,21 @@ alphas=c(0.05, 0.05, 0, 0.05, 0.05))
 
 ~~~
         pos1f pos2f lod.full pval lod.fv1 pval lod.int pval     pos1a
-c1 :c4   68.3  30.0    14.13 0.00    6.51 0.00   0.225 1.00      68.3
-c2 :c19  47.7   0.0     6.71 0.00    5.01 0.01   3.458 0.17      52.7
-c3 :c3   37.2  42.2     6.10 0.01    5.08 0.01   0.226 1.00      37.2
-c6 :c15  60.0  20.5     7.17 0.00    5.22 0.01   3.237 0.29      25.0
-c9 :c18  67.0  37.2     6.31 0.00    4.79 0.01   4.083 0.03      67.0
-c12:c19   1.1  40.0     6.48 0.00    4.79 0.01   4.090 0.03       1.1
+c1 :c4   68.3  30.0    14.13 0.00    6.51  0.0   0.225 1.00      68.3
+c2 :c2   72.7  77.7     4.63 0.16    3.05  0.5   0.290 1.00      72.7
+c2 :c19  47.7   0.0     6.71 0.00    5.01  0.0   3.458 0.15      52.7
+c3 :c3   37.2  42.2     6.10 0.00    5.08  0.0   0.226 1.00      37.2
+c6 :c15  60.0  20.5     7.17 0.00    5.22  0.0   3.237 0.26      25.0
+c9 :c18  67.0  37.2     6.31 0.00    4.79  0.0   4.083 0.04      67.0
+c12:c19   1.1  40.0     6.48 0.00    4.79  0.0   4.090 0.04       1.1
         pos2a lod.add pval lod.av1 pval
 c1 :c4   30.0   13.90 0.00   6.288 0.00
-c2 :c19   0.0    3.25 0.35   1.552 0.38
+c2 :c2   77.7    4.34 0.04   2.758 0.01
+c2 :c19   0.0    3.25 0.21   1.552 0.39
 c3 :c3   42.2    5.87 0.00   4.853 0.00
-c6 :c15  20.5    3.93 0.13   1.984 0.13
-c9 :c18  12.2    2.23 0.82   0.708 1.00
-c12:c19   0.0    2.39 0.78   0.697 1.00
+c6 :c15  20.5    3.93 0.09   1.984 0.13
+c9 :c18  12.2    2.23 0.77   0.708 1.00
+c12:c19   0.0    2.39 0.63   0.697 1.00
 ~~~
 {: .output}
 

@@ -171,5 +171,3 @@ Running sim.geno.
 {: .error}
 
 <img src="../fig/rmd-04-unnamed-chunk-8-2.png" title="plot of chunk unnamed-chunk-8" alt="plot of chunk unnamed-chunk-8" style="display: block; margin: auto;" />
-
-The two loci do not appear to interact.

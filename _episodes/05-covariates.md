@@ -181,115 +181,7 @@ The green and purple curves are for the first and second phenotypes, respectivel
 
 To test for the QTL × sex interaction, we may perform a permutation test. This is not perfect, as the permutation test eliminates the effect of the QTL, and so we must assume that the distribution of the LOD score for the QTL × sex interaction is the same in the presence of a QTL as under the global null hypothesis of no QTL effect.
 
-The permutation test requires some care. We must perform separate permutations with sex as an additive covariate and with sex as an interactive covariate, but we must ensure, by setting the “seed” for the random number generator, that they use matched permutations of the data. For the sake of speed, we will use Haley-Knott regression, even though the results above were obtained by standard interval mapping. 
-Here, the average phenotype is allowed to be different in the two sexes, but the effect of the putative QTL is assumed to be the same in the two sexes.
-Note that the use of sex as an additive covariate resulted in an increase in the LOD scores for phenotype 1, but resulted in a decreased LOD score at the chr 5 locus for phenotype 2.
-
-
-~~~
-summary(out.nocovar, threshold=3, format="allpeaks")
-~~~
-{: .r}
-
-
-
-~~~
-  chr  pos pheno1  pos pheno2
-2   2 35.0   3.52 35.0   1.98
-5   5 17.5   7.76  9.8   3.89
-~~~
-{: .output}
-
-
-
-~~~
-summary(out.acovar, threshold=3, format="allpeaks")
-~~~
-{: .r}
-
-
-
-~~~
-  chr  pos pheno1  pos pheno2
-2   2 35.0   4.25 37.5   2.12
-5   5 17.5   8.64  9.8   3.27
-~~~
-{: .output}
-
-
-
-~~~
-plot(out.nocovar, out.acovar, chr=c(2, 5))
-~~~
-{: .r}
-
-<img src="../fig/rmd-05-unnamed-chunk-9-1.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" style="display: block; margin: auto;" />
-
-~~~
-plot(out.nocovar, out.acovar, chr=c(2, 5), lodcolumn=2)
-~~~
-{: .r}
-
-<img src="../fig/rmd-05-unnamed-chunk-9-2.png" title="plot of chunk unnamed-chunk-9" alt="plot of chunk unnamed-chunk-9" style="display: block; margin: auto;" />
-
-Let us now perform genome scans with sex as an interactive covariate, so that the QTL is allowed to be different in the two sexes.
-
-
-~~~
-out.icovar <- scanone(fake.bc, pheno.col=1:2, addcovar=sex, intcovar=sex)
-~~~
-{: .r}
-
-The LOD score in the output is for the comparison of the full model with terms for sex, QTL and QTL × sex interaction to the reduced model with just the sex term. Thus, the degrees of freedom associated with the LOD score is 2 rather than 1, and so larger LOD scores will generally be obtained.
-
-
-~~~
-summary(out.icovar, threshold=3, format="allpeaks")
-~~~
-{: .r}
-
-
-
-~~~
-  chr  pos pheno1  pos pheno2
-2   2 35.0   5.92 42.5   5.99
-5   5 17.5   9.11  9.8   3.29
-~~~
-{: .output}
-
-
-
-~~~
-plot(out.acovar, out.icovar, chr=c(2,5), col=c("blue", "red"))
-~~~
-{: .r}
-
-<img src="../fig/rmd-05-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
-
-~~~
-plot(out.acovar, out.icovar, chr=c(2,5), lodcolumn=2, col=c("blue", "red"))
-~~~
-{: .r}
-
-<img src="../fig/rmd-05-unnamed-chunk-11-2.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
-
-The difference between the LOD score with sex as an interactive covariate and the LOD score with sex as an additive covariate concerns the test of the QTL ×
-sex interaction: does the QTL have the same effect in both sexes? The differences, and a plot of the differences, may be obtained as follows.
-
-
-~~~
-out.sexint <- out.icovar - out.acovar
-plot(out.sexint, lodcolumn=1:2, chr=c(2,5), col=c("green", "purple"))
-~~~
-{: .r}
-
-<img src="../fig/rmd-05-unnamed-chunk-12-1.png" title="plot of chunk unnamed-chunk-12" alt="plot of chunk unnamed-chunk-12" style="display: block; margin: auto;" />
-
-The green and purple curves are for the first and second phenotypes, respectively.
-
-To test for the QTL × sex interaction, we may perform a permutation test. This is not perfect, as the permutation test eliminates the effect of the QTL, and so we must assume that the distribution of the LOD score for the QTL × sex interaction is the same in the presence of a QTL as under the global null hypothesis of no QTL effect.
-The permutation test requires some care. We must perform separate permutations with sex as an additive covariate and with sex as an interactive covariate, but we must ensure, by setting the “seed” for the random number generator, that they use matched permutations of the data.
-For the sake of speed, we will use Haley-Knott regression, even though the results above were obtained by standard interval mapping. Also, we will perform just 100 permutations, though 1000 would be preferred.
+The permutation test requires some care. We must perform separate permutations with sex as an additive covariate and with sex as an interactive covariate, but we must ensure, by setting the “seed” for the random number generator, that they use matched permutations of the data. For the sake of speed, we will use Haley-Knott regression, even though the results above were obtained by standard interval mapping. Also, we will perform just 100 permutations, though 1000 would be preferred.
 
 
 ~~~
@@ -329,7 +221,8 @@ Permutation 100
 
 ~~~
 set.seed(seed)
-operm.icovar <- scanone(fake.bc, pheno.col=1:2, addcovar=sex, intcovar=sex, method="hk", n.perm=100)
+operm.icovar <- scanone(fake.bc, pheno.col=1:2, addcovar=sex,
+intcovar=sex, method="hk", n.perm=100)
 ~~~
 {: .r}
 
@@ -359,7 +252,7 @@ Permutation 100
 ~~~
 {: .output}
 
-Again, the differences concern the QTL × sex interaction.
+Again, the differences concern the QTL×sex interaction.
 
 
 ~~~
@@ -380,17 +273,16 @@ summary(operm.sexint, alpha=c(0.05, 0.20))
 ~~~
 LOD thresholds (100 permutations)
     pheno1 pheno2
-5%   1.321  1.754
-20%  0.915  0.885
+5%    1.58   1.55
+20%   1.08   1.00
 ~~~
 {: .output}
 
-We can also use these results to look at evidence for QTL × sex interaction in our initial scans.
+We can also use these results to look at evidence for QTL×sex interaction in our initial scans.
 
 
 ~~~
-summary(out.sexint, perms=operm.sexint, alpha=0.1,
-format="allpeaks", pvalues=TRUE)
+summary(out.sexint, perms=operm.sexint, alpha=0.1,format="allpeaks", pvalues=TRUE)
 ~~~
 {: .r}
 
@@ -398,8 +290,8 @@ format="allpeaks", pvalues=TRUE)
 
 ~~~
    chr  pos pheno1 pval  pos pheno2 pval
-2    2 50.2 2.4754 0.00 45.0  4.007 0.00
-7    7 42.6 0.0322 0.96 42.6  1.913 0.04
-17  17  9.9 1.7762 0.00  9.9  0.776 0.27
+2    2 50.2 2.4754 0.01 45.0  4.007 0.00
+7    7 42.6 0.0322 0.88 42.6  1.913 0.04
+17  17  9.9 1.7762 0.03  9.9  0.776 0.32
 ~~~
 {: .output}

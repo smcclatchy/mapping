@@ -170,7 +170,7 @@ The top panel shows the eight founder allele effects (or model coefficients) alo
 
 Above, we performed an analysis called linkage mapping in which we regressed the phenotype on haplotype probabilities.  In this next analysis, we will impute the founder SNPs onto the DO haplotype plots and perform association mapping with 40.4 million SNPs.  For each haplotype block, we copy-and-paste the SNPs from the appropriate founder onto each DO genome.
 
-![](figure/DO.impute.founders.sm.png)
+![](../fig/DO.impute.founders.sm.png)
 
 The GWAS function is called `scanone.assoc` and it takes arguments that are similar to `scanone` above. There are two new arguments.  `sdp.file`, or strain distribution pattern, which is available from [ftp.jax.org](ftp://ftp.jax.org/MUGA/), is a file that contains compressed SNP information for the 8 DO founder strains.  `ncl` tells the function how many parallel jobs to run to perform the genome scan.  Obviously, don't set this number higher than the number of cores on your computer.  You can find out more about this function using `help(scanone.assoc)`.  
 

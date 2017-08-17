@@ -70,5 +70,3 @@ The function `effectplot` gives more readable figures in this case; it’s often
 effectplot(hyper, mname1="4@29.5", mname2="1@48.3")
 effectplot(hyper, mname2="4@29.5", mname1="1@48.3")
 ```
-
-The two loci do not appear to interact.
