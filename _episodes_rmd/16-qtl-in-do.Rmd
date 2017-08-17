@@ -112,7 +112,7 @@ The code above copies the `rownames(pheno)` to `rownames(addcovar)`.
 In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the `scan1` function. To see the arguments for `scan1`, you can type `help(scan1)`.
 
 ```{r QTL,warning=FALSE,error=FALSE, eval=FALSE}
-qtl = scan1(genoprobs = genoprobs, pheno = pheno, kinship = K, addcovar = addcovar)
+qtl = scan1(genoprobs = genoprobs, pheno = pheno[,"prop.bm.MN.RET", drop = FALSE], kinship = K, addcovar = addcovar)
 ```
 
 We can then plot the QTL scan.         
