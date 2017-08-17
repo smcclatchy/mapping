@@ -3,10 +3,13 @@ title: "QTL mapping with R/qtl"
 teaching: 0
 exercises: 0
 questions:
-- "?"
+- "How can I explore data in the qtl package?"
+- "How do I run a single QTL genome scan?"
+- "How do I interpret the results of a genome scan?"
 objectives:
-- 
-- 
+- Explore data built into the qtl package.
+- Perform a single-QTL genome scan.
+- Perform a two-QTL genome scan.
 keypoints:
 - "."
 - "."
@@ -27,6 +30,7 @@ library(qtl)
 data(hyper)
 ```
 
+## Data exploration
 Use `ls` to list the components of the data set now that they are loaded into your environment. Alternatively, you can view them in the `Environment` panel in RStudio. `?hyper` will bring you to the documentation describing these data.
 
 ```{r}
@@ -87,8 +91,8 @@ plotPheno(hyper, pheno.col = 1)
 plotPheno(hyper, pheno.col = 2)
 ```
 
-We now, finally, get to QTL mapping.The core of R/qtl is a set of functions which make use hidden Markov models to calculate QTL genotype probabilities, to simulate from the joint genotype distribution and to calculate the most likely sequence of underlying genotypes (all conditional on the observed mark
-er data). This is done in a quite general way, with possible allowance for the presence of genotyping errors. Of course, for convenience we assume no crossover interference.
+## Single-QTL genome scan
+We now, finally, get to QTL mapping. The core of R/qtl is a set of functions which use hidden Markov models to calculate QTL genotype probabilities, to simulate from the joint genotype distribution and to calculate the most likely sequence of underlying genotypes (all conditional on the observed marker data). This is done in a quite general way, with possible allowance for the presence of genotyping errors. Of course, for convenience we assume no crossover interference.
 
 The function `calc.genoprob` calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. The argument `step` indicates the step size (in cM) at which the probabilities are calculated, and determines the step size at which later LOD scores are calculated.
 
@@ -96,7 +100,7 @@ The function `calc.genoprob` calculates QTL genotype probabilities, conditional 
 hyper <- calc.genoprob(hyper, step=1, error.prob=0.01)
 ```
 
-We may now use the function `scanone` to perform a single-QTL genome scan with a normal model. We may use maximum likelihood via the EM algorithm (Lander and Botstein 1989) or use Haley-Knott regression (Haley and Knott 1992).
+We may now use the function `scanone` to perform a single-QTL genome scan with a normal model. We may use maximum likelihood via the EM algorithm [Lander and Botstein 1989](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1203601/pdf/ge1211185.pdf) or use Haley-Knott regression [Haley and Knott 1992](http://animalscience2.ucdavis.edu/ggg201d/references/pdf_files/haley_knott_1992.pdf).
 
 ```{r}
 out.em <- scanone(hyper)
@@ -144,7 +148,7 @@ summary(operm.hk, alpha=0.05)
 In addition, if the permutations results are included in a call to `summary.scanone`, you can estimate genome-scan-adjusted p-values for inferred QTL, and can get a report of all chromosomes meeting a certain significance level, with the corresponding LOD threshold calculated automatically.
 
 ```{r}
-summary(out.hk, perms=operm.hk, alpha=c(0.05, pvalues=TRUE)
+summary(out.hk, perms=operm.hk, alpha=c(0.05, pvalues=TRUE))
 ```
 
 We can also add the significance threshold to a genome scan.
@@ -155,6 +159,7 @@ add.threshold(out.em, chr=c(1,4,15), operm.hk, alpha = 0.05, col = "red", lwd = 
 add.threshold(out.em, chr=c(1,4,15), operm.hk, alpha = 0.1, col = "blue", lwd = 2)
 ```
 
+## Two-QTL genome scan
 The function `scantwo` performs a two-dimensional genome scan with a two-QTL model. For every pair of positions, it calculates a LOD score for the full model (two QTL plus interaction) and a LOD score for the additive model (two QTL but no interaction). This can be quite time consuming, and so you may wish to do the calculations on a coarser grid.
 
 ```{r, results='hide'}
@@ -220,5 +225,4 @@ summary(out2.hk, perms=operm2.hk, pvalues=TRUE,
 alphas=c(0.05, 0.05, 0, 0.05, 0.05))
 ```
 
-You can’t really trust these results. Haley-Knott regression performs poorly in the case of selective genotyping (as with the hyper data). Standard interval mapping or imputation would be better, but Haley-Knott regression has the advantage
-of speed, which is the reason we use it here.
+You can’t really trust these results. Haley-Knott regression performs poorly in the case of selective genotyping (as with the hyper data). Standard interval mapping or imputation would be better, but Haley-Knott regression has the advantage of speed, which is the reason we use it here.

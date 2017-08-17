@@ -3,10 +3,13 @@ title: "QTL mapping with R/qtl"
 teaching: 0
 exercises: 0
 questions:
-- "?"
+- "How can I explore data in the qtl package?"
+- "How do I run a single QTL genome scan?"
+- "How do I interpret the results of a genome scan?"
 objectives:
-- 
-- 
+- Explore data built into the qtl package.
+- Perform a single-QTL genome scan.
+- Perform a two-QTL genome scan.
 keypoints:
 - "."
 - "."
@@ -26,6 +29,7 @@ data(hyper)
 ~~~
 {: .r}
 
+## Data exploration
 Use `ls` to list the components of the data set now that they are loaded into your environment. Alternatively, you can view them in the `Environment` panel in RStudio. `?hyper` will bring you to the documentation describing these data.
 
 
@@ -214,8 +218,8 @@ plotPheno(hyper, pheno.col = 2)
 
 <img src="../fig/rmd-02-unnamed-chunk-10-2.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" style="display: block; margin: auto;" />
 
-We now, finally, get to QTL mapping.The core of R/qtl is a set of functions which make use hidden Markov models to calculate QTL genotype probabilities, to simulate from the joint genotype distribution and to calculate the most likely sequence of underlying genotypes (all conditional on the observed mark
-er data). This is done in a quite general way, with possible allowance for the presence of genotyping errors. Of course, for convenience we assume no crossover interference.
+## Single-QTL genome scan
+We now, finally, get to QTL mapping. The core of R/qtl is a set of functions which use hidden Markov models to calculate QTL genotype probabilities, to simulate from the joint genotype distribution and to calculate the most likely sequence of underlying genotypes (all conditional on the observed marker data). This is done in a quite general way, with possible allowance for the presence of genotyping errors. Of course, for convenience we assume no crossover interference.
 
 The function `calc.genoprob` calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. The argument `step` indicates the step size (in cM) at which the probabilities are calculated, and determines the step size at which later LOD scores are calculated.
 
@@ -225,7 +229,7 @@ hyper <- calc.genoprob(hyper, step=1, error.prob=0.01)
 ~~~
 {: .r}
 
-We may now use the function `scanone` to perform a single-QTL genome scan with a normal model. We may use maximum likelihood via the EM algorithm (Lander and Botstein 1989) or use Haley-Knott regression (Haley and Knott 1992).
+We may now use the function `scanone` to perform a single-QTL genome scan with a normal model. We may use maximum likelihood via the EM algorithm [Lander and Botstein 1989](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1203601/pdf/ge1211185.pdf) or use Haley-Knott regression [Haley and Knott 1992](http://animalscience2.ucdavis.edu/ggg201d/references/pdf_files/haley_knott_1992.pdf).
 
 
 ~~~
@@ -387,7 +391,7 @@ summary(operm.hk, alpha=0.05)
 ~~~
 LOD thresholds (1000 permutations)
     lod
-5% 2.72
+5% 2.63
 ~~~
 {: .output}
 
@@ -395,18 +399,26 @@ In addition, if the permutations results are included in a call to `summary.scan
 
 
 ~~~
-summary(out.hk, perms=operm.hk, alpha=c(0.05, pvalues=TRUE)
+summary(out.hk, perms=operm.hk, alpha=c(0.05, pvalues=TRUE))
 ~~~
 {: .r}
 
 
 
 ~~~
-Error: <text>:2:0: unexpected end of input
-1: summary(out.hk, perms=operm.hk, alpha=c(0.05, pvalues=TRUE)
-   ^
+Warning in summary.scanone(out.hk, perms = operm.hk, alpha = c(0.05,
+pvalues = TRUE)): alpha should have length 1.
 ~~~
 {: .error}
+
+
+
+~~~
+         chr  pos  lod
+c1.loc45   1 48.3 3.55
+D4Mit164   4 29.5 8.09
+~~~
+{: .output}
 
 We can also add the significance threshold to a genome scan.
 
@@ -420,6 +432,7 @@ add.threshold(out.em, chr=c(1,4,15), operm.hk, alpha = 0.1, col = "blue", lwd = 
 
 <img src="../fig/rmd-02-unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" style="display: block; margin: auto;" />
 
+## Two-QTL genome scan
 The function `scantwo` performs a two-dimensional genome scan with a two-QTL model. For every pair of positions, it calculates a LOD score for the full model (two QTL plus interaction) and a LOD score for the additive model (two QTL but no interaction). This can be quite time consuming, and so you may wish to do the calculations on a coarser grid.
 
 
@@ -559,8 +572,8 @@ summary(operm2.hk)
 ~~~
 bp (100 permutations)
     full  fv1  int  add  av1  one
-5%  5.43 4.26 3.81 4.24 1.96 2.77
-10% 5.21 3.84 3.60 3.88 1.85 2.56
+5%  5.56 4.05 3.75 4.34 2.29 2.79
+10% 5.15 3.80 3.65 4.09 2.11 2.60
 ~~~
 {: .output}
 
@@ -578,31 +591,20 @@ alphas=c(0.05, 0.05, 0, 0.05, 0.05))
 
 ~~~
         pos1f pos2f lod.full pval lod.fv1 pval lod.int pval     pos1a
-c1 :c2   78.3  52.7     5.77 0.03    2.22 0.98  0.0383 1.00      78.3
-c1 :c4   68.3  30.0    14.13 0.00    6.51 0.00  0.2255 1.00      68.3
-c1 :c19  48.3   0.0     5.75 0.03    2.21 0.98  0.0327 1.00      48.3
-c2 :c2   72.7  77.7     4.63 0.24    3.05 0.56  0.2898 1.00      72.7
-c2 :c19  47.7   0.0     6.71 0.00    5.01 0.00  3.4580 0.14      52.7
-c3 :c3   37.2  42.2     6.10 0.02    5.08 0.00  0.2258 1.00      37.2
-c4 :cX   35.0  26.1    10.88 0.00    3.27 0.39  1.2778 1.00      30.0
-c6 :c15  60.0  20.5     7.17 0.00    5.22 0.00  3.2372 0.24      25.0
-c9 :c18  67.0  37.2     6.31 0.02    4.79 0.00  4.0826 0.03      67.0
-c9 :cX   47.0  41.1     4.66 0.23    2.48 0.89  0.2701 1.00      67.0
-c12:c19   1.1  40.0     6.48 0.02    4.79 0.00  4.0903 0.03       1.1
+c1 :c4   68.3  30.0    14.13 0.00    6.51 0.00   0.225 1.00      68.3
+c2 :c19  47.7   0.0     6.71 0.00    5.01 0.01   3.458 0.14      52.7
+c3 :c3   37.2  42.2     6.10 0.03    5.08 0.00   0.226 1.00      37.2
+c6 :c15  60.0  20.5     7.17 0.00    5.22 0.00   3.237 0.23      25.0
+c9 :c18  67.0  37.2     6.31 0.03    4.79 0.01   4.083 0.03      67.0
+c12:c19   1.1  40.0     6.48 0.02    4.79 0.01   4.090 0.03       1.1
         pos2a lod.add pval lod.av1 pval
-c1 :c2   52.7    5.73 0.00   2.184 0.00
 c1 :c4   30.0   13.90 0.00   6.288 0.00
-c1 :c19   0.0    5.72 0.00   2.174 0.00
-c2 :c2   77.7    4.34 0.04   2.758 0.00
-c2 :c19   0.0    3.25 0.33   1.552 0.39
-c3 :c3   42.2    5.87 0.00   4.853 0.00
-c4 :cX   41.1    9.60 0.00   1.993 0.05
-c6 :c15  20.5    3.93 0.09   1.984 0.05
-c9 :c18  12.2    2.23 0.85   0.708 1.00
-c9 :cX   41.1    4.39 0.03   2.210 0.00
-c12:c19   0.0    2.39 0.80   0.697 1.00
+c2 :c19   0.0    3.25 0.34   1.552 0.38
+c3 :c3   42.2    5.87 0.01   4.853 0.00
+c6 :c15  20.5    3.93 0.12   1.984 0.15
+c9 :c18  12.2    2.23 0.82   0.708 0.99
+c12:c19   0.0    2.39 0.70   0.697 0.99
 ~~~
 {: .output}
 
-You can’t really trust these results. Haley-Knott regression performs poorly in the case of selective genotyping (as with the hyper data). Standard interval mapping or imputation would be better, but Haley-Knott regression has the advantage
-of speed, which is the reason we use it here.
+You can’t really trust these results. Haley-Knott regression performs poorly in the case of selective genotyping (as with the hyper data). Standard interval mapping or imputation would be better, but Haley-Knott regression has the advantage of speed, which is the reason we use it here.
