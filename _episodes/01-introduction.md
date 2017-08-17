@@ -3,11 +3,12 @@ title: "Introduction"
 teaching: 0
 exercises: 0
 questions:
-- "Key question"
+- "Where can I find sample data for mapping with the qtl and qtl2 packages?"
 objectives:
-- "First objective."
+- "Be able to find sample data for qtl mapping."
 keypoints:
-- "First key point."
+- "Published and public data already formatted for QTL mapping are available on the web."
+- "These data can be used as a model for formatting your own QTL data."
 ---
 
 R/qtl is a package for mapping quantitative trait loci (QTL) in experimental crosses.
