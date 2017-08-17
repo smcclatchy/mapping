@@ -137,15 +137,15 @@ In order to map the proportion of bone marrow reticulocytes that were micro-nucl
 
 
 ~~~
-qtl = scan1(genoprobs = genoprobs, pheno = pheno, kinship = K, addcovar = addcovar)
+qtl = scan1(genoprobs = genoprobs, pheno = pheno[,"prop.bm.MN.RET", drop = FALSE], kinship = K, addcovar = addcovar)
 ~~~
 {: .r}
 
-We can then plot the QTL scan.         
+We can then plot the QTL scan. Note that you must provide the marker map.
 
 
 ~~~
-plot(qtl, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+plot(qtl, map, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ~~~
 {: .r}
 
@@ -153,7 +153,7 @@ There is clearly a large peak on Chr 10. Next, we must assess its statistical si
 
 
 ~~~
-perms = scan1perm(genoprobs = probs, pheno = pheno$prop.bm.MN.RET, kinship = K, addcovar = addcovar, n_perm = 100, snps = muga_snps)
+perms = scan1perm(genoprobs = genoprobs, pheno = pheno[,"prop.bm.MN.RET", drop = FALSE], kinship = K, addcovar = addcovar, n_perm = 100)
 ~~~
 {: .r}
 
@@ -161,48 +161,63 @@ We can now add thresholds to the previous QTL plot. We use significance threshol
            
 
 ~~~
-thr = get.sig.thr(perms[,,1], alpha = c(0.05, 0.1, 0.63), Xchr = FALSE)
-plot(qtl, sig.thr = thr, sig.col = c("red", "orange", "goldenrod"), main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+plot(qtl, map,  main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+thr = quantile(perms, 0.95)
+abline(h = thr, col = "red", lwd = 2)
 ~~~
 {: .r}
 
 The peak on Chr 10 is clearly well above the red p < 0.05 significance line.
 
+We can find all of the peaks above the significance threshold using the `find_peaks` function.
+
+
+~~~
+find_peaks(qtl, map, threshold = thr)
+~~~
+{: .r}
+
+
+
+~~~
+Error in nrow(scan1_output): object 'qtl' not found
+~~~
+{: .error}
+
+The support interval is determined using the [Bayesian Credible Interval](http://www.ncbi.nlm.nih.gov/pubmed/11560912) and represents the region most likely to contain the causative polymorphism(s). We can obtain this interval using the `bayesint` function.  We can determine the support interval for the QTL peak using the `bayes_int` function.
+
+
+~~~
+bayes_int(qtl, map, chr = 10)
+~~~
+{: .r}
+
+From the output above, you can see that the support interval is 5.5 Mb wide (30.16649 to 35.49352 Mb). The location of the maximum LOD score is 34.17711 Mb.
+
 We will now zoom in on Chr 10 and look at the contribution of each of the eight founder alleles to the proportion of bone marrow reticulocytes that were micro-nucleated. The mapping model fits a term for each of the eight DO founders. We can plot these coefficients across Chr 10.
 
 
 ~~~
-plot_coefCC(qtl, chr = 10, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+chr = 10
+coef10 = scan1coef(genoprobs = genoprobs[,chr], pheno = pheno[,"prop.bm.MN.RET", drop = FALSE], kinship = K[[chr]], addcovar = addcovar)
 ~~~
 {: .r}
 
-The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele around 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective allele. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. The support interval is determined using the [Bayesian Credible Interval](http://www.ncbi.nlm.nih.gov/pubmed/11560912) and represents the region most likely to contain the causative polymorphism(s). We can obtain this interval using the `bayesint` function.
+This produces an object containing estimates of each of the eight DO founder allele effect. 
 
 
 ~~~
-interval = bayes_int(qtl, chr = 10)
-knitr::kable(interval)
-~~~
-{: .r}
-
-From the table above (column 3), you can see that the support interval is 6 Mb wide (29.7 to 35.7 Mb). Line 1 shows the proximal end of the peak and line 3 shows the distal end. The maximum LOD score and its location are in line 2 of the table.
-
-Next, let's look at the distribution of prop.bm.MN.RET across the 36 possible DO genotypes at the maximum peak location. This can be obtained from the second row of the first column of the interval table (interval[2,1]).
-
-
-~~~
-pxg.plot(pheno = pheno, pheno.col = "prop.bm.MN.RET", probs = probs, 
-         snp.id = interval[2,1], snps = muga_snps)
+plot_coefCC(coef10, map, scan1_output = qtl, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ~~~
 {: .r}
 
-This plot shows the phenotype value on the Y-axis plotted against the 36 DO genotypes on the X-axis, Note that several genotypes did not occur in this set of 143 samples. Next note that all of the samples with at least one CAST allele (denoted by **F**) have low values. This suggests that the mode of inheritance may be dominant. This is the effect that is driving the QTL.
+The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele near 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective allele. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. 
 
 ### Genome-wide Association Mapping
 
 Above, we performed an analysis called linkage mapping in which we regressed the phenotype on haplotype probabilities.  In this next analysis, we will impute the founder SNPs onto the DO haplotype plots and perform association mapping with 40.4 million SNPs.  For each haplotype block, we copy-and-paste the SNPs from the appropriate founder onto each DO genome.
 
-![](figure/DO.impute.founders.sm.png)
+![](../fig/DO.impute.founders.sm.png)
 
 The GWAS function is called `scanone.assoc` and it takes arguments that are similar to `scanone` above. There are two new arguments.  `sdp.file`, or strain distribution pattern, which is available from [ftp.jax.org](ftp://ftp.jax.org/MUGA/), is a file that contains compressed SNP information for the 8 DO founder strains.  `ncl` tells the function how many parallel jobs to run to perform the genome scan.  Obviously, don't set this number higher than the number of cores on your computer.  You can find out more about this function using `help(scanone.assoc)`.  
 
