@@ -11,7 +11,7 @@ objectives:
 - Perform a single-QTL genome scan.
 - Perform a two-QTL genome scan.
 keypoints:
-- "."
+- "R/qtl has functions to summarize and view data."
 - "."
 source: Rmd
 ---
@@ -94,7 +94,7 @@ plotPheno(hyper, pheno.col = 2)
 > ## Challenge 1
 >
 > The R/qtl package includes data on susceptibility to 
-> *Listeria monocytogenes* in mice 
+> *Listeria monocytogenes* in mice from 
 > [Boyartchuk et al., Nature Genetics 27:259-260, 2001](https://search.proquest.com/openview/34242da571de16c0912dc6bed9db8dee/1?pq-origsite=gscholar&cbl=33429).
 > The phenotype is survival time in hours following *Listeria* 
 > infection. A survival time of 264 hours indicates those 
@@ -132,9 +132,9 @@ The function `calc.genoprob` calculates QTL genotype probabilities, conditional 
 hyper <- calc.genoprob(hyper, step=1, error.prob=0.01)
 ```
 
-We may now use the function `scanone` to perform a single-QTL genome scan with a normal model. We may use maximum likelihood via the Expectation-Maximization (EM) algorithm [Lander and Botstein 1989](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1203601/pdf/ge1211185.pdf) to carry out a hypothesis test for each putative QTL position in the genome. Our null hypothesis states that there is no QTL anywhere in the genome. The EM algorithm produces a logarithm-of-odds (LOD) score of the alternative hypothesis (that there is a QTL linked to the position) against the null hypothesis. The greater the LOD score, the higher the likelihood that a QTL is present at the position.
+We may now use the function `scanone` to perform a single-QTL genome scan with a normal model. We may use maximum likelihood via the Expectation-Maximization (EM) algorithm as in [Lander and Botstein 1989](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1203601/pdf/ge1211185.pdf) to carry out a hypothesis test for each putative QTL position in the genome. Our null hypothesis states that there is no QTL anywhere in the genome. The EM algorithm produces a logarithm-of-odds (LOD) score of the alternative hypothesis (that there is a QTL linked to the position) against the null hypothesis. The greater the LOD score, the higher the likelihood that a QTL is present at the position.
 
-Where marker density is relatively high, Haley-Knott regression [Haley and Knott 1992](http://animalscience2.ucdavis.edu/ggg201d/references/pdf_files/haley_knott_1992.pdf) produces faster and similarly accurate results when compared to the EM algorithm. The conditional genotype probabilities calculated by the `calc.genoprob` function are used in a linear regression of the phenotype on the genotype probabilities. 
+Where marker density is relatively high, [Haley-Knott regression](http://animalscience2.ucdavis.edu/ggg201d/references/pdf_files/haley_knott_1992.pdf) produces faster and similarly accurate results when compared to the EM algorithm. The conditional genotype probabilities calculated by the `calc.genoprob` function are used in a linear regression of the phenotype on the genotype probabilities. 
 
 We'll compare results of the EM algorithm and Haley-Knott regression on the `hyper` data. We already know that in many cases only animals with extreme phenotypes were genotyped, so we might expect EM to perform better. 
 
@@ -184,7 +184,7 @@ summary(operm.hk, alpha=0.05)
 In addition, if the permutations results are included in a call to `summary.scanone`, you can estimate genome-scan-adjusted p-values for inferred QTL, and can get a report of all chromosomes meeting a certain significance level, with the corresponding LOD threshold calculated automatically.
 
 ```{r}
-summary(out.hk, perms=operm.hk, alpha=c(0.05, pvalues=TRUE))
+summary(out.hk, perms=operm.hk, alpha=0.05, pvalues=TRUE)
 ```
 
 We can also add the significance threshold to a genome scan.

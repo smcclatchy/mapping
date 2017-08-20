@@ -5,6 +5,17 @@ permalink: /setup/
 ---
 ## Installation
 
+To install R/qtl, type
+
+~~~
+install.packages("qtl")
+~~~
+{: .r}
+
+or use the Install button on the Packages tab in RStudio.
+
+A manual, tutorials, and a sample chapter from Broman & Sen's book [A Guide to QTL Mapping with R/qtl](http://www.rqtl.org/book/) are available from the [R/qtl website](http://www.rqtl.org/).
+
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
 it can be installed from a mini-CRAN at [rqtl.org](http://rqtl.org).
 
@@ -57,7 +68,12 @@ install_github("rqtl/qtl2")
 
 ## Data file format
 
-The input data file formats for [R/qtl](http://rqtl.org) cannot
+The recommended file format for R/qtl is comma-separated values (csv).
+In the simplest case all phenotype and genotype data and the genetic
+map of the genotyped markers are contained in a single csv file. 
+The first columns should be phenotypes and can include animal ID 
+numbers, sex, or treatment. The following columns contain marker
+genotypes. The input data file formats for [R/qtl](http://rqtl.org) cannot
 handle complex crosses, and so for R/qtl2, we have defined a new
 format for the data files. We'll describe it here briefly; for
 details, see the separate
