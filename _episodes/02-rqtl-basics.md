@@ -11,7 +11,7 @@ objectives:
 - Perform a single-QTL genome scan.
 - Perform a two-QTL genome scan.
 keypoints:
-- "."
+- "R/qtl has functions to summarize and view data."
 - "."
 source: Rmd
 ---
@@ -221,7 +221,7 @@ plotPheno(hyper, pheno.col = 2)
 > ## Challenge 1
 >
 > The R/qtl package includes data on susceptibility to 
-> *Listeria monocytogenes* in mice 
+> *Listeria monocytogenes* in mice from 
 > [Boyartchuk et al., Nature Genetics 27:259-260, 2001](https://search.proquest.com/openview/34242da571de16c0912dc6bed9db8dee/1?pq-origsite=gscholar&cbl=33429).
 > The phenotype is survival time in hours following *Listeria* 
 > infection. A survival time of 264 hours indicates those 
@@ -313,9 +313,9 @@ hyper <- calc.genoprob(hyper, step=1, error.prob=0.01)
 ~~~
 {: .r}
 
-We may now use the function `scanone` to perform a single-QTL genome scan with a normal model. We may use maximum likelihood via the Expectation-Maximization (EM) algorithm [Lander and Botstein 1989](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1203601/pdf/ge1211185.pdf) to carry out a hypothesis test for each putative QTL position in the genome. Our null hypothesis states that there is no QTL anywhere in the genome. The EM algorithm produces a logarithm-of-odds (LOD) score of the alternative hypothesis (that there is a QTL linked to the position) against the null hypothesis. The greater the LOD score, the higher the likelihood that a QTL is present at the position.
+We may now use the function `scanone` to perform a single-QTL genome scan with a normal model. We may use maximum likelihood via the Expectation-Maximization (EM) algorithm as in [Lander and Botstein 1989](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1203601/pdf/ge1211185.pdf) to carry out a hypothesis test for each putative QTL position in the genome. Our null hypothesis states that there is no QTL anywhere in the genome. The EM algorithm produces a logarithm-of-odds (LOD) score of the alternative hypothesis (that there is a QTL linked to the position) against the null hypothesis. The greater the LOD score, the higher the likelihood that a QTL is present at the position.
 
-Where marker density is relatively high, Haley-Knott regression [Haley and Knott 1992](http://animalscience2.ucdavis.edu/ggg201d/references/pdf_files/haley_knott_1992.pdf) produces faster and similarly accurate results when compared to the EM algorithm. The conditional genotype probabilities calculated by the `calc.genoprob` function are used in a linear regression of the phenotype on the genotype probabilities. 
+Where marker density is relatively high, [Haley-Knott regression](http://animalscience2.ucdavis.edu/ggg201d/references/pdf_files/haley_knott_1992.pdf) produces faster and similarly accurate results when compared to the EM algorithm. The conditional genotype probabilities calculated by the `calc.genoprob` function are used in a linear regression of the phenotype on the genotype probabilities. 
 
 We'll compare results of the EM algorithm and Haley-Knott regression on the `hyper` data. We already know that in many cases only animals with extreme phenotypes were genotyped, so we might expect EM to perform better. 
 
@@ -479,7 +479,7 @@ summary(operm.hk, alpha=0.05)
 ~~~
 LOD thresholds (1000 permutations)
     lod
-5% 2.69
+5% 2.67
 ~~~
 {: .output}
 
@@ -487,24 +487,16 @@ In addition, if the permutations results are included in a call to `summary.scan
 
 
 ~~~
-summary(out.hk, perms=operm.hk, alpha=c(0.05, pvalues=TRUE))
+summary(out.hk, perms=operm.hk, alpha=0.05, pvalues=TRUE)
 ~~~
 {: .r}
 
 
 
 ~~~
-Warning in summary.scanone(out.hk, perms = operm.hk, alpha = c(0.05,
-pvalues = TRUE)): alpha should have length 1.
-~~~
-{: .error}
-
-
-
-~~~
-         chr  pos  lod
-c1.loc45   1 48.3 3.55
-D4Mit164   4 29.5 8.09
+         chr  pos  lod  pval
+c1.loc45   1 48.3 3.55 0.009
+D4Mit164   4 29.5 8.09 0.000
 ~~~
 {: .output}
 
@@ -663,8 +655,8 @@ summary(operm2.hk)
 ~~~
 bp (100 permutations)
     full  fv1  int  add  av1  one
-5%  5.56 4.13 3.91 4.36 2.12 2.56
-10% 5.07 3.93 3.55 4.02 1.94 2.43
+5%  5.05 4.01 3.86 3.89 2.14 2.24
+10% 4.76 3.79 3.58 3.49 1.92 2.09
 ~~~
 {: .output}
 
@@ -682,25 +674,29 @@ alphas=c(0.05, 0.05, 0, 0.05, 0.05))
 
 ~~~
         pos1f pos2f lod.full pval lod.fv1 pval lod.int pval     pos1a
-c1 :c2   78.3  52.7     5.77 0.03    2.22 0.96  0.0383 1.00      78.3
+c1 :c2   78.3  52.7     5.77 0.00    2.22 1.00  0.0383 1.00      78.3
 c1 :c4   68.3  30.0    14.13 0.00    6.51 0.00  0.2255 1.00      68.3
-c1 :c19  48.3   0.0     5.75 0.03    2.21 0.97  0.0327 1.00      48.3
-c2 :c19  47.7   0.0     6.71 0.02    5.01 0.01  3.4580 0.17      52.7
-c3 :c3   37.2  42.2     6.10 0.03    5.08 0.01  0.2258 1.00      37.2
-c6 :c15  60.0  20.5     7.17 0.01    5.22 0.01  3.2372 0.24      25.0
-c9 :c18  67.0  37.2     6.31 0.03    4.79 0.01  4.0826 0.03      67.0
-c9 :cX   47.0  41.1     4.66 0.23    2.48 0.91  0.2701 1.00      67.0
-c12:c19   1.1  40.0     6.48 0.02    4.79 0.01  4.0903 0.03       1.1
+c1 :c19  48.3   0.0     5.75 0.00    2.21 1.00  0.0327 1.00      48.3
+c2 :c2   72.7  77.7     4.63 0.11    3.05 0.51  0.2898 1.00      72.7
+c2 :c19  47.7   0.0     6.71 0.00    5.01 0.00  3.4580 0.15      52.7
+c3 :c3   37.2  42.2     6.10 0.00    5.08 0.00  0.2258 1.00      37.2
+c3 :c13  27.2  30.7     5.24 0.03    4.22 0.03  3.5747 0.11      37.2
+c6 :c15  60.0  20.5     7.17 0.00    5.22 0.00  3.2372 0.24      25.0
+c9 :c18  67.0  37.2     6.31 0.00    4.79 0.00  4.0826 0.02      67.0
+c9 :cX   47.0  41.1     4.66 0.11    2.48 0.94  0.2701 1.00      67.0
+c12:c19   1.1  40.0     6.48 0.00    4.79 0.00  4.0903 0.02       1.1
         pos2a lod.add pval lod.av1 pval
-c1 :c2   52.7    5.73 0.01   2.184 0.03
+c1 :c2   52.7    5.73 0.00   2.184 0.05
 c1 :c4   30.0   13.90 0.00   6.288 0.00
-c1 :c19   0.0    5.72 0.01   2.174 0.03
-c2 :c19   0.0    3.25 0.37   1.552 0.38
-c3 :c3   42.2    5.87 0.01   4.853 0.00
-c6 :c15  20.5    3.93 0.13   1.984 0.07
-c9 :c18  12.2    2.23 0.85   0.708 1.00
-c9 :cX   41.1    4.39 0.05   2.210 0.02
-c12:c19   0.0    2.39 0.78   0.697 1.00
+c1 :c19   0.0    5.72 0.00   2.174 0.05
+c2 :c2   77.7    4.34 0.03   2.758 0.02
+c2 :c19   0.0    3.25 0.18   1.552 0.37
+c3 :c3   42.2    5.87 0.00   4.853 0.00
+c3 :c13  55.7    1.66 0.93   0.648 1.00
+c6 :c15  20.5    3.93 0.05   1.984 0.09
+c9 :c18  12.2    2.23 0.78   0.708 1.00
+c9 :cX   41.1    4.39 0.02   2.210 0.05
+c12:c19   0.0    2.39 0.66   0.697 1.00
 ~~~
 {: .output}
 
