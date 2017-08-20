@@ -3,6 +3,7 @@ title: "Introduction"
 teaching: 0
 exercises: 0
 questions:
+- "What is quantitative trait mapping?"
 - "Where can I find sample data for mapping with the qtl and qtl2 packages?"
 objectives:
 - "Be able to find sample data for qtl mapping."
@@ -10,6 +11,26 @@ keypoints:
 - "Published and public data already formatted for QTL mapping are available on the web."
 - "These data can be used as a model for formatting your own QTL data."
 ---
+
+Quantitative trait mapping is used in biomedical, agricultural, and evolutionary studies
+to find causal genes for quantitative traits, aid crop and breed selection in agriculture,
+and shed light on natural selection. The goal of quantitative trait locus (QTL) analysis
+is to identify genomic regions linked to a phenotype, to map these regions precisely,
+and to define the effects, number, and interactions of QTL. QTL analysis can 
+be performed in natural populations and in experimental crosses, and can be studied in 
+humans and non-human species. Human studies, however, are very expensive, lack environmental
+control, and can be confounded by population structure such that associations between
+genotype and phenotype  are not necessarily causal.
+
+QTL analysis in experimental crosses requires two or more strains that differ genetically
+with regard to a phenotype of interest. Genetic markers, such as SNPs or microsatellites,
+distinguish between parental strains in the experimental cross. Markers that are genetically
+linked to a phenotype will segregate more often with phenotype values (high or low values, for example),
+while unlinked markers will not be significantly associated with the phenotype. The markers 
+themselves might be associated with the phenotype but are not causal. Rather, markers may 
+be associated with the phenotype through linkage to nearby QTL. They serve as signposts
+indicating the neighborhood of a QTL that influences a phenotype. Covariates such as sex
+or diet can also influence the phenotype.
 
 R/qtl is a package for mapping quantitative trait loci (QTL) in experimental crosses.
 R/qtl methods employ hidden Markov models specifically for handling missing genotype

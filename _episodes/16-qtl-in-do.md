@@ -15,11 +15,12 @@ source: Rmd
 
 
 
+
 This tutorial will take you through the process of mapping a QTL and searching for candidate genes.
 
 The data comes from a toxicology study in which mice were exposed to benzene via inhalation for 6 hours a day, 5 days a week for 4 weeks. The study was conducted in two equally sized cohort of 300 male mice each, for a total of 600 mice. They were then sacrificed and reticulocytes (red blood cell precursors) were isolated from bone marrow. The number of micro-nucleated reticulocytes, a measure of DNA damage, was then measured in each mouse. The goal is to map gene(s) that influence the level of DNA damage in the bone marrow.
 
-![](figure/benzene_study_design.png)
+![](../fig/benzene_study_design.png)
 
 
 ### Loading the data
@@ -30,6 +31,7 @@ The data for this tutorial has been saved as an R binary file that contains seve
 ~~~
 library(qtl2)
 library(qtl2convert)
+#library(qtl2db)
 load(url("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata"))
 ~~~
 {: .r}
@@ -88,7 +90,9 @@ load(url("ftp://ftp.jax.org/MUGA/muga_snps.Rdata"))
 ~~~
 {: .r}
 
-Convert the genotype probabilities to qtl2 format. Convert the SNPs to a qtl2 map object.
+This loaded an object called `muga_snps` into your R environment. Look at it's structure in the Environment tab in RStudio.
+
+Convert the genotype probabilities from DOQTL format to qtl2 format. Convert the SNPs to a qtl2 map object.
 
 
 ~~~
@@ -120,24 +124,24 @@ axis(side = 2, at = 20 * 0:7, labels = 20 * 7:0, las = 1)
 
 The figure above shows kinship between all pairs of samples. White (= 1) indicates no kinship and red (= 0) indicates full kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
 
-Next, we need to create additive covariates that wil be used in the mapping model. We will use sex and study cohort as a covariate in the mapping model. We must add the sample IDs to the rownames of the covariates because the `scan1` function will match up sample IDs in all of the data.
+Next, we need to create additive covariates that wil be used in the mapping model. We will use study cohort as a covariate in the mapping model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
 
 
 ~~~
-addcovar = model.matrix(~Study, data = pheno)
-colnames(addcovar)[1] = "Sex"
+addcovar = model.matrix(~Study, data = pheno)[,1, drop = FALSE]
 ~~~
 {: .r}
 
-The code above copies the `rownames(pheno)` to `rownames(addcovar)`.
+The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-effect of the `model.matrix` function..
 
-**NOTE:** the sample IDs must be in the rownames of `addcovar`.
+**NOTE:** the sample IDs must be in the rownames of `pheno`, `addcovar`, `genoprobs` and `K`. qtl2 uses the sample IDs to align the samples between objects.
 
 In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the `scan1` function. To see the arguments for `scan1`, you can type `help(scan1)`.
 
 
 ~~~
-qtl = scan1(genoprobs = genoprobs, pheno = pheno[,"prop.bm.MN.RET", drop = FALSE], kinship = K, addcovar = addcovar)
+pheno.column = which(colnames(pheno) == "prop.bm.MN.RET")
+qtl = scan1(genoprobs = genoprobs, pheno = pheno[,pheno.column, drop = FALSE], kinship = K, addcovar = addcovar)
 ~~~
 {: .r}
 
@@ -149,6 +153,13 @@ plot(qtl, map, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ~~~
 {: .r}
 
+
+
+~~~
+Error in plot_scan1(x, map = map, lodcolumn = lodcolumn, chr = chr, add = add, : nrow(x) [7654] != number of positions in map [7854]
+~~~
+{: .error}
+
 There is clearly a large peak on Chr 10. Next, we must assess its statistical significance. This is most commonly done via [permutation](http://www.genetics.org/content/178/1/609.long). We advise running at least 1,000 permutations to obtain significance thresholds. In the interest of time, we perform 100 permutations here.
 
 
@@ -157,17 +168,39 @@ perms = scan1perm(genoprobs = genoprobs, pheno = pheno[,"prop.bm.MN.RET", drop =
 ~~~
 {: .r}
 
-We can now add thresholds to the previous QTL plot. We use significance thresholds at the p < 0.05, 0.10 and 0.63 levels.
+The `perms` object contains the maximum LOD score from each genome scan of permuted data. The 
+
+We can now add thresholds to the previous QTL plot. We use a significance threshold of p < 0.05. To do this, we select the 95th percentile of the permutation LOD distribution.
            
 
 ~~~
 plot(qtl, map,  main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+~~~
+{: .r}
+
+
+
+~~~
+Error in plot_scan1(x, map = map, lodcolumn = lodcolumn, chr = chr, add = add, : nrow(x) [7654] != number of positions in map [7854]
+~~~
+{: .error}
+
+
+
+~~~
 thr = quantile(perms, 0.95)
 abline(h = thr, col = "red", lwd = 2)
 ~~~
 {: .r}
 
-The peak on Chr 10 is clearly well above the red p < 0.05 significance line.
+
+
+~~~
+Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
+~~~
+{: .error}
+
+The peak on Chr 10 is well above the red significance line.
 
 We can find all of the peaks above the significance threshold using the `find_peaks` function.
 
@@ -180,7 +213,7 @@ find_peaks(qtl, map, threshold = thr)
 
 
 ~~~
-Error in nrow(scan1_output): object 'qtl' not found
+Error in find_peaks(qtl, map, threshold = thr): nrow(scan1_output) [7654] != number of positions in map [7854]
 ~~~
 {: .error}
 
@@ -191,6 +224,13 @@ The support interval is determined using the [Bayesian Credible Interval](http:/
 bayes_int(qtl, map, chr = 10)
 ~~~
 {: .r}
+
+
+
+~~~
+Error in bayes_int(qtl, map, chr = 10): nrow(scan1_output) [7654] != number of positions in map [7854]
+~~~
+{: .error}
 
 From the output above, you can see that the support interval is 5.5 Mb wide (30.16649 to 35.49352 Mb). The location of the maximum LOD score is 34.17711 Mb.
 
@@ -213,112 +253,214 @@ plot_coefCC(coef10, map, scan1_output = qtl, main = "Proportion of Micro-nucleat
 
 The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele near 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective allele. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. 
 
-### Genome-wide Association Mapping
+### Association Mapping
 
-Above, we performed an analysis called linkage mapping in which we regressed the phenotype on haplotype probabilities.  In this next analysis, we will impute the founder SNPs onto the DO haplotype plots and perform association mapping with 40.4 million SNPs.  For each haplotype block, we copy-and-paste the SNPs from the appropriate founder onto each DO genome.
+At this point, we have a 6 Mb wide support interval that contains a polymorphism(s) that influences benzene induced DNA damage. Next, we will impute the DO founder sequences onto the DO genomes. The [Sanger Mouse Genomes Project](http://www.sanger.ac.uk/resources/mouse/genomes/) has sequenced the eight DO founders and provides SNP, indel and structural variant files for the strains (see [Baud et.al., Nat. Gen., 2013](http://www.nature.com/ng/journal/v45/n7/full/ng.2644.html)). We can impute these SNPs onto the DO genomes and then perform association mapping. The process involves several steps and I have provided a function to encapsulate the steps. To access the Sanger SNPs, we use a SQLlite database provided by [Karl Broman](https://github.com/kbroman). You should have downloaded this during Setup. It is available from the [JAX FTP site](ftp://ftp.jax.org/dgatti/CC_SNP_DB/cc_variants.sqlite), but the file is 3 GB, so it may take too long to download right now.
 
 ![](../fig/DO.impute.founders.sm.png)
 
-The GWAS function is called `scanone.assoc` and it takes arguments that are similar to `scanone` above. There are two new arguments.  `sdp.file`, or strain distribution pattern, which is available from [ftp.jax.org](ftp://ftp.jax.org/MUGA/), is a file that contains compressed SNP information for the 8 DO founder strains.  `ncl` tells the function how many parallel jobs to run to perform the genome scan.  Obviously, don't set this number higher than the number of cores on your computer.  You can find out more about this function using `help(scanone.assoc)`.  
+Association mapping involves several steps and we have encapulated the steps in a single function called `assoc_mapping`. Copy and paste this function into your R environemnt.
 
 
 ~~~
-gwas = scanone.assoc(pheno = pheno, pheno.col = "prop.bm.MN.RET", probs = probs, K = K, 
-       addcovar = addcovar, markers = muga_snps,  sdp.file = "/data/DO_Sanger_SDPs.txt.bgz", ncl = 3)
+assoc_mapping = function(probs, pheno, idx, addcovar, intcovar = NULL, K, 
+                markers, chr, start, end, ncores = 1, 
+                snp.file = "cc_variants.sqlite") {
+
+  # Make sure that we have only one chromosome.
+  if(length(probs) > 1) {
+    stop(paste("Please provide a probs object with only the current chromosome."))
+  } # if(length(probs) > 1)
+
+  if(length(K) > 1) {
+    stop(paste("Please provide a kinship object for the current chromosome."))
+  } # if(length(K) > 1)
+
+  stopifnot(length(probs) == length(K))
+
+  # Create a function to query the SNPs.
+  query_variants = create_variant_query_func(snp.file)
+
+  # Convert marker positions to Mb if not already done.
+  # The longest mouse chromosome is ~200 Mb, so 300 should cover it.
+  if(max(markers[,3], na.rm = T) > 300) {
+    markers[,3] = markers[,3] * 1e-6
+  } # if(max(markers[,3], na.rm = T) > 300)
+
+  # Split up markers into a vector of map positions.
+  map = map_df_to_list(map = markers, pos_column = "pos")
+
+  # Extract SNPs from the database
+  snpinfo = query_variants(chr, start, end)
+
+  # Index groups of similar SNPs.
+  snpinfo = index_snps(map = map, snpinfo)
+
+  # Keep samples that are not NA.
+  keep = !is.na(pheno[,idx])
+
+  # Convert genoprobs to snpprobs.
+  snppr = genoprob_to_snpprob(probs[keep,], snpinfo)
+  
+  # Scan1.
+  assoc = scan1(pheno = pheno[keep,idx, drop = FALSE], kinship = K[[1]][keep, keep],
+          genoprobs = snppr, addcovar = addcovar[keep,,drop=FALSE], 
+          cores = ncores)
+
+  # Return the scan data.
+  return(list(assoc, snpinfo))
+
+} # assoc_mapping()
 ~~~
 {: .r}
 
-Next, we plot the association mapping results.
-
-
-~~~
-plot_snpasso(gwas, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
-~~~
-{: .r}
-
-Once again, we should perform permutations of the data to obtain a significance threshold.  This is too time comsuming for this tutorial.  So we will load in pre-computed permutation values and use them to plot significance thresholds.
-
-
-~~~
-assoc.perms = readRDS("/data/assoc_perms.rds")
-assoc.thr = get.sig.thr(-log10(assoc.perms), Xchr = FALSE)
-plot(gwas, sig.thr = assoc.thr, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
-~~~
-{: .r}
-
-You can also zoom in on one chromosome.
-
-
-~~~
-plot(gwas, chr = 10, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
-~~~
-{: .r}
-
-And you can increase the plotting resolution with the `bin.size` argument.
-
-
-~~~
-plot(gwas, chr = 10, bin.size = 10, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
-~~~
-{: .r}
-
-### Searching for Candidate Genes
-
-At this point, we have a 6 Mb wide support interval that contains a polymorphism(s) that influences benzene induced DNA damage. Next, we will impute the DO founder sequences onto the DO genomes. The [Sanger Mouse Genomes Project](http://www.sanger.ac.uk/resources/mouse/genomes/) has sequenced the eight DO founders and provides SNP, Indel and structural variant files for the strains (see [Baud et.al., Nat. Gen., 2013](http://www.nature.com/ng/journal/v45/n7/full/ng.2644.html)). We can impute these SNPs onto the DO genomes and then perform association mapping. The function `assoc.map` performs this analysis.
+We can call the `assoc_mapping` to perform association mapping in the QTL interval on Chr 10. Change the path to the SNP database (`snp.file` argument) to point to the location of the database on your computer.
 
 
 ~~~
 chr = 10
-assoc = assoc.map(pheno = pheno, pheno.col ="prop.bm.MN.RET", probs = probs, K = K[[chr]],
-                  addcovar = addcovar, snps = muga_snps, chr = chr, start = interval[1,3],
-                  end = interval[3,3], output = "p-value")
+start = 30
+end = 36
+assoc = assoc_mapping(probs = genoprobs[,chr], pheno = pheno, idx = pheno.column, addcovar = addcovar, K = K[chr],  markers = muga_snps, chr = chr, start = start, end = end,  snp.file = "cc_variants.sqlite")
 ~~~
 {: .r}
 
-We can plot the results of the association mapping using assoc.plot().  We set a threshold of 10 to highlight the SNPs with high LOD scores.
+The `assoc` object is a list containing two objects: the LOD scores for each unique SNP and a `snpinfo` object that maps the LOD scores to each SNP. To plot the association mapping, we need to provide both objects to the `plot_snpasso` function.
 
 
 ~~~
-tmp = assoc.plot(assoc, thr = 10, show.sdps = TRUE)
+plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ~~~
 {: .r}
 
-The top panel shows the association of each SNP with MN-RET. Chr 10 is on the X-axis and the LOD score is on the Y-axis. The SNPs for which CAST has an allele that is different from the other 7 founder strains are plotted in red. The bottom panel shows the genes in the interval from Mouse Genome Informatics. There are 60 genes (or non-coding RNAs) in the interval. 
+![](../fig/assoc_plot1.png)
 
-One strategy for finding genes related to a phenotype is to search for genes with expression QTL (eQTL) in the same location. Ideally, we would have liver and bone marrow gene expression data in the DO mice from this experiment. Unfortunately, we did not collect this data. However, we have liver gene expression for a separate set of untreated DO mice [Liver eQTL Viewer](http://cgd.jax.org/apps/eqtlviewer-beta/#). We searched for genes in the QTL interval that had an eQTL in the same location. Then, we looked at the pattern of founder effects to see if CAST stood out. We found two genes that met this criteria.
+This plot shows the LOD score for each SNP in the QTL interval. The SNPs occur in "shelves" because all of the SNPs in a haplotype block have the same founder strain pattern. The SNPs with the highest LOD scores are the ones for which CAST/EiJ contributes the alternate allele.
 
-![](figure/French.et.al.Figure3.png)
+We can add a plot containing the genes in the QTL interval using the `plot_genes` function. We get the genes from another SQLlite database created by [Karl Broman](https://github.com/kbroman) called `mouse_genes.sqlite`. You should have downloaded this from the [JAX FTP Site](ftp://ftp.jax.org/dgatti/CC_SNP_DB/mouse_genes.sqlite) during Setup.
 
-As you can see, both *Sult3a1* and *Gm4794* have eQTL in the same location on Chr 10 and mice with CAST allele (in green) express these genes more highly. *Sult3a1* is a sulfotransferase that may be involved in adding a sulphate group to phenol, one of the metabolites of benzene. Go to the Ensembl web page for [Gm4794](http://useast.ensembl.org/Mus_musculus/Gene/Summary?db=core;g=ENSMUSG00000090298;r=10:33766424-33782115;t=ENSMUST00000165904).  In the menu on the left, click on the "Gene Tree (image)" link.
+First, we must query the database for the genes in the interval. Change the path of the first argument to the location of the gene database on your computer.
 
-![](figure/EnsEMBL_Sult3a1_Gm4794_paralog.png)
 
-As you can see, *Gm4794* is a paralog of *Sult3a1*. Further research revealed that *Gm4794* contains a sulfotransferase domain.
+~~~
+query_genes = create_gene_query_func("mouse_genes.sqlite", filter="source='MGI'")
+~~~
+{: .r}
 
-We also looked at an existing gene expression database in which liver, spleen and kidney gene expression were measured in 26 inbred strains, including the eight DO founders. You can search for *Sult3a1* and *Gm4794* in this [strain survey data](http://cgd.jax.org/gem/strainsurvey26/v1). We did this and plotted the spleen and liver expression values. We did not have bone marrow expression data from this experiment. We also plotted the expression of all of the genes in the QTL support interval that were measured on the array (data not shown).  *Sult3a1* and its paralog *Gm4794* were the only genes with a different expression pattern in CAST. Neither gene was expressed in the spleen.
 
-![](figure/French.et.al.Sup.Figure2.png)
 
-Next, go to the [Sanger Mouse Genomes](http://www.sanger.ac.uk/sanger/Mouse_SnpViewer/rel-1303) website and enter *Sult3a1* into the Gene box. Scroll down and check only the DO founders (129S1/SvImJ, A/J, CAST/EiJ, NOD/ShiLtJ, NZO/HlLtJ & WSB/EiJ) and then scroll up and press 'Search'. This will show you SNPs in *Sult3a1*. Select the 'Structural Variants' tab and note the copy number gain in CAST from 33,764,194 to 33,876,194 bp. Click on the G to see the location, copy this position (10:33764194-33876194) and go to the [Ensembl website](http://useast.ensembl.org/Mus_musculus/Info/Index). Enter the position into the search box and press 'Go'. You will see a figure similar to the one below.
+~~~
+Error in create_gene_query_func("mouse_genes.sqlite", filter = "source='MGI'"): could not find function "create_gene_query_func"
+~~~
+{: .error}
 
-![](figure/EnsEMBL.Sult3a1.png)
 
-Note that both *Gm4794* and part of *Sult3a1* are in the copy number gain region.
+
+~~~
+genes = query_genes(chr, start, end)
+~~~
+{: .r}
+
+
+
+~~~
+Error in query_genes(chr, start, end): could not find function "query_genes"
+~~~
+{: .error}
+
+
+
+~~~
+head(genes)
+~~~
+{: .r}
+
+
+
+~~~
+Error in head(genes): object 'genes' not found
+~~~
+{: .error}
+
+The `genes` object contains annotation information for each gene in the interval. The gene locations are in Mb and we need to change these to bp for the `plot_genes` function.
+
+
+~~~
+genes$start = genes$start * 1e6
+~~~
+{: .r}
+
+
+
+~~~
+Error in eval(expr, envir, enclos): object 'genes' not found
+~~~
+{: .error}
+
+
+
+~~~
+genes$stop = genes$stop * 1e6
+~~~
+{: .r}
+
+
+
+~~~
+Error in eval(expr, envir, enclos): object 'genes' not found
+~~~
+{: .error}
+
+Next, we will create a plot with two panels: one containing the association mapping LOD scores and one containing the genes in the QTL interval.
+
+
+~~~
+layout(matrix(1:2, 2, 1))
+par(plt = c(0.1, 0.99, 0, 0.88))
+plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+par(plt = c(0.1, 0.99, 0.14, 1))
+plot_genes(genes = genes, colors = "black")
+~~~
+{: .r}
+
+![](../fig/assoc_plot2.png)
+
+### Searching for Candidate Genes
+
+One strategy for finding genes related to a phenotype is to search for genes with expression QTL (eQTL) in the same location. Ideally, we would have liver and bone marrow gene expression data in the DO mice from this experiment. Unfortunately, we did not collect this data. However, we have liver gene expression for a separate set of untreated DO mice [Liver eQTL Viewer](http://churchill-lab.jax.org/qtl/svenson/DO478/). We searched for genes in the QTL interval that had an eQTL in the same location. Then, we looked at the pattern of founder effects to see if CAST stood out. We found two genes that met this criteria.
+
+![](../fig/French.et.al.Figure3.png)
+
+As you can see, both *Sult3a1* and *Gm4794* have eQTL in the same location on Chr 10 and mice with CAST allele (in green) express these genes more highly. *Sult3a1* is a sulfotransferase that may be involved in adding a sulphate group to phenol, one of the metabolites of benzene. Go to the Ensembl web page for [Gm4794](http://www.ensembl.org/Mus_musculus/Gene/Summary?db=core;g=ENSMUSG00000090298;r=10:33766424-33786704).  Note that *Gm4794* has a new name: *Sult3a2*. In the menu on the left, click on the "Gene Tree (image)" link.
+
+![](../fig/EnsEMBL_Sult3a1_Gm4794_paralog.png)
+
+As you can see, *Sult3a2* is a paralog of *Sult3a1* and hence both genes are sulfotransferases. These genes encode enzymes that attach a sulfate group to other compounds.
+
+We also looked at a public gene expression database in which liver, spleen and kidney gene expression were measured in 26 inbred strains, including the eight DO founders. You can search for *Sult3a1* and *Gm4794* in this [strain survey data](http://cgd.jax.org/gem/strainsurvey26/v1). We did this and plotted the spleen and liver expression values. We did not have bone marrow expression data from this experiment. We also plotted the expression of all of the genes in the QTL support interval that were measured on the array (data not shown).  *Sult3a1* and its paralog *Gm4794* were the only genes with a different expression pattern in CAST. Neither gene was expressed in the spleen.
+
+![](../fig/French.et.al.Sup.Figure2.png)
+
+Next, go to the [Sanger Mouse Genomes](http://www.sanger.ac.uk/sanger/Mouse_SnpViewer/rel-1505) website and enter *Sult3a1* into the Gene box. Scroll down and check only the DO/CC founders (129S1/SvImJ, A/J, CAST/EiJ, NOD/ShiLtJ, NZO/HlLtJ & WSB/EiJ) and then scroll up and press 'Search'. This will show you SNPs in *Sult3a1*. Select the 'Structural Variants' tab and note the copy number gain in CAST from 33,764,194 to 33,876,194 bp. Click on the G to see the location, copy this position (10:33764194-33876194) and go to the [Ensembl website](http://useast.ensembl.org/Mus_musculus/Info/Index). Enter the position into the search box and press 'Go'. You will see a figure similar to the one below.
+
+![](../fig/EnsEMBL.Sult3a1.png)
+
+Note that both *Gm4794* (aka *Sult3a2*) and part of *Sult3a1* are in the copy number gain region.
 
 In order to visualize the size of the copy number gain, we queried the [Sanger Mouse Genomes alignment files](ftp://ftp-mouse.sanger.ac.uk/current_bams/) for the eight founders. We piled up the reads at each base (which is beyond the scope of this tutorial) and made the figure below.
 
-![](figure/French.et.al.Sup.Figure3.png)
+![](../fig/French.et.al.Sup.Figure3.png)
 
 As you can see, there appears to be a duplicatation in the CAST founders that covers four genes: *Clvs2*, *Gm15939*, *Gm4794* and *Sult3a1*. *Clvs2* is expressed in neurons and *Gm15939* is a predicted gene that may not produce a transcript.
 
 Hence, we have three pieces of evidence that narrows our candidate gene list to *Sult3a1* and *Gm4794*:
 
 1. Both genes have a liver eQTL in the same location as the MN-RET QTL.
-2. Among genes in the MN-RET QTL interval, only *Sult3a1* and *Gm4794* have differential expression of the CAST allele in teh liver.
+2. Among genes in the MN-RET QTL interval, only *Sult3a1* and *Gm4794* have differential expression of the CAST allele in the liver.
 3. There is a copy number gain of these two genes in CAST.
 
 This analysis has led us to the following hypothesis. Inhaled benzene is absorbed by the lungs into the blood stream and transported to the liver. There, it is metabolized and some metabolites are transported to the bone marrow. One class of genes that is involved in toxicant metabolism are sulfotransferases. [*Sult3a1*](http://www.informatics.jax.org/marker/MGI:1931469) is a phase II enzyme that conjugates compounds (such as phenol, which is a metabolite of benzene) with a sulfate group before transport into the bile. It is possible that a high level of *Sult3a1* expression could remove benzene by products and be protective. Our hypothesis is that the copy number gain in the CAST allele increases liver gene expression of *Sult3a1* and *Gm4794*. High liver expression of these genes allows mice containing the CAST allele to rapidly conjugate harmful benzene metabolites and excrete them from the body before they can reach the bone marrow and cause DNA damage. Further experimental validation is required, but this is a plausible hypothesis.
 
-![](figure/benzene_hypothesis.png)
+![](../fig/benzene_hypothesis.png)
 
 We hope that this tutorial has shown you how the DO can be used to map QTL and use the founder effects and bioinformatics resources to narrow down the candidate gene list. Here, we made used of external gene expression data bases and the founder sequence data to build a case for a pair of genes.

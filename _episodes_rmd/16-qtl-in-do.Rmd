@@ -18,6 +18,9 @@ source("../bin/chunk-options.R")
 knitr_fig_path("16-")
 ```
 
+```{r message=FALSE, echo=FALSE}
+#install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
+```
 This tutorial will take you through the process of mapping a QTL and searching for candidate genes.
 
 The data comes from a toxicology study in which mice were exposed to benzene via inhalation for 6 hours a day, 5 days a week for 4 weeks. The study was conducted in two equally sized cohort of 300 male mice each, for a total of 600 mice. They were then sacrificed and reticulocytes (red blood cell precursors) were isolated from bone marrow. The number of micro-nucleated reticulocytes, a measure of DNA damage, was then measured in each mouse. The goal is to map gene(s) that influence the level of DNA damage in the bone marrow.
@@ -32,7 +35,7 @@ The data for this tutorial has been saved as an R binary file that contains seve
 ```{r load_data,message=FALSE,results='hide'}
 library(qtl2)
 library(qtl2convert)
-library(qtl2db)
+#library(qtl2db)
 load(url("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata"))
 ```
 

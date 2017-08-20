@@ -18,7 +18,7 @@ source: Rmd
 
 
 
-Hypertension, or high blood pressure, affects more than one-fourth of the U.S. population and is a leading cause of heart attack and stroke. Hypertension is complex, is influenced by many genes, and is exacerbated by elevated sodium intake among other lifestyle factors. [Sugiyama et al. 2001](https://s3.amazonaws.com/academia.edu.documents/45963759/geno.2000.640120160526-29022-36mpgg.pdf?AWSAccessKeyId=AKIAIWOWYYGZ2Y53UL3A&Expires=1502397248&Signature=hVoWIHwrYd7KI0UNIaSm7kWviWk%3D&response-content-disposition=inline%3B%20filename%3DConcordance_of_murine_quantitative_trait.pdf) investigated the genetics of salt-induced hypertension. 250 male mice from a reciprocal backcross between salt-sensitive C57BL/6J and resistant A/J strains were treated with a 1% salt solution in drinking water. QTL analysis identified 6 loci contributing to variation in hypertension. 
+Hypertension, or high blood pressure, affects more than one-fourth of the U.S. population and is a leading cause of heart attack and stroke. Hypertension is complex, is influenced by many genes, and is exacerbated by elevated sodium intake among other environmental and lifestyle factors. [Sugiyama et al. 2001](https://s3.amazonaws.com/academia.edu.documents/45963759/geno.2000.640120160526-29022-36mpgg.pdf?AWSAccessKeyId=AKIAIWOWYYGZ2Y53UL3A&Expires=1502397248&Signature=hVoWIHwrYd7KI0UNIaSm7kWviWk%3D&response-content-disposition=inline%3B%20filename%3DConcordance_of_murine_quantitative_trait.pdf) investigated the genetics of salt-induced hypertension. 250 male mice from a reciprocal backcross between salt-sensitive C57BL/6J and resistant A/J strains were treated with a 1% salt solution in drinking water. QTL analysis identified 6 loci contributing to variation in hypertension. 
 
 Data for this study are included in the `qtl` package. To access the data and perform QTL analysis, first load the `qtl` library, then use the `data` function to load the built-in dataset. Once the data are loaded, we'll begin exploration of the data and the capabilities of the `qtl` package.
 
@@ -218,10 +218,94 @@ plotPheno(hyper, pheno.col = 2)
 
 <img src="../fig/rmd-02-unnamed-chunk-10-2.png" title="plot of chunk unnamed-chunk-10" alt="plot of chunk unnamed-chunk-10" style="display: block; margin: auto;" />
 
+> ## Challenge 1
+>
+> The R/qtl package includes data on susceptibility to 
+> *Listeria monocytogenes* in mice 
+> [Boyartchuk et al., Nature Genetics 27:259-260, 2001](https://search.proquest.com/openview/34242da571de16c0912dc6bed9db8dee/1?pq-origsite=gscholar&cbl=33429).
+> The phenotype is survival time in hours following *Listeria* 
+> infection. A survival time of 264 hours indicates those 
+> animals that recovered from the infection.
+>
+> Access the data with `data(listeria)` and view summaries.
+> 1). What type of cross is this?
+> 2). How many animals are there? How many of each sex?
+> 3). How many markers are there?
+> 4). Does survival time (T264) appear to be normally distributed?
+> > ## Solution to Challenge 1
+> >
+> > 
+> > ~~~
+> > data(listeria)
+> > summary(listeria)
+> > ~~~
+> > {: .r}
+> > 
+> > 
+> > 
+> > ~~~
+> >     F2 intercross
+> > 
+> >     No. individuals:    120 
+> > 
+> >     No. phenotypes:     2 
+> >     Percent phenotyped: 96.7 100 
+> > 
+> >     No. chromosomes:    20 
+> >         Autosomes:      1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 
+> >         X chr:          X 
+> > 
+> >     Total markers:      133 
+> >     No. markers:        13 6 6 4 13 13 6 6 7 5 6 6 12 4 8 4 4 4 4 2 
+> >     Percent genotyped:  88.5 
+> >     Genotypes (%):    
+> >           Autosomes:        CC:25.8      CB:48.9      BB:24.4  not BB:0.0  
+> >                         not CC:0.9  
+> >        X chromosome:        CC:51.7      CB:48.3 
+> > ~~~
+> > {: .output}
+> > 
+> > 
+> > 
+> > ~~~
+> > plot(listeria)
+> > ~~~
+> > {: .r}
+> > 
+> > <img src="../fig/rmd-02-unnamed-chunk-11-1.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
+> > 
+> > ~~~
+> > plotMissing(listeria)
+> > ~~~
+> > {: .r}
+> > 
+> > <img src="../fig/rmd-02-unnamed-chunk-11-2.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
+> > 
+> > ~~~
+> > plotPheno(listeria, pheno.col = 1)
+> > ~~~
+> > {: .r}
+> > 
+> > <img src="../fig/rmd-02-unnamed-chunk-11-3.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
+> > 
+> > ~~~
+> > plotPheno(listeria, pheno.col = 2)
+> > ~~~
+> > {: .r}
+> > 
+> > <img src="../fig/rmd-02-unnamed-chunk-11-4.png" title="plot of chunk unnamed-chunk-11" alt="plot of chunk unnamed-chunk-11" style="display: block; margin: auto;" />
+> > This is an F2 intercross consisting of 120 female animals and 
+> > no males. There are 133 genotyped markers. Survival time
+> > is not normally distributed, but rather appears to be 
+> > bimodal with many animals surviving for 264 days, while
+> > most animals survived fewer than 150 days.
+> {: .solution}
+{: .challenge}
+
 ## Single-QTL genome scan
 We now, finally, get to QTL mapping. The core of R/qtl is a set of functions which use hidden Markov models to calculate QTL genotype probabilities, to simulate from the joint genotype distribution and to calculate the most likely sequence of underlying genotypes (all conditional on the observed marker data). This is done in a quite general way, with possible allowance for the presence of genotyping errors. Of course, for convenience we assume no crossover interference.
 
-The function `calc.genoprob` calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. The argument `step` indicates the step size (in cM) at which the probabilities are calculated, and determines the step size at which later LOD scores are calculated.
+The function `calc.genoprob` calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. The argument `step` indicates the step size (in cM) at which the probabilities are calculated, and determines the step size at which later LOD scores are calculated. The argument `error.prob` is an assumed genotyping error rate.
 
 
 ~~~
@@ -229,7 +313,11 @@ hyper <- calc.genoprob(hyper, step=1, error.prob=0.01)
 ~~~
 {: .r}
 
-We may now use the function `scanone` to perform a single-QTL genome scan with a normal model. We may use maximum likelihood via the EM algorithm [Lander and Botstein 1989](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1203601/pdf/ge1211185.pdf) or use Haley-Knott regression [Haley and Knott 1992](http://animalscience2.ucdavis.edu/ggg201d/references/pdf_files/haley_knott_1992.pdf).
+We may now use the function `scanone` to perform a single-QTL genome scan with a normal model. We may use maximum likelihood via the Expectation-Maximization (EM) algorithm [Lander and Botstein 1989](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1203601/pdf/ge1211185.pdf) to carry out a hypothesis test for each putative QTL position in the genome. Our null hypothesis states that there is no QTL anywhere in the genome. The EM algorithm produces a logarithm-of-odds (LOD) score of the alternative hypothesis (that there is a QTL linked to the position) against the null hypothesis. The greater the LOD score, the higher the likelihood that a QTL is present at the position.
+
+Where marker density is relatively high, Haley-Knott regression [Haley and Knott 1992](http://animalscience2.ucdavis.edu/ggg201d/references/pdf_files/haley_knott_1992.pdf) produces faster and similarly accurate results when compared to the EM algorithm. The conditional genotype probabilities calculated by the `calc.genoprob` function are used in a linear regression of the phenotype on the genotype probabilities. 
+
+We'll compare results of the EM algorithm and Haley-Knott regression on the `hyper` data. We already know that in many cases only animals with extreme phenotypes were genotyped, so we might expect EM to perform better. 
 
 
 ~~~
@@ -345,14 +433,14 @@ plot(out.em, chr=c(1,4,15))
 ~~~
 {: .r}
 
-<img src="../fig/rmd-02-unnamed-chunk-15-1.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-16-1.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" style="display: block; margin: auto;" />
 
 ~~~
 plot(out.em, out.hk, chr=c(1,4,15))
 ~~~
 {: .r}
 
-<img src="../fig/rmd-02-unnamed-chunk-15-2.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-16-2.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" style="display: block; margin: auto;" />
 
 ~~~
 plot(out.em, chr=c(1,4,15))
@@ -360,7 +448,7 @@ plot(out.hk, chr=c(1,4,15), col="blue", add=TRUE)
 ~~~
 {: .r}
 
-<img src="../fig/rmd-02-unnamed-chunk-15-3.png" title="plot of chunk unnamed-chunk-15" alt="plot of chunk unnamed-chunk-15" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-16-3.png" title="plot of chunk unnamed-chunk-16" alt="plot of chunk unnamed-chunk-16" style="display: block; margin: auto;" />
 
 The function `scanone` may also be used to perform a permutation test to get a genome-wide LOD significance threshold. For Haley-Knott regression, this can be quite fast.
 
@@ -391,7 +479,7 @@ summary(operm.hk, alpha=0.05)
 ~~~
 LOD thresholds (1000 permutations)
     lod
-5% 2.63
+5% 2.69
 ~~~
 {: .output}
 
@@ -430,7 +518,10 @@ add.threshold(out.em, chr=c(1,4,15), operm.hk, alpha = 0.1, col = "blue", lwd = 
 ~~~
 {: .r}
 
-<img src="../fig/rmd-02-unnamed-chunk-19-1.png" title="plot of chunk unnamed-chunk-19" alt="plot of chunk unnamed-chunk-19" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-20-1.png" title="plot of chunk unnamed-chunk-20" alt="plot of chunk unnamed-chunk-20" style="display: block; margin: auto;" />
+
+
+
 
 ## Two-QTL genome scan
 The function `scantwo` performs a two-dimensional genome scan with a two-QTL model. For every pair of positions, it calculates a LOD score for the full model (two QTL plus interaction) and a LOD score for the additive model (two QTL but no interaction). This can be quite time consuming, and so you may wish to do the calculations on a coarser grid.
@@ -517,14 +608,14 @@ plot(out2.hk)
 ~~~
 {: .r}
 
-<img src="../fig/rmd-02-unnamed-chunk-23-1.png" title="plot of chunk unnamed-chunk-23" alt="plot of chunk unnamed-chunk-23" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-24-1.png" title="plot of chunk unnamed-chunk-24" alt="plot of chunk unnamed-chunk-24" style="display: block; margin: auto;" />
 
 ~~~
 plot(out2.hk, chr=c(1,4,6,15))
 ~~~
 {: .r}
 
-<img src="../fig/rmd-02-unnamed-chunk-23-2.png" title="plot of chunk unnamed-chunk-23" alt="plot of chunk unnamed-chunk-23" style="display: block; margin: auto;" />
+<img src="../fig/rmd-02-unnamed-chunk-24-2.png" title="plot of chunk unnamed-chunk-24" alt="plot of chunk unnamed-chunk-24" style="display: block; margin: auto;" />
 
 By default, the upper-left triangle contains epistasis LOD scores and the lower-right triangle contains the LOD scores for the full model. The color scale on the right indicates separate scales for the epistasis and joint LOD scores (on the left and right, respectively).
 
@@ -572,8 +663,8 @@ summary(operm2.hk)
 ~~~
 bp (100 permutations)
     full  fv1  int  add  av1  one
-5%  5.56 4.05 3.75 4.34 2.29 2.79
-10% 5.15 3.80 3.65 4.09 2.11 2.60
+5%  5.56 4.13 3.91 4.36 2.12 2.56
+10% 5.07 3.93 3.55 4.02 1.94 2.43
 ~~~
 {: .output}
 
@@ -591,19 +682,25 @@ alphas=c(0.05, 0.05, 0, 0.05, 0.05))
 
 ~~~
         pos1f pos2f lod.full pval lod.fv1 pval lod.int pval     pos1a
-c1 :c4   68.3  30.0    14.13 0.00    6.51 0.00   0.225 1.00      68.3
-c2 :c19  47.7   0.0     6.71 0.00    5.01 0.01   3.458 0.14      52.7
-c3 :c3   37.2  42.2     6.10 0.03    5.08 0.00   0.226 1.00      37.2
-c6 :c15  60.0  20.5     7.17 0.00    5.22 0.00   3.237 0.23      25.0
-c9 :c18  67.0  37.2     6.31 0.03    4.79 0.01   4.083 0.03      67.0
-c12:c19   1.1  40.0     6.48 0.02    4.79 0.01   4.090 0.03       1.1
+c1 :c2   78.3  52.7     5.77 0.03    2.22 0.96  0.0383 1.00      78.3
+c1 :c4   68.3  30.0    14.13 0.00    6.51 0.00  0.2255 1.00      68.3
+c1 :c19  48.3   0.0     5.75 0.03    2.21 0.97  0.0327 1.00      48.3
+c2 :c19  47.7   0.0     6.71 0.02    5.01 0.01  3.4580 0.17      52.7
+c3 :c3   37.2  42.2     6.10 0.03    5.08 0.01  0.2258 1.00      37.2
+c6 :c15  60.0  20.5     7.17 0.01    5.22 0.01  3.2372 0.24      25.0
+c9 :c18  67.0  37.2     6.31 0.03    4.79 0.01  4.0826 0.03      67.0
+c9 :cX   47.0  41.1     4.66 0.23    2.48 0.91  0.2701 1.00      67.0
+c12:c19   1.1  40.0     6.48 0.02    4.79 0.01  4.0903 0.03       1.1
         pos2a lod.add pval lod.av1 pval
+c1 :c2   52.7    5.73 0.01   2.184 0.03
 c1 :c4   30.0   13.90 0.00   6.288 0.00
-c2 :c19   0.0    3.25 0.34   1.552 0.38
+c1 :c19   0.0    5.72 0.01   2.174 0.03
+c2 :c19   0.0    3.25 0.37   1.552 0.38
 c3 :c3   42.2    5.87 0.01   4.853 0.00
-c6 :c15  20.5    3.93 0.12   1.984 0.15
-c9 :c18  12.2    2.23 0.82   0.708 0.99
-c12:c19   0.0    2.39 0.70   0.697 0.99
+c6 :c15  20.5    3.93 0.13   1.984 0.07
+c9 :c18  12.2    2.23 0.85   0.708 1.00
+c9 :cX   41.1    4.39 0.05   2.210 0.02
+c12:c19   0.0    2.39 0.78   0.697 1.00
 ~~~
 {: .output}
 

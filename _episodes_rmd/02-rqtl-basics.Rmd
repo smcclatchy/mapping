@@ -21,7 +21,7 @@ source("../bin/chunk-options.R")
 knitr_fig_path("02-")
 ```
 
-Hypertension, or high blood pressure, affects more than one-fourth of the U.S. population and is a leading cause of heart attack and stroke. Hypertension is complex, is influenced by many genes, and is exacerbated by elevated sodium intake among other lifestyle factors. [Sugiyama et al. 2001](https://s3.amazonaws.com/academia.edu.documents/45963759/geno.2000.640120160526-29022-36mpgg.pdf?AWSAccessKeyId=AKIAIWOWYYGZ2Y53UL3A&Expires=1502397248&Signature=hVoWIHwrYd7KI0UNIaSm7kWviWk%3D&response-content-disposition=inline%3B%20filename%3DConcordance_of_murine_quantitative_trait.pdf) investigated the genetics of salt-induced hypertension. 250 male mice from a reciprocal backcross between salt-sensitive C57BL/6J and resistant A/J strains were treated with a 1% salt solution in drinking water. QTL analysis identified 6 loci contributing to variation in hypertension. 
+Hypertension, or high blood pressure, affects more than one-fourth of the U.S. population and is a leading cause of heart attack and stroke. Hypertension is complex, is influenced by many genes, and is exacerbated by elevated sodium intake among other environmental and lifestyle factors. [Sugiyama et al. 2001](https://s3.amazonaws.com/academia.edu.documents/45963759/geno.2000.640120160526-29022-36mpgg.pdf?AWSAccessKeyId=AKIAIWOWYYGZ2Y53UL3A&Expires=1502397248&Signature=hVoWIHwrYd7KI0UNIaSm7kWviWk%3D&response-content-disposition=inline%3B%20filename%3DConcordance_of_murine_quantitative_trait.pdf) investigated the genetics of salt-induced hypertension. 250 male mice from a reciprocal backcross between salt-sensitive C57BL/6J and resistant A/J strains were treated with a 1% salt solution in drinking water. QTL analysis identified 6 loci contributing to variation in hypertension. 
 
 Data for this study are included in the `qtl` package. To access the data and perform QTL analysis, first load the `qtl` library, then use the `data` function to load the built-in dataset. Once the data are loaded, we'll begin exploration of the data and the capabilities of the `qtl` package.
 
@@ -91,16 +91,52 @@ plotPheno(hyper, pheno.col = 1)
 plotPheno(hyper, pheno.col = 2)
 ```
 
+> ## Challenge 1
+>
+> The R/qtl package includes data on susceptibility to 
+> *Listeria monocytogenes* in mice 
+> [Boyartchuk et al., Nature Genetics 27:259-260, 2001](https://search.proquest.com/openview/34242da571de16c0912dc6bed9db8dee/1?pq-origsite=gscholar&cbl=33429).
+> The phenotype is survival time in hours following *Listeria* 
+> infection. A survival time of 264 hours indicates those 
+> animals that recovered from the infection.
+>
+> Access the data with `data(listeria)` and view summaries.
+> 1). What type of cross is this?
+> 2). How many animals are there? How many of each sex?
+> 3). How many markers are there?
+> 4). Does survival time (T264) appear to be normally distributed?
+> > ## Solution to Challenge 1
+> >
+> > ```{r}
+> > data(listeria)
+> > summary(listeria)
+> > plot(listeria)
+> > plotMissing(listeria)
+> > plotPheno(listeria, pheno.col = 1)
+> > plotPheno(listeria, pheno.col = 2)
+> > ```
+> > This is an F2 intercross consisting of 120 female animals and 
+> > no males. There are 133 genotyped markers. Survival time
+> > is not normally distributed, but rather appears to be 
+> > bimodal with many animals surviving for 264 days, while
+> > most animals survived fewer than 150 days.
+> {: .solution}
+{: .challenge}
+
 ## Single-QTL genome scan
 We now, finally, get to QTL mapping. The core of R/qtl is a set of functions which use hidden Markov models to calculate QTL genotype probabilities, to simulate from the joint genotype distribution and to calculate the most likely sequence of underlying genotypes (all conditional on the observed marker data). This is done in a quite general way, with possible allowance for the presence of genotyping errors. Of course, for convenience we assume no crossover interference.
 
-The function `calc.genoprob` calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. The argument `step` indicates the step size (in cM) at which the probabilities are calculated, and determines the step size at which later LOD scores are calculated.
+The function `calc.genoprob` calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. The argument `step` indicates the step size (in cM) at which the probabilities are calculated, and determines the step size at which later LOD scores are calculated. The argument `error.prob` is an assumed genotyping error rate.
 
 ```{r}
 hyper <- calc.genoprob(hyper, step=1, error.prob=0.01)
 ```
 
-We may now use the function `scanone` to perform a single-QTL genome scan with a normal model. We may use maximum likelihood via the EM algorithm [Lander and Botstein 1989](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1203601/pdf/ge1211185.pdf) or use Haley-Knott regression [Haley and Knott 1992](http://animalscience2.ucdavis.edu/ggg201d/references/pdf_files/haley_knott_1992.pdf).
+We may now use the function `scanone` to perform a single-QTL genome scan with a normal model. We may use maximum likelihood via the Expectation-Maximization (EM) algorithm [Lander and Botstein 1989](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC1203601/pdf/ge1211185.pdf) to carry out a hypothesis test for each putative QTL position in the genome. Our null hypothesis states that there is no QTL anywhere in the genome. The EM algorithm produces a logarithm-of-odds (LOD) score of the alternative hypothesis (that there is a QTL linked to the position) against the null hypothesis. The greater the LOD score, the higher the likelihood that a QTL is present at the position.
+
+Where marker density is relatively high, Haley-Knott regression [Haley and Knott 1992](http://animalscience2.ucdavis.edu/ggg201d/references/pdf_files/haley_knott_1992.pdf) produces faster and similarly accurate results when compared to the EM algorithm. The conditional genotype probabilities calculated by the `calc.genoprob` function are used in a linear regression of the phenotype on the genotype probabilities. 
+
+We'll compare results of the EM algorithm and Haley-Knott regression on the `hyper` data. We already know that in many cases only animals with extreme phenotypes were genotyped, so we might expect EM to perform better. 
 
 ```{r}
 out.em <- scanone(hyper)
@@ -158,6 +194,9 @@ plot(out.em, chr=c(1,4,15))
 add.threshold(out.em, chr=c(1,4,15), operm.hk, alpha = 0.05, col = "red", lwd = 2)
 add.threshold(out.em, chr=c(1,4,15), operm.hk, alpha = 0.1, col = "blue", lwd = 2)
 ```
+
+
+
 
 ## Two-QTL genome scan
 The function `scantwo` performs a two-dimensional genome scan with a two-QTL model. For every pair of positions, it calculates a LOD score for the full model (two QTL plus interaction) and a LOD score for the additive model (two QTL but no interaction). This can be quite time consuming, and so you may wish to do the calculations on a coarser grid.

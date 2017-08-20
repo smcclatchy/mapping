@@ -273,8 +273,8 @@ summary(operm.sexint, alpha=c(0.05, 0.20))
 ~~~
 LOD thresholds (100 permutations)
     pheno1 pheno2
-5%   1.542   1.54
-20%  0.915   1.01
+5%    1.70  1.222
+20%   1.01  0.869
 ~~~
 {: .output}
 
@@ -290,8 +290,8 @@ summary(out.sexint, perms=operm.sexint, alpha=0.1,format="allpeaks", pvalues=TRU
 
 ~~~
    chr  pos pheno1 pval  pos pheno2 pval
-2    2 50.2 2.4754 0.02 45.0  4.007 0.00
-7    7 42.6 0.0322 0.93 42.6  1.913 0.04
-17  17  9.9 1.7762 0.04  9.9  0.776 0.31
+2    2 50.2 2.4754 0.00 45.0  4.007 0.00
+7    7 42.6 0.0322 0.94 42.6  1.913 0.01
+17  17  9.9 1.7762 0.04  9.9  0.776 0.30
 ~~~
 {: .output}
