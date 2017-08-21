@@ -35,7 +35,7 @@ The data for this tutorial has been saved as an R binary file that contains seve
 ```{r load_data,message=FALSE,results='hide'}
 library(qtl2)
 library(qtl2convert)
-#library(qtl2db)
+library(qtl2db)
 load(url("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata"))
 ```
 
@@ -79,6 +79,13 @@ load(url("ftp://ftp.jax.org/MUGA/muga_snps.Rdata"))
 ```
 
 This loaded an object called `muga_snps` into your R environment. Look at it's structure in the Environment tab in RStudio.
+
+We used a subset of the markers to reconstruct the DO genomes. We need to subset the markers so that they match the haplotype probabilities.
+
+```{r}
+muga_snps = muga_snps[dimnames(probs)[[3]],]
+stopifnot(rownames(muga_snps) == dimnames(probs)[[3]])
+```
 
 Convert the genotype probabilities from DOQTL format to qtl2 format. Convert the SNPs to a qtl2 map object.
 
