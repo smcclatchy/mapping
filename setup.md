@@ -62,6 +62,7 @@ Finally, install R/qtl2 using `devtools::install_github()`.
 ~~~
 library(devtools)
 install_github("rqtl/qtl2")
+install_github("rqtl/qtl2db")
 ~~~
 {: .r}
 
