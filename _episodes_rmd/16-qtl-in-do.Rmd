@@ -176,7 +176,7 @@ coef10 = scan1coef(genoprobs = genoprobs[,chr], pheno = pheno[,"prop.bm.MN.RET",
 
 This produces an object containing estimates of each of the eight DO founder allele effect. 
 
-```{r coef_plot,fig.width=8, fig.height=6, eval=FALSE}
+```{r coef_plot,fig.width=8, fig.height=6}
 plot_coefCC(coef10, map, scan1_output = qtl, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ```
 
@@ -256,7 +256,7 @@ The `assoc` object is a list containing two objects: the LOD scores for each uni
 plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ```
 
-![](../fig/assoc_plot1.png)
+![](../fig/assoc_plot1.png){width=50%}
 
 This plot shows the LOD score for each SNP in the QTL interval. The SNPs occur in "shelves" because all of the SNPs in a haplotype block have the same founder strain pattern. The SNPs with the highest LOD scores are the ones for which CAST/EiJ contributes the alternate allele.
 
@@ -264,7 +264,7 @@ We can add a plot containing the genes in the QTL interval using the `plot_genes
 
 First, we must query the database for the genes in the interval. Change the path of the first argument to the location of the gene database on your computer.
 
-```{r get_genes}
+```{r get_genes,eval=FALSE}
 query_genes = create_gene_query_func("mouse_genes.sqlite", filter="source='MGI'")
 genes = query_genes(chr, start, end)
 head(genes)
@@ -272,14 +272,14 @@ head(genes)
 
 The `genes` object contains annotation information for each gene in the interval. The gene locations are in Mb and we need to change these to bp for the `plot_genes` function.
 
-```{r change_Mb_to_bp}
+```{r change_Mb_to_bp,eval=FALSE}
 genes$start = genes$start * 1e6
 genes$stop = genes$stop * 1e6
 ```
 
 Next, we will create a plot with two panels: one containing the association mapping LOD scores and one containing the genes in the QTL interval.
 
-```{r plot_assoc2,eval = FALSE}
+```{r plot_assoc2,eval=FALSE}
 layout(matrix(1:2, 2, 1))
 par(plt = c(0.1, 0.99, 0, 0.88))
 plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
@@ -287,7 +287,7 @@ par(plt = c(0.1, 0.99, 0.14, 1))
 plot_genes(genes = genes, colors = "black")
 ```
 
-![](../fig/assoc_plot2.png)
+![](../fig/assoc_plot2.png){width=50%}
 
 ### Searching for Candidate Genes
 
