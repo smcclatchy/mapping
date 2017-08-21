@@ -31,7 +31,7 @@ The data for this tutorial has been saved as an R binary file that contains seve
 ~~~
 library(qtl2)
 library(qtl2convert)
-#library(qtl2db)
+library(qtl2db)
 load(url("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata"))
 ~~~
 {: .r}
@@ -91,6 +91,15 @@ load(url("ftp://ftp.jax.org/MUGA/muga_snps.Rdata"))
 {: .r}
 
 This loaded an object called `muga_snps` into your R environment. Look at it's structure in the Environment tab in RStudio.
+
+We used a subset of the markers to reconstruct the DO genomes. We need to subset the markers so that they match the haplotype probabilities.
+
+
+~~~
+muga_snps = muga_snps[dimnames(probs)[[3]],]
+stopifnot(rownames(muga_snps) == dimnames(probs)[[3]])
+~~~
+{: .r}
 
 Convert the genotype probabilities from DOQTL format to qtl2 format. Convert the SNPs to a qtl2 map object.
 
@@ -153,12 +162,7 @@ plot(qtl, map, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ~~~
 {: .r}
 
-
-
-~~~
-Error in plot_scan1(x, map = map, lodcolumn = lodcolumn, chr = chr, add = add, : nrow(x) [7654] != number of positions in map [7854]
-~~~
-{: .error}
+<img src="../fig/rmd-16-qtl_plot-1.png" title="plot of chunk qtl_plot" alt="plot of chunk qtl_plot" style="display: block; margin: auto;" />
 
 There is clearly a large peak on Chr 10. Next, we must assess its statistical significance. This is most commonly done via [permutation](http://www.genetics.org/content/178/1/609.long). We advise running at least 1,000 permutations to obtain significance thresholds. In the interest of time, we perform 100 permutations here.
 
@@ -175,30 +179,12 @@ We can now add thresholds to the previous QTL plot. We use a significance thresh
 
 ~~~
 plot(qtl, map,  main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
-~~~
-{: .r}
-
-
-
-~~~
-Error in plot_scan1(x, map = map, lodcolumn = lodcolumn, chr = chr, add = add, : nrow(x) [7654] != number of positions in map [7854]
-~~~
-{: .error}
-
-
-
-~~~
 thr = quantile(perms, 0.95)
 abline(h = thr, col = "red", lwd = 2)
 ~~~
 {: .r}
 
-
-
-~~~
-Error in int_abline(a = a, b = b, h = h, v = v, untf = untf, ...): plot.new has not been called yet
-~~~
-{: .error}
+<img src="../fig/rmd-16-qtl_plot_thr-1.png" title="plot of chunk qtl_plot_thr" alt="plot of chunk qtl_plot_thr" style="display: block; margin: auto;" />
 
 The peak on Chr 10 is well above the red significance line.
 
@@ -213,9 +199,10 @@ find_peaks(qtl, map, threshold = thr)
 
 
 ~~~
-Error in find_peaks(qtl, map, threshold = thr): nrow(scan1_output) [7654] != number of positions in map [7854]
+  lodindex      lodcolumn chr      pos      lod
+1        1 prop.bm.MN.RET  10 34.17711 16.53619
 ~~~
-{: .error}
+{: .output}
 
 The support interval is determined using the [Bayesian Credible Interval](http://www.ncbi.nlm.nih.gov/pubmed/11560912) and represents the region most likely to contain the causative polymorphism(s). We can obtain this interval using the `bayesint` function.  We can determine the support interval for the QTL peak using the `bayes_int` function.
 
@@ -228,9 +215,10 @@ bayes_int(qtl, map, chr = 10)
 
 
 ~~~
-Error in bayes_int(qtl, map, chr = 10): nrow(scan1_output) [7654] != number of positions in map [7854]
+     ci_lo      pos    ci_hi
+1 30.16649 34.17711 35.49352
 ~~~
-{: .error}
+{: .output}
 
 From the output above, you can see that the support interval is 5.5 Mb wide (30.16649 to 35.49352 Mb). The location of the maximum LOD score is 34.17711 Mb.
 
@@ -344,19 +332,6 @@ First, we must query the database for the genes in the interval. Change the path
 
 ~~~
 query_genes = create_gene_query_func("mouse_genes.sqlite", filter="source='MGI'")
-~~~
-{: .r}
-
-
-
-~~~
-Error in create_gene_query_func("mouse_genes.sqlite", filter = "source='MGI'"): could not find function "create_gene_query_func"
-~~~
-{: .error}
-
-
-
-~~~
 genes = query_genes(chr, start, end)
 ~~~
 {: .r}
@@ -364,7 +339,7 @@ genes = query_genes(chr, start, end)
 
 
 ~~~
-Error in query_genes(chr, start, end): could not find function "query_genes"
+Error in query_genes(chr, start, end): File mouse_genes.sqlite doesn't exist
 ~~~
 {: .error}
 
