@@ -239,6 +239,13 @@ plot_coefCC(coef10, map, scan1_output = qtl, main = "Proportion of Micro-nucleat
 ~~~
 {: .r}
 
+
+
+~~~
+Error in plot_coef(x, map, columns = 1:8, col = qtl2plot::CCcolors, scan1_output = scan1_output, : nrow(x) [416] != number of positions in map [7654]
+~~~
+{: .error}
+
 The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele near 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective allele. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. 
 
 ### Association Mapping
@@ -321,7 +328,7 @@ plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone 
 ~~~
 {: .r}
 
-![](../fig/assoc_plot1.png)
+![](../fig/assoc_plot1.png){width=50%}
 
 This plot shows the LOD score for each SNP in the QTL interval. The SNPs occur in "shelves" because all of the SNPs in a haplotype block have the same founder strain pattern. The SNPs with the highest LOD scores are the ones for which CAST/EiJ contributes the alternate allele.
 
@@ -333,58 +340,18 @@ First, we must query the database for the genes in the interval. Change the path
 ~~~
 query_genes = create_gene_query_func("mouse_genes.sqlite", filter="source='MGI'")
 genes = query_genes(chr, start, end)
-~~~
-{: .r}
-
-
-
-~~~
-Error in query_genes(chr, start, end): File mouse_genes.sqlite doesn't exist
-~~~
-{: .error}
-
-
-
-~~~
 head(genes)
 ~~~
 {: .r}
-
-
-
-~~~
-Error in head(genes): object 'genes' not found
-~~~
-{: .error}
 
 The `genes` object contains annotation information for each gene in the interval. The gene locations are in Mb and we need to change these to bp for the `plot_genes` function.
 
 
 ~~~
 genes$start = genes$start * 1e6
-~~~
-{: .r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'genes' not found
-~~~
-{: .error}
-
-
-
-~~~
 genes$stop = genes$stop * 1e6
 ~~~
 {: .r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'genes' not found
-~~~
-{: .error}
 
 Next, we will create a plot with two panels: one containing the association mapping LOD scores and one containing the genes in the QTL interval.
 
@@ -398,7 +365,7 @@ plot_genes(genes = genes, colors = "black")
 ~~~
 {: .r}
 
-![](../fig/assoc_plot2.png)
+![](../fig/assoc_plot2.png){width=50%}
 
 ### Searching for Candidate Genes
 
