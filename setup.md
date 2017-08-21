@@ -30,7 +30,8 @@ inspired by the
 it is basically empty, but when you install it, the
 [qtl2geno](https://github.com/rqtl/qtl2geno),
 [qtl2scan](https://github.com/rqtl/qtl2scan),
-[qtl2plot](https://github.com/rqtl/qtl2plot), and
+[qtl2plot](https://github.com/rqtl/qtl2plot),
+[qtl2db](https://github.com/rqtl/qtl2db), and
 [qtl2convert](https://github.com/rqtl/qtl2convert) packages, plus a
 bunch of dependencies, will be installed.
 
@@ -62,6 +63,7 @@ Finally, install R/qtl2 using `devtools::install_github()`.
 ~~~
 library(devtools)
 install_github("rqtl/qtl2")
+install_github("rqtl/qtl2convert")
 install_github("rqtl/qtl2db")
 ~~~
 {: .r}
