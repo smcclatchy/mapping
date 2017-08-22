@@ -328,7 +328,7 @@ plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone 
 ~~~
 {: .r}
 
-![](../fig/assoc_plot1.png){width=50%}
+![](../fig/assoc_plot1.png)
 
 This plot shows the LOD score for each SNP in the QTL interval. The SNPs occur in "shelves" because all of the SNPs in a haplotype block have the same founder strain pattern. The SNPs with the highest LOD scores are the ones for which CAST/EiJ contributes the alternate allele.
 
@@ -365,7 +365,7 @@ plot_genes(genes = genes, colors = "black")
 ~~~
 {: .r}
 
-![](../fig/assoc_plot2.png){width=50%}
+![](../fig/assoc_plot2.png)
 
 ### Searching for Candidate Genes
 
