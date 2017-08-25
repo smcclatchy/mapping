@@ -16,7 +16,7 @@ or use the Install button on the Packages tab in RStudio.
 
 A manual, tutorials, and a sample chapter from Broman & Sen's book [A Guide to QTL Mapping with R/qtl](http://www.rqtl.org/book/) are available from the [R/qtl website](http://www.rqtl.org/).
 
-he [qtl2](https://github.com/rqtl/qtl2) package is
+The [qtl2](https://github.com/rqtl/qtl2) package is
 inspired by the
 [tidyverse package](https://cran.r-project.org/package=tidyverse);
 it is basically empty, but when you install it, the
