@@ -21,7 +21,6 @@ knitr_fig_path("16-")
 ```{r message=FALSE, echo=FALSE}
 library(devtools)
 install_github("rqtl/qtl2db")
-sessionInfo()
 ```
 This tutorial will take you through the process of mapping a QTL and searching for candidate genes.
 
@@ -323,6 +322,10 @@ Hence, we have three pieces of evidence that narrows our candidate gene list to 
 1. Both genes have a liver eQTL in the same location as the MN-RET QTL.
 2. Among genes in the MN-RET QTL interval, only *Sult3a1* and *Gm4794* have differential expression of the CAST allele in the liver.
 3. There is a copy number gain of these two genes in CAST.
+
+Sulfation is a prominent detoxification mechanism for benezene as well. The diagram below shows the metabolism pathway for benzene (Monks et.al.,Chem. Biol. Inter., 2010). Hydroquinone, phenol and catechol are all sulfated and excreted from the body.
+
+![](../Monks_ChemBiolInter_2010_Fig1.jpg)
 
 This analysis has led us to the following hypothesis. Inhaled benzene is absorbed by the lungs into the blood stream and transported to the liver. There, it is metabolized and some metabolites are transported to the bone marrow. One class of genes that is involved in toxicant metabolism are sulfotransferases. [*Sult3a1*](http://www.informatics.jax.org/marker/MGI:1931469) is a phase II enzyme that conjugates compounds (such as phenol, which is a metabolite of benzene) with a sulfate group before transport into the bile. It is possible that a high level of *Sult3a1* expression could remove benzene by products and be protective. Our hypothesis is that the copy number gain in the CAST allele increases liver gene expression of *Sult3a1* and *Gm4794*. High liver expression of these genes allows mice containing the CAST allele to rapidly conjugate harmful benzene metabolites and excrete them from the body before they can reach the bone marrow and cause DNA damage. Further experimental validation is required, but this is a plausible hypothesis.
 
