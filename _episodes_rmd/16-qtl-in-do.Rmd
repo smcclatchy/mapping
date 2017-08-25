@@ -83,14 +83,14 @@ This loaded an object called `muga_snps` into your R environment. Look at it's s
 
 We used a subset of the markers to reconstruct the DO genomes. We need to subset the markers so that they match the haplotype probabilities.
 
-```{r}
+```{r subset_snps}
 muga_snps = muga_snps[dimnames(probs)[[3]],]
 stopifnot(rownames(muga_snps) == dimnames(probs)[[3]])
 ```
 
 Convert the genotype probabilities from DOQTL format to qtl2 format. Convert the SNPs to a qtl2 map object.
 
-```{r}
+```{r convert_genoprobs}
 genoprobs = probs_doqtl_to_qtl2(probs = probs, map = muga_snps, pos_column="pos")
 map = map_df_to_list(map = muga_snps, pos_column="pos")
 ```
