@@ -16,6 +16,35 @@ source: Rmd
 
 
 
+~~~
+R version 3.4.1 (2017-06-30)
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+Running under: OS X El Capitan 10.11.6
+
+Matrix products: default
+BLAS: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRblas.0.dylib
+LAPACK: /Library/Frameworks/R.framework/Versions/3.4/Resources/lib/libRlapack.dylib
+
+locale:
+[1] en_US.UTF-8/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  base     
+
+other attached packages:
+[1] devtools_1.13.3  qtl2geno_0.5-30  qtl_1.41-6       checkpoint_0.4.1
+[5] stringr_1.2.0    knitr_1.16      
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.12      withr_1.0.2       digest_0.6.12    
+ [4] R6_2.2.2          jsonlite_1.5      git2r_0.18.0     
+ [7] magrittr_1.5      evaluate_0.10.1   httr_1.2.1       
+[10] highr_0.6         stringi_1.1.5     curl_2.7         
+[13] data.table_1.10.4 tools_3.4.1       yaml_2.1.14      
+[16] parallel_3.4.1    compiler_3.4.1    memoise_1.1.0    
+[19] methods_3.4.1    
+~~~
+{: .output}
 This tutorial will take you through the process of mapping a QTL and searching for candidate genes.
 
 The data comes from a toxicology study in which mice were exposed to benzene via inhalation for 6 hours a day, 5 days a week for 4 weeks. The study was conducted in two equally sized cohort of 300 male mice each, for a total of 600 mice. They were then sacrificed and reticulocytes (red blood cell precursors) were isolated from bone marrow. The number of micro-nucleated reticulocytes, a measure of DNA damage, was then measured in each mouse. The goal is to map gene(s) that influence the level of DNA damage in the bone marrow.
@@ -239,12 +268,7 @@ plot_coefCC(coef10, map, scan1_output = qtl, main = "Proportion of Micro-nucleat
 ~~~
 {: .r}
 
-
-
-~~~
-Error in plot_coef(x, map, columns = 1:8, col = qtl2plot::CCcolors, scan1_output = scan1_output, : nrow(x) [416] != number of positions in map [7654]
-~~~
-{: .error}
+<img src="../fig/rmd-16-coef_plot-1.png" title="plot of chunk coef_plot" alt="plot of chunk coef_plot" style="display: block; margin: auto;" />
 
 The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele near 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective allele. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. 
 

@@ -5,17 +5,6 @@ permalink: /setup/
 ---
 ## Installation
 
-To install R/qtl, type
-
-~~~
-install.packages("qtl")
-~~~
-{: .r}
-
-or use the Install button on the Packages tab in RStudio.
-
-A manual, tutorials, and a sample chapter from Broman & Sen's book [A Guide to QTL Mapping with R/qtl](http://www.rqtl.org/book/) are available from the [R/qtl website](http://www.rqtl.org/).
-
 The [qtl2](https://github.com/rqtl/qtl2) package is
 inspired by the
 [tidyverse package](https://cran.r-project.org/package=tidyverse);
