@@ -177,7 +177,7 @@ coef10 = scan1coef(genoprobs = genoprobs[,chr], pheno = pheno[,"prop.bm.MN.RET",
 
 This produces an object containing estimates of each of the eight DO founder allele effect. 
 
-```{r coef_plot,fig.width=8, fig.height=6}
+```{r coef_plot,fig.width=8,fig.height=6}
 plot_coefCC(coef10, map, scan1_output = qtl, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ```
 
