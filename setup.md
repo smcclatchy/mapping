@@ -16,15 +16,7 @@ or use the Install button on the Packages tab in RStudio.
 
 A manual, tutorials, and a sample chapter from Broman & Sen's book [A Guide to QTL Mapping with R/qtl](http://www.rqtl.org/book/) are available from the [R/qtl website](http://www.rqtl.org/).
 
-R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but
-it can be installed from a mini-CRAN at [rqtl.org](http://rqtl.org).
-
-~~~
-install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
-~~~
-{: .r}
-
-The [qtl2](https://github.com/rqtl/qtl2) package is
+he [qtl2](https://github.com/rqtl/qtl2) package is
 inspired by the
 [tidyverse package](https://cran.r-project.org/package=tidyverse);
 it is basically empty, but when you install it, the
@@ -35,7 +27,8 @@ it is basically empty, but when you install it, the
 [qtl2convert](https://github.com/rqtl/qtl2convert) packages, plus a
 bunch of dependencies, will be installed.
 
-Alternatively, you can install R/qtl2 from its source on
+R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), and
+is still under development. To retrieve the latest version, install R/qtl2 from its source on
 [GitHub](https://github.com/rqtl). (But note that compiling the C++
 code can be rather slow.)
 
