@@ -65,6 +65,7 @@ library(devtools)
 install_github("rqtl/qtl2")
 install_github("rqtl/qtl2convert")
 install_github("rqtl/qtl2db")
+sessionInfo()
 ~~~
 {: .r}
 
