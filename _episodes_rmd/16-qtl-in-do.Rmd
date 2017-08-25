@@ -21,6 +21,7 @@ knitr_fig_path("16-")
 ```{r message=FALSE, echo=FALSE}
 library(devtools)
 install_github("rqtl/qtl2db")
+sessionInfo()
 ```
 This tutorial will take you through the process of mapping a QTL and searching for candidate genes.
 
