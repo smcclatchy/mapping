@@ -38,6 +38,7 @@ library(qtl2)
 library(qtl2convert)
 library(qtl2db)
 load(url("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata"))
+sessionInfo()
 ```
 
 This loaded in two data objects. Look in the Environment pane to see what was loaded.  You should see an object called `pheno` with 143 rows and 5 columns and an object called `probs`.
