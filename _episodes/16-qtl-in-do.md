@@ -242,6 +242,8 @@ plot_coefCC(coef10, map, scan1_output = qtl, main = "Proportion of Micro-nucleat
 
 <img src="../fig/rmd-16-coef_plot-1.png" title="plot of chunk coef_plot" alt="plot of chunk coef_plot" style="display: block; margin: auto;" />
 
+![] (../fig/rmd-16-coef_plot-1.png)
+
 The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele near 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective allele. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. 
 
 ### Association Mapping
