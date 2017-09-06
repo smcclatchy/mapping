@@ -37,6 +37,7 @@ The data for this tutorial has been saved as an R binary file that contains seve
 library(qtl2)
 library(qtl2convert)
 library(qtl2db)
+library(qtl2plot)
 load(url("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata"))
 sessionInfo()
 ```
@@ -59,7 +60,7 @@ dim(probs)
 
 **NOTE:** the sample IDs must be in the rownames of `probs`.
 
-```{r geno_plot,fig.width=8, fig.height=6}
+```{r geno_plot, fig.width=8, fig.height=6}
 image(1:500, 1:ncol(probs), t(probs[1,8:1,1:500]), breaks = 0:100/100,
       col = grey(99:0/100), axes = F, xlab = "Markers", ylab = "Founders",
       main = "Founder Allele Contributions for Sample 1")
@@ -98,20 +99,20 @@ map = map_df_to_list(map = muga_snps, pos_column="pos")
 
 Next, we need to create a matrix that accounts for the kinship relationships between the mice. We do this by looking at the correlation between the founder haplotypes for each sample at each SNP. For each chromosome, we create a kinship matrix using all markers *except* the ones on the current chromosome. Simulations suggest that mapping using this approach increases the power to detect QTL.
            
-```{r kinship,message=FALSE,results='hide'}
+```{r kinship, message=FALSE, results='hide'}
 K = calc_kinship(probs = genoprobs, type = "loco", use_allele_probs = TRUE)
 ```
 
 Kinship values between pairs of samples range between 0 (no relationship) and 1.0 (completely identical). Let's look at the kinship matrix.
 
-```{r kinship_probs,fig.width=8,fig.height=8}
+```{r kinship_probs, fig.width=8, fig.height=8}
 image(1:nrow(K[[1]]), 1:ncol(K[[1]]), K[[1]][,ncol(K[[1]]):1], xlab = "Samples", 
       ylab = "Samples", yaxt = "n", main = "Kinship between samples", 
       breaks = 0:100/100, col = heat.colors(length(0:100) - 1))
 axis(side = 2, at = 20 * 0:7, labels = 20 * 7:0, las = 1)
 ```
 
-The figure above shows kinship between all pairs of samples. White (= 1) indicates no kinship and red (= 0) indicates full kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
+The figure above shows kinship between all pairs of samples. White ( = 1) indicates no kinship and red ( = 0) indicates full kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
 
 Next, we need to create additive covariates that wil be used in the mapping model. We will use study cohort as a covariate in the mapping model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
 
@@ -125,20 +126,20 @@ The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-ef
 
 In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the `scan1` function. To see the arguments for `scan1`, you can type `help(scan1)`.
 
-```{r QTL,warning=FALSE,error=FALSE}
+```{r QTL, warning=FALSE, error=FALSE}
 pheno.column = which(colnames(pheno) == "prop.bm.MN.RET")
 qtl = scan1(genoprobs = genoprobs, pheno = pheno[,pheno.column, drop = FALSE], kinship = K, addcovar = addcovar)
 ```
 
 We can then plot the QTL scan. Note that you must provide the marker map.
 
-```{r qtl_plot,fig.width=8, fig.height=6, warning=FALSE}
+```{r qtl_plot, fig.width=8, fig.height=6, warning=FALSE}
 plot(qtl, map, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ```
 
 There is clearly a large peak on Chr 10. Next, we must assess its statistical significance. This is most commonly done via [permutation](http://www.genetics.org/content/178/1/609.long). We advise running at least 1,000 permutations to obtain significance thresholds. In the interest of time, we perform 100 permutations here.
 
-```{r perms,message=FALSE,results='hide', warning=FALSE}
+```{r perms, message=FALSE, results='hide', warning=FALSE}
 perms = scan1perm(genoprobs = genoprobs, pheno = pheno[,"prop.bm.MN.RET", drop = FALSE], kinship = K, addcovar = addcovar, n_perm = 100)
 ```
 
@@ -146,7 +147,7 @@ The `perms` object contains the maximum LOD score from each genome scan of permu
 
 We can now add thresholds to the previous QTL plot. We use a significance threshold of p < 0.05. To do this, we select the 95th percentile of the permutation LOD distribution.
            
-```{r qtl_plot_thr,fig.width=8, fig.height=6, warning=FALSE}
+```{r qtl_plot_thr, fig.width=8, fig.height=6, warning=FALSE}
 plot(qtl, map,  main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 thr = quantile(perms, 0.95)
 abline(h = thr, col = "red", lwd = 2)
@@ -181,8 +182,6 @@ This produces an object containing estimates of each of the eight DO founder all
 plot_coefCC(coef10, map, scan1_output = qtl, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ```
 
-![] (../fig/rmd-16-coef_plot-1.png)
-
 The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele near 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective allele. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. 
 
 ### Association Mapping
@@ -196,7 +195,7 @@ Association mapping involves several steps and we have encapulated the steps in 
 ```{r assoc_mapping_fxn}
 assoc_mapping = function(probs, pheno, idx, addcovar, intcovar = NULL, K, 
                 markers, chr, start, end, ncores = 1, 
-                snp.file = "cc_variants.sqlite") {
+                snp.file = "../data/cc_variants.sqlite") {
 
   # Make sure that we have only one chromosome.
   if(length(probs) > 1) {
@@ -288,8 +287,6 @@ plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone 
 par(plt = c(0.1, 0.99, 0.14, 1))
 plot_genes(genes = genes, colors = "black")
 ```
-
-![](../fig/assoc_plot2.png)
 
 ### Searching for Candidate Genes
 

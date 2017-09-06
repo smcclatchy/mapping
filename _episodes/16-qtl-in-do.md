@@ -32,6 +32,7 @@ The data for this tutorial has been saved as an R binary file that contains seve
 library(qtl2)
 library(qtl2convert)
 library(qtl2db)
+library(qtl2plot)
 load(url("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata"))
 sessionInfo()
 ~~~
@@ -132,7 +133,7 @@ axis(side = 2, at = 20 * 0:7, labels = 20 * 7:0, las = 1)
 
 <img src="../fig/rmd-16-kinship_probs-1.png" title="plot of chunk kinship_probs" alt="plot of chunk kinship_probs" style="display: block; margin: auto;" />
 
-The figure above shows kinship between all pairs of samples. White (= 1) indicates no kinship and red (= 0) indicates full kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
+The figure above shows kinship between all pairs of samples. White ( = 1) indicates no kinship and red ( = 0) indicates full kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
 
 Next, we need to create additive covariates that wil be used in the mapping model. We will use study cohort as a covariate in the mapping model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
 
@@ -242,8 +243,6 @@ plot_coefCC(coef10, map, scan1_output = qtl, main = "Proportion of Micro-nucleat
 
 <img src="../fig/rmd-16-coef_plot-1.png" title="plot of chunk coef_plot" alt="plot of chunk coef_plot" style="display: block; margin: auto;" />
 
-![] (../fig/rmd-16-coef_plot-1.png)
-
 The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele near 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective allele. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. 
 
 ### Association Mapping
@@ -258,7 +257,7 @@ Association mapping involves several steps and we have encapulated the steps in 
 ~~~
 assoc_mapping = function(probs, pheno, idx, addcovar, intcovar = NULL, K, 
                 markers, chr, start, end, ncores = 1, 
-                snp.file = "cc_variants.sqlite") {
+                snp.file = "../data/cc_variants.sqlite") {
 
   # Make sure that we have only one chromosome.
   if(length(probs) > 1) {
@@ -399,8 +398,6 @@ plot_genes(genes = genes, colors = "black")
 {: .r}
 
 <img src="../fig/rmd-16-plot_assoc2-1.png" title="plot of chunk plot_assoc2" alt="plot of chunk plot_assoc2" style="display: block; margin: auto;" />
-
-![](../fig/assoc_plot2.png)
 
 ### Searching for Candidate Genes
 
