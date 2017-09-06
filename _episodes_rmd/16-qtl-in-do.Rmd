@@ -193,7 +193,7 @@ At this point, we have a 6 Mb wide support interval that contains a polymorphism
 
 Association mapping involves several steps and we have encapulated the steps in a single function called `assoc_mapping`. Copy and paste this function into your R environemnt.
 
-```{r assoc_mapping_fxn, eval=FALSE}
+```{r assoc_mapping_fxn}
 assoc_mapping = function(probs, pheno, idx, addcovar, intcovar = NULL, K, 
                 markers, chr, start, end, ncores = 1, 
                 snp.file = "cc_variants.sqlite") {
@@ -246,16 +246,16 @@ assoc_mapping = function(probs, pheno, idx, addcovar, intcovar = NULL, K,
 
 We can call the `assoc_mapping` to perform association mapping in the QTL interval on Chr 10. Change the path to the SNP database (`snp.file` argument) to point to the location of the database on your computer.
 
-```{r assoc_map,eval=FALSE}
+```{r assoc_map}
 chr = 10
 start = 30
 end = 36
-assoc = assoc_mapping(probs = genoprobs[,chr], pheno = pheno, idx = pheno.column, addcovar = addcovar, K = K[chr],  markers = muga_snps, chr = chr, start = start, end = end,  snp.file = "cc_variants.sqlite")
+assoc = assoc_mapping(probs = genoprobs[,chr], pheno = pheno, idx = pheno.column, addcovar = addcovar, K = K[chr],  markers = muga_snps, chr = chr, start = start, end = end,  snp.file = "../data/cc_variants.sqlite")
 ```
 
 The `assoc` object is a list containing two objects: the LOD scores for each unique SNP and a `snpinfo` object that maps the LOD scores to each SNP. To plot the association mapping, we need to provide both objects to the `plot_snpasso` function.
 
-```{r assoc_fig,fig.width=9, fig.height=6, eval=FALSE}
+```{r assoc_fig, fig.width=9, fig.height=6}
 plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ```
 
@@ -267,22 +267,22 @@ We can add a plot containing the genes in the QTL interval using the `plot_genes
 
 First, we must query the database for the genes in the interval. Change the path of the first argument to the location of the gene database on your computer.
 
-```{r get_genes,eval=FALSE}
-query_genes = create_gene_query_func("mouse_genes.sqlite", filter="source='MGI'")
+```{r get_genes}
+query_genes = create_gene_query_func("../data/mouse_genes.sqlite", filter="source='MGI'")
 genes = query_genes(chr, start, end)
 head(genes)
 ```
 
 The `genes` object contains annotation information for each gene in the interval. The gene locations are in Mb and we need to change these to bp for the `plot_genes` function.
 
-```{r change_Mb_to_bp,eval=FALSE}
+```{r change_Mb_to_bp}
 genes$start = genes$start * 1e6
 genes$stop = genes$stop * 1e6
 ```
 
 Next, we will create a plot with two panels: one containing the association mapping LOD scores and one containing the genes in the QTL interval.
 
-```{r plot_assoc2,eval=FALSE}
+```{r plot_assoc2}
 layout(matrix(1:2, 2, 1))
 par(plt = c(0.1, 0.99, 0, 0.88))
 plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
