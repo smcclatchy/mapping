@@ -314,7 +314,7 @@ We can call the `assoc_mapping` to perform association mapping in the QTL interv
 chr = 10
 start = 30
 end = 36
-assoc = assoc_mapping(probs = genoprobs[,chr], pheno = pheno, idx = pheno.column, addcovar = addcovar, K = K[chr],  markers = muga_snps, chr = chr, start = start, end = end,  snp.file = "cc_variants.sqlite")
+assoc = assoc_mapping(probs = genoprobs[,chr], pheno = pheno, idx = pheno.column, addcovar = addcovar, K = K[chr],  markers = muga_snps, chr = chr, start = start, end = end,  snp.file = "../data/cc_variants.sqlite")
 ~~~
 {: .r}
 
@@ -326,6 +326,8 @@ plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone 
 ~~~
 {: .r}
 
+<img src="../fig/rmd-16-assoc_fig-1.png" title="plot of chunk assoc_fig" alt="plot of chunk assoc_fig" style="display: block; margin: auto;" />
+
 ![](../fig/assoc_plot1.png)
 
 This plot shows the LOD score for each SNP in the QTL interval. The SNPs occur in "shelves" because all of the SNPs in a haplotype block have the same founder strain pattern. The SNPs with the highest LOD scores are the ones for which CAST/EiJ contributes the alternate allele.
@@ -336,11 +338,45 @@ First, we must query the database for the genes in the interval. Change the path
 
 
 ~~~
-query_genes = create_gene_query_func("mouse_genes.sqlite", filter="source='MGI'")
+query_genes = create_gene_query_func("../data/mouse_genes.sqlite", filter="source='MGI'")
 genes = query_genes(chr, start, end)
 head(genes)
 ~~~
 {: .r}
+
+
+
+~~~
+  chr source       type    start     stop score strand phase
+1  10    MGI pseudogene 30.01130 30.01730    NA      +    NA
+2  10    MGI pseudogene 30.08426 30.08534    NA      -    NA
+3  10    MGI pseudogene 30.17971 30.18022    NA      +    NA
+4  10    MGI       gene 30.19601 30.20054    NA      -    NA
+5  10    MGI pseudogene 30.37327 30.37451    NA      +    NA
+6  10    MGI       gene 30.45052 30.45170    NA      +    NA
+               ID    Name Parent
+1 MGI:MGI:2685078   Gm232   <NA>
+2 MGI:MGI:3647013  Gm8767   <NA>
+3 MGI:MGI:3781001  Gm2829   <NA>
+4 MGI:MGI:1913561   Cenpw   <NA>
+5 MGI:MGI:3643405  Gm4780   <NA>
+6 MGI:MGI:5623507 Gm40622   <NA>
+                                      Dbxref                 mgiName
+1                           NCBI_Gene:212813      predicted gene 232
+2                           NCBI_Gene:667696     predicted gene 8767
+3                        NCBI_Gene:100040542     predicted gene 2829
+4 NCBI_Gene:66311,ENSEMBL:ENSMUSG00000075266    centromere protein W
+5                           NCBI_Gene:212815     predicted gene 4780
+6                        NCBI_Gene:105245128 predicted gene%2c 40622
+              bioType
+1          pseudogene
+2          pseudogene
+3          pseudogene
+4 protein coding gene
+5          pseudogene
+6         lncRNA gene
+~~~
+{: .output}
 
 The `genes` object contains annotation information for each gene in the interval. The gene locations are in Mb and we need to change these to bp for the `plot_genes` function.
 
@@ -362,6 +398,8 @@ par(plt = c(0.1, 0.99, 0.14, 1))
 plot_genes(genes = genes, colors = "black")
 ~~~
 {: .r}
+
+<img src="../fig/rmd-16-plot_assoc2-1.png" title="plot of chunk plot_assoc2" alt="plot of chunk plot_assoc2" style="display: block; margin: auto;" />
 
 ![](../fig/assoc_plot2.png)
 
