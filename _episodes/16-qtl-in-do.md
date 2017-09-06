@@ -46,7 +46,7 @@ This loaded in two data objects. Look in the Environment pane to see what was lo
 
 `pheno` is a data frame containing the phenotype data. `probs` is a 3 dimensional array containing the founder allele dosages for each sample at each marker on the array.  Double-click on `pheno` in the Environment pane to view its contents.
 
-**NOTE:** the sample IDs must be in the rownames of `pheno`. For more information about data file format, see the [Setup](../setup.md) instructions.
+**NOTE:** the sample IDs must be in the rownames of `pheno`. For more information about data file format, see the [Setup]("../setup.md") instructions.
 
 `pheno` contains the sample ID, the study cohort, the dose of benzene and the proportion of bone marrow reticulocytes that were micro-nucleated (prop.bm.MN.RET).  Note that the sample IDs are also stored in the rownames of `pheno`. In order to save time for this tutorial, we will only map with 143 samples from the 100 ppm dosing group.
 
@@ -88,7 +88,7 @@ In the plot above, the founder contributions, which range between 0 and 1, are c
 
 ### QTL Mapping
 
-First, we need the locations of the markers on the genotyping array. The array is called the Mouse Universal Genotyping Array (MUGA) and contains 7,856 SNP markers. You would have downloaded this array into your data directory from [The Jackson Laboratory's FTP site](ftp://ftp.jax.org/MUGA) during [Setup](../setup.md).
+First, we need the locations of the markers on the genotyping array. The array is called the Mouse Universal Genotyping Array (MUGA) and contains 7,856 SNP markers. You would have downloaded this array into your data directory from [The Jackson Laboratory's FTP site](ftp://ftp.jax.org/MUGA) during [Setup]("../setup.md").
 
 
 ~~~
@@ -149,7 +149,7 @@ addcovar = model.matrix(~Study, data = pheno)[,1, drop = FALSE]
 
 The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-effect of the `model.matrix` function..
 
-**NOTE:** the sample IDs must be in the rownames of `pheno`, `addcovar`, `genoprobs` and `K`. qtl2 uses the sample IDs to align the samples between objects. For more information about data file format, see the [Setup](../setup.md) instructions or [Karl Broman's vignette on input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
+**NOTE:** the sample IDs must be in the rownames of `pheno`, `addcovar`, `genoprobs` and `K`. qtl2 uses the sample IDs to align the samples between objects. For more information about data file format, see the [Setup]("../setup.md") instructions or [Karl Broman's vignette on input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
 
 In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the `scan1` function. To see the arguments for `scan1`, you can type `help(scan1)`.
 
@@ -251,7 +251,7 @@ The top panel shows the eight founder allele effects (or model coefficients) alo
 
 ### Association Mapping
 
-At this point, we have a 6 Mb wide support interval that contains a polymorphism(s) that influences benzene-induced DNA damage. Next, we will impute the DO founder sequences onto the DO genomes. The [Sanger Mouse Genomes Project](http://www.sanger.ac.uk/resources/mouse/genomes/) has sequenced the eight DO founders and provides SNP, insertion-deletion (indel), and structural variant files for the strains (see [Baud et.al., Nat. Gen., 2013](http://www.nature.com/ng/journal/v45/n7/full/ng.2644.html)). We can impute these SNPs onto the DO genomes and then perform association mapping. The process involves several steps and I have provided a function to encapsulate the steps. To access the Sanger SNPs, we use a SQLlite database provided by [Karl Broman](https://github.com/kbroman). You should have downloaded this during [Setup](../setup.md). It is available from the [JAX FTP site](ftp://ftp.jax.org/dgatti/CC_SNP_DB/cc_variants.sqlite), but the file is 3 GB, so it may take too long to download right now.
+At this point, we have a 6 Mb wide support interval that contains a polymorphism(s) that influences benzene-induced DNA damage. Next, we will impute the DO founder sequences onto the DO genomes. The [Sanger Mouse Genomes Project](http://www.sanger.ac.uk/resources/mouse/genomes/) has sequenced the eight DO founders and provides SNP, insertion-deletion (indel), and structural variant files for the strains (see [Baud et.al., Nat. Gen., 2013](http://www.nature.com/ng/journal/v45/n7/full/ng.2644.html)). We can impute these SNPs onto the DO genomes and then perform association mapping. The process involves several steps and I have provided a function to encapsulate the steps. To access the Sanger SNPs, we use a SQLlite database provided by [Karl Broman](https://github.com/kbroman). You should have downloaded this during [Setup]("../setup.md"). It is available from the [JAX FTP site](ftp://ftp.jax.org/dgatti/CC_SNP_DB/cc_variants.sqlite), but the file is 3 GB, so it may take too long to download right now.
 
 ![](../fig/DO.impute.founders.sm.png)
 
@@ -334,7 +334,7 @@ plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone 
 
 This plot shows the LOD score for each SNP in the QTL interval. The SNPs occur in "shelves" because all of the SNPs in a haplotype block have the same founder strain pattern. The SNPs with the highest LOD scores are the ones for which CAST/EiJ contributes the alternate allele.
 
-We can add a plot containing the genes in the QTL interval using the `plot_genes` function. We get the genes from another SQLlite database created by [Karl Broman](https://github.com/kbroman) called `mouse_genes.sqlite`. You should have downloaded this from the [JAX FTP Site](ftp://ftp.jax.org/dgatti/CC_SNP_DB/mouse_genes.sqlite) during [Setup](../setup.md).
+We can add a plot containing the genes in the QTL interval using the `plot_genes` function. We get the genes from another SQLlite database created by [Karl Broman](https://github.com/kbroman) called `mouse_genes.sqlite`. You should have downloaded this from the [JAX FTP Site](ftp://ftp.jax.org/dgatti/CC_SNP_DB/mouse_genes.sqlite) during [Setup]("../setup.md").
 
 First, we must query the database for the genes in the interval. The path of the first argument points to the data directory on your computer.
 
