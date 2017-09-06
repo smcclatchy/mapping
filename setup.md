@@ -50,6 +50,29 @@ install_github("rqtl/qtl2db")
 ~~~
 {: .r}
 
+## Data files and project organization
+Please download the following large files before the workshop. You will 
+need these for the final lesson episode on QTL analysis in Diversity
+Outbred mice.
+
+1. Create a project in RStudio. Refer to 
+[this lesson](http://swcarpentry.github.io/r-novice-gapminder/02-project-intro/) 
+to do this.
+
+2. Create a data directory (folder) to hold the data, and a script 
+directory to house your scripts. You can do this in the 
+RStudio Files tab, or use Finder on a Mac, or go to the Start menu
+and select (My) Computer on a Windows machine.
+
+3. Use a web browser (Firefox, Safari, Chrome, etc.) to download the following data 
+files into your data directory. You can copy these links directly into
+the browser's address bar.
+
+ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata
+ftp://ftp.jax.org/MUGA/muga_snps.Rdata
+ftp://ftp.jax.org/dgatti/CC_SNP_DB/cc_variants.sqlite
+ftp://ftp.jax.org/dgatti/CC_SNP_DB/mouse_genes.sqlite
+
 
 ## Data file format
 
