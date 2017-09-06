@@ -18,7 +18,7 @@ source: Rmd
 
 This tutorial will take you through the process of mapping a QTL and searching for candidate genes.
 
-The data comes from a toxicology study in which mice were exposed to benzene via inhalation for 6 hours a day, 5 days a week for 4 weeks. The study was conducted in two equally sized cohort of 300 male mice each, for a total of 600 mice. They were then sacrificed and reticulocytes (red blood cell precursors) were isolated from bone marrow. The number of micro-nucleated reticulocytes, a measure of DNA damage, was then measured in each mouse. The goal is to map gene(s) that influence the level of DNA damage in the bone marrow.
+The data comes from a toxicology study in which mice were exposed to benzene via inhalation for 6 hours a day, 5 days a week for 4 weeks  [(French, J. E., et al. (2015) *Environ Health Perspect* 123(3): 237-245.)](http://ehp.niehs.nih.gov/1408202/). The study was conducted in two equally sized cohort of 300 male mice each, for a total of 600 mice. They were then sacrificed and reticulocytes (red blood cell precursors) were isolated from bone marrow. The number of micro-nucleated reticulocytes, a measure of DNA damage, was then measured in each mouse. The goal is to map gene(s) that influence the level of DNA damage in the bone marrow.
 
 ![](../fig/benzene_study_design.png)
 
@@ -328,7 +328,6 @@ plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone 
 
 <img src="../fig/rmd-16-assoc_fig-1.png" title="plot of chunk assoc_fig" alt="plot of chunk assoc_fig" style="display: block; margin: auto;" />
 
-![](../fig/assoc_plot1.png)
 
 This plot shows the LOD score for each SNP in the QTL interval. The SNPs occur in "shelves" because all of the SNPs in a haplotype block have the same founder strain pattern. The SNPs with the highest LOD scores are the ones for which CAST/EiJ contributes the alternate allele.
 
@@ -439,7 +438,7 @@ Hence, we have three pieces of evidence that narrows our candidate gene list to 
 
 Sulfation is a prominent detoxification mechanism for benezene as well. The diagram below shows the metabolism pathway for benzene (Monks et.al.,Chem. Biol. Inter., 2010). Hydroquinone, phenol and catechol are all sulfated and excreted from the body.
 
-![](../Monks_ChemBiolInter_2010_Fig1.jpg)
+![](../fig/Monks_ChemBiolInter_2010_Fig1.jpg)
 
 This analysis has led us to the following hypothesis. Inhaled benzene is absorbed by the lungs into the blood stream and transported to the liver. There, it is metabolized and some metabolites are transported to the bone marrow. One class of genes that is involved in toxicant metabolism are sulfotransferases. [*Sult3a1*](http://www.informatics.jax.org/marker/MGI:1931469) is a phase II enzyme that conjugates compounds (such as phenol, which is a metabolite of benzene) with a sulfate group before transport into the bile. It is possible that a high level of *Sult3a1* expression could remove benzene by products and be protective. Our hypothesis is that the copy number gain in the CAST allele increases liver gene expression of *Sult3a1* and *Gm4794*. High liver expression of these genes allows mice containing the CAST allele to rapidly conjugate harmful benzene metabolites and excrete them from the body before they can reach the bone marrow and cause DNA damage. Further experimental validation is required, but this is a plausible hypothesis.
 
