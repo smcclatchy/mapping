@@ -18,12 +18,16 @@ source: Rmd
 
 This tutorial will take you through the process of mapping a QTL and searching for candidate genes.
 
-The data comes from a toxicology study in which mice were exposed to benzene via inhalation for 6 hours a day, 5 days a week for 4 weeks  [(French, J. E., et al. (2015) *Environ Health Perspect* 123(3): 237-245.)](http://ehp.niehs.nih.gov/1408202/). The study was conducted in two equally sized cohort of 300 male mice each, for a total of 600 mice. They were then sacrificed and reticulocytes (red blood cell precursors) were isolated from bone marrow. The number of micro-nucleated reticulocytes, a measure of DNA damage, was then measured in each mouse. The goal is to map gene(s) that influence the level of DNA damage in the bone marrow.
+The data comes from a toxicology study in which Diversity Outbred (DO) mice were exposed to benzene via inhalation for 6 hours a day, 5 days a week for 4 weeks  [(French, J. E., et al. (2015) *Environ Health Perspect* 123(3): 237-245)](http://ehp.niehs.nih.gov/1408202/). The study was conducted in two equally sized cohort of 300 male mice each, for a total of 600 mice. They were then sacrificed and reticulocytes (red blood cell precursors) were isolated from bone marrow. The number of micro-nucleated reticulocytes, a measure of DNA damage, was then measured in each mouse. The goal is to map gene(s) that influence the level of DNA damage in the bone marrow.
 
 ![](../fig/benzene_study_design.png)
 
 
 ### Loading the data
+
+Make sure that you are in your scripts directory. If you're not sure where you are working right now, you can check your working directory with `getwd()`. If you are not in your scripts directory, use `setwd()` in the Console or Session -> Set Working Directory -> Choose Directory in the RStudio menu to set your working directory to the scripts directory.
+
+Once you are in your scripts directory, create a new R script.
 
 The data for this tutorial has been saved as an R binary file that contains several data objects.  Load it in now by running the following command.
 
@@ -33,7 +37,7 @@ library(qtl2)
 library(qtl2convert)
 library(qtl2db)
 library(qtl2plot)
-load(url("ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata"))
+load("../data/DOQTL_demo.Rdata")
 sessionInfo()
 ~~~
 {: .r}
@@ -42,9 +46,9 @@ This loaded in two data objects. Look in the Environment pane to see what was lo
 
 `pheno` is a data frame containing the phenotype data. `probs` is a 3 dimensional array containing the founder allele dosages for each sample at each marker on the array.  Double-click on `pheno` in the Environment pane to view its contents.
 
-**NOTE:** the sample IDs must be in the rownames of `pheno`.
+**NOTE:** the sample IDs must be in the rownames of `pheno`. For more information about data file format, see the [Setup](../setup.md) instructions.
 
-It contains the sample ID, the study cohort, the dose of benzene and the proportion of bone marrow reticulocytes that were micro-nucleated (prop.bm.MN.RET).  Note that the sample IDs are also stored in the rownames of pheno. In order to save time for this tutorial, we will only map with 143 samples from the 100 ppm dosing group.
+`pheno` contains the sample ID, the study cohort, the dose of benzene and the proportion of bone marrow reticulocytes that were micro-nucleated (prop.bm.MN.RET).  Note that the sample IDs are also stored in the rownames of `pheno`. In order to save time for this tutorial, we will only map with 143 samples from the 100 ppm dosing group.
 
 Next, we look at the contents of `probs`:
 
@@ -84,11 +88,11 @@ In the plot above, the founder contributions, which range between 0 and 1, are c
 
 ### QTL Mapping
 
-First, we need the locations of the markers on the genotyping array. The array is called the Mouse Universal Genotyping Array (MUGA) and contain 7,856 SNP markers. Their locations are on [The Jackson Laboratory's FTP site](ftp://ftp.jax.org/MUGA):
+First, we need the locations of the markers on the genotyping array. The array is called the Mouse Universal Genotyping Array (MUGA) and contains 7,856 SNP markers. You would have downloaded this array into your data directory from [The Jackson Laboratory's FTP site](ftp://ftp.jax.org/MUGA) during [Setup](../setup.md).
 
 
 ~~~
-load(url("ftp://ftp.jax.org/MUGA/muga_snps.Rdata"))
+load("../data/muga_snps.Rdata")
 ~~~
 {: .r}
 
@@ -145,7 +149,7 @@ addcovar = model.matrix(~Study, data = pheno)[,1, drop = FALSE]
 
 The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-effect of the `model.matrix` function..
 
-**NOTE:** the sample IDs must be in the rownames of `pheno`, `addcovar`, `genoprobs` and `K`. qtl2 uses the sample IDs to align the samples between objects.
+**NOTE:** the sample IDs must be in the rownames of `pheno`, `addcovar`, `genoprobs` and `K`. qtl2 uses the sample IDs to align the samples between objects. For more information about data file format, see the [Setup](../setup.md) instructions or [Karl Broman's vignette on input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
 
 In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the `scan1` function. To see the arguments for `scan1`, you can type `help(scan1)`.
 
@@ -174,7 +178,7 @@ perms = scan1perm(genoprobs = genoprobs, pheno = pheno[,"prop.bm.MN.RET", drop =
 ~~~
 {: .r}
 
-The `perms` object contains the maximum LOD score from each genome scan of permuted data. The 
+The `perms` object contains the maximum LOD score from each genome scan of permuted data.
 
 We can now add thresholds to the previous QTL plot. We use a significance threshold of p < 0.05. To do this, we select the 95th percentile of the permutation LOD distribution.
            
@@ -243,15 +247,15 @@ plot_coefCC(coef10, map, scan1_output = qtl, main = "Proportion of Micro-nucleat
 
 <img src="../fig/rmd-16-coef_plot-1.png" title="plot of chunk coef_plot" alt="plot of chunk coef_plot" style="display: block; margin: auto;" />
 
-The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele near 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective allele. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. 
+The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele near 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective effect. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. 
 
 ### Association Mapping
 
-At this point, we have a 6 Mb wide support interval that contains a polymorphism(s) that influences benzene induced DNA damage. Next, we will impute the DO founder sequences onto the DO genomes. The [Sanger Mouse Genomes Project](http://www.sanger.ac.uk/resources/mouse/genomes/) has sequenced the eight DO founders and provides SNP, indel and structural variant files for the strains (see [Baud et.al., Nat. Gen., 2013](http://www.nature.com/ng/journal/v45/n7/full/ng.2644.html)). We can impute these SNPs onto the DO genomes and then perform association mapping. The process involves several steps and I have provided a function to encapsulate the steps. To access the Sanger SNPs, we use a SQLlite database provided by [Karl Broman](https://github.com/kbroman). You should have downloaded this during Setup. It is available from the [JAX FTP site](ftp://ftp.jax.org/dgatti/CC_SNP_DB/cc_variants.sqlite), but the file is 3 GB, so it may take too long to download right now.
+At this point, we have a 6 Mb wide support interval that contains a polymorphism(s) that influences benzene-induced DNA damage. Next, we will impute the DO founder sequences onto the DO genomes. The [Sanger Mouse Genomes Project](http://www.sanger.ac.uk/resources/mouse/genomes/) has sequenced the eight DO founders and provides SNP, insertion-deletion (indel), and structural variant files for the strains (see [Baud et.al., Nat. Gen., 2013](http://www.nature.com/ng/journal/v45/n7/full/ng.2644.html)). We can impute these SNPs onto the DO genomes and then perform association mapping. The process involves several steps and I have provided a function to encapsulate the steps. To access the Sanger SNPs, we use a SQLlite database provided by [Karl Broman](https://github.com/kbroman). You should have downloaded this during [Setup](../setup.md). It is available from the [JAX FTP site](ftp://ftp.jax.org/dgatti/CC_SNP_DB/cc_variants.sqlite), but the file is 3 GB, so it may take too long to download right now.
 
 ![](../fig/DO.impute.founders.sm.png)
 
-Association mapping involves several steps and we have encapulated the steps in a single function called `assoc_mapping`. Copy and paste this function into your R environemnt.
+Association mapping involves several steps and we have encapulated the steps in a single function called `assoc_mapping`. Copy and paste this function into your R script.
 
 
 ~~~
@@ -306,7 +310,7 @@ assoc_mapping = function(probs, pheno, idx, addcovar, intcovar = NULL, K,
 ~~~
 {: .r}
 
-We can call the `assoc_mapping` to perform association mapping in the QTL interval on Chr 10. Change the path to the SNP database (`snp.file` argument) to point to the location of the database on your computer.
+We can call the `assoc_mapping` to perform association mapping in the QTL interval on Chr 10. The path to the SNP database (`snp.file` argument) points to the data directory on your computer.
 
 
 ~~~
@@ -330,9 +334,9 @@ plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone 
 
 This plot shows the LOD score for each SNP in the QTL interval. The SNPs occur in "shelves" because all of the SNPs in a haplotype block have the same founder strain pattern. The SNPs with the highest LOD scores are the ones for which CAST/EiJ contributes the alternate allele.
 
-We can add a plot containing the genes in the QTL interval using the `plot_genes` function. We get the genes from another SQLlite database created by [Karl Broman](https://github.com/kbroman) called `mouse_genes.sqlite`. You should have downloaded this from the [JAX FTP Site](ftp://ftp.jax.org/dgatti/CC_SNP_DB/mouse_genes.sqlite) during Setup.
+We can add a plot containing the genes in the QTL interval using the `plot_genes` function. We get the genes from another SQLlite database created by [Karl Broman](https://github.com/kbroman) called `mouse_genes.sqlite`. You should have downloaded this from the [JAX FTP Site](ftp://ftp.jax.org/dgatti/CC_SNP_DB/mouse_genes.sqlite) during [Setup](../setup.md).
 
-First, we must query the database for the genes in the interval. Change the path of the first argument to the location of the gene database on your computer.
+First, we must query the database for the genes in the interval. The path of the first argument points to the data directory on your computer.
 
 
 ~~~
@@ -433,12 +437,12 @@ Hence, we have three pieces of evidence that narrows our candidate gene list to 
 2. Among genes in the MN-RET QTL interval, only *Sult3a1* and *Gm4794* have differential expression of the CAST allele in the liver.
 3. There is a copy number gain of these two genes in CAST.
 
-Sulfation is a prominent detoxification mechanism for benezene as well. The diagram below shows the metabolism pathway for benzene (Monks et.al.,Chem. Biol. Inter., 2010). Hydroquinone, phenol and catechol are all sulfated and excreted from the body.
+Sulfation is a prominent detoxification mechanism for benezene as well. The diagram below shows the metabolism pathway for benzene [(Monks, T. J., et al. (2010). Chem Biol Interact 184(1-2): 201-206.)](http://europepmc.org/articles/PMC4414400) Hydroquinone, phenol and catechol are all sulfated and excreted from the body.
 
 ![](../fig/Monks_ChemBiolInter_2010_Fig1.jpg)
 
-This analysis has led us to the following hypothesis. Inhaled benzene is absorbed by the lungs into the blood stream and transported to the liver. There, it is metabolized and some metabolites are transported to the bone marrow. One class of genes that is involved in toxicant metabolism are sulfotransferases. [*Sult3a1*](http://www.informatics.jax.org/marker/MGI:1931469) is a phase II enzyme that conjugates compounds (such as phenol, which is a metabolite of benzene) with a sulfate group before transport into the bile. It is possible that a high level of *Sult3a1* expression could remove benzene by products and be protective. Our hypothesis is that the copy number gain in the CAST allele increases liver gene expression of *Sult3a1* and *Gm4794*. High liver expression of these genes allows mice containing the CAST allele to rapidly conjugate harmful benzene metabolites and excrete them from the body before they can reach the bone marrow and cause DNA damage. Further experimental validation is required, but this is a plausible hypothesis.
+This analysis has led us to the following hypothesis. Inhaled benzene is absorbed by the lungs into the bloodstream and transported to the liver. There, it is metabolized and some metabolites are transported to the bone marrow. One class of genes that is involved in toxicant metabolism are sulfotransferases. [*Sult3a1*](http://www.informatics.jax.org/marker/MGI:1931469) is a phase II enzyme that conjugates compounds (such as phenol, which is a metabolite of benzene) with a sulfate group before transport into the bile. It is possible that a high level of *Sult3a1* expression could remove benzene by-products and be protective. Our hypothesis is that the copy number gain in the CAST allele increases liver gene expression of *Sult3a1* and *Gm4794*. High liver expression of these genes allows mice containing the CAST allele to rapidly conjugate harmful benzene metabolites and excrete them from the body before they can reach the bone marrow and cause DNA damage. Further experimental validation is required, but this is a plausible hypothesis.
 
 ![](../fig/benzene_hypothesis.png)
 
-We hope that this tutorial has shown you how the DO can be used to map QTL and use the founder effects and bioinformatics resources to narrow down the candidate gene list. Here, we made used of external gene expression data bases and the founder sequence data to build a case for a pair of genes.
+We hope that this tutorial has shown you how the DO can be used to map QTL and use the founder effects and bioinformatics resources to narrow down the candidate gene list. Here, we made used of external gene expression databases and the founder sequence data to build a case for a pair of genes.
