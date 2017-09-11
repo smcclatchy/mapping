@@ -64,17 +64,15 @@ directory to house your scripts. You can do this in the
 RStudio Files tab, or use Finder on a Mac, or go to the Start menu
 and select (My) Computer on a Windows machine.
 
-3. Use a web browser (Firefox, Safari, Chrome, etc.) to download the following data 
-files into your data directory. You can copy these links directly into
-the browser's address bar.
+3. Download the following data files into your data directory.
 
-ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata
+[DO QTL data](ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata)
 
-ftp://ftp.jax.org/MUGA/muga_snps.Rdata
+[MUGA SNPs](ftp://ftp.jax.org/MUGA/muga_snps.Rdata)
 
-ftp://ftp.jax.org/dgatti/CC_SNP_DB/cc_variants.sqlite
+[CC Variants](ftp://ftp.jax.org/dgatti/CC_SNP_DB/cc_variants.sqlite)
 
-ftp://ftp.jax.org/dgatti/CC_SNP_DB/mouse_genes.sqlite
+[Mouse Genes](ftp://ftp.jax.org/dgatti/CC_SNP_DB/mouse_genes.sqlite)
 
 
 ## Data file format
