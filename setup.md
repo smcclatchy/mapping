@@ -69,8 +69,11 @@ files into your data directory. You can copy these links directly into
 the browser's address bar.
 
 ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata
+
 ftp://ftp.jax.org/MUGA/muga_snps.Rdata
+
 ftp://ftp.jax.org/dgatti/CC_SNP_DB/cc_variants.sqlite
+
 ftp://ftp.jax.org/dgatti/CC_SNP_DB/mouse_genes.sqlite
 
 
