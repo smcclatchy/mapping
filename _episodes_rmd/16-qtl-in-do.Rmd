@@ -121,7 +121,7 @@ The figure above shows kinship between all pairs of samples. White ( = 1) indica
 Next, we need to create additive covariates that wil be used in the mapping model. We will use study cohort as a covariate in the mapping model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
 
 ```{r covariates}
-addcovar = model.matrix(~Study, data = pheno)[,1, drop = FALSE]
+addcovar = model.matrix(~Study, data = pheno)[,-1, drop = FALSE]
 ```         
 
 The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-effect of the `model.matrix` function..
