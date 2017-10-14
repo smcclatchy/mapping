@@ -34,7 +34,8 @@ The `calc_genoprob()` function in the [qtl2geno](https://github.com/rqtl/qtl2gen
 package calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. Unlike the corresponding function in
 [R/qtl](http://rqtl.org), `calc.genoprob()`, the result is not inserted back into the input cross object, but is returned as a list of three-dimensional arrays (one per chromosome). Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions.
 
-[image of 3d array w/probs, inds, etc]
+![](../fig/threeD_array.png)
+
 
 If we wish to perform QTL calculations at positions between markers (so called "pseudomarkers"), we first need to insert such positions into the genetic map with the function `insert_pseudomarkers()`. Unlike [R/qtl], the map is kept separate from the genotype
 probabilities.
@@ -74,7 +75,7 @@ genetic map, which we grab from the `iron` object as `iron$gmap`:
 map <- insert_pseudomarkers(map=iron$gmap, step=1)
 ```
 
-Now have a look at the new `map`.
+Now have a look at the new object called `map`.
 
 ```{r view_map}
 map
@@ -88,10 +89,24 @@ Next we use `calc_genoprob()` to calculate the QTL genotype probabilities.
 pr <- calc_genoprob(cross=iron, map=map, err=0.002)
 ```
 
-View the first several rows of genotype probabilities for pseudomarker c1.loc28 on chromosome 1.
+Recall that the result of `calc_genoprob`, `pr`, is a list of three-dimensional arrays (one per chromosome). 
+
+```{r list_chrs}
+names(pr)
+```
+
+Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions. Have a look at the names of each of the three dimensions for chromosome 1.
+
+```{r view_array}
+dimnames(pr$`1`)
+```
+
+View the first several rows of genotype probabilities for the first genotyped marker and the two adjacent pseudomarkers located at 1 cM intervals from the genotyped marker.
 
 ```{r view_genoprob}
+head((pr$`1`)[,,"D1Mit18"])
 head((pr$`1`)[,,"c1.loc28"])
+head((pr$`1`)[,,"c1.loc29"])
 ```
 
 **A bit more advanced (optional)** To speed up the calculations with large datasets on a multi-core machine, you can use the argument `cores`. With `cores=0`, the number of available cores will be detected via `parallel::detectCores()`. Otherwise, specify the number of cores as a positive integer.

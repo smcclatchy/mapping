@@ -31,7 +31,8 @@ The `calc_genoprob()` function in the [qtl2geno](https://github.com/rqtl/qtl2gen
 package calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. Unlike the corresponding function in
 [R/qtl](http://rqtl.org), `calc.genoprob()`, the result is not inserted back into the input cross object, but is returned as a list of three-dimensional arrays (one per chromosome). Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions.
 
-[image of 3d array w/probs, inds, etc]
+![](../fig/threeD_array.png)
+
 
 If we wish to perform QTL calculations at positions between markers (so called "pseudomarkers"), we first need to insert such positions into the genetic map with the function `insert_pseudomarkers()`. Unlike [R/qtl], the map is kept separate from the genotype
 probabilities.
@@ -208,7 +209,7 @@ map <- insert_pseudomarkers(map=iron$gmap, step=1)
 ~~~
 {: .r}
 
-Now have a look at the new `map`.
+Now have a look at the new object called `map`.
 
 
 ~~~
@@ -537,7 +538,107 @@ pr <- calc_genoprob(cross=iron, map=map, err=0.002)
 ~~~
 {: .r}
 
-View the first several rows of genotype probabilities for pseudomarker c1.loc28 on chromosome 1.
+Recall that the result of `calc_genoprob`, `pr`, is a list of three-dimensional arrays (one per chromosome). 
+
+
+~~~
+names(pr)
+~~~
+{: .r}
+
+
+
+~~~
+ [1] "1"  "2"  "3"  "4"  "5"  "6"  "7"  "8"  "9"  "10" "11" "12" "13" "14"
+[15] "15" "16" "17" "18" "19" "X" 
+~~~
+{: .output}
+
+Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions. Have a look at the names of each of the three dimensions for chromosome 1.
+
+
+~~~
+dimnames(pr$`1`)
+~~~
+{: .r}
+
+
+
+~~~
+[[1]]
+  [1] "1"   "2"   "3"   "4"   "5"   "6"   "7"   "8"   "9"   "10"  "11" 
+ [12] "12"  "13"  "14"  "15"  "16"  "17"  "18"  "19"  "20"  "21"  "22" 
+ [23] "23"  "24"  "25"  "26"  "27"  "28"  "29"  "30"  "31"  "32"  "33" 
+ [34] "34"  "35"  "36"  "37"  "38"  "39"  "40"  "41"  "42"  "43"  "44" 
+ [45] "45"  "46"  "47"  "48"  "49"  "50"  "51"  "52"  "53"  "54"  "55" 
+ [56] "56"  "57"  "58"  "59"  "60"  "61"  "62"  "63"  "64"  "65"  "66" 
+ [67] "67"  "68"  "69"  "70"  "71"  "72"  "73"  "74"  "75"  "76"  "77" 
+ [78] "78"  "79"  "80"  "81"  "82"  "83"  "84"  "85"  "86"  "87"  "88" 
+ [89] "89"  "90"  "91"  "92"  "93"  "94"  "95"  "96"  "97"  "98"  "99" 
+[100] "100" "101" "102" "103" "104" "105" "106" "107" "108" "109" "110"
+[111] "111" "112" "113" "114" "115" "116" "117" "118" "119" "120" "121"
+[122] "122" "123" "124" "125" "126" "127" "128" "129" "130" "131" "132"
+[133] "133" "134" "135" "136" "137" "138" "139" "140" "141" "142" "143"
+[144] "144" "145" "146" "147" "148" "149" "150" "151" "152" "153" "154"
+[155] "155" "156" "157" "158" "159" "160" "161" "162" "163" "164" "165"
+[166] "166" "167" "168" "169" "170" "171" "172" "173" "174" "175" "176"
+[177] "177" "178" "179" "180" "181" "182" "183" "184" "185" "186" "187"
+[188] "188" "189" "190" "191" "192" "193" "194" "195" "196" "197" "198"
+[199] "199" "200" "201" "202" "203" "204" "205" "206" "207" "208" "209"
+[210] "210" "211" "212" "213" "214" "215" "216" "217" "218" "219" "220"
+[221] "221" "222" "223" "224" "225" "226" "227" "228" "229" "230" "231"
+[232] "232" "233" "234" "235" "236" "237" "238" "239" "240" "241" "242"
+[243] "243" "244" "245" "246" "247" "248" "249" "250" "251" "252" "253"
+[254] "254" "255" "256" "257" "258" "259" "260" "261" "262" "263" "264"
+[265] "265" "266" "267" "268" "269" "270" "271" "272" "273" "274" "275"
+[276] "276" "277" "278" "279" "280" "281" "282" "283" "284"
+
+[[2]]
+[1] "SS" "SB" "BB"
+
+[[3]]
+ [1] "D1Mit18"   "c1.loc28"  "c1.loc29"  "c1.loc30"  "c1.loc31" 
+ [6] "c1.loc32"  "c1.loc33"  "c1.loc34"  "c1.loc35"  "c1.loc36" 
+[11] "c1.loc37"  "c1.loc38"  "c1.loc39"  "c1.loc40"  "c1.loc41" 
+[16] "c1.loc42"  "c1.loc43"  "c1.loc44"  "c1.loc45"  "c1.loc46" 
+[21] "c1.loc47"  "c1.loc48"  "c1.loc49"  "c1.loc50"  "c1.loc51" 
+[26] "D1Mit80"   "c1.loc52"  "c1.loc53"  "c1.loc54"  "c1.loc55" 
+[31] "c1.loc56"  "c1.loc57"  "c1.loc58"  "c1.loc59"  "c1.loc60" 
+[36] "c1.loc61"  "c1.loc62"  "c1.loc63"  "c1.loc64"  "c1.loc65" 
+[41] "c1.loc66"  "c1.loc67"  "c1.loc68"  "c1.loc69"  "c1.loc70" 
+[46] "c1.loc71"  "c1.loc72"  "c1.loc73"  "c1.loc74"  "c1.loc75" 
+[51] "c1.loc76"  "c1.loc77"  "c1.loc78"  "c1.loc79"  "c1.loc80" 
+[56] "c1.loc81"  "c1.loc82"  "c1.loc83"  "c1.loc84"  "c1.loc85" 
+[61] "c1.loc86"  "c1.loc87"  "c1.loc88"  "c1.loc89"  "c1.loc90" 
+[66] "c1.loc91"  "c1.loc92"  "c1.loc93"  "c1.loc94"  "c1.loc95" 
+[71] "c1.loc96"  "c1.loc97"  "c1.loc98"  "c1.loc99"  "c1.loc100"
+[76] "c1.loc101" "c1.loc102" "c1.loc103" "c1.loc104" "c1.loc105"
+[81] "c1.loc106" "c1.loc107" "c1.loc108" "c1.loc109" "c1.loc110"
+[86] "D1Mit17"  
+~~~
+{: .output}
+
+View the first several rows of genotype probabilities for the first genotyped marker and the two adjacent pseudomarkers located at 1 cM intervals from the genotyped marker.
+
+
+~~~
+head((pr$`1`)[,,"D1Mit18"])
+~~~
+{: .r}
+
+
+
+~~~
+            SS          SB          BB
+1 0.0009965527 0.004443869 0.994559578
+2 0.2500000000 0.500000000 0.250000000
+3 0.0009965527 0.004443869 0.994559578
+4 0.0002244510 0.999550492 0.000225057
+5 0.2500000000 0.500000000 0.250000000
+6 0.2500000000 0.500000000 0.250000000
+~~~
+{: .output}
+
 
 
 ~~~
@@ -553,6 +654,26 @@ head((pr$`1`)[,,"c1.loc28"])
 2 0.250000000 0.50000000 0.250000000
 3 0.001066497 0.04841359 0.950519910
 4 0.004495825 0.99099565 0.004508526
+5 0.250000000 0.50000000 0.250000000
+6 0.250000000 0.50000000 0.250000000
+~~~
+{: .output}
+
+
+
+~~~
+head((pr$`1`)[,,"c1.loc29"])
+~~~
+{: .r}
+
+
+
+~~~
+           SS         SB          BB
+1 0.001307861 0.09166068 0.907031456
+2 0.250000000 0.50000000 0.250000000
+3 0.001307861 0.09166068 0.907031456
+4 0.008374347 0.98322650 0.008399148
 5 0.250000000 0.50000000 0.250000000
 6 0.250000000 0.50000000 0.250000000
 ~~~
