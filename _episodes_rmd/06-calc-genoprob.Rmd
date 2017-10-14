@@ -31,13 +31,12 @@ Hidden Markov models (HMM) are used to calculate
 QTL genotype probabilities, to simulate from the joint genotype distribution and to calculate the most likely sequence of underlying genotypes (all conditional on the observed marker data). This is done in a quite general way, with possible allowance for the presence of genotyping errors. For convenience we assume no crossover interference.
 
 The `calc_genoprob()` function in the [qtl2geno](https://github.com/rqtl/qtl2geno)
-package calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. Unlike the corresponding function in
-[R/qtl](http://rqtl.org), `calc.genoprob()`, the result is not inserted back into the input cross object, but is returned as a list of three-dimensional arrays (one per chromosome). Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions.
+package calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. Unlike the corresponding function in [R/qtl](https://rqtl.org), `calc.genoprob()`, the result is not inserted back into the input cross object, but is returned as a list of three-dimensional arrays (one per chromosome). Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions.
 
 ![](../fig/threeD_array.png)
 
 
-If we wish to perform QTL calculations at positions between markers (so called "pseudomarkers"), we first need to insert such positions into the genetic map with the function `insert_pseudomarkers()`. Unlike [R/qtl], the map is kept separate from the genotype
+If we wish to perform QTL calculations at positions between markers (so called "pseudomarkers"), we first need to insert such positions into the genetic map with the function `insert_pseudomarkers()`. Unlike [R/qtl](https://rqtl.org), the map is kept separate from the genotype
 probabilities.
 
 We'll use the
@@ -57,7 +56,7 @@ three main packages,
 [qtl2scan](https://github.com/rqtl/qtl2scan), and
 [qtl2plot](https://github.com/rqtl/qtl2plot), all at once.)
 
-Now look at a summary of the cross data and the names of each object within the data.
+Now look at a summary of the cross data and the names of each variable within the data.
 
 ```{r summary_data}
 summary(iron)
@@ -77,10 +76,10 @@ genetic map, which we grab from the `iron` object as `iron$gmap`:
 map <- insert_pseudomarkers(map=iron$gmap, step=1)
 ```
 
-Now have a look at the new object called `map`. View only the first several chromosomes.
+Now have a look at the new object called `map`. View only the first two chromosomes.
 
 ```{r view_map}
-head(map)
+head(map, n=2)
 ```
 
 Notice that pseudomarkers are now spaced at 1 cM intervals from genotyped markers. The argument `step=1` generated pseudomarkers at these intervals. 
@@ -106,9 +105,9 @@ dimnames(pr$`1`)
 View the first several rows of genotype probabilities for the first genotyped marker on chromosome 1, and the two adjacent pseudomarkers located at 1 cM intervals away. Compare the probabilities for each pseudomarker genotype with those of the genotyped marker.
 
 ```{r view_genoprob}
-head((pr$`1`)[,,"D1Mit18"])
-head((pr$`1`)[,,"c1.loc28"])
-head((pr$`1`)[,,"c1.loc29"])
+head((pr$`1`)[,,"D1Mit18"]) # genotyped marker
+head((pr$`1`)[,,"c1.loc28"]) # pseudomarker 1 cM away
+head((pr$`1`)[,,"c1.loc29"]) # the next pseudomarker
 ```
 
 **A bit more advanced (optional)** To speed up the calculations with large datasets on a multi-core machine, you can use the argument `cores`. With `cores=0`, the number of available cores will be detected via `parallel::detectCores()`. Otherwise, specify the number of cores as a positive integer.

@@ -28,13 +28,12 @@ Hidden Markov models (HMM) are used to calculate
 QTL genotype probabilities, to simulate from the joint genotype distribution and to calculate the most likely sequence of underlying genotypes (all conditional on the observed marker data). This is done in a quite general way, with possible allowance for the presence of genotyping errors. For convenience we assume no crossover interference.
 
 The `calc_genoprob()` function in the [qtl2geno](https://github.com/rqtl/qtl2geno)
-package calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. Unlike the corresponding function in
-[R/qtl](http://rqtl.org), `calc.genoprob()`, the result is not inserted back into the input cross object, but is returned as a list of three-dimensional arrays (one per chromosome). Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions.
+package calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. Unlike the corresponding function in [R/qtl](https://rqtl.org), `calc.genoprob()`, the result is not inserted back into the input cross object, but is returned as a list of three-dimensional arrays (one per chromosome). Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions.
 
 ![](../fig/threeD_array.png)
 
 
-If we wish to perform QTL calculations at positions between markers (so called "pseudomarkers"), we first need to insert such positions into the genetic map with the function `insert_pseudomarkers()`. Unlike [R/qtl], the map is kept separate from the genotype
+If we wish to perform QTL calculations at positions between markers (so called "pseudomarkers"), we first need to insert such positions into the genetic map with the function `insert_pseudomarkers()`. Unlike [R/qtl](https://rqtl.org), the map is kept separate from the genotype
 probabilities.
 
 We'll use the
@@ -56,7 +55,7 @@ three main packages,
 [qtl2scan](https://github.com/rqtl/qtl2scan), and
 [qtl2plot](https://github.com/rqtl/qtl2plot), all at once.)
 
-Now look at a summary of the cross data and the names of each object within the data.
+Now look at a summary of the cross data and the names of each variable within the data.
 
 
 ~~~
@@ -149,11 +148,11 @@ map <- insert_pseudomarkers(map=iron$gmap, step=1)
 ~~~
 {: .r}
 
-Now have a look at the new object called `map`. View only the first several chromosomes.
+Now have a look at the new object called `map`. View only the first two chromosomes.
 
 
 ~~~
-head(map)
+head(map, n=2)
 ~~~
 {: .r}
 
@@ -199,60 +198,6 @@ c2.loc59 c2.loc60 c2.loc61 c2.loc62 c2.loc63 c2.loc64 c2.loc65 c2.loc66
     59.3     60.3     61.3     62.3     63.3     64.3     65.3     66.3 
 c2.loc67 c2.loc68 c2.loc69 c2.loc70 c2.loc71 c2.loc72  D2Mit48 
     67.3     68.3     69.3     70.3     71.3     72.3     73.2 
-
-$`3`
- D3Mit22 c3.loc26 c3.loc27 c3.loc28 c3.loc29 c3.loc30 c3.loc31 c3.loc32 
-    25.1     26.1     27.1     28.1     29.1     30.1     31.1     32.1 
-c3.loc33 c3.loc34 c3.loc35 c3.loc36 c3.loc37 c3.loc38 c3.loc39 c3.loc40 
-    33.1     34.1     35.1     36.1     37.1     38.1     39.1     40.1 
-c3.loc41 c3.loc42 c3.loc43 c3.loc44 c3.loc45 c3.loc46 c3.loc47 c3.loc48 
-    41.1     42.1     43.1     44.1     45.1     46.1     47.1     48.1 
-c3.loc49 c3.loc50 c3.loc51 c3.loc52 c3.loc53 c3.loc54  D3Mit18 
-    49.1     50.1     51.1     52.1     53.1     54.1     54.6 
-
-$`4`
-  D4Mit2 c4.loc12 c4.loc13 c4.loc14 c4.loc15 c4.loc16 c4.loc17 c4.loc18 
-    10.9     11.9     12.9     13.9     14.9     15.9     16.9     17.9 
-c4.loc19 c4.loc20 c4.loc21 c4.loc22 c4.loc23 c4.loc24 c4.loc25 c4.loc26 
-    18.9     19.9     20.9     21.9     22.9     23.9     24.9     25.9 
-c4.loc27 c4.loc28 c4.loc29 c4.loc30 c4.loc31 c4.loc32 c4.loc33 c4.loc34 
-    26.9     27.9     28.9     29.9     30.9     31.9     32.9     33.9 
-c4.loc35 c4.loc36 c4.loc37 c4.loc38 c4.loc39 c4.loc40 c4.loc41 c4.loc42 
-    34.9     35.9     36.9     37.9     38.9     39.9     40.9     41.9 
-c4.loc43 c4.loc44 c4.loc45 c4.loc46 c4.loc47 c4.loc48 c4.loc49 c4.loc50 
-    42.9     43.9     44.9     45.9     46.9     47.9     48.9     49.9 
-c4.loc51 c4.loc52 c4.loc53 D4Mit352 
-    50.9     51.9     52.9     53.6 
-
-$`5`
-   D5Mit11 c5.loc18.5 c5.loc19.5 c5.loc20.5 c5.loc21.5 c5.loc22.5 
-      17.5       18.5       19.5       20.5       21.5       22.5 
-c5.loc23.5 c5.loc24.5 c5.loc25.5 c5.loc26.5 c5.loc27.5 c5.loc28.5 
-      23.5       24.5       25.5       26.5       27.5       28.5 
-c5.loc29.5 c5.loc30.5 c5.loc31.5 c5.loc32.5 c5.loc33.5 c5.loc34.5 
-      29.5       30.5       31.5       32.5       33.5       34.5 
-c5.loc35.5 c5.loc36.5 c5.loc37.5 c5.loc38.5 c5.loc39.5 c5.loc40.5 
-      35.5       36.5       37.5       38.5       39.5       40.5 
-c5.loc41.5 c5.loc42.5 c5.loc43.5 c5.loc44.5 c5.loc45.5 c5.loc46.5 
-      41.5       42.5       43.5       44.5       45.5       46.5 
-c5.loc47.5 c5.loc48.5 c5.loc49.5 c5.loc50.5 c5.loc51.5 c5.loc52.5 
-      47.5       48.5       49.5       50.5       51.5       52.5 
-c5.loc53.5 c5.loc54.5 c5.loc55.5 c5.loc56.5 c5.loc57.5 c5.loc58.5 
-      53.5       54.5       55.5       56.5       57.5       58.5 
-c5.loc59.5 c5.loc60.5 c5.loc61.5    D5Mit30 
-      59.5       60.5       61.5       62.3 
-
-$`6`
-  D6Mit104 c6.loc42.5 c6.loc43.5 c6.loc44.5 c6.loc45.5 c6.loc46.5 
-      41.5       42.5       43.5       44.5       45.5       46.5 
-c6.loc47.5 c6.loc48.5 c6.loc49.5 c6.loc50.5 c6.loc51.5 c6.loc52.5 
-      47.5       48.5       49.5       50.5       51.5       52.5 
-c6.loc53.5 c6.loc54.5 c6.loc55.5 c6.loc56.5 c6.loc57.5 c6.loc58.5 
-      53.5       54.5       55.5       56.5       57.5       58.5 
-c6.loc59.5 c6.loc60.5 c6.loc61.5 c6.loc62.5 c6.loc63.5 c6.loc64.5 
-      59.5       60.5       61.5       62.5       63.5       64.5 
-c6.loc65.5 c6.loc66.5    D6Mit15 
-      65.5       66.5       66.7 
 ~~~
 {: .output}
 
@@ -350,7 +295,7 @@ View the first several rows of genotype probabilities for the first genotyped ma
 
 
 ~~~
-head((pr$`1`)[,,"D1Mit18"])
+head((pr$`1`)[,,"D1Mit18"]) # genotyped marker
 ~~~
 {: .r}
 
@@ -370,7 +315,7 @@ head((pr$`1`)[,,"D1Mit18"])
 
 
 ~~~
-head((pr$`1`)[,,"c1.loc28"])
+head((pr$`1`)[,,"c1.loc28"]) # pseudomarker 1 cM away
 ~~~
 {: .r}
 
@@ -390,7 +335,7 @@ head((pr$`1`)[,,"c1.loc28"])
 
 
 ~~~
-head((pr$`1`)[,,"c1.loc29"])
+head((pr$`1`)[,,"c1.loc29"]) # the next pseudomarker
 ~~~
 {: .r}
 
