@@ -1,0 +1,43 @@
+---
+title: "Input File Format"
+teaching: 0
+exercises: 0
+questions:
+- "How are the data files formatted for qtl2?"
+- "Which data files are required for qtl2?"
+- "How do input files compare between qtl and qtl2?"
+objectives:
+- To understand the which input files are required for qtl2 and how they should be formatted.
+- To compare input files between qtl and qtl2.
+keypoints:
+- "QTL mapping data consists of a set of tables of data: marker genotypes, phenotypes, marker maps, etc."
+- "These different tables are in separate comma-delimited (CSV) files."
+- "In each file, the first column is a set of IDs for the rows, and the first row is a set of IDs for the columns."
+- "In addition to primary data, a separate file with control parameters (or metadata) in either [YAML](http://www.yaml.org) or [JSON](http://json.org) format is required."
+source: Rmd
+---
+
+
+
+If you are accustomed to input files for [R/qtl](http://rqtl.org), you will find that there are some similarities between formats for R/qtl and R/qtl2, and some important differences. The input data file formats for R/qtl cannot handle complex crosses, and so for R/qtl2, there is a new format for the data files. The table below provides a quick comparison between data files and file formats for each.
+
+| Data                      | R/qtl     | R/qtl2                  |  
+|:--------------------------|:----------|:------------------------|
+| Format                    |  CSV      |  CSV                    | 
+| Marker map                |  genetic  |  genetic, physical      | 
+| Phenotypes and covariates |  separate |  combined               | 
+| Control file              |  none     |  required (YAML or JSON)| 
+
+R/qtl2 requires the following files:
+
+1.
+2.
+3.
+4.
+
+
+
+
+
+
+
