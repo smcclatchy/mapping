@@ -56,6 +56,8 @@ three main packages,
 [qtl2scan](https://github.com/rqtl/qtl2scan), and
 [qtl2plot](https://github.com/rqtl/qtl2plot), all at once.)
 
+Now look at a summary of the cross data and the names of each object within the data.
+
 
 ~~~
 summary(iron)
@@ -101,11 +103,11 @@ names(iron)
 ~~~
 {: .output}
 
-Have a look at the markers listed in the genetic map, `gmap`. Markers are listed by chromosome and described by cM position.
+Have a look at the markers listed in the genetic map, `gmap`. Markers are listed by chromosome and described by cM position. View only the markers on the first several chromosomes.
 
 
 ~~~
-iron$gmap
+head(iron$gmap)
 ~~~
 {: .r}
 
@@ -135,68 +137,6 @@ D5Mit11 D5Mit30
 $`6`
 D6Mit104  D6Mit15 
     41.5     66.7 
-
-$`7`
-D7Mit74 D7Mit25  D7Nds5 D7mit30 D7Mit31 D7Mit17 D7Mit71 
-    1.1    13.1    23.0    28.4    31.7    37.2    53.6 
-
-$`8`
-D8Mit124   D8Mit4 D8Mit195  D8Mit31 D8Mit294  D8Mit40 D8Mit120  D8Mit36 
-     0.0     13.6     17.3     32.7     39.1     45.5     69.9     75.3 
-
-$`9`
- D9Mit42  D9Mit31  D9Mit10 D9Mit182  D9Mit17 
-     6.6     33.9     43.7     53.6     61.2 
-
-$`10`
-D10Mit61 D10Mit70 
-    24.0     57.9 
-
-$`11`
- D11Mit20   D11Mit4  D11Mit36  D11Mit41 D11Mit288   D8Mit18 D11Mit101 
-      0.0      16.4      28.2      32.3      36.2      42.2      56.9 
-
-$`12`
- D12Mit88 D12Mit134 
-     19.7      57.9 
-
-$`13`
-D13Mit10 D13Mit51 
-    17.5     40.4 
-
-$`14`
- D14Mit54 D14Mit195 
-     19.7      52.5 
-
-$`15`
- D15Mit22 D15Mit159 
-     16.4      49.2 
-
-$`16`
-D16Mit131   D16Mit4  D16Mit30  D16Mit19  D16Mit70 
-      6.6      25.1      30.6      40.4      51.4 
-
-$`17`
-D17Mit46 D17Mit93 
-     3.3     39.3 
-
-$`18`
- D18Mit20 D18Mit186 
-      4.4      30.6 
-
-$`19`
-D19Mit68 D19Mit37 
-     3.3     38.3 
-
-$X
- DXMit16 DXMit186 
-    29.5     57.9 
-
-attr(,"is_x_chr")
-    1     2     3     4     5     6     7     8     9    10    11    12 
-FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE 
-   13    14    15    16    17    18    19     X 
-FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE 
 ~~~
 {: .output}
 
@@ -209,11 +149,11 @@ map <- insert_pseudomarkers(map=iron$gmap, step=1)
 ~~~
 {: .r}
 
-Now have a look at the new object called `map`.
+Now have a look at the new object called `map`. View only the first several chromosomes.
 
 
 ~~~
-map
+head(map)
 ~~~
 {: .r}
 
@@ -313,218 +253,6 @@ c6.loc59.5 c6.loc60.5 c6.loc61.5 c6.loc62.5 c6.loc63.5 c6.loc64.5
       59.5       60.5       61.5       62.5       63.5       64.5 
 c6.loc65.5 c6.loc66.5    D6Mit15 
       65.5       66.5       66.7 
-
-$`7`
- D7Mit74  c7.loc2  c7.loc3  c7.loc4  c7.loc5  c7.loc6  c7.loc7  c7.loc8 
-     1.1      2.1      3.1      4.1      5.1      6.1      7.1      8.1 
- c7.loc9 c7.loc10 c7.loc11 c7.loc12  D7Mit25 c7.loc14 c7.loc15 c7.loc16 
-     9.1     10.1     11.1     12.1     13.1     14.1     15.1     16.1 
-c7.loc17 c7.loc18 c7.loc19 c7.loc20 c7.loc21 c7.loc22   D7Nds5 c7.loc23 
-    17.1     18.1     19.1     20.1     21.1     22.1     23.0     23.1 
-c7.loc24 c7.loc25 c7.loc26 c7.loc27 c7.loc28  D7mit30 c7.loc29 c7.loc30 
-    24.1     25.1     26.1     27.1     28.1     28.4     29.1     30.1 
-c7.loc31  D7Mit31 c7.loc32 c7.loc33 c7.loc34 c7.loc35 c7.loc36 c7.loc37 
-    31.1     31.7     32.1     33.1     34.1     35.1     36.1     37.1 
- D7Mit17 c7.loc38 c7.loc39 c7.loc40 c7.loc41 c7.loc42 c7.loc43 c7.loc44 
-    37.2     38.1     39.1     40.1     41.1     42.1     43.1     44.1 
-c7.loc45 c7.loc46 c7.loc47 c7.loc48 c7.loc49 c7.loc50 c7.loc51 c7.loc52 
-    45.1     46.1     47.1     48.1     49.1     50.1     51.1     52.1 
-c7.loc53  D7Mit71 
-    53.1     53.6 
-
-$`8`
-D8Mit124  c8.loc1  c8.loc2  c8.loc3  c8.loc4  c8.loc5  c8.loc6  c8.loc7 
-     0.0      1.0      2.0      3.0      4.0      5.0      6.0      7.0 
- c8.loc8  c8.loc9 c8.loc10 c8.loc11 c8.loc12 c8.loc13   D8Mit4 c8.loc14 
-     8.0      9.0     10.0     11.0     12.0     13.0     13.6     14.0 
-c8.loc15 c8.loc16 c8.loc17 D8Mit195 c8.loc18 c8.loc19 c8.loc20 c8.loc21 
-    15.0     16.0     17.0     17.3     18.0     19.0     20.0     21.0 
-c8.loc22 c8.loc23 c8.loc24 c8.loc25 c8.loc26 c8.loc27 c8.loc28 c8.loc29 
-    22.0     23.0     24.0     25.0     26.0     27.0     28.0     29.0 
-c8.loc30 c8.loc31 c8.loc32  D8Mit31 c8.loc33 c8.loc34 c8.loc35 c8.loc36 
-    30.0     31.0     32.0     32.7     33.0     34.0     35.0     36.0 
-c8.loc37 c8.loc38 c8.loc39 D8Mit294 c8.loc40 c8.loc41 c8.loc42 c8.loc43 
-    37.0     38.0     39.0     39.1     40.0     41.0     42.0     43.0 
-c8.loc44 c8.loc45  D8Mit40 c8.loc46 c8.loc47 c8.loc48 c8.loc49 c8.loc50 
-    44.0     45.0     45.5     46.0     47.0     48.0     49.0     50.0 
-c8.loc51 c8.loc52 c8.loc53 c8.loc54 c8.loc55 c8.loc56 c8.loc57 c8.loc58 
-    51.0     52.0     53.0     54.0     55.0     56.0     57.0     58.0 
-c8.loc59 c8.loc60 c8.loc61 c8.loc62 c8.loc63 c8.loc64 c8.loc65 c8.loc66 
-    59.0     60.0     61.0     62.0     63.0     64.0     65.0     66.0 
-c8.loc67 c8.loc68 c8.loc69 D8Mit120 c8.loc70 c8.loc71 c8.loc72 c8.loc73 
-    67.0     68.0     69.0     69.9     70.0     71.0     72.0     73.0 
-c8.loc74 c8.loc75  D8Mit36 
-    74.0     75.0     75.3 
-
-$`9`
- D9Mit42  c9.loc8  c9.loc9 c9.loc10 c9.loc11 c9.loc12 c9.loc13 c9.loc14 
-     6.6      7.6      8.6      9.6     10.6     11.6     12.6     13.6 
-c9.loc15 c9.loc16 c9.loc17 c9.loc18 c9.loc19 c9.loc20 c9.loc21 c9.loc22 
-    14.6     15.6     16.6     17.6     18.6     19.6     20.6     21.6 
-c9.loc23 c9.loc24 c9.loc25 c9.loc26 c9.loc27 c9.loc28 c9.loc29 c9.loc30 
-    22.6     23.6     24.6     25.6     26.6     27.6     28.6     29.6 
-c9.loc31 c9.loc32 c9.loc33 c9.loc34  D9Mit31 c9.loc35 c9.loc36 c9.loc37 
-    30.6     31.6     32.6     33.6     33.9     34.6     35.6     36.6 
-c9.loc38 c9.loc39 c9.loc40 c9.loc41 c9.loc42 c9.loc43 c9.loc44  D9Mit10 
-    37.6     38.6     39.6     40.6     41.6     42.6     43.6     43.7 
-c9.loc45 c9.loc46 c9.loc47 c9.loc48 c9.loc49 c9.loc50 c9.loc51 c9.loc52 
-    44.6     45.6     46.6     47.6     48.6     49.6     50.6     51.6 
-c9.loc53 D9Mit182 c9.loc55 c9.loc56 c9.loc57 c9.loc58 c9.loc59 c9.loc60 
-    52.6     53.6     54.6     55.6     56.6     57.6     58.6     59.6 
-c9.loc61  D9Mit17 
-    60.6     61.2 
-
-$`10`
- D10Mit61 c10.loc25 c10.loc26 c10.loc27 c10.loc28 c10.loc29 c10.loc30 
-     24.0      25.0      26.0      27.0      28.0      29.0      30.0 
-c10.loc31 c10.loc32 c10.loc33 c10.loc34 c10.loc35 c10.loc36 c10.loc37 
-     31.0      32.0      33.0      34.0      35.0      36.0      37.0 
-c10.loc38 c10.loc39 c10.loc40 c10.loc41 c10.loc42 c10.loc43 c10.loc44 
-     38.0      39.0      40.0      41.0      42.0      43.0      44.0 
-c10.loc45 c10.loc46 c10.loc47 c10.loc48 c10.loc49 c10.loc50 c10.loc51 
-     45.0      46.0      47.0      48.0      49.0      50.0      51.0 
-c10.loc52 c10.loc53 c10.loc54 c10.loc55 c10.loc56 c10.loc57  D10Mit70 
-     52.0      53.0      54.0      55.0      56.0      57.0      57.9 
-
-$`11`
- D11Mit20  c11.loc1  c11.loc2  c11.loc3  c11.loc4  c11.loc5  c11.loc6 
-      0.0       1.0       2.0       3.0       4.0       5.0       6.0 
- c11.loc7  c11.loc8  c11.loc9 c11.loc10 c11.loc11 c11.loc12 c11.loc13 
-      7.0       8.0       9.0      10.0      11.0      12.0      13.0 
-c11.loc14 c11.loc15 c11.loc16   D11Mit4 c11.loc17 c11.loc18 c11.loc19 
-     14.0      15.0      16.0      16.4      17.0      18.0      19.0 
-c11.loc20 c11.loc21 c11.loc22 c11.loc23 c11.loc24 c11.loc25 c11.loc26 
-     20.0      21.0      22.0      23.0      24.0      25.0      26.0 
-c11.loc27 c11.loc28  D11Mit36 c11.loc29 c11.loc30 c11.loc31 c11.loc32 
-     27.0      28.0      28.2      29.0      30.0      31.0      32.0 
- D11Mit41 c11.loc33 c11.loc34 c11.loc35 c11.loc36 D11Mit288 c11.loc37 
-     32.3      33.0      34.0      35.0      36.0      36.2      37.0 
-c11.loc38 c11.loc39 c11.loc40 c11.loc41 c11.loc42   D8Mit18 c11.loc43 
-     38.0      39.0      40.0      41.0      42.0      42.2      43.0 
-c11.loc44 c11.loc45 c11.loc46 c11.loc47 c11.loc48 c11.loc49 c11.loc50 
-     44.0      45.0      46.0      47.0      48.0      49.0      50.0 
-c11.loc51 c11.loc52 c11.loc53 c11.loc54 c11.loc55 c11.loc56 D11Mit101 
-     51.0      52.0      53.0      54.0      55.0      56.0      56.9 
-
-$`12`
- D12Mit88 c12.loc21 c12.loc22 c12.loc23 c12.loc24 c12.loc25 c12.loc26 
-     19.7      20.7      21.7      22.7      23.7      24.7      25.7 
-c12.loc27 c12.loc28 c12.loc29 c12.loc30 c12.loc31 c12.loc32 c12.loc33 
-     26.7      27.7      28.7      29.7      30.7      31.7      32.7 
-c12.loc34 c12.loc35 c12.loc36 c12.loc37 c12.loc38 c12.loc39 c12.loc40 
-     33.7      34.7      35.7      36.7      37.7      38.7      39.7 
-c12.loc41 c12.loc42 c12.loc43 c12.loc44 c12.loc45 c12.loc46 c12.loc47 
-     40.7      41.7      42.7      43.7      44.7      45.7      46.7 
-c12.loc48 c12.loc49 c12.loc50 c12.loc51 c12.loc52 c12.loc53 c12.loc54 
-     47.7      48.7      49.7      50.7      51.7      52.7      53.7 
-c12.loc55 c12.loc56 c12.loc57 c12.loc58 D12Mit134 
-     54.7      55.7      56.7      57.7      57.9 
-
-$`13`
-   D13Mit10 c13.loc18.5 c13.loc19.5 c13.loc20.5 c13.loc21.5 c13.loc22.5 
-       17.5        18.5        19.5        20.5        21.5        22.5 
-c13.loc23.5 c13.loc24.5 c13.loc25.5 c13.loc26.5 c13.loc27.5 c13.loc28.5 
-       23.5        24.5        25.5        26.5        27.5        28.5 
-c13.loc29.5 c13.loc30.5 c13.loc31.5 c13.loc32.5 c13.loc33.5 c13.loc34.5 
-       29.5        30.5        31.5        32.5        33.5        34.5 
-c13.loc35.5 c13.loc36.5 c13.loc37.5 c13.loc38.5 c13.loc39.5    D13Mit51 
-       35.5        36.5        37.5        38.5        39.5        40.4 
-
-$`14`
- D14Mit54 c14.loc21 c14.loc22 c14.loc23 c14.loc24 c14.loc25 c14.loc26 
-     19.7      20.7      21.7      22.7      23.7      24.7      25.7 
-c14.loc27 c14.loc28 c14.loc29 c14.loc30 c14.loc31 c14.loc32 c14.loc33 
-     26.7      27.7      28.7      29.7      30.7      31.7      32.7 
-c14.loc34 c14.loc35 c14.loc36 c14.loc37 c14.loc38 c14.loc39 c14.loc40 
-     33.7      34.7      35.7      36.7      37.7      38.7      39.7 
-c14.loc41 c14.loc42 c14.loc43 c14.loc44 c14.loc45 c14.loc46 c14.loc47 
-     40.7      41.7      42.7      43.7      44.7      45.7      46.7 
-c14.loc48 c14.loc49 c14.loc50 c14.loc51 c14.loc52 D14Mit195 
-     47.7      48.7      49.7      50.7      51.7      52.5 
-
-$`15`
- D15Mit22 c15.loc17 c15.loc18 c15.loc19 c15.loc20 c15.loc21 c15.loc22 
-     16.4      17.4      18.4      19.4      20.4      21.4      22.4 
-c15.loc23 c15.loc24 c15.loc25 c15.loc26 c15.loc27 c15.loc28 c15.loc29 
-     23.4      24.4      25.4      26.4      27.4      28.4      29.4 
-c15.loc30 c15.loc31 c15.loc32 c15.loc33 c15.loc34 c15.loc35 c15.loc36 
-     30.4      31.4      32.4      33.4      34.4      35.4      36.4 
-c15.loc37 c15.loc38 c15.loc39 c15.loc40 c15.loc41 c15.loc42 c15.loc43 
-     37.4      38.4      39.4      40.4      41.4      42.4      43.4 
-c15.loc44 c15.loc45 c15.loc46 c15.loc47 c15.loc48 D15Mit159 
-     44.4      45.4      46.4      47.4      48.4      49.2 
-
-$`16`
-D16Mit131  c16.loc8  c16.loc9 c16.loc10 c16.loc11 c16.loc12 c16.loc13 
-      6.6       7.6       8.6       9.6      10.6      11.6      12.6 
-c16.loc14 c16.loc15 c16.loc16 c16.loc17 c16.loc18 c16.loc19 c16.loc20 
-     13.6      14.6      15.6      16.6      17.6      18.6      19.6 
-c16.loc21 c16.loc22 c16.loc23 c16.loc24 c16.loc25   D16Mit4 c16.loc26 
-     20.6      21.6      22.6      23.6      24.6      25.1      25.6 
-c16.loc27 c16.loc28 c16.loc29 c16.loc30  D16Mit30 c16.loc32 c16.loc33 
-     26.6      27.6      28.6      29.6      30.6      31.6      32.6 
-c16.loc34 c16.loc35 c16.loc36 c16.loc37 c16.loc38 c16.loc39 c16.loc40 
-     33.6      34.6      35.6      36.6      37.6      38.6      39.6 
- D16Mit19 c16.loc41 c16.loc42 c16.loc43 c16.loc44 c16.loc45 c16.loc46 
-     40.4      40.6      41.6      42.6      43.6      44.6      45.6 
-c16.loc47 c16.loc48 c16.loc49 c16.loc50 c16.loc51  D16Mit70 
-     46.6      47.6      48.6      49.6      50.6      51.4 
-
-$`17`
- D17Mit46  c17.loc4  c17.loc5  c17.loc6  c17.loc7  c17.loc8  c17.loc9 
-      3.3       4.3       5.3       6.3       7.3       8.3       9.3 
-c17.loc10 c17.loc11 c17.loc12 c17.loc13 c17.loc14 c17.loc15 c17.loc16 
-     10.3      11.3      12.3      13.3      14.3      15.3      16.3 
-c17.loc17 c17.loc18 c17.loc19 c17.loc20 c17.loc21 c17.loc22 c17.loc23 
-     17.3      18.3      19.3      20.3      21.3      22.3      23.3 
-c17.loc24 c17.loc25 c17.loc26 c17.loc27 c17.loc28 c17.loc29 c17.loc30 
-     24.3      25.3      26.3      27.3      28.3      29.3      30.3 
-c17.loc31 c17.loc32 c17.loc33 c17.loc34 c17.loc35 c17.loc36 c17.loc37 
-     31.3      32.3      33.3      34.3      35.3      36.3      37.3 
-c17.loc38  D17Mit93 
-     38.3      39.3 
-
-$`18`
- D18Mit20  c18.loc5  c18.loc6  c18.loc7  c18.loc8  c18.loc9 c18.loc10 
-      4.4       5.4       6.4       7.4       8.4       9.4      10.4 
-c18.loc11 c18.loc12 c18.loc13 c18.loc14 c18.loc15 c18.loc16 c18.loc17 
-     11.4      12.4      13.4      14.4      15.4      16.4      17.4 
-c18.loc18 c18.loc19 c18.loc20 c18.loc21 c18.loc22 c18.loc23 c18.loc24 
-     18.4      19.4      20.4      21.4      22.4      23.4      24.4 
-c18.loc25 c18.loc26 c18.loc27 c18.loc28 c18.loc29 c18.loc30 D18Mit186 
-     25.4      26.4      27.4      28.4      29.4      30.4      30.6 
-
-$`19`
- D19Mit68  c19.loc4  c19.loc5  c19.loc6  c19.loc7  c19.loc8  c19.loc9 
-      3.3       4.3       5.3       6.3       7.3       8.3       9.3 
-c19.loc10 c19.loc11 c19.loc12 c19.loc13 c19.loc14 c19.loc15 c19.loc16 
-     10.3      11.3      12.3      13.3      14.3      15.3      16.3 
-c19.loc17 c19.loc18 c19.loc19 c19.loc20 c19.loc21 c19.loc22 c19.loc23 
-     17.3      18.3      19.3      20.3      21.3      22.3      23.3 
-c19.loc24 c19.loc25 c19.loc26 c19.loc27 c19.loc28 c19.loc29 c19.loc30 
-     24.3      25.3      26.3      27.3      28.3      29.3      30.3 
-c19.loc31 c19.loc32 c19.loc33 c19.loc34 c19.loc35 c19.loc36 c19.loc37 
-     31.3      32.3      33.3      34.3      35.3      36.3      37.3 
- D19Mit37 
-     38.3 
-
-$X
-   DXMit16 cX.loc30.5 cX.loc31.5 cX.loc32.5 cX.loc33.5 cX.loc34.5 
-      29.5       30.5       31.5       32.5       33.5       34.5 
-cX.loc35.5 cX.loc36.5 cX.loc37.5 cX.loc38.5 cX.loc39.5 cX.loc40.5 
-      35.5       36.5       37.5       38.5       39.5       40.5 
-cX.loc41.5 cX.loc42.5 cX.loc43.5 cX.loc44.5 cX.loc45.5 cX.loc46.5 
-      41.5       42.5       43.5       44.5       45.5       46.5 
-cX.loc47.5 cX.loc48.5 cX.loc49.5 cX.loc50.5 cX.loc51.5 cX.loc52.5 
-      47.5       48.5       49.5       50.5       51.5       52.5 
-cX.loc53.5 cX.loc54.5 cX.loc55.5 cX.loc56.5 cX.loc57.5   DXMit186 
-      53.5       54.5       55.5       56.5       57.5       57.9 
-
-attr(,"is_x_chr")
-    1     2     3     4     5     6     7     8     9    10    11    12 
-FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE 
-   13    14    15    16    17    18    19     X 
-FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE 
 ~~~
 {: .output}
 
@@ -618,7 +346,7 @@ dimnames(pr$`1`)
 ~~~
 {: .output}
 
-View the first several rows of genotype probabilities for the first genotyped marker and the two adjacent pseudomarkers located at 1 cM intervals from the genotyped marker.
+View the first several rows of genotype probabilities for the first genotyped marker on chromosome 1, and the two adjacent pseudomarkers located at 1 cM intervals away. Compare the probabilities for each pseudomarker genotype with those of the genotyped marker.
 
 
 ~~~
@@ -707,7 +435,11 @@ apr <- genoprob_to_alleleprob(probs=pr)
 
 > ## Challenge 2
 > Load the grav2.zip file into an object called `grav`. 
+> View a summary of the `grav` data.
+> View the genetic map for the `grav` data.
 > Insert pseudomarkers and calculate genotype probabilities.
+> View the first several rows of genotype probabilities for 
+> any marker on chromosome 5.
 >
 > > ## Solution to Challenge 2
 > >

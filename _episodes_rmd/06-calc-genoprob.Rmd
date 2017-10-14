@@ -57,15 +57,17 @@ three main packages,
 [qtl2scan](https://github.com/rqtl/qtl2scan), and
 [qtl2plot](https://github.com/rqtl/qtl2plot), all at once.)
 
+Now look at a summary of the cross data and the names of each object within the data.
+
 ```{r summary_data}
 summary(iron)
 names(iron)
 ```
 
-Have a look at the markers listed in the genetic map, `gmap`. Markers are listed by chromosome and described by cM position.
+Have a look at the markers listed in the genetic map, `gmap`. Markers are listed by chromosome and described by cM position. View only the markers on the first several chromosomes.
 
 ```{r map_data}
-iron$gmap
+head(iron$gmap)
 ```
 
 We then use `insert_pseudomarkers()` to insert pseudomarkers into the
@@ -75,10 +77,10 @@ genetic map, which we grab from the `iron` object as `iron$gmap`:
 map <- insert_pseudomarkers(map=iron$gmap, step=1)
 ```
 
-Now have a look at the new object called `map`.
+Now have a look at the new object called `map`. View only the first several chromosomes.
 
 ```{r view_map}
-map
+head(map)
 ```
 
 Notice that pseudomarkers are now spaced at 1 cM intervals from genotyped markers. The argument `step=1` generated pseudomarkers at these intervals. 
@@ -101,7 +103,7 @@ Each 3d array of probabilities is arranged as individuals &times; genotypes &tim
 dimnames(pr$`1`)
 ```
 
-View the first several rows of genotype probabilities for the first genotyped marker and the two adjacent pseudomarkers located at 1 cM intervals from the genotyped marker.
+View the first several rows of genotype probabilities for the first genotyped marker on chromosome 1, and the two adjacent pseudomarkers located at 1 cM intervals away. Compare the probabilities for each pseudomarker genotype with those of the genotyped marker.
 
 ```{r view_genoprob}
 head((pr$`1`)[,,"D1Mit18"])
@@ -133,7 +135,11 @@ apr <- genoprob_to_alleleprob(probs=pr)
 
 > ## Challenge 2
 > Load the grav2.zip file into an object called `grav`. 
+> View a summary of the `grav` data.
+> View the genetic map for the `grav` data.
 > Insert pseudomarkers and calculate genotype probabilities.
+> View the first several rows of genotype probabilities for 
+> any marker on chromosome 5.
 >
 > > ## Solution to Challenge 2
 > >
