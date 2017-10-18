@@ -1,7 +1,7 @@
 ---
 title: "Calculating Genotype Probabilities"
-teaching: 0
-exercises: 0
+teaching: 30
+exercises: 30
 questions:
 - "How do I calculate QTL at positions between genotyped markers?"
 - "How do I calculate QTL genotype probabilities?"
@@ -20,7 +20,7 @@ source: Rmd
 
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
-knitr_fig_path("06-")
+knitr_fig_path("03-")
 ```
 
 The first basic task in QTL analysis is to calculate conditional genotype probabilities, given the observed marker data, at each putative QTL position. For example, the first step would be to determine the probabilities for genotypes AA and AB at the locus indicated below.
@@ -43,20 +43,26 @@ We'll use the
 [iron dataset](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron)
 from
 [Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992)
-(an intercross) as an example. We first load the data:
+(an intercross) as an example. We first load the data using the function `system.file`, which finds files located in packages. 
 
 ```{r load_data}
-library(qtl2geno)
-iron <- read_cross2( system.file("extdata", "iron.zip", package="qtl2geno") )
+library(qtl2)
+iron <- read_cross2(file = system.file("extdata", "iron.zip", package="qtl2geno") )
 ```
 
-(_Note_: you can use `library(qtl2)` to load the
-three main packages,
-[qtl2geno](https://github.com/rqtl/qtl2geno),
-[qtl2scan](https://github.com/rqtl/qtl2scan), and
-[qtl2plot](https://github.com/rqtl/qtl2plot), all at once.)
+To load your own data, you would use the file path to your data files. For example, if the file path to your data files is /home/qtlproject/data, the command to load your data would look like this:
 
-Now look at a summary of the cross data and the names of each variable within the data.
+```{r load_my_data, eval=FALSE}
+myQTLdata <- read_cross2(file = "/home/qtlproject/data/myqtldata.yaml" )
+```
+
+The YAML file contains all control information for your data, including names of data files, cross type, column specifications for sex and cross information, and more. This can also be in JSON format. Alternatively, all data files can be zipped together for loading.
+
+```{r load_my_zipdata, eval=FALSE}
+myQTLdata <- read_cross2(file = "/home/qtlproject/data/myqtldata.zip" )
+```
+
+Back to the iron data. Now look at a summary of the cross data and the names of each variable within the data.
 
 ```{r summary_data}
 summary(iron)
@@ -84,11 +90,13 @@ head(map, n=2)
 
 Notice that pseudomarkers are now spaced at 1 cM intervals from genotyped markers. The argument `step=1` generated pseudomarkers at these intervals. 
 
-Next we use `calc_genoprob()` to calculate the QTL genotype probabilities.
+Next we use `calc_genoprob()` to calculate the QTL genotype probabilities. In R/qtl2, these are maintained separate from the cross object.
 
 ```{r calc_genoprob}
-pr <- calc_genoprob(cross=iron, map=map, err=0.002)
+pr <- calc_genoprob(cross=iron, map=map, error_prob=0.002)
 ```
+
+The argument `error_prob` supplies an assumed genotyping error probability of 0.002. If a value for `error_prob` is not supplied, the default probability is 0.0001. 
 
 Recall that the result of `calc_genoprob`, `pr`, is a list of three-dimensional arrays (one per chromosome). 
 
@@ -96,27 +104,27 @@ Recall that the result of `calc_genoprob`, `pr`, is a list of three-dimensional 
 names(pr)
 ```
 
-Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions. Have a look at the names of each of the three dimensions for chromosome 1.
+Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions. Have a look at the names of each of the three dimensions for chromosome 19.
 
 ```{r view_array}
-dimnames(pr$`1`)
+dimnames(pr$`19`)
 ```
 
-View the first several rows of genotype probabilities for the first genotyped marker on chromosome 1, and the two adjacent pseudomarkers located at 1 cM intervals away. Compare the probabilities for each pseudomarker genotype with those of the genotyped marker.
+View the first three rows of genotype probabilities for the first genotyped marker on chromosome 19, and the two adjacent pseudomarkers located at 1 cM intervals away. Compare the probabilities for each pseudomarker genotype with those of the genotyped marker.
 
 ```{r view_genoprob}
-head((pr$`1`)[,,"D1Mit18"]) # genotyped marker
-head((pr$`1`)[,,"c1.loc28"]) # pseudomarker 1 cM away
-head((pr$`1`)[,,"c1.loc29"]) # the next pseudomarker
+(pr$`19`)[1:3,,"D19Mit68"] # genotyped marker
+(pr$`19`)[1:3,,"c19.loc4"] # pseudomarker 1 cM away
+(pr$`19`)[1:3,,"c19.loc5"] # the next pseudomarker
 ```
 
-**A bit more advanced (optional)** To speed up the calculations with large datasets on a multi-core machine, you can use the argument `cores`. With `cores=0`, the number of available cores will be detected via `parallel::detectCores()`. Otherwise, specify the number of cores as a positive integer.
+**Specify number of cores to use (optional)** To speed up the calculations with large datasets on a multi-core machine, you can use the argument `cores`. With `cores=0`, the number of available cores will be detected via `parallel::detectCores()`. Otherwise, specify the number of cores as a positive integer.
 
 ```{r calc_genoprob_multicore, eval=FALSE}
-pr <- calc_genoprob(cross=iron, map=map, err=0.002, cores=4)
+pr <- calc_genoprob(cross=iron, map=map, error_prob=0.002, cores=4)
 ```
 
-**(optional)** The genome scan functions use genotype probabilities as well as a matrix of phenotypes. If you wished to perform a genome scan via an additive allele model, you would first convert the genotype probabilities to allele probabilities, using the function `genoprob_to_alleleprob()`.
+**Allele probabilities (optional)** The genome scan functions use genotype probabilities as well as a matrix of phenotypes. If you wished to perform a genome scan via an additive allele model, you would first convert the genotype probabilities to allele probabilities, using the function `genoprob_to_alleleprob()`.
 
 ```{r allele_probs}
 apr <- genoprob_to_alleleprob(probs=pr)
@@ -133,21 +141,23 @@ apr <- genoprob_to_alleleprob(probs=pr)
 
 
 > ## Challenge 2
-> Load the grav2.zip file into an object called `grav`. 
-> View a summary of the `grav` data.
-> View the genetic map for the `grav` data.
-> Insert pseudomarkers and calculate genotype probabilities.
-> View the first several rows of genotype probabilities for 
-> any marker on chromosome 5.
+> Calculate genotype probabilities for a different data set.   
+> 1). Load the grav2.zip file into an object called `grav`.  
+> 2). View a summary of the `grav` data.  
+> 3). View the genetic map for the `grav` data.  
+> 4). Insert pseudomarkers at 2 cM intervals. Assign the results to an object called `gravmap`.  
+> 5). Calculate genotype probabilities assuming a genotyping error probability of 0.001. Assign the results to an object called `gravpr`.  
+> 6). View the first several rows of genotype probabilities for 
+> any marker on chromosome 5.  
 >
 > > ## Solution to Challenge 2
 > >
-> > grav <- read_cross2( system.file("extdata", "grav2.zip", package="qtl2geno") )
-> > summary(grav)
-> > grav$gmap
-> > gravmap <- insert_pseudomarkers(map = grav$gmap, step=2)
-> > gravpr <- calc_genoprob(grav, map = gravmap)
-> > head((gravpr$`5`)[,,"c5.loc4"])
+> > 1). `grav <- read_cross2(file = system.file("extdata", "grav2.zip", package="qtl2geno"))`  
+> > 2). `summary(grav)`  
+> > 3). `grav$gmap`  
+> > 4). `gravmap <- insert_pseudomarkers(map=grav$gmap, step=2)`  
+> > 5). `gravpr <- calc_genoprob(cross=grav, map=gravmap, error_prob=0.001)`  
+> > 6). `head((gravpr$`5`)[,,"c5.loc4"])`  
 > {: .solution}
 {: .challenge}
 

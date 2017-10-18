@@ -17,7 +17,10 @@ keypoints:
 source: Rmd
 ---
 
-
+```{r, include=FALSE}
+source("../bin/chunk-options.R")
+knitr_fig_path("02-")
+```
 
 If you are accustomed to input files for [R/qtl](http://rqtl.org), you will find that there are some similarities between formats for R/qtl and R/qtl2, and some important differences. The input data file formats for R/qtl cannot handle complex crosses, and so for R/qtl2, there is a new format for the data files. The table below provides a quick comparison between data files and file formats for each.
 

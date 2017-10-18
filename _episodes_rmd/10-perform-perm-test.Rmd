@@ -13,7 +13,7 @@ source: Rmd
 
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
-knitr_fig_path("13-")
+knitr_fig_path("10-")
 ```
 
 To perform a permutation test to establish the statistical significance of the results of a genome scan, use the function `scan1perm()`. (In

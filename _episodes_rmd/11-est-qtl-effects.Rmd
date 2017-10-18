@@ -15,7 +15,7 @@ source: Rmd
 
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
-knitr_fig_path("14-")
+knitr_fig_path("11-")
 ```
 
 The `scan1()` function returns only LOD scores. To

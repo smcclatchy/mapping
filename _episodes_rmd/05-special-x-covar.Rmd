@@ -14,7 +14,7 @@ source: Rmd
 
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
-knitr_fig_path("08-")
+knitr_fig_path("05-")
 ```
 
 In a QTL scan of the X chromosome, special covariates (such as sex) may need to be included under the null hypothesis of no QTL, to avoid spurious evidence of linkage. (See [Broman et al. (2006) Genetics 174:2151-2158](http://www.genetics.org/content/174/4/2151.long).)

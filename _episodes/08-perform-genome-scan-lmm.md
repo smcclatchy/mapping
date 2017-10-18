@@ -15,34 +15,44 @@ keypoints:
 source: Rmd
 ---
 
-```{r, include=FALSE}
-source("../bin/chunk-options.R")
-knitr_fig_path("11-")
-```
+
+
+Why would a use a linear mixed model?
+explanatory text and a graphic
+use an example
+
+When experimental design uses multiple groups or batches, a linear mixed model is in order. For example, 2 strains of cucumber on 4 different plots at each of 5 different farms. group effect or batch effect; 
 
 To perform a genome scan using a linear mixed model, accounting for relationships among individuals using a random polygenic effect, you also use the function `scan1`; you just need to provide the argument `kinship`, a kinship matrix (or, for the LOCO method, a list of kinship matrices).
 
-```{r scan1_pg, eval=FALSE}
+
+~~~
 out_pg <- scan1(pr, iron$pheno, kinship, Xcovar=Xcovar)
-```
+~~~
+{: .r}
 
 Again, on a multi-core machine, you can get some speed-up using the `cores` argument.
 
-```{r scan1_pg_multicore, eval=FALSE}
+
+~~~
 out_pg <- scan1(pr, iron$pheno, kinship, Xcovar=Xcovar, cores=4)
-```
+~~~
+{: .r}
 
 For the LOCO (leave one chromosome out) method, provide the list of kinship matrices as obtained from `calc_kinship()` with `method="loco"`.
 
-```{r scan1_pg_loco, eval=FALSE}
+
+~~~
 out_pg_loco <- scan1(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
-```
+~~~
+{: .r}
 
 To plot the results, we again use `plot_scan1()` from the [qtl2plot](https://github.com/rqtl/qtl2plot) package, or just type `plot()`.
 
 Here is a plot of the LOD scores, by Haley-Knott regression and the linear mixed model using either the standard kinship matrix or the LOCO method.
 
-```{r plot_lod_scan1_vs_pg, eval=FALSE}
+
+~~~
 color <- c("slateblue", "violetred", "green3")
 par(mar=c(4.1, 4.1, 1.6, 1.1))
 ymx <- max(maxlod(out), maxlod(out_pg), maxlod(out_pg_loco))
@@ -53,7 +63,8 @@ for(i in 1:2) {
     plot(out_pg_loco, map, lodcolumn=i, col=color[3], add=TRUE, lty=2)
     legend("topleft", lwd=2, col=color, c("H-K", "LMM", "LOCO"), bg="gray90", lty=c(1,1,2))
 }
-```
+~~~
+{: .r}
 
 For the liver phenotype (top panel), the three methods give quite different results. The linear mixed model with an overall kinship matrix gives much lower LOD scores than the other two methods.  On chromosomes with some evidence of a QTL, the LOCO method gives higher LOD scores than Haley-Knott, except on chromosome 16 where it gives lower LOD scores.
 

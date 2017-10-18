@@ -19,7 +19,7 @@ source: Rmd
 
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
-knitr_fig_path("15-")
+knitr_fig_path("12-")
 ```
 
 For multi-parent crosses, it can be useful to collapse the genotype or allele probabilities according to the founder genotypes of the various

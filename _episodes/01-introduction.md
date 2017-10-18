@@ -13,8 +13,8 @@ keypoints:
 ---
 
 Quantitative trait mapping is used in biomedical, agricultural, and evolutionary studies
-to find causal genes for quantitative traits, aid crop and breed selection in agriculture,
-and shed light on natural selection. The goal of quantitative trait locus (QTL) analysis
+to find causal genes for quantitative traits, to aid crop and breed selection in agriculture,
+and to shed light on natural selection. The goal of quantitative trait locus (QTL) analysis
 is to identify genomic regions linked to a phenotype, to map these regions precisely,
 and to define the effects, number, and interactions of QTL. QTL analysis can 
 be performed in natural populations and in experimental crosses, and can be studied in 
@@ -51,6 +51,7 @@ so the software is split into three parts:
 calculations, [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL
 scans, and [qtl2plot](https://github.com/rqtl/qtl2plot) for data
 visualization.
+
 A further package, [qtl2convert](https://github.com/rqtl/qtl2convert),
 contains functions for converting data among the R/qtl2,
 [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html),
@@ -58,6 +59,9 @@ and [R/qtl](http://rqtl.org) formats, for example to convert genotype
 probabilities produced by DOQTL to the format needed by qtl2scan, or
 to convert qtl2scan results to the format produced by `scanone` in
 R/qtl, so that they may be graphed with the R/qtl functions.
+
+This lesson will focus on the R/qtl2 package in R. To learn how to use
+R/qtl, see Karl Broman's [tutorials](http://rqtl.org/tutorials). 
 
 ## Sample data sets
 
