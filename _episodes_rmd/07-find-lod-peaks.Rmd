@@ -1,7 +1,7 @@
 ---
 title: "Finding LOD peaks"
-teaching: 0
-exercises: 0
+teaching: 30
+exercises: 30
 questions:
 - "How do I locate LOD peaks above a certain threshold value?"
 objectives:

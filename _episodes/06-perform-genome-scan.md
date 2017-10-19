@@ -1,7 +1,7 @@
 ---
 title: "Performing a genome scan"
-teaching: 0
-exercises: 0
+teaching: 30
+exercises: 30
 questions:
 - "How do I perform a genome scan?"
 - "How do I plot a genome scan?"

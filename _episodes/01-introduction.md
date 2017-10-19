@@ -1,6 +1,6 @@
 ---
 title: "Introduction"
-teaching: 0
+teaching: 15
 exercises: 0
 questions:
 - "What is quantitative trait mapping?"

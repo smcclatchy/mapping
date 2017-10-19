@@ -1,7 +1,7 @@
 ---
 title: "Batch Effects"
-teaching: 0
-exercises: 0
+teaching: 10
+exercises: 20
 questions:
 - "?"
 objectives:

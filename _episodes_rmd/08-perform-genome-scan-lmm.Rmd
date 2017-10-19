@@ -1,7 +1,7 @@
 ---
 title: "Performing a genome scan with a linear mixed model"
-teaching: 0
-exercises: 0
+teaching: 20
+exercises: 10
 questions:
 - "How do I use a linear mixed model in a genome scan?"
 - "How do different mapping and kinship calculation methods differ?"

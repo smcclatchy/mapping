@@ -1,7 +1,7 @@
 ---
 title: "Calculating A Kinship Matrix"
-teaching: 0
-exercises: 0
+teaching: 30
+exercises: 30
 questions:
 - "Why would I calculate kinship between individuals?"
 - "How do I calculate kinship between individuals?"

@@ -1,7 +1,7 @@
 ---
 title: "SNP association"
-teaching: 0
-exercises: 0
+teaching: 30
+exercises: 30
 questions:
 - "How do I identify SNPs in a QTL?"
 objectives:

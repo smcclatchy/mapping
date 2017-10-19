@@ -1,7 +1,7 @@
 ---
 title: "QTL analysis in Diversity Outbred Mice"
-teaching: 0
-exercises: 0
+teaching: 30
+exercises: 30
 questions:
 - "?"
 objectives:

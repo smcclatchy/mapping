@@ -1,7 +1,7 @@
 ---
 title: "Needlenose peaks are a no-no"
-teaching: 0
-exercises: 0
+teaching: 10
+exercises: 20
 questions:
 - "?"
 objectives:

@@ -1,7 +1,7 @@
 ---
 title: "Performing a genome scan with binary traits"
-teaching: 0
-exercises: 0
+teaching: 20
+exercises: 10
 questions:
 - "How do I create a genome scan for binary traits?"
 objectives:

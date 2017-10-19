@@ -1,7 +1,7 @@
 ---
 title: "Special covariates for the X chromosome"
-teaching: 0
-exercises: 0
+teaching: 15
+exercises: 15
 questions:
 - "How do I find the chromosome X covariates for a cross?"
 objectives:

@@ -1,7 +1,7 @@
 ---
 title: "Estimated QTL effects"
-teaching: 0
-exercises: 0
+teaching: 10
+exercises: 20
 questions:
 - "How do I find the estimated effects of a QTL on a phenotype?"
 objectives:

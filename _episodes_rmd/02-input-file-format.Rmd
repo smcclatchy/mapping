@@ -1,7 +1,7 @@
 ---
 title: "Input File Format"
-teaching: 0
-exercises: 0
+teaching: 15
+exercises: 30
 questions:
 - "How are the data files formatted for qtl2?"
 - "Which data files are required for qtl2?"
