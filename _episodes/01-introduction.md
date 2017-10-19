@@ -61,7 +61,7 @@ to convert qtl2scan results to the format produced by `scanone` in
 R/qtl, so that they may be graphed with the R/qtl functions.
 
 This lesson will focus on the R/qtl2 package in R. To learn how to use
-R/qtl, see Karl Broman's [tutorials](http://rqtl.org/tutorials). 
+R/qtl, see Karl Broman's [tutorials](http://rqtl.org/tutorials).  
 
 ## Sample data sets
 

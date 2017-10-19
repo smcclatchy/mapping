@@ -46,22 +46,6 @@ DOex <- read_cross2(file)
 ~~~
 {: .r}
 
-
-
-~~~
-Warning in utils::download.file(file, tmpfile, quiet = TRUE): URL 'https://
-raw.githubusercontent.com/rqtl/qtl2data/master/DOex/DOex.zip': status was
-'Couldn't resolve host name'
-~~~
-{: .error}
-
-
-
-~~~
-Error in utils::download.file(file, tmpfile, quiet = TRUE): cannot open URL 'https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/DOex.zip'
-~~~
-{: .error}
-
 Let's quickly whip through a basic analysis.
 
 We first calculate genotype probabilities and convert them to allele probabilities. We'll just use marker locations and not insert any pseudomarkers.
@@ -74,35 +58,6 @@ apr <- genoprob_to_alleleprob(pr)
 {: .r}
 
 
-~~~
-Warning in download.file(file, tmpfile, quiet = TRUE): URL 'https://
-raw.githubusercontent.com/rqtl/qtl2data/master/DOex/DOex_alleleprobs.rds':
-status was 'Couldn't resolve host name'
-~~~
-{: .error}
-
-
-
-~~~
-Error in download.file(file, tmpfile, quiet = TRUE): cannot open URL 'https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/DOex_alleleprobs.rds'
-~~~
-{: .error}
-
-
-
-~~~
-Warning in gzfile(file, "rb"): cannot open compressed file '/var/folders/
-zr/4hkqlfl12_7c5kqr84xxdp3xz0k2_y/T//RtmpigBBCP/file33d7d183cf3', probable
-reason 'No such file or directory'
-~~~
-{: .error}
-
-
-
-~~~
-Error in gzfile(file, "rb"): cannot open the connection
-~~~
-{: .error}
 
 We calculate kinship matrices (using the "loco" method, though with the caveat that here we are only considering genotypes on three chromosomes).
 
@@ -112,41 +67,14 @@ k <- calc_kinship(apr, "loco")
 ~~~
 {: .r}
 
-
-
-~~~
-Error in "cross2" %in% class(probs): object 'apr' not found
-~~~
-{: .error}
-
 We create a numeric covariate for sex; be sure to include the individual IDs as names.
 
 
 ~~~
 sex <- (DOex$covar$Sex == "male")*1
-~~~
-{: .r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'DOex' not found
-~~~
-{: .error}
-
-
-
-~~~
 names(sex) <- rownames(DOex$covar)
 ~~~
 {: .r}
-
-
-
-~~~
-Error in rownames(DOex$covar): object 'DOex' not found
-~~~
-{: .error}
 
 We perform a genome scan with a linear mixed model (adjusting for a residual polygenic effect), with sex as an additive covariate.
 
@@ -210,51 +138,7 @@ working on how best to quickly access SNP data. In the meantime, we can grab a p
 tmpfile <- tempfile()
 file <- "https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/c2_snpinfo.rds"
 download.file(file, tmpfile, quiet=TRUE)
-~~~
-{: .r}
-
-
-
-~~~
-Warning in download.file(file, tmpfile, quiet = TRUE): URL 'https://
-raw.githubusercontent.com/rqtl/qtl2data/master/DOex/c2_snpinfo.rds': status
-was 'Couldn't resolve host name'
-~~~
-{: .error}
-
-
-
-~~~
-Error in download.file(file, tmpfile, quiet = TRUE): cannot open URL 'https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/c2_snpinfo.rds'
-~~~
-{: .error}
-
-
-
-~~~
 snpinfo <- readRDS(tmpfile)
-~~~
-{: .r}
-
-
-
-~~~
-Warning in gzfile(file, "rb"): cannot open compressed file '/var/folders/
-zr/4hkqlfl12_7c5kqr84xxdp3xz0k2_y/T//RtmpigBBCP/file33d22b83c1', probable
-reason 'No such file or directory'
-~~~
-{: .error}
-
-
-
-~~~
-Error in gzfile(file, "rb"): cannot open the connection
-~~~
-{: .error}
-
-
-
-~~~
 unlink(tmpfile)
 ~~~
 {: .r}
@@ -271,9 +155,15 @@ head(snpinfo)
 
 
 ~~~
-Error in head(snpinfo): object 'snpinfo' not found
+       snp_id chr  pos_Mbp alleles AJ B6 129 NOD NZO CAST PWK WSB
+1 rs221396738   2 96.50001     C|T  1  1   1   1   1    3   1   1
+2 rs264175039   2 96.50022     A|C  1  1   1   1   3    1   1   1
+3 rs227493750   2 96.50028     C|T  1  1   1   1   3    1   1   1
+4 rs229722012   2 96.50034     C|G  1  1   1   1   3    3   1   3
+5  rs27379137   2 96.50044     C|T  1  1   1   1   1    3   1   1
+6 rs227574143   2 96.50067     A|C  1  1   1   1   3    1   1   3
 ~~~
-{: .error}
+{: .output}
 
 We first convert the founder genotypes to a "strain distribution pattern" (SDP): an integer whose binary encoding corresponds to the 8 founders' genotypes.
 

@@ -76,7 +76,7 @@ iron <- read_cross2(file = system.file("extdata", "iron.zip", package="qtl2geno"
 ~~~
 {: .r}
 
-To load your own data, you would use the file path to your data files. For example, if the file path to your data files is /home/qtlproject/data, the command to load your data would look like this:
+To load your own data, you would use the file path to your data files. For example, if the file path to your data files is `/home/qtlproject/data`, the command to load your data would look like this:
 
 
 ~~~
