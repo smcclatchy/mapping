@@ -27,9 +27,6 @@ The first basic task in QTL analysis is to calculate conditional genotype probab
 
 ![](../fig/unknown_genotype.png)
 
-Hidden Markov models (HMM) are used to calculate
-QTL genotype probabilities, to simulate from the joint genotype distribution and to calculate the most likely sequence of underlying genotypes (all conditional on the observed marker data). This is done in a quite general way, with possible allowance for the presence of genotyping errors. For convenience we assume no crossover interference.
-
 The `calc_genoprob()` function in the [qtl2geno](https://github.com/rqtl/qtl2geno)
 package calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. Unlike the corresponding function in [R/qtl](https://rqtl.org), `calc.genoprob()`, the result is not inserted back into the input cross object, but is returned as a list of three-dimensional arrays (one per chromosome). Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions.
 

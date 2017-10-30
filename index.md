@@ -11,7 +11,7 @@ This lesson introduces quantitative trait mapping using the R packages qtl and q
 > Know how to assign a value to a variable.   
 > Know how to create a plot.  
 > Know how to use a for loop.  
-> Know how to create a vector or list with the c() function.  
+> Know how to create a vector or list with the `c()` function.  
 > Know how to subset a vector with index notation and by name.   
 > Know how to apply a function.  
 {: .prereq}

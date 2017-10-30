@@ -42,15 +42,17 @@ sessionInfo()
 ~~~
 {: .r}
 
-This loaded in two data objects. Look in the Environment pane to see what was loaded.  You should see an object called `pheno` with 143 rows and 5 columns and an object called `probs`.
+The call to `sessionInfo` provides information about the R version running on your machine and the R packages that are installed. This information can help you to troubleshoot.
 
-`pheno` is a data frame containing the phenotype data. `probs` is a 3 dimensional array containing the founder allele dosages for each sample at each marker on the array.  Double-click on `pheno` in the Environment pane to view its contents.
+We loaded in two data objects. Look in the Environment pane to see what was loaded.  You should see an object called `pheno` with 143 observations (in rows) of 5 variables (in columns) and an object called `probs`.
+
+`pheno` is a data frame containing the phenotype data. `probs` is a 3 dimensional array containing the founder allele dosages for each sample at each marker on the array.  Click on the triangle to the left of `pheno` in the Environment pane to view its contents.
 
 **NOTE:** the sample IDs must be in the rownames of `pheno`. For more information about data file format, see the [Setup](../setup.md) instructions.
 
-`pheno` contains the sample ID, the study cohort, the dose of benzene and the proportion of bone marrow reticulocytes that were micro-nucleated (prop.bm.MN.RET).  Note that the sample IDs are also stored in the rownames of `pheno`. In order to save time for this tutorial, we will only map with 143 samples from the 100 ppm dosing group.
+`pheno` contains the sample ID, sex, the study cohort, the dose of benzene and the proportion of bone marrow reticulocytes that were micro-nucleated `(prop.bm.MN.RET)`.  Note that the sample IDs are also stored in the rownames of `pheno`. In order to save time for this tutorial, we will only map with 143 samples from the 100 ppm dosing group.
 
-Next, we look at the contents of `probs`:
+Next, we look at the dimensions of `probs`:
 
 
 ~~~
@@ -65,7 +67,21 @@ dim(probs)
 ~~~
 {: .output}
 
-`probs` is a three dimensional array containing the proportion of each founder haplotype at each marker for each DO sample.  The 143 samples are in the first dimension, the 8 founders in the second and the markers along the mouse genome are in the third dimension. Let's look at the contents for the first 500 markers of one sample.
+`probs` is a three dimensional array containing the proportion of each founder haplotype at each marker for each DO sample.  The 143 samples are in the first dimension, the 8 founders in the second and the markers along the mouse genome are in the third dimension. 
+
+> ## Challenge 1
+> Determine the dimensions of `pheno`.
+> 1). How many rows does it have?
+> 2). How many columns does it have?
+>
+> > ## Solution to Challenge 1
+> > `dim(pheno)`
+> > 1). 143  
+> > 2). 5
+> {: .solution}
+{: .challenge}
+
+Let's return to the `probs` object. look at the contents for the first 500 markers of one sample.
 
 **NOTE:** the sample IDs must be in the rownames of `probs`.
 
@@ -96,7 +112,22 @@ load("../data/muga_snps.Rdata")
 ~~~
 {: .r}
 
-This loaded an object called `muga_snps` into your R environment. Look at it's structure in the Environment tab in RStudio.
+This loaded an object called `muga_snps` into your R environment. Look at its structure in the Environment tab in RStudio. 
+
+> ## Challenge 2
+> Determine the dimensions of `muga_snps`.
+> 1). How many rows does it have?
+> 2). How many columns does it have?
+> 3). What variables does it contain?
+>
+> > ## Solution to Challenge 2
+> > `dim(muga_snps)`
+> > 1). 7854  
+> > 2). 9
+> > 3). Use `colnames(muga_snps)` or click the triangle to the left of `muga_snps`
+> > in the Environment tab.
+> {: .solution}
+{: .challenge}How many rows does it have? How many columns? 
 
 We used a subset of the markers to reconstruct the DO genomes. We need to subset the markers so that they match the haplotype probabilities.
 
@@ -139,7 +170,7 @@ axis(side = 2, at = 20 * 0:7, labels = 20 * 7:0, las = 1)
 
 The figure above shows kinship between all pairs of samples. White ( = 1) indicates no kinship and red ( = 0) indicates full kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
 
-Next, we need to create additive covariates that wil be used in the mapping model. We will use study cohort as a covariate in the mapping model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
+Next, we need to create additive covariates that will be used in the mapping model. We will use study cohort as a covariate in the mapping model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
 
 
 ~~~
@@ -147,9 +178,9 @@ addcovar = model.matrix(~Study, data = pheno)[,-1, drop = FALSE]
 ~~~
 {: .r}
 
-The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-effect of the `model.matrix` function..
+The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-effect of the `model.matrix` function.
 
-**NOTE:** the sample IDs must be in the rownames of `pheno`, `addcovar`, `genoprobs` and `K`. qtl2 uses the sample IDs to align the samples between objects. For more information about data file format, see the [Setup](../setup.md) instructions or [Karl Broman's vignette on input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
+**NOTE:** the sample IDs must be in the rownames of `pheno`, `addcovar`, `genoprobs` and `K`. `qtl2` uses the sample IDs to align the samples between objects. For more information about data file format, see [Karl Broman's vignette on input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
 
 In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the `scan1` function. To see the arguments for `scan1`, you can type `help(scan1)`.
 
@@ -405,7 +436,7 @@ plot_genes(genes = genes, colors = "black")
 
 ### Searching for Candidate Genes
 
-One strategy for finding genes related to a phenotype is to search for genes with expression QTL (eQTL) in the same location. Ideally, we would have liver and bone marrow gene expression data in the DO mice from this experiment. Unfortunately, we did not collect this data. However, we have liver gene expression for a separate set of untreated DO mice [Liver eQTL Viewer](http://churchill-lab.jax.org/qtl/svenson/DO478/). We searched for genes in the QTL interval that had an eQTL in the same location. Then, we looked at the pattern of founder effects to see if CAST stood out. We found two genes that met this criteria.
+One strategy for finding genes related to a phenotype is to search for genes with expression QTL (eQTL) in the same location. Ideally, we would have liver and bone marrow gene expression data in the DO mice from this experiment. Unfortunately, we did not collect this data. However, we have liver gene expression for a separate set of untreated DO mice [Liver eQTL Viewer](http://churchill-lab.jax.org/qtl/svenson/DO478/). We searched for genes in the QTL interval that had an eQTL in the same location. Then, we looked at the pattern of founder effects to see if CAST stood out. We found two genes that met these criteria.
 
 ![](../fig/French.et.al.Figure3.png)
 
@@ -419,7 +450,7 @@ We also looked at a public gene expression database in which liver, spleen and k
 
 ![](../fig/French.et.al.Sup.Figure2.png)
 
-Next, go to the [Sanger Mouse Genomes](http://www.sanger.ac.uk/sanger/Mouse_SnpViewer/rel-1505) website and enter *Sult3a1* into the Gene box. Scroll down and check only the DO/CC founders (129S1/SvImJ, A/J, CAST/EiJ, NOD/ShiLtJ, NZO/HlLtJ & WSB/EiJ) and then scroll up and press 'Search'. This will show you SNPs in *Sult3a1*. Select the 'Structural Variants' tab and note the copy number gain in CAST from 33,764,194 to 33,876,194 bp. Click on the G to see the location, copy this position (10:33764194-33876194) and go to the [Ensembl website](http://useast.ensembl.org/Mus_musculus/Info/Index). Enter the position into the search box and press 'Go'. You will see a figure similar to the one below.
+Next, go to the [Sanger Mouse Genomes](http://www.sanger.ac.uk/sanger/Mouse_SnpViewer/rel-1505) website and enter *Sult3a1* into the Gene box. Scroll down and check only the DO/CC founders (129S1/SvImJ, A/J, CAST/EiJ, NOD/ShiLtJ, NZO/HlLtJ & WSB/EiJ) and then scroll up and press `Search`. This will show you SNPs in *Sult3a1*. Select the `Structural Variants` tab and note the copy number gain in CAST from 33,764,194 to 33,876,194 bp. Click on the G to see the location, copy this position (10:33764194-33876194) and go to the [Ensembl website](http://useast.ensembl.org/Mus_musculus/Info/Index). Enter the position into the search box and press `Go`. You will see a figure similar to the one below.
 
 ![](../fig/EnsEMBL.Sult3a1.png)
 
@@ -433,11 +464,11 @@ As you can see, there appears to be a duplicatation in the CAST founders that co
 
 Hence, we have three pieces of evidence that narrows our candidate gene list to *Sult3a1* and *Gm4794*:
 
-1. Both genes have a liver eQTL in the same location as the MN-RET QTL.
-2. Among genes in the MN-RET QTL interval, only *Sult3a1* and *Gm4794* have differential expression of the CAST allele in the liver.
+1. Both genes have a liver eQTL in the same location as the micronucleated reticulocytes QTL.
+2. Among genes in the micronucleated reticulocytes QTL interval, only *Sult3a1* and *Gm4794* have differential expression of the CAST allele in the liver.
 3. There is a copy number gain of these two genes in CAST.
 
-Sulfation is a prominent detoxification mechanism for benezene as well. The diagram below shows the metabolism pathway for benzene [(Monks, T. J., et al. (2010). Chem Biol Interact 184(1-2): 201-206.)](http://europepmc.org/articles/PMC4414400) Hydroquinone, phenol and catechol are all sulfated and excreted from the body.
+Sulfation is a prominent detoxification mechanism for benzene as well. The diagram below shows the metabolism pathway for benzene [(Monks, T. J., et al. (2010). Chem Biol Interact 184(1-2): 201-206.)](http://europepmc.org/articles/PMC4414400) Hydroquinone, phenol and catechol are all sulfated and excreted from the body.
 
 ![](../fig/Monks_ChemBiolInter_2010_Fig1.jpg)
 
