@@ -64,16 +64,16 @@ dim(probs)
 
 `probs` is a three dimensional array containing the proportion of each founder haplotype at each marker for each DO sample.  The 143 samples are in the first dimension, the 8 founders in the second and the markers along the mouse genome are in the third dimension. 
 
-> ## Challenge 1
+> ## Challenge 1 Data Dimensions I
 > Determine the dimensions of `pheno`.  
 > 1). How many rows does it have?  
 > 2). How many columns does it have?  
 > 3). What are the names of the variables it contains?  
 >
 > > ## Solution to Challenge 1
-> > `dim(pheno)`
+> > `dim(pheno)`  
 > > 1). 143  
-> > 2). 5
+> > 2). 5  
 > > 3). Use `colnames(pheno)` or click the triangle to the left of `pheno`
 > > in the Environment tab.
 > {: .solution}
@@ -106,7 +106,7 @@ load("../data/muga_snps.Rdata")
 
 This loaded an object called `muga_snps` into your R environment. Look at its structure in the Environment tab in RStudio. 
 
-> ## Challenge 2
+> ## Challenge 2 Data Dimensions II
 > Determine the dimensions of `muga_snps`.  
 > 1). How many rows does it have?  
 > 2). How many columns does it have?  
@@ -183,16 +183,15 @@ perms = scan1perm(genoprobs = genoprobs, pheno = pheno[,"prop.bm.MN.RET", drop =
 
 The `perms` object contains the maximum LOD score from each genome scan of permuted data.
 
-> ## Challenge 3
-> Create a histogram of the LOD scores `perms`. Hint: use the `hist()` function.    
-> Estimate the value of the LOD score at the 95th percentile.  
-> Then find the value of the LOD score at the 95th percentile using 
+> ## Challenge 3 What is significant?
+> 1). Create a histogram of the LOD scores `perms`. Hint: use the `hist()` function.
+> 2). Estimate the value of the LOD score at the 95th percentile.  
+> 3). Then find the value of the LOD score at the 95th percentile using 
 > the `summary()` function.
 > > ## Solution to Challenge 3
-> > `hist(x = perms)` or `hist(x = perms, breaks = 15)`  
-> > By counting number of occurrences of each LOD value (frequencies), we  
-> > can approximate the 95th percentile at 7.5.  
-> > `summary(perms)`
+> > 1). hist(x = perms)` or `hist(x = perms, breaks = 15)`  
+> > 2). By counting number of occurrences of each LOD value (frequencies), we can approximate the 95th percentile at ~7.5.  
+> > 3). `summary(perms)`
 > {: .solution}
 {: .challenge} 
 
@@ -211,6 +210,14 @@ We can find all of the peaks above the significance threshold using the `find_pe
 ```{r find_peaks}
 find_peaks(qtl, map, threshold = thr)
 ```
+
+> ## Challenge 4 Find all peaks
+> Find all peaks for this scan whether or not they meet the 95% significance threshold.
+> > ## Solution to Challenge 4
+> > find_peaks(scan1_output = qtl, map = map)  
+> > Notice that some peaks are missing because they don't meet the default threshold value of 3. See `help(find_peaks)` for more information about this function.
+> {: .solution}
+{: .challenge} 
 
 The support interval is determined using the [Bayesian Credible Interval](http://www.ncbi.nlm.nih.gov/pubmed/11560912) and represents the region most likely to contain the causative polymorphism(s). We can obtain this interval using the `bayesint` function.  We can determine the support interval for the QTL peak using the `bayes_int` function.
 
