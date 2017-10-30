@@ -65,14 +65,17 @@ dim(probs)
 `probs` is a three dimensional array containing the proportion of each founder haplotype at each marker for each DO sample.  The 143 samples are in the first dimension, the 8 founders in the second and the markers along the mouse genome are in the third dimension. 
 
 > ## Challenge 1
-> Determine the dimensions of `pheno`.
-> 1). How many rows does it have?
-> 2). How many columns does it have?
+> Determine the dimensions of `pheno`.  
+> 1). How many rows does it have?  
+> 2). How many columns does it have?  
+> 3). What are the names of the variables it contains?  
 >
 > > ## Solution to Challenge 1
 > > `dim(pheno)`
 > > 1). 143  
 > > 2). 5
+> > 3). Use `colnames(pheno)` or click the triangle to the left of `pheno`
+> > in the Environment tab.
 > {: .solution}
 {: .challenge}
 
@@ -104,19 +107,19 @@ load("../data/muga_snps.Rdata")
 This loaded an object called `muga_snps` into your R environment. Look at its structure in the Environment tab in RStudio. 
 
 > ## Challenge 2
-> Determine the dimensions of `muga_snps`.
-> 1). How many rows does it have?
-> 2). How many columns does it have?
-> 3). What variables does it contain?
+> Determine the dimensions of `muga_snps`.  
+> 1). How many rows does it have?  
+> 2). How many columns does it have?  
+> 3). What variables does it contain?  
 >
 > > ## Solution to Challenge 2
-> > `dim(muga_snps)`
+> > `dim(muga_snps)`  
 > > 1). 7854  
-> > 2). 9
+> > 2). 9  
 > > 3). Use `colnames(muga_snps)` or click the triangle to the left of `muga_snps`
-> > in the Environment tab.
+> > in the Environment tab.  
 > {: .solution}
-{: .challenge}How many rows does it have? How many columns? 
+{: .challenge} 
 
 We used a subset of the markers to reconstruct the DO genomes. We need to subset the markers so that they match the haplotype probabilities.
 
@@ -179,6 +182,19 @@ perms = scan1perm(genoprobs = genoprobs, pheno = pheno[,"prop.bm.MN.RET", drop =
 ```
 
 The `perms` object contains the maximum LOD score from each genome scan of permuted data.
+
+> ## Challenge 3
+> Create a histogram of the LOD scores `perms`. Hint: use the `hist()` function.    
+> Estimate the value of the LOD score at the 95th percentile.  
+> Then find the value of the LOD score at the 95th percentile using 
+> the `summary()` function.
+> > ## Solution to Challenge 3
+> > `hist(x = perms)` or `hist(x = perms, breaks = 15)`  
+> > By counting number of occurrences of each LOD value (frequencies), we  
+> > can approximate the 95th percentile at 7.5.  
+> > `summary(perms)`
+> {: .solution}
+{: .challenge} 
 
 We can now add thresholds to the previous QTL plot. We use a significance threshold of p < 0.05. To do this, we select the 95th percentile of the permutation LOD distribution.
            
