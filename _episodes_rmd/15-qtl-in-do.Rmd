@@ -172,7 +172,7 @@ qtl = scan1(genoprobs = genoprobs, pheno = pheno[,pheno.column, drop = FALSE], k
 We can then plot the QTL scan. Note that you must provide the marker map.
 
 ```{r qtl_plot, fig.width=8, fig.height=6, warning=FALSE}
-plot(qtl, map, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+plot(x = qtl, map = map, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ```
 
 There is clearly a large peak on Chr 10. Next, we must assess its statistical significance. This is most commonly done via [permutation](http://www.genetics.org/content/178/1/609.long). We advise running at least 1,000 permutations to obtain significance thresholds. In the interest of time, we perform 100 permutations here.
@@ -198,7 +198,7 @@ The `perms` object contains the maximum LOD score from each genome scan of permu
 We can now add thresholds to the previous QTL plot. We use a significance threshold of p < 0.05. To do this, we select the 95th percentile of the permutation LOD distribution.
            
 ```{r qtl_plot_thr, fig.width=8, fig.height=6, warning=FALSE}
-plot(qtl, map,  main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+plot(x = qtl, map = map,  main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 thr = quantile(perms, 0.95)
 abline(h = thr, col = "red", lwd = 2)
 ```
@@ -208,13 +208,13 @@ The peak on Chr 10 is well above the red significance line.
 We can find all of the peaks above the significance threshold using the `find_peaks` function.
 
 ```{r find_peaks}
-find_peaks(qtl, map, threshold = thr)
+find_peaks(scan1_output = qtl, map = map, threshold = thr)
 ```
 
 > ## Challenge 4 Find all peaks
 > Find all peaks for this scan whether or not they meet the 95% significance threshold.
 > > ## Solution to Challenge 4
-> > find_peaks(scan1_output = qtl, map = map)  
+> > `find_peaks(scan1_output = qtl, map = map)`  
 > > Notice that some peaks are missing because they don't meet the default threshold value of 3. See `help(find_peaks)` for more information about this function.
 > {: .solution}
 {: .challenge} 
@@ -222,7 +222,7 @@ find_peaks(qtl, map, threshold = thr)
 The support interval is determined using the [Bayesian Credible Interval](http://www.ncbi.nlm.nih.gov/pubmed/11560912) and represents the region most likely to contain the causative polymorphism(s). We can obtain this interval using the `bayesint` function.  We can determine the support interval for the QTL peak using the `bayes_int` function.
 
 ```{r interval}
-bayes_int(qtl, map, chr = 10)
+bayes_int(scan1_output = qtl, map = map, chr = 10)
 ```
 
 From the output above, you can see that the support interval is 5.5 Mb wide (30.16649 to 35.49352 Mb). The location of the maximum LOD score is 34.17711 Mb.
@@ -237,7 +237,7 @@ coef10 = scan1coef(genoprobs = genoprobs[,chr], pheno = pheno[,"prop.bm.MN.RET",
 This produces an object containing estimates of each of the eight DO founder allele effect. 
 
 ```{r coef_plot, fig.width=8, fig.height=6}
-plot_coefCC(coef10, map, scan1_output = qtl, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+plot_coefCC(x = coef10, map = map, scan1_output = qtl, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ```
 
 The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele near 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective effect. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. 
@@ -313,7 +313,7 @@ assoc = assoc_mapping(probs = genoprobs[,chr], pheno = pheno, idx = pheno.column
 The `assoc` object is a list containing two objects: the LOD scores for each unique SNP and a `snpinfo` object that maps the LOD scores to each SNP. To plot the association mapping, we need to provide both objects to the `plot_snpasso` function.
 
 ```{r assoc_fig, fig.width=9, fig.height=6}
-plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+plot_snpasso(scan1output = assoc[[1]], snpinfo = assoc[[2]], main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ```
 
 
@@ -324,7 +324,7 @@ We can add a plot containing the genes in the QTL interval using the `plot_genes
 First, we must query the database for the genes in the interval. The path of the first argument points to the data directory on your computer.
 
 ```{r get_genes}
-query_genes = create_gene_query_func("../data/mouse_genes.sqlite", filter="source='MGI'")
+query_genes = create_gene_query_func(dbfile = "../data/mouse_genes.sqlite", filter = "source='MGI'")
 genes = query_genes(chr, start, end)
 head(genes)
 ```

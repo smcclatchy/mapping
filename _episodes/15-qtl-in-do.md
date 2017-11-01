@@ -198,7 +198,7 @@ We can then plot the QTL scan. Note that you must provide the marker map.
 
 
 ~~~
-plot(qtl, map, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+plot(x = qtl, map = map, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ~~~
 {: .r}
 
@@ -230,7 +230,7 @@ We can now add thresholds to the previous QTL plot. We use a significance thresh
            
 
 ~~~
-plot(qtl, map,  main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+plot(x = qtl, map = map,  main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 thr = quantile(perms, 0.95)
 abline(h = thr, col = "red", lwd = 2)
 ~~~
@@ -244,7 +244,7 @@ We can find all of the peaks above the significance threshold using the `find_pe
 
 
 ~~~
-find_peaks(qtl, map, threshold = thr)
+find_peaks(scan1_output = qtl, map = map, threshold = thr)
 ~~~
 {: .r}
 
@@ -259,7 +259,7 @@ find_peaks(qtl, map, threshold = thr)
 > ## Challenge 4 Find all peaks
 > Find all peaks for this scan whether or not they meet the 95% significance threshold.
 > > ## Solution to Challenge 4
-> > find_peaks(scan1_output = qtl, map = map)  
+> > `find_peaks(scan1_output = qtl, map = map)`  
 > > Notice that some peaks are missing because they don't meet the default threshold value of 3. See `help(find_peaks)` for more information about this function.
 > {: .solution}
 {: .challenge} 
@@ -268,7 +268,7 @@ The support interval is determined using the [Bayesian Credible Interval](http:/
 
 
 ~~~
-bayes_int(qtl, map, chr = 10)
+bayes_int(scan1_output = qtl, map = map, chr = 10)
 ~~~
 {: .r}
 
@@ -295,7 +295,7 @@ This produces an object containing estimates of each of the eight DO founder all
 
 
 ~~~
-plot_coefCC(coef10, map, scan1_output = qtl, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+plot_coefCC(x = coef10, map = map, scan1_output = qtl, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ~~~
 {: .r}
 
@@ -379,7 +379,7 @@ The `assoc` object is a list containing two objects: the LOD scores for each uni
 
 
 ~~~
-plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+plot_snpasso(scan1output = assoc[[1]], snpinfo = assoc[[2]], main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ~~~
 {: .r}
 
@@ -394,7 +394,7 @@ First, we must query the database for the genes in the interval. The path of the
 
 
 ~~~
-query_genes = create_gene_query_func("../data/mouse_genes.sqlite", filter="source='MGI'")
+query_genes = create_gene_query_func(dbfile = "../data/mouse_genes.sqlite", filter = "source='MGI'")
 genes = query_genes(chr, start, end)
 head(genes)
 ~~~
