@@ -5,13 +5,17 @@ exercises: 30
 questions:
 - "How are the data files formatted for qtl2?"
 - "Which data files are required for qtl2?"
+- "Where can I find sample data for mapping with the qtl2 package?"
 objectives:
-- To understand which input files are required for qtl2 and how they should be formatted.
+- To specify which input files are required for qtl2 and how they should be formatted.
+- To locate sample data for qtl mapping.
 keypoints:
 - "QTL mapping data consists of a set of tables of data: marker genotypes, phenotypes, marker maps, etc."
 - "These different tables are in separate comma-delimited (CSV) files."
 - "In each file, the first column is a set of IDs for the rows, and the first row is a set of IDs for the columns."
 - "In addition to primary data, a separate file with control parameters (or metadata) in either [YAML](http://www.yaml.org) or [JSON](http://json.org) format is required."
+- "Published and public data already formatted for QTL mapping are available on the web."
+- "These data can be used as a model for formatting your own QTL data."
 source: Rmd
 ---
 
@@ -69,7 +73,6 @@ Additional sample data sets, including data on Diversity Outbred (DO) mice, are 
 > > 2). What is in the first column of the genotype file? marker ID. the first row? Animal ID - 1,4,5,6,7,8,9,10, ...  
 > 3). Locate the phenotype covariates file and open it. What kind of information does this file contain? Animal ID, sex, cohort, group, subgroup, ngen, and coat color.  
 > 4). Locate the control file (YAML or JSON format) and open it. What kind of information does this file contain? Names of primary data files, genotype and allele codes, cross type, description, and other metadata.
-
 > {: .solution}
 {: .challenge}
 

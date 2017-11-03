@@ -4,12 +4,10 @@ teaching: 15
 exercises: 0
 questions:
 - "What is quantitative trait mapping?"
-- "Where can I find sample data for mapping with the qtl2 package?"
 objectives:
-- "Be able to find sample data for qtl mapping."
+- 
 keypoints:
-- "Published and public data already formatted for QTL mapping are available on the web."
-- "These data can be used as a model for formatting your own QTL data."
+
 ---
 
 Quantitative trait mapping is used in biomedical, agricultural, and evolutionary studies to find causal genes for quantitative traits, to aid crop and breed selection in agriculture, and to shed light on natural selection. The goal of quantitative trait locus (QTL) analysis is to identify genomic regions linked to a phenotype, to map these regions precisely, and to define the effects, number, and interactions of QTL. QTL analysis can 
@@ -24,13 +22,15 @@ or diet can also influence the phenotype.
 [R/qtl](http://rqtl.org), to better handle high-dimensional data
 and complex cross designs such as the Diversity Outbred. Typically R/qtl2 will be employed in "batch" (for example, on a cluster) rather than interactively. And so the software is split into three parts: [qtl2geno](https://github.com/rqtl/qtl2geno) for genotype probability calculations, [qtl2scan](https://github.com/rqtl/qtl2scan) for QTL
 scans, and [qtl2plot](https://github.com/rqtl/qtl2plot) for data
-visualization.
-
-A further package, [qtl2convert](https://github.com/rqtl/qtl2convert),
+visualization. A further package, [qtl2convert](https://github.com/rqtl/qtl2convert),
 contains functions for converting data among the R/qtl2,
 [DOQTL](https://www.bioconductor.org/packages/release/bioc/html/DOQTL.html), and [R/qtl](http://rqtl.org) formats, for example to convert genotype probabilities produced by DOQTL to the format needed by qtl2scan, or to convert qtl2scan results to the format produced by `scanone` in R/qtl, so that they may be graphed with the R/qtl functions.
 
-This lesson will focus on the R/qtl2 package in R. To learn how to use R/qtl, see Karl Broman's [tutorials](http://rqtl.org/tutorials).  
+This lesson will focus on the R/qtl2 package in R. A workflow for quantitative trait mapping with R/qtl2 is shown here.
+
+![](../fig/mapping-workflow.png)
+
+We will follow the workflow throughout this lesson using [sample input data files](http://kbroman.org/qtl2/pages/sampledata.html) built into R/qtl2, as well as data from published studies of Diversity Outbred (DO) mice ([Recla et al., 2014](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4032469/) and [French et al., 2015](https://ehp.niehs.nih.gov/1408202/)). We begin with an exploration of [input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html) requirements for R/qtl2.
 
 To cite R/qtl in publications, use
 Broman KW, Wu H, Sen S, Churchill GA (2003) R/qtl: QTL mapping
