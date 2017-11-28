@@ -3,7 +3,7 @@
 #------------------------------------------------------------
 
 # Which carpentry is this ("swc", "dc", or "lc")?
-carpentry: "dc"
+carpentry: ""
 
 # Overall title for pages.
 title: "Quantitative Trait Mapping"
