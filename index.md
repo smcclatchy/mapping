@@ -2,7 +2,7 @@
 layout: lesson
 root: .
 ---
-This lesson introduces quantitative trait mapping using the R packages qtl and qtl2. The lesson borrows strongly from [Karl Broman's](http://kbroman.org/) [software](http://kbroman.org/pages/software.html), tutorials, and book co-authored with [Saunak Sen](http://senresearch.org/), [A Guide to QTL Mapping with R/qtl](http://www.rqtl.org/book/).
+This lesson introduces quantitative trait mapping using the R package qtl2. The lesson borrows strongly from [Karl Broman's](http://kbroman.org/) [software](http://kbroman.org/pages/software.html), tutorials, and book co-authored with [Saunak Sen](http://senresearch.org/), [A Guide to QTL Mapping with R/qtl](http://www.rqtl.org/book/).
 
 > ## Prerequisites
 >
