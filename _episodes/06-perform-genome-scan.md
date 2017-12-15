@@ -18,6 +18,68 @@ source: Rmd
 
 Regress the phenotypes on the conditional genotype probabilities (conditional on known marker genotypes)
 
+
+~~~
+library(qtl)
+data(hyper)
+x <- pull.geno(hyper)[,"D4Mit214"]
+u <- runif(length(x), -0.075, 0.075)
+y <- hyper$pheno[,1]
+par(family = "sans")
+plot(y ~ x, type="n", xlab="Genotype", ylab="Phenotype", xlim=c(0.5,2.5), xaxs="i", xaxt="n")
+axis(side=1, at=1:2, labels=c("AA","AB"))
+points(x+u, y)
+segments((1:2)-0.15, me, (1:2)+0.15, me, lwd=3, col="green2")
+~~~
+{: .r}
+
+
+
+~~~
+Error in segments((1:2) - 0.15, me, (1:2) + 0.15, me, lwd = 3, col = "green2"): object 'me' not found
+~~~
+{: .error}
+
+
+
+~~~
+points(1.5+(4*u[1:125]), fake, col="gray50")
+~~~
+{: .r}
+
+
+
+~~~
+Error in xy.coords(x, y): object 'fake' not found
+~~~
+{: .error}
+
+
+
+~~~
+segments(1.35, mean(fake), 1.65, mean(fake), lwd=3, col="green2")
+~~~
+{: .r}
+
+
+
+~~~
+Error in mean(fake): object 'fake' not found
+~~~
+{: .error}
+
+
+
+~~~
+points(1.34, 81.5, col="red")
+mtext(" <  1 - P(AB)", 1, at = 1, adj = 0, cex=0.65, col = "blue")
+mtext("    1 - P(AA)      >", 1, at = 1.4, adj = 0, cex=0.65, col = "blue")
+abline(lm(y~x)$coef, col="blue", lwd=2)
+~~~
+{: .r}
+
+<img src="../fig/rmd-06-regression_plot-1.png" title="plot of chunk regression_plot" alt="plot of chunk regression_plot" style="display: block; margin: auto;" />
+
 To perform a genome scan by Haley-Knott regression
 ([Haley and Knott 1992](https://www.ncbi.nlm.nih.gov/pubmed/16718932)),
 use the function `scan1()` in
