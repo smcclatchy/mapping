@@ -25,52 +25,15 @@ data(hyper)
 x <- pull.geno(hyper)[,"D4Mit214"]
 u <- runif(length(x), -0.075, 0.075)
 y <- hyper$pheno[,1]
+me <- tapply(y, x, mean)
+fake <- rnorm(125, mean=101.6116, sd = 8.423751)
 par(family = "sans")
 plot(y ~ x, type="n", xlab="Genotype", ylab="Phenotype", xlim=c(0.5,2.5), xaxs="i", xaxt="n")
 axis(side=1, at=1:2, labels=c("AA","AB"))
 points(x+u, y)
 segments((1:2)-0.15, me, (1:2)+0.15, me, lwd=3, col="green2")
-~~~
-{: .r}
-
-
-
-~~~
-Error in segments((1:2) - 0.15, me, (1:2) + 0.15, me, lwd = 3, col = "green2"): object 'me' not found
-~~~
-{: .error}
-
-
-
-~~~
 points(1.5+(4*u[1:125]), fake, col="gray50")
-~~~
-{: .r}
-
-
-
-~~~
-Error in xy.coords(x, y): object 'fake' not found
-~~~
-{: .error}
-
-
-
-~~~
 segments(1.35, mean(fake), 1.65, mean(fake), lwd=3, col="green2")
-~~~
-{: .r}
-
-
-
-~~~
-Error in mean(fake): object 'fake' not found
-~~~
-{: .error}
-
-
-
-~~~
 points(1.34, 81.5, col="red")
 mtext(" <  1 - P(AB)", 1, at = 1, adj = 0, cex=0.65, col = "blue")
 mtext("    1 - P(AA)      >", 1, at = 1.4, adj = 0, cex=0.65, col = "blue")

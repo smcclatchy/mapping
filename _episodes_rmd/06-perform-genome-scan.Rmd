@@ -27,6 +27,8 @@ data(hyper)
 x <- pull.geno(hyper)[,"D4Mit214"]
 u <- runif(length(x), -0.075, 0.075)
 y <- hyper$pheno[,1]
+me <- tapply(y, x, mean)
+fake <- rnorm(125, mean=101.6116, sd = 8.423751)
 par(family = "sans")
 plot(y ~ x, type="n", xlab="Genotype", ylab="Phenotype", xlim=c(0.5,2.5), xaxs="i", xaxt="n")
 axis(side=1, at=1:2, labels=c("AA","AB"))
