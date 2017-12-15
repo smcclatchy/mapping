@@ -16,6 +16,7 @@ source: Rmd
 ---
 
 
+Regress the phenotypes on the conditional genotype probabilities (conditional on known marker genotypes)
 
 To perform a genome scan by Haley-Knott regression
 ([Haley and Knott 1992](https://www.ncbi.nlm.nih.gov/pubmed/16718932)),

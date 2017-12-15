@@ -8,7 +8,6 @@ questions:
 - "What does a kinship matrix look like?"
 objectives:
 - Explain why and when kinship calculation matters in mapping.
-- Calculate kinship between individuals in a cross.
 - Create a kinship matrix for individuals.
 keypoints:
 - "Kinship matrices account for relationships among individuals."
@@ -23,7 +22,7 @@ knitr_fig_path("04-")
 library()
 ```
 
-```{r load_data}
+```{r load_data, echo=FALSE}
 library(qtl2)
 iron <- read_cross2(file = system.file("extdata", "iron.zip", package="qtl2geno") )
 ```
@@ -33,12 +32,12 @@ As an example see the table below for phenotype and genotype frequencies between
 
 ```{r table, echo=FALSE, message=FALSE, warnings=FALSE, results='asis'}
 tabl <- "
-|                    |subpop1|subpop2|overall
-|:-------------------|:-----:|:-----:|:-----:|
-| frequency          |  0.5  |  0.5  |   1   |
-| prob AA genotype   |  0.1  |  0.9  |  0.5  |
-| prob disease       |  0.9  |  0.1  |  0.5  |
-| prob disease & AA  |  0.09 |  0.09 |  0.09 |
+|                              |subpop1|subpop2|overall
+|:-----------------------------|:-----:|:-----:|:-----:|
+| frequency                    |  0.5  |  0.5  |   1   |
+| probability of AA genotype   |  0.1  |  0.9  |  0.5  |
+| probability of disease       |  0.9  |  0.1  |  0.5  |
+| probability of disease & AA  |  0.09 |  0.09 |  0.09 |
 "
 cat(tabl) 
 ```
@@ -81,3 +80,4 @@ On a multi-core machine, you can get some speed-up via the `cores` argument, as 
 
 ```{r calc_kinship_loco_multicore, eval=FALSE, eval=FALSE}
 kinship_loco <- calc_kinship(pr, "loco", cores=4)
+```
