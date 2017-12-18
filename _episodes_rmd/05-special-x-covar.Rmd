@@ -21,7 +21,7 @@ The X chromosome must be treated differently than the autosomes in the mapping o
 
 The particular X chromosome covariates depends on the cross, and can be obtained with the [qtl2geno](https://github.com/rqtl/qtl2geno) function `get_x_covar()`. In the iron data, sex and cross direction are indicated with 0s and 1s.
 
-```{r x_covar, eval=FALSE}
+```{r x_covar}
 Xcovar <- get_x_covar(iron)
 head(Xcovar)
 ```

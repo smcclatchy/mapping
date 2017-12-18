@@ -21,6 +21,26 @@ The particular X chromosome covariates depends on the cross, and can be obtained
 
 ~~~
 Xcovar <- get_x_covar(iron)
+~~~
+{: .r}
+
+
+
+~~~
+Error in "cross2" %in% class(x): object 'iron' not found
+~~~
+{: .error}
+
+
+
+~~~
 head(Xcovar)
 ~~~
 {: .r}
+
+
+
+~~~
+Error in head(Xcovar): object 'Xcovar' not found
+~~~
+{: .error}
