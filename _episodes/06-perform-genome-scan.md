@@ -25,6 +25,8 @@ In Haley-Knott regression, we can regress the phenotypes for animals of unknown 
 
 ![](../fig/hk-regress.png)
 
+As shown in the figure, an individual of unknown genotype is placed between genotypes according to the probability of its genotype being AA or AB.
+
 To perform a genome scan by Haley-Knott regression
 ([Haley and Knott 1992](https://www.ncbi.nlm.nih.gov/pubmed/16718932)),
 use the function `scan1()` in
