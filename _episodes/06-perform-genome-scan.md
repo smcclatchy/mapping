@@ -17,6 +17,7 @@ source: Rmd
 
 
 
+
 Linear regression can be employed to identify presence of QTL in a cross. A regression line drawn between phenotype means for two genotype groups AA and AB will have a slope of zero if there is no difference between the group means. A slope not equal to zero indicates a difference in group means and the presence of a QTL near the markers. Marker regression, as shown below, can identify the existence and effect of a QTL by comparing means between groups, however, it requires known marker genotypes and can't identify QTL in between typed markers.
 
 ![](../fig/marker-regress.png)
@@ -35,10 +36,13 @@ were all from [qtl2geno](https://github.com/rqtl/qtl2geno); from here
 forward, the functions are all from
 [qtl2scan](https://github.com/rqtl/qtl2scan).)
 
-`scan1()` takes as input the genotype probabilities, a matrix of phenotypes, and then optional additive and interactive covariates, and the special X chromosome covariates. Another option is to provide a
-vector of weights.
+`scan1()` takes as input the genotype probabilities, a matrix of phenotypes, and then optional additive and interactive covariates, and the special X chromosome covariates. Another option is to provide a vector of weights.
 
 
+~~~
+out <- scan1(pr, iron$pheno, Xcovar=Xcovar)
+~~~
+{: .r}
 
 On a multi-core machine, you can get some speed-up via the `cores` argument, as with `calc_genoprob()` and `calc_kinship()`.
 
@@ -62,8 +66,248 @@ library(qtl2plot)
 par(mar=c(5.1, 4.1, 1.1, 1.1))
 ymx <- maxlod(out) # overall maximum LOD score
 plot(out, map, lodcolumn=1, col="slateblue", ylim=c(0, ymx*1.02))
+~~~
+{: .r}
+
+
+
+~~~
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[odd], names(map)[odd], mgp = mgp.x, las
+= las, : no font could be found for family "Arial"
+~~~
+{: .error}
+
+
+
+~~~
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+Warning in axis(side = 1, at = loc[even], names(map)[even], mgp = mgp.x, :
+no font could be found for family "Arial"
+~~~
+{: .error}
+
+
+
+~~~
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+Warning in axis(side = 2, at = pretty(ylim), mgp = mgp.y, las = las, tick =
+FALSE): no font could be found for family "Arial"
+~~~
+{: .error}
+
+
+
+~~~
+Warning in title(xlab = xlab, mgp = mgp.x): no font could be found for
+family "Arial"
+Warning in title(xlab = xlab, mgp = mgp.x): no font could be found for
+family "Arial"
+~~~
+{: .error}
+
+
+
+~~~
+Warning in title(ylab = ylab, mgp = mgp.y): no font could be found for
+family "Arial"
+Warning in title(ylab = ylab, mgp = mgp.y): no font could be found for
+family "Arial"
+~~~
+{: .error}
+
+
+
+~~~
 plot(out, map, lodcolumn=2, col="violetred", add=TRUE)
 legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gray90")
 ~~~
 {: .r}
+
+
+
+~~~
+Warning in strwidth(legend, units = "user", cex = cex, font = text.font):
+no font could be found for family "Arial"
+~~~
+{: .error}
+
+
+
+~~~
+Warning in strwidth(legend, units = "user", cex = cex, font = text.font):
+no font could be found for family "Arial"
+~~~
+{: .error}
+
+
+
+~~~
+Warning in strheight(legend, units = "user", cex = cex): no font could be
+found for family "Arial"
+~~~
+{: .error}
+
+<img src="../fig/rmd-06-plot_lod-1.png" title="plot of chunk plot_lod" alt="plot of chunk plot_lod" style="display: block; margin: auto;" />
 

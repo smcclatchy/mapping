@@ -20,6 +20,13 @@ source("../bin/chunk-options.R")
 knitr_fig_path("06-")
 ```
 
+```{r load_dependencies, include=FALSE}
+library(qtl2)
+iron <- read_cross2(file = system.file("extdata", "iron.zip", package="qtl2geno") )
+map <- insert_pseudomarkers(map=iron$gmap, step=1)
+pr <- calc_genoprob(cross=iron, map=map, error_prob=0.002)
+Xcovar <- get_x_covar(iron)
+```
 Linear regression can be employed to identify presence of QTL in a cross. A regression line drawn between phenotype means for two genotype groups AA and AB will have a slope of zero if there is no difference between the group means. A slope not equal to zero indicates a difference in group means and the presence of a QTL near the markers. Marker regression, as shown below, can identify the existence and effect of a QTL by comparing means between groups, however, it requires known marker genotypes and can't identify QTL in between typed markers.
 
 ![](../fig/marker-regress.png)
@@ -38,11 +45,9 @@ were all from [qtl2geno](https://github.com/rqtl/qtl2geno); from here
 forward, the functions are all from
 [qtl2scan](https://github.com/rqtl/qtl2scan).)
 
-`scan1()` takes as input the genotype probabilities, a matrix of phenotypes, and then optional additive and interactive covariates, and the special X chromosome covariates. Another option is to provide a
-vector of weights.
+`scan1()` takes as input the genotype probabilities, a matrix of phenotypes, and then optional additive and interactive covariates, and the special X chromosome covariates. Another option is to provide a vector of weights.
 
-```{r scan1, eval=FALSE, include=FALSE}
-library(qtl2scan)
+```{r scan1}
 out <- scan1(pr, iron$pheno, Xcovar=Xcovar)
 ```
 
@@ -60,7 +65,7 @@ The function `plot_scan1()` in the
 
 Use the argument `lodcolumn` to indicate which column to plot. Unlike the `plot.scanone()` function in [R/qtl](http://rqtl.org), the `plot_scan1()` function will only plot one set of LOD curves at a time, and you need to provide the marker/pseudomarker map (created by `insert_pseudomarkers()`).
 
-```{r plot_lod, eval=FALSE}
+```{r plot_lod}
 library(qtl2plot)
 par(mar=c(5.1, 4.1, 1.1, 1.1))
 ymx <- maxlod(out) # overall maximum LOD score
