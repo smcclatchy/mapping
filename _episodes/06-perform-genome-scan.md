@@ -17,11 +17,11 @@ source: Rmd
 
 
 
-A regression line drawn between phenotype means for two genotype groups AA and AB will have a slope of zero if there is no difference between the group means. A slope not equal to zero indicates a difference in group means and the presence of a QTL near the markers. Marker regression can identify the existence and effect of a QTL by comparing means between groups, however, it requires known marker genotypes and can't identify QTL in between typed markers.
+Linear regression can be employed to identify presence of QTL in a cross. A regression line drawn between phenotype means for two genotype groups AA and AB will have a slope of zero if there is no difference between the group means. A slope not equal to zero indicates a difference in group means and the presence of a QTL near the markers. Marker regression, as shown below, can identify the existence and effect of a QTL by comparing means between groups, however, it requires known marker genotypes and can't identify QTL in between typed markers.
 
 ![](../fig/marker-regress.png)
 
-In Haley-Knott regression, we can regress the phenotypes on the conditional genotype probabilities (conditional on known marker genotypes). After calculating genotype probabilities between typed markers, phenotype values can be plotted and a regression line drawn through the phenotype mean for the untyped individuals.
+In Haley-Knott regression, we can regress the phenotypes for animals of unknown genotype on the conditional genotype probabilities (conditional on known marker genotypes). After calculating genotype probabilities between typed markers, phenotype values can be plotted and a regression line drawn through the phenotype mean for the untyped individuals.
 
 ![](../fig/hk-regress.png)
 
