@@ -51,29 +51,65 @@ forward, the functions are all from
 `scan1()` takes as input the genotype probabilities, a matrix of phenotypes, and then optional additive and interactive covariates, and the special X chromosome covariates. Another option is to provide a vector of weights.
 
 ```{r scan1}
-out <- scan1(pr, iron$pheno, Xcovar=Xcovar)
+out <- scan1(genoprobs = pr, pheno = iron$pheno, Xcovar=Xcovar)
 ```
 
 On a multi-core machine, you can get some speed-up via the `cores` argument, as with `calc_genoprob()` and `calc_kinship()`.
 
 ```{r scan1_multicore, eval=FALSE}
-out <- scan1(pr, iron$pheno, Xcovar=Xcovar, cores=4)
+out <- scan1(genoprobs = pr, pheno = iron$pheno, Xcovar=Xcovar, cores=4)
 ```
 
 The output of `scan1()` is a matrix of LOD scores, positions &times; phenotypes. (Well, actually, the output is a list including `"lod"` which is this matrix of LOD scores, but also including the
 genetic map and other details.)
 
-The function `plot_scan1()` in the
-[qtl2plot](https://github.com/rqtl/qtl2plot) package can be used to plot the LOD curves. You can just write `plot()`, as there's an S3 method `plot.scan1()` and the output of `scan1()` has class `"scan1"`.
+Take a look at the first ten rows of the scan object. The numerical values are the LOD scores for the marker or pseudomarker named at the beginning of the row. LOD values are given for liver and spleen.
 
-Use the argument `lodcolumn` to indicate which column to plot. Unlike the `plot.scanone()` function in [R/qtl](http://rqtl.org), the `plot_scan1()` function will only plot one set of LOD curves at a time, and you need to provide the marker/pseudomarker map (created by `insert_pseudomarkers()`).
+```{r head_scan}
+head(out, n=10)
+```
+
+> ## Challenge 1
+> Use the `head()` function to view the first 30 rows of the scan output. What is the next genotyped marker in the scan output? What are its LOD scores for liver and spleen?
+>
+> > ## Solution to Challenge 1
+> > D1Mit80  0.02154502 0.2216682
+> {: .solution}
+{: .challenge}
+
+> ## Challenge 2
+> Use the `sort()` function to sort the LOD scores for liver. Which pseudomarker has the highest LOD score? Which genotyped marker has the highest LOD score? What chromosome number are they on? 
+>
+> > ## Solution to Challenge 2
+> > sort(out[,1]) or sort(out[,"liver"])
+> > The pseudomarker with the largest score is c16.loc29, with a LOD of 7.68. The genotyped marker with the largest LOD is D16Mit30 with a score of 7.28. Both are located on chromosome 16.
+> {: .solution}
+{: .challenge}
+
+The function `plot_scan1()` in the
+[qtl2plot](https://github.com/rqtl/qtl2plot) package can be used to plot the LOD curves. Use the argument `lodcolumn` to indicate which column to plot.
 
 ```{r plot_lod}
 library(qtl2plot)
-par(mar=c(5.1, 4.1, 1.1, 1.1))
-ymx <- maxlod(out) # overall maximum LOD score
-plot(out, map, lodcolumn=1, col="slateblue", ylim=c(0, ymx*1.02))
-plot(out, map, lodcolumn=2, col="violetred", add=TRUE)
-legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out), bg="gray90")
+plot_scan1(out, map = map, lodcolumn = "liver")
 ```
 
+The LOD plot for liver clearly shows a peak on chromosome 16.
+
+> ## Challenge 3
+> Use the `sort()` function to sort the LOD scores for spleen. Which pseudomarker has the highest LOD score? Which genotyped marker has the highest LOD score? What chromosome number are they on? 
+>
+> > ## Solution to Challenge 3
+> > sort(out[,2]) or sort(out[,"spleen"])
+> > The pseudomarker with the largest score is c9.loc57, with a LOD of 12.1. The genotyped marker with the largest LOD is D9Mit182 with a score of 10.4. Both are located on chromosome 9.
+> {: .solution}
+{: .challenge}
+
+> ## Challenge 4
+> Plot the LOD scores for spleen. Does the genome scan for spleen share any large-ish peaks with the scan for liver?
+>
+> > ## Solution to Challenge 4
+> > plot_scan1(out, map = map, lodcolumn = "spleen")
+> > Both liver and spleen genome scans share a peak on chromosome 8 with a LOD score near 4.
+> {: .solution}
+{: .challenge}
