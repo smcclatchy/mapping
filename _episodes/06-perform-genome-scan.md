@@ -21,10 +21,24 @@ source: Rmd
 
 The freely available chapter on [single-QTL analysis](http://www.rqtl.org/book/rqtlbook_ch04.pdf) from Broman and Sen's [A Guide to QTL Mapping with R/qtl](http://www.rqtl.org/book/) describes different methods for QTL analysis. Two of these methods are described here using data from an experiment on hypertension in the mouse [Sugiyama et al., Genomics 71:70-77, 2001](https://s3.amazonaws.com/academia.edu.documents/45963759/geno.2000.640120160526-29022-36mpgg.pdf?AWSAccessKeyId=AKIAIWOWYYGZ2Y53UL3A&Expires=1513786158&Signature=rtodlYwe0LDmYZFOm1ejvZjZhQ0%3D&response-content-disposition=inline%3B%20filename%3DConcordance_of_murine_quantitative_trait.pdf). The study employed a backcross between two mouse strains resulting in two possible genotypes - AA for homozygotes, and AB for heterozygotes. 
 
-Linear regression can be employed to identify presence of QTL in a cross. A regression line drawn between phenotype means for two genotype groups AA and AB will have a slope of zero if there is no difference between the group means. A slope not equal to zero indicates a difference in group means and the presence of a QTL near the markers. Marker regression, as shown below, can identify the existence and effect of a QTL by comparing means between groups, however, it requires known marker genotypes and can't identify QTL in between typed markers.
+Linear regression can be employed to identify presence of QTL in a cross. To identify QTL using regression, we compare the fit for two models: 1) the null hypothesis that there are no QTL anywhere in the genome; and 2) the alternative hypothesis that there is a QTL at a specific locus. 
+
+![](../fig/nullvalt.png)
+
+A regression line drawn between phenotype means for two genotype groups AA and AB will have a slope of zero if there is no difference between the group means. A slope not equal to zero indicates a difference in group means and the presence of a QTL near the markers. 
+
+Marker regression, as shown below, can identify the existence and effect of a QTL by comparing means between groups, however, it requires known marker genotypes and can't identify QTL in between typed markers.
 
 ![](../fig/marker-regress.png)
 
+Marker regression produces a LOD (logarithm of odds) score comparing the null hypothesis to the alternative. The LOD score is the difference between the log10 likelihood under the alternative hypothesis that there is a QTL at the position, and the log10 likelihood of the null hypothesis, that there is no QTL anywhere in the genome. It is related to the regression model above by identifying the line of best fit to the data - a sloped line indicating a QTL at the position, or a line with a slope of zero indicating no QTL.
+
+![](../fig/null.png)
+![](../fig/residual.png)
+![](../fig/nullvalt.png)
+![](../fig/squared-residual.png)
+
+LOD = n/2log10RSS0/RSS1
 After [calculating genotype probabilities](https://smcclatchy.github.io/mapping/03-calc-genoprob/), we can regress the phenotypes for animals of unknown genotype on these conditional genotype probabilities (conditional on known marker genotypes). In Haley-Knott regression, phenotype values can be plotted and a regression line drawn through the phenotype mean for the untyped individuals.
 
 ![](../fig/hk-regress.png)
@@ -55,8 +69,7 @@ out <- scan1(genoprobs = pr, pheno = iron$pheno, Xcovar=Xcovar, cores=4)
 ~~~
 {: .r}
 
-The output of `scan1()` is a matrix of LOD scores, positions &times; phenotypes. (Well, actually, the output is a list including `"lod"` which is this matrix of LOD scores, but also including the
-genetic map and other details.)
+The output of `scan1()` is a matrix of LOD scores, positions &times; phenotypes. 
 
 Take a look at the first ten rows of the scan object. The numerical values are the LOD scores for the marker or pseudomarker named at the beginning of the row. LOD values are given for liver and spleen.
 
