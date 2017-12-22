@@ -67,6 +67,13 @@ out <- scan1(genoprobs = pr, pheno = iron$pheno, Xcovar=Xcovar, cores=4)
 ~~~
 {: .r}
 
+
+
+~~~
+Error in check4names(pheno, addcovar, Xcovar, intcovar): object 'iron' not found
+~~~
+{: .error}
+
 The output of `scan1()` is a matrix of LOD scores, positions &times; phenotypes. 
 
 Take a look at the first ten rows of the scan object. The numerical values are the LOD scores for the marker or pseudomarker named at the beginning of the row. LOD values are given for liver and spleen.
@@ -94,7 +101,7 @@ plot_scan1(out, map = map, lodcolumn = "liver")
 ~~~
 {: .r}
 
-![](../fig/hk-regress.png)
+![](../fig/lod-plot.png)
 
 The LOD plot for liver clearly shows a peak on chromosome 16.
 

@@ -62,7 +62,7 @@ out <- scan1(genoprobs = pr, pheno = iron$pheno, Xcovar=Xcovar)
 
 On a multi-core machine, you can get some speed-up via the `cores` argument, as with `calc_genoprob()` and `calc_kinship()`.
 
-```{r scan1_multicore, eval=FALSE}
+```{r scan1_multicore}
 out <- scan1(genoprobs = pr, pheno = iron$pheno, Xcovar=Xcovar, cores=4)
 ```
 
@@ -82,7 +82,7 @@ library(qtl2plot)
 plot_scan1(out, map = map, lodcolumn = "liver")
 ```
 
-![](../fig/hk-regress.png)
+![](../fig/lod-plot.png)
 
 The LOD plot for liver clearly shows a peak on chromosome 16.
 
