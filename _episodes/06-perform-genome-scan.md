@@ -37,7 +37,7 @@ Marker regression produces a LOD (logarithm of odds) score comparing the null hy
 
 $$LOD = n/2 * log^~{10}~(RSS^~{0}~/RSS^~{1}~)$$
 
-The LOD score is the difference between the log10 likelihood under the alternative hypothesis that there is a QTL at the position, and the log10 likelihood of the null hypothesis, that there is no QTL anywhere in the genome. It is related to the regression model above by identifying the line of best fit to the data. A higher LOD score indicates greater likelihood of the alternative hypothesis. 
+The LOD score is the difference between the log10 likelihood of the null hypothesis and the log10 likelihood of the alternative hypothesis. It is related to the regression model above by identifying the line of best fit to the data. A higher LOD score indicates greater likelihood of the alternative hypothesis. A LOD score closer to zero favors the null hypothesis. 
 
 Marker regression can identify the existence and effect of a QTL by comparing means between groups, however, it requires known marker genotypes and can't identify QTL in between typed markers. To identify QTL between typed markers, we use Haley-Knott regression. After [calculating genotype probabilities](https://smcclatchy.github.io/mapping/03-calc-genoprob/), we can regress the phenotypes for animals of unknown genotype on these conditional genotype probabilities (conditional on known marker genotypes). In Haley-Knott regression, phenotype values can be plotted and a regression line drawn through the phenotype mean for the untyped individuals.
 
@@ -96,6 +96,20 @@ c1.loc36 0.1758305 0.3083145
 ~~~
 {: .output}
 
+The function `plot_scan1()` in the
+[qtl2plot](https://github.com/rqtl/qtl2plot) package can be used to plot the LOD curves. Use the argument `lodcolumn` to indicate which column to plot.
+
+
+~~~
+library(qtl2plot)
+plot_scan1(out, map = map, lodcolumn = "liver")
+~~~
+{: .r}
+
+<img src="../fig/rmd-06-plot_lod-1.png" title="plot of chunk plot_lod" alt="plot of chunk plot_lod" style="display: block; margin: auto;" />
+
+The LOD plot for liver clearly shows a peak on chromosome 16.
+
 > ## Challenge 1
 > Use the `head()` function to view the first 30 rows of the scan output. What is the next genotyped marker in the scan output? What are its LOD scores for liver and spleen?
 >
@@ -112,20 +126,6 @@ c1.loc36 0.1758305 0.3083145
 > > The pseudomarker with the largest score is c16.loc29, with a LOD of 7.68. The genotyped marker with the largest LOD is D16Mit30 with a score of 7.28. Both are located on chromosome 16.
 > {: .solution}
 {: .challenge}
-
-The function `plot_scan1()` in the
-[qtl2plot](https://github.com/rqtl/qtl2plot) package can be used to plot the LOD curves. Use the argument `lodcolumn` to indicate which column to plot.
-
-
-~~~
-library(qtl2plot)
-plot_scan1(out, map = map, lodcolumn = "liver")
-~~~
-{: .r}
-
-<img src="../fig/rmd-06-plot_lod-1.png" title="plot of chunk plot_lod" alt="plot of chunk plot_lod" style="display: block; margin: auto;" />
-
-The LOD plot for liver clearly shows a peak on chromosome 16.
 
 > ## Challenge 3
 > Use the `sort()` function to sort the LOD scores for spleen. Which pseudomarker has the highest LOD score? Which genotyped marker has the highest LOD score? What chromosome number are they on? 
