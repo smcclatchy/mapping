@@ -30,23 +30,25 @@ Xcovar <- get_x_covar(iron)
 
 The freely available chapter on [single-QTL analysis](http://www.rqtl.org/book/rqtlbook_ch04.pdf) from Broman and Sen's [A Guide to QTL Mapping with R/qtl](http://www.rqtl.org/book/) describes different methods for QTL analysis. Two of these methods are described here using data from an experiment on hypertension in the mouse [Sugiyama et al., Genomics 71:70-77, 2001](https://s3.amazonaws.com/academia.edu.documents/45963759/geno.2000.640120160526-29022-36mpgg.pdf?AWSAccessKeyId=AKIAIWOWYYGZ2Y53UL3A&Expires=1513786158&Signature=rtodlYwe0LDmYZFOm1ejvZjZhQ0%3D&response-content-disposition=inline%3B%20filename%3DConcordance_of_murine_quantitative_trait.pdf). The study employed a backcross between two mouse strains resulting in two possible genotypes - AA for homozygotes, and AB for heterozygotes. 
 
-Linear regression can be employed to identify presence of QTL in a cross. To identify QTL using regression, we compare the fit for two models: 1) the null hypothesis that there are no QTL anywhere in the genome; and 2) the alternative hypothesis that there is a QTL at a specific locus. A sloped line indicates that there is a difference in mean phenotype between the two genotype groups, and that a QTL is present. A line with no slope indicates that there is no difference in mean phenotype between the two groups, and that no QTL exists. Regression aims to find the line of best fit to the data. In the case of a backcross with only two genotypes, a t-test is performed at the marker to determine whether the difference in phenotype means is zero.
+Linear regression can be employed to identify presence of QTL in a cross. To identify QTL using regression, we compare the fit for two models: 1) the null hypothesis that there are no QTL anywhere in the genome; and 2) the alternative hypothesis that there is a QTL near a specific position. A sloped line indicates that there is a difference in mean phenotype between the two genotype groups, and that a QTL is present. A line with no slope indicates that there is no difference in mean phenotype between the two groups, and that no QTL exists. Regression aims to find the line of best fit to the data. In the case of a backcross with only two genotypes, a t-test is performed at the marker to determine whether the difference in phenotype means is zero.
 
 ![](../fig/nullvalt.png)
 
-Marker regression produces a LOD (logarithm of odds) score comparing the null hypothesis to the alternative. The LOD score is the difference between the log10 likelihood under the alternative hypothesis that there is a QTL at the position, and the log10 likelihood of the null hypothesis, that there is no QTL anywhere in the genome. It is related to the regression model above by identifying the line of best fit to the data - a sloped line indicating a QTL at the position, or a line with a slope of zero indicating no QTL. The line of best fit will be the one that minimizes the sum of squared residuals, which maximizes the likelihood of the data.
+To find the line of best fit, the residuals or errors are calculated, then squared for each case.
 
 ![](../fig/residual.png)
 ![](../fig/squared-residual.png)
 ![](../fig/null.png)
 
-The LOD score is calculated using the sum of squared residuals for the null and alternative hypotheses.
+The line of best fit will be the one that minimizes the sum of squared residuals, which maximizes the likelihood of the data. 
 
-$LOD = n/2 * log^~{10}~(RSS^~{0}~/RSS^~{1}~)$ 
+Marker regression produces a LOD (logarithm of odds) score comparing the null hypothesis to the alternative. The LOD score is calculated using the sum of squared residuals for the null and alternative hypotheses.
 
-The higher LOD score indicates greater likelihood of the alternative hypothesis. 
+$$LOD = n/2 * log^~{10}~(RSS^~{0}~/RSS^~{1}~)$$
 
-Marker regression can identify the existence and effect of a QTL by comparing means between groups, however, it requires known marker genotypes and can't identify QTL in between typed markers. To identify QTL between typed markers, we can use Haley-Knott regression. After [calculating genotype probabilities](https://smcclatchy.github.io/mapping/03-calc-genoprob/), we can regress the phenotypes for animals of unknown genotype on these conditional genotype probabilities (conditional on known marker genotypes). In Haley-Knott regression, phenotype values can be plotted and a regression line drawn through the phenotype mean for the untyped individuals.
+The LOD score is the difference between the log10 likelihood under the alternative hypothesis that there is a QTL at the position, and the log10 likelihood of the null hypothesis, that there is no QTL anywhere in the genome. It is related to the regression model above by identifying the line of best fit to the data. A higher LOD score indicates greater likelihood of the alternative hypothesis. 
+
+Marker regression can identify the existence and effect of a QTL by comparing means between groups, however, it requires known marker genotypes and can't identify QTL in between typed markers. To identify QTL between typed markers, we use Haley-Knott regression. After [calculating genotype probabilities](https://smcclatchy.github.io/mapping/03-calc-genoprob/), we can regress the phenotypes for animals of unknown genotype on these conditional genotype probabilities (conditional on known marker genotypes). In Haley-Knott regression, phenotype values can be plotted and a regression line drawn through the phenotype mean for the untyped individuals.
 
 ![](../fig/hk-regress.png)
 
