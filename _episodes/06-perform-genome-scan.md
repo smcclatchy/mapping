@@ -17,8 +17,6 @@ source: Rmd
 
 
 
-
-
 The freely available chapter on [single-QTL analysis](http://www.rqtl.org/book/rqtlbook_ch04.pdf) from Broman and Sen's [A Guide to QTL Mapping with R/qtl](http://www.rqtl.org/book/) describes different methods for QTL analysis. Two of these methods are described here using data from an experiment on hypertension in the mouse [Sugiyama et al., Genomics 71:70-77, 2001](https://s3.amazonaws.com/academia.edu.documents/45963759/geno.2000.640120160526-29022-36mpgg.pdf?AWSAccessKeyId=AKIAIWOWYYGZ2Y53UL3A&Expires=1513786158&Signature=rtodlYwe0LDmYZFOm1ejvZjZhQ0%3D&response-content-disposition=inline%3B%20filename%3DConcordance_of_murine_quantitative_trait.pdf). The study employed a backcross between two mouse strains resulting in two possible genotypes - AA for homozygotes, and AB for heterozygotes. 
 
 Linear regression can be employed to identify presence of QTL in a cross. To identify QTL using regression, we compare the fit for two models: 1) the null hypothesis that there are no QTL anywhere in the genome; and 2) the alternative hypothesis that there is a QTL near a specific position. A sloped line indicates that there is a difference in mean phenotype between the two genotype groups, and that a QTL is present. A line with no slope indicates that there is no difference in mean phenotype between the two groups, and that no QTL exists. Regression aims to find the line of best fit to the data. In the case of a backcross with only two genotypes, a t-test is performed at the marker to determine whether the difference in phenotype means is zero.
@@ -43,7 +41,7 @@ Marker regression can identify the existence and effect of a QTL by comparing me
 
 ![](../fig/hk-regress.png)
 
-As shown by the red circle in the figure, an individual of unknown genotype is placed between known genotypes according to the probability of its genotype being AA or AB. In this case, the probability of this individual having genotype AA is 0.6, and the probability of having genotype AB is 0.4.
+As shown by the green circle in the figure, an individual of unknown genotype is placed between known genotypes according to the probability of its genotype being AA or AB. In this case, the probability of this individual having genotype AA is 0.6, and the probability of having genotype AB is 0.4.
 
 To perform a genome scan by Haley-Knott regression
 ([Haley and Knott 1992](https://www.ncbi.nlm.nih.gov/pubmed/16718932)),
@@ -82,19 +80,9 @@ head(out, n=10)
 
 
 ~~~
-             liver    spleen
-D1Mit18  0.2928511 0.4566189
-c1.loc28 0.2815294 0.4378754
-c1.loc29 0.2696594 0.4193363
-c1.loc30 0.2572780 0.4011646
-c1.loc31 0.2444340 0.3835257
-c1.loc32 0.2311884 0.3665798
-c1.loc33 0.2176149 0.3504744
-c1.loc34 0.2037988 0.3353358
-c1.loc35 0.1898359 0.3212614
-c1.loc36 0.1758305 0.3083145
+Error in head(out, n = 10): object 'out' not found
 ~~~
-{: .output}
+{: .error}
 
 The function `plot_scan1()` in the
 [qtl2plot](https://github.com/rqtl/qtl2plot) package can be used to plot the LOD curves. Use the argument `lodcolumn` to indicate which column to plot.
@@ -106,7 +94,7 @@ plot_scan1(out, map = map, lodcolumn = "liver")
 ~~~
 {: .r}
 
-<img src="../fig/rmd-06-plot_lod-1.png" title="plot of chunk plot_lod" alt="plot of chunk plot_lod" style="display: block; margin: auto;" />
+![](../fig/hk-regress.png)
 
 The LOD plot for liver clearly shows a peak on chromosome 16.
 

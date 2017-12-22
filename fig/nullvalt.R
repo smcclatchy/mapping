@@ -2,6 +2,7 @@ x <- pull.geno(hyper)[,"D4Mit214"]
 u <- runif(length(x), -0.075, 0.075)
 y <- hyper$pheno[,1]
 
+png(filename = "nullvalt.png", width = 600, height = 600)
 plot(y ~ x, type="n", xlab="Genotype", ylab="Blood Pressure",
      xlim=c(0.5,2.5), xaxs="i", xaxt="n", main = "Null and Alternative\nHypotheses")
 abline(v=1:2, lty=2, col="gray90")
@@ -15,3 +16,4 @@ segments((1:2)-0.15, me, (1:2)+0.15, me, lwd=3, col="orange1")
 text(x = 0.8, y = 98, labels = "no QTL exists", cex=0.7)
 text(x = 0.8, y = 110, labels = "QTL exists\nhere", cex=0.7)
 text(x = 2.35, y = 99.5, labels = "mean\nphenotype", cex=0.7)
+dev.off()

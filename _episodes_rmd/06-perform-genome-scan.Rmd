@@ -20,14 +20,6 @@ source("../bin/chunk-options.R")
 knitr_fig_path("06-")
 ```
 
-```{r load_dependencies, include=FALSE}
-library(qtl2)
-iron <- read_cross2(file = system.file("extdata", "iron.zip", package="qtl2geno") )
-map <- insert_pseudomarkers(map=iron$gmap, step=1)
-pr <- calc_genoprob(cross=iron, map=map, error_prob=0.002)
-Xcovar <- get_x_covar(iron)
-```
-
 The freely available chapter on [single-QTL analysis](http://www.rqtl.org/book/rqtlbook_ch04.pdf) from Broman and Sen's [A Guide to QTL Mapping with R/qtl](http://www.rqtl.org/book/) describes different methods for QTL analysis. Two of these methods are described here using data from an experiment on hypertension in the mouse [Sugiyama et al., Genomics 71:70-77, 2001](https://s3.amazonaws.com/academia.edu.documents/45963759/geno.2000.640120160526-29022-36mpgg.pdf?AWSAccessKeyId=AKIAIWOWYYGZ2Y53UL3A&Expires=1513786158&Signature=rtodlYwe0LDmYZFOm1ejvZjZhQ0%3D&response-content-disposition=inline%3B%20filename%3DConcordance_of_murine_quantitative_trait.pdf). The study employed a backcross between two mouse strains resulting in two possible genotypes - AA for homozygotes, and AB for heterozygotes. 
 
 Linear regression can be employed to identify presence of QTL in a cross. To identify QTL using regression, we compare the fit for two models: 1) the null hypothesis that there are no QTL anywhere in the genome; and 2) the alternative hypothesis that there is a QTL near a specific position. A sloped line indicates that there is a difference in mean phenotype between the two genotype groups, and that a QTL is present. A line with no slope indicates that there is no difference in mean phenotype between the two groups, and that no QTL exists. Regression aims to find the line of best fit to the data. In the case of a backcross with only two genotypes, a t-test is performed at the marker to determine whether the difference in phenotype means is zero.
@@ -52,7 +44,7 @@ Marker regression can identify the existence and effect of a QTL by comparing me
 
 ![](../fig/hk-regress.png)
 
-As shown by the red circle in the figure, an individual of unknown genotype is placed between known genotypes according to the probability of its genotype being AA or AB. In this case, the probability of this individual having genotype AA is 0.6, and the probability of having genotype AB is 0.4.
+As shown by the green circle in the figure, an individual of unknown genotype is placed between known genotypes according to the probability of its genotype being AA or AB. In this case, the probability of this individual having genotype AA is 0.6, and the probability of having genotype AB is 0.4.
 
 To perform a genome scan by Haley-Knott regression
 ([Haley and Knott 1992](https://www.ncbi.nlm.nih.gov/pubmed/16718932)),
@@ -64,7 +56,7 @@ forward, the functions are all from
 
 `scan1()` takes as input the genotype probabilities, a matrix of phenotypes, and then optional additive and interactive covariates, and the special X chromosome covariates. Another option is to provide a vector of weights.
 
-```{r scan1}
+```{r scan1, eval=FALSE}
 out <- scan1(genoprobs = pr, pheno = iron$pheno, Xcovar=Xcovar)
 ```
 
@@ -85,10 +77,12 @@ head(out, n=10)
 The function `plot_scan1()` in the
 [qtl2plot](https://github.com/rqtl/qtl2plot) package can be used to plot the LOD curves. Use the argument `lodcolumn` to indicate which column to plot.
 
-```{r plot_lod}
+```{r plot_lod, eval=FALSE}
 library(qtl2plot)
 plot_scan1(out, map = map, lodcolumn = "liver")
 ```
+
+![](../fig/hk-regress.png)
 
 The LOD plot for liver clearly shows a peak on chromosome 16.
 
