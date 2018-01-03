@@ -16,23 +16,16 @@ source("../bin/chunk-options.R")
 knitr_fig_path("10-")
 ```
 
-To perform a permutation test to establish the statistical significance of the results of a genome scan, use the function `scan1perm()`. (In
-[R/qtl](http://rqtl.org), a single function, `scanone()`, was used for both performing a genome scan and for getting permutation-based significance thresholds, but in [R/qtl2](http://kbroman.org/qtl2),
-we've decided to make two separate functions).
+To establish the statistical significance of the results of a genome scan, a permutation test can identify the maximum LOD score that can occur by random chance. A permutation tests shuffles genotypes and phenotypes, essentially breaking the relationship between the two. The genome-wide maximum LOD score is then calculated on the permuted data, and this score used as a threshold of statistical significance. 
 
 The `scan1perm()` function takes the same arguments as `scan1()`, plus additional arguments to control the permutations:
 
 - `n_perm` is the number of permutation replicates.
-- `perm_Xsp` controls whether to perform autosome/X chromosome
-  specific permutations (with `perm_Xsp=TRUE`) or not (the default is
-  to not).
-- `perm_strata` is a vector that defines the strata for a stratified permutation
-  test.
-- `chr_lengths` is a vector of chromosome lengths, used in the case
-  that `perm_Xsp=TRUE`.
+- `perm_Xsp` controls whether to perform autosome/X chromosome specific permutations (with `perm_Xsp=TRUE`) or not (the default is FALSE).
+- `perm_strata` is a vector that defines the strata for a stratified permutation test.
+- `chr_lengths` is a vector of chromosome lengths, used in the case that `perm_Xsp=TRUE`.
 
-As with `scan1()`, you may provide a kinship matrix (or vector of kinship matrices, for the "leave one chromosome out" (loco) approach), in order to fit linear mixed models to account for accounting for the
-relationships among individuals (in other words, including a random polygenic effect). If `kinship` is unspecified, the function performs ordinary Haley-Knott regression.
+As with `scan1()`, you may provide a kinship matrix (or vector of kinship matrices, for the "leave one chromosome out" (loco) approach), in order to fit linear mixed models. If `kinship` is unspecified, the function performs ordinary Haley-Knott regression.
 
 ```{r set_seed, echo=FALSE}
 set.seed(49237170)

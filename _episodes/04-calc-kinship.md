@@ -24,14 +24,14 @@ Population structure and kinship are common confounding factors in genome-wide a
 As an example see the table below for phenotype and genotype frequencies between two subpopulations in a case-control study.
 
 
-|                              |subpop1|subpop2|overall
+|                              |subpop1|subpop2|overall pop
 |:-----------------------------|:-----:|:-----:|:-----:|
 | frequency                    |  0.5  |  0.5  |   1   |
 | probability of AA genotype   |  0.1  |  0.9  |  0.5  |
 | probability of disease       |  0.9  |  0.1  |  0.5  |
 | probability of disease & AA  |  0.09 |  0.09 |  0.09 |
 
-The full population consists of two equally represented subpopulations. In the overall population, the probability of the AA genotype is 0.5, and the probability of disease is also 0.5. The joint probability of both disease and AA genotype in the population (0.09) is less than either the probability of disease (0.5) or the probability of the AA genotype (0.5) alone. In a case-control study that fails to recognize subpopulations, most of the cases will come from subpopulation 1 since this subpopulation has a disease probability of 0.9. However, this subpopulation also has a low probability of the AA genotype. So a false association between AA genotype and disease would occur because only overall population probabilities would be considered.
+The full population consists of two equally represented subpopulations. In the overall population, the probability of the AA genotype is 0.5, and the probability of disease is also 0.5. The joint probability of both disease and AA genotype in the population (0.09) is less than either the probability of disease (0.5) or the probability of the AA genotype (0.5) alone, and is considerably less than the joint probability of 0.25 that would be calculated if subpopulations weren't taken into account. In a case-control study that fails to recognize subpopulations, most of the cases will come from subpopulation 1 since this subpopulation has a disease probability of 0.9. However, this subpopulation also has a low probability of the AA genotype. So a false association between AA genotype and disease would occur because only overall population probabilities would be considered.
 
 Linear mixed models (LMMs) consider genome-wide similarity between all pairs of individuals to account for population structure, known kinship and unknown relatedness. They model the covariance between individuals. Linear mixed models in association mapping studies can successfully correct for genetic relatedness between individuals in a population by incorporating kinship into the model. If you wish to perform a genome scan by a linear mixed model, accounting for the relationships among individuals (in other words, including a random polygenic effect), you'll need to calculate a kinship matrix for the individuals. This is accomplished with the `calc_kinship()` function in
 [qtl2geno](https://github.com/rqtl/qtl2geno). It takes the genotype probabilities as input.

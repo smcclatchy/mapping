@@ -18,8 +18,17 @@ source("../bin/chunk-options.R")
 knitr_fig_path("07-")
 ```
 
-The function `find_peaks()` in the
-[qtl2scan](https://github.com/rqtl/qtl2scan) package can be used to identify a set of LOD peaks that exceed some threshold. It can also provide LOD support or Bayes credible intervals, by using the arguments `drop` (the amount to drop in the LOD support intervals) or `prob` (the nominal coverage for the Bayes credible intervals).
+Once we have LOD scores from a genome scan, we can look for QTL affecting the phenotype. High LOD scores indicate the neighborhood of a QTL but don't give its precise position. To find the exact position of a QTL, we define an interval that is likely to hold the QTL.
+
+We'll use two methods for defining this interval: 1) the LOD support interval; and 2) the Bayesian credible interval.
+
+LOD support intervals are defined by the drop from the maximum LOD score. A 1.5 LOD support interval, for example, would encompass the range of map positions between maximum LOD minus 1.5. For the chromosome 16 peak, the maximum LOD score is 7.68. The 1.5 LOD support interval includes the range of map positions in which the LOD score is 7.68 minus 1.5 = 6.18 or greater. In the figure below, this is the interval from 25 to 33.
+
+![](../fig/lod-support.png)
+
+The Bayes credible interval 
+To find peaks above a given threshold LOD value, use the function `find_peaks()` in the
+[qtl2scan](https://github.com/rqtl/qtl2scan) package. It can also provide LOD support or Bayes credible intervals, by using the arguments `drop` (the amount to drop in the LOD support intervals) or `prob` (the nominal coverage for the Bayes credible intervals).
 
 You need to provide both the `scan1()` output as well as the marker/pseudomarker map.
 
@@ -27,8 +36,7 @@ You need to provide both the `scan1()` output as well as the marker/pseudomarker
 find_peaks(out, map, threshold=4, drop=1.5)
 ```
 
-The `find_peaks()` function can also pick out multiple peaks on a chromosome: each peak must exceed the chosen threshold, and the argument `peakdrop` indicates the amount that the LOD curve must drop
-between the lowest of two adjacent peaks.  Use this feature with caution.
+The `find_peaks()` function can also pick out multiple peaks on a chromosome: each peak must exceed the chosen threshold, and the argument `peakdrop` indicates the amount that the LOD curve must drop between the lowest of two adjacent peaks.  Use this feature with caution.
 
 ```{r find_multiple_peaks, eval=FALSE}
 find_peaks(out, map, threshold=4, peakdrop=1.8, drop=1.5)

@@ -19,8 +19,7 @@ source("../bin/chunk-options.R")
 knitr_fig_path("09-")
 ```
 
-The genome scans above were performed assuming that the residual variation followed a normal distribution. This will often provide reasonable results even if the residuals are not normal, but an important special case is that of a binary trait, with values 0 and 1,
-which is best treated differently. The `scan1` function can perform a genome scan with binary traits by logistic regression, using the argument `model="binary"`. (The default value for the `model` argument is `"normal"`.) At present, we _can not_ account for relationships among individuals in this analysis.
+The genome scans above were performed assuming that the residual variation followed a normal distribution. This will often provide reasonable results even if the residuals are not normal, but an important special case is that of a binary trait, with values 0 and 1, which is best treated differently. The `scan1` function can perform a genome scan with binary traits by logistic regression, using the argument `model="binary"`. (The default value for the `model` argument is `"normal"`.) At present, we _can not_ account for relationships among individuals in this analysis.
 
 Let's first turn our two phenotypes into binary traits by thresholding at the median. One would generally _not_ do this in practice; this is just for illustration.
 

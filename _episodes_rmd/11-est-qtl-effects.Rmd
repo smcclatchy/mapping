@@ -18,9 +18,7 @@ source("../bin/chunk-options.R")
 knitr_fig_path("11-")
 ```
 
-The `scan1()` function returns only LOD scores. To
-obtain estimated QTL effects, use the function `scan1coef()`. This function takes a single phenotype and the genotype probabilities for a single chromosome and returns a matrix with the estimated coefficients at each putative QTL location along
-the chromosome.
+The `scan1()` function returns only LOD scores. To obtain estimated QTL effects, use the function `scan1coef()`. This function takes a single phenotype and the genotype probabilities for a single chromosome and returns a matrix with the estimated coefficients at each putative QTL location along the chromosome.
 
 For example, to get the estimated effects on chromosome 2 for the liver phenotype, we'd do the following:
 
@@ -93,8 +91,7 @@ for(i in seq(along=last_coef))
     axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ```
 
-Another option for estimating the QTL effects is to treat them as random effects and calculate Best Linear Unbiased Predictors (BLUPs). This is particularly valuable for multi-parent populations
-such as the Collaborative Cross and Diversity Outbred mice, where the large number of possible genotypes at a QTL lead to considerable variability in the effect estimates. To calculate BLUPs, use `scan1blup()`; it takes the same arguments as `scan1coef()`, including
+Another option for estimating the QTL effects is to treat them as random effects and calculate Best Linear Unbiased Predictors (BLUPs). This is particularly valuable for multi-parent populations such as the Collaborative Cross and Diversity Outbred mice, where the large number of possible genotypes at a QTL lead to considerable variability in the effect estimates. To calculate BLUPs, use `scan1blup()`; it takes the same arguments as `scan1coef()`, including
 the option of a kinship matrix to account for a residual polygenic effect.
 
 ```{r scan1blup, eval=FALSE}
@@ -121,7 +118,7 @@ The `scan1coef` function can also provide estimated QTL effects for binary trait
 c2eff_bin <- scan1coef(pr[,"2"], bin_pheno[,"liver"], model="binary")
 ```
 
-Here's a plot of the effects. They're a bit tricky to interpret, as their basically log odds ratios.
+Here's a plot of the effects. They're a bit tricky to interpret, as they are basically log odds ratios.
 
 ```{r plot_effects_binary, eval=FALSE}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)

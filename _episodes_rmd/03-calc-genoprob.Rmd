@@ -115,7 +115,7 @@ View the first three rows of genotype probabilities for the first genotyped mark
 (pr$`19`)[1:3,,"c19.loc5"] # the next pseudomarker
 ```
 
-**Specify number of cores to use (optional)** To speed up the calculations with large datasets on a multi-core machine, you can use the argument `cores`. With `cores=0`, the number of available cores will be detected via `parallel::detectCores()`. Otherwise, specify the number of cores as a positive integer.
+**Parallel calculations (optional)** To speed up the calculations with large datasets on a multi-core machine, you can use the argument `cores`. With `cores=0`, the number of available cores will be detected via `parallel::detectCores()`. Otherwise, specify the number of cores as a positive integer.
 
 ```{r calc_genoprob_multicore, eval=FALSE}
 pr <- calc_genoprob(cross=iron, map=map, error_prob=0.002, cores=4)

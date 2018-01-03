@@ -369,7 +369,7 @@ View the first three rows of genotype probabilities for the first genotyped mark
 ~~~
 {: .output}
 
-**Specify number of cores to use (optional)** To speed up the calculations with large datasets on a multi-core machine, you can use the argument `cores`. With `cores=0`, the number of available cores will be detected via `parallel::detectCores()`. Otherwise, specify the number of cores as a positive integer.
+**Parallel calculations (optional)** To speed up the calculations with large datasets on a multi-core machine, you can use the argument `cores`. With `cores=0`, the number of available cores will be detected via `parallel::detectCores()`. Otherwise, specify the number of cores as a positive integer.
 
 
 ~~~

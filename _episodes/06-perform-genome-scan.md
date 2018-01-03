@@ -17,6 +17,8 @@ source: Rmd
 
 
 
+
+
 The freely available chapter on [single-QTL analysis](http://www.rqtl.org/book/rqtlbook_ch04.pdf) from Broman and Sen's [A Guide to QTL Mapping with R/qtl](http://www.rqtl.org/book/) describes different methods for QTL analysis. Two of these methods are described here using data from an experiment on hypertension in the mouse [Sugiyama et al., Genomics 71:70-77, 2001](https://s3.amazonaws.com/academia.edu.documents/45963759/geno.2000.640120160526-29022-36mpgg.pdf?AWSAccessKeyId=AKIAIWOWYYGZ2Y53UL3A&Expires=1513786158&Signature=rtodlYwe0LDmYZFOm1ejvZjZhQ0%3D&response-content-disposition=inline%3B%20filename%3DConcordance_of_murine_quantitative_trait.pdf). The study employed a backcross between two mouse strains resulting in two possible genotypes - AA for homozygotes, and AB for heterozygotes. 
 
 Linear regression can be employed to identify presence of QTL in a cross. To identify QTL using regression, we compare the fit for two models: 1) the null hypothesis that there are no QTL anywhere in the genome; and 2) the alternative hypothesis that there is a QTL near a specific position. A sloped line indicates that there is a difference in mean phenotype between the two genotype groups, and that a QTL is present. A line with no slope indicates that there is no difference in mean phenotype between the two groups, and that no QTL exists. Regression aims to find the line of best fit to the data. In the case of a backcross with only two genotypes, a t-test is performed at the marker to determine whether the difference in phenotype means is zero.
@@ -31,11 +33,7 @@ To find the line of best fit, the residuals or errors are calculated, then squar
 
 The line of best fit will be the one that minimizes the sum of squared residuals, which maximizes the likelihood of the data. 
 
-Marker regression produces a LOD (logarithm of odds) score comparing the null hypothesis to the alternative. The LOD score is calculated using the sum of squared residuals for the null and alternative hypotheses.
-
-$$LOD = n/2 * log^~{10}~(RSS^~{0}~/RSS^~{1}~)$$
-
-The LOD score is the difference between the log10 likelihood of the null hypothesis and the log10 likelihood of the alternative hypothesis. It is related to the regression model above by identifying the line of best fit to the data. A higher LOD score indicates greater likelihood of the alternative hypothesis. A LOD score closer to zero favors the null hypothesis. 
+Marker regression produces a LOD (logarithm of odds) score comparing the null hypothesis to the alternative. The LOD score is calculated using the sum of squared residuals for the null and alternative hypotheses. The LOD score is the difference between the log10 likelihood of the null hypothesis and the log10 likelihood of the alternative hypothesis. It is related to the regression model above by identifying the line of best fit to the data. A higher LOD score indicates greater likelihood of the alternative hypothesis. A LOD score closer to zero favors the null hypothesis. 
 
 Marker regression can identify the existence and effect of a QTL by comparing means between groups, however, it requires known marker genotypes and can't identify QTL in between typed markers. To identify QTL between typed markers, we use Haley-Knott regression. After [calculating genotype probabilities](https://smcclatchy.github.io/mapping/03-calc-genoprob/), we can regress the phenotypes for animals of unknown genotype on these conditional genotype probabilities (conditional on known marker genotypes). In Haley-Knott regression, phenotype values can be plotted and a regression line drawn through the phenotype mean for the untyped individuals.
 
@@ -67,13 +65,6 @@ out <- scan1(genoprobs = pr, pheno = iron$pheno, Xcovar=Xcovar, cores=4)
 ~~~
 {: .r}
 
-
-
-~~~
-Error in check4names(pheno, addcovar, Xcovar, intcovar): object 'iron' not found
-~~~
-{: .error}
-
 The output of `scan1()` is a matrix of LOD scores, positions &times; phenotypes. 
 
 Take a look at the first ten rows of the scan object. The numerical values are the LOD scores for the marker or pseudomarker named at the beginning of the row. LOD values are given for liver and spleen.
@@ -87,9 +78,19 @@ head(out, n=10)
 
 
 ~~~
-Error in head(out, n = 10): object 'out' not found
+             liver    spleen
+D1Mit18  0.2928511 0.4566189
+c1.loc28 0.2815294 0.4378754
+c1.loc29 0.2696594 0.4193363
+c1.loc30 0.2572780 0.4011646
+c1.loc31 0.2444340 0.3835257
+c1.loc32 0.2311884 0.3665798
+c1.loc33 0.2176149 0.3504744
+c1.loc34 0.2037988 0.3353358
+c1.loc35 0.1898359 0.3212614
+c1.loc36 0.1758305 0.3083145
 ~~~
-{: .error}
+{: .output}
 
 The function `plot_scan1()` in the
 [qtl2plot](https://github.com/rqtl/qtl2plot) package can be used to plot the LOD curves. Use the argument `lodcolumn` to indicate which column to plot.
@@ -100,6 +101,7 @@ library(qtl2plot)
 plot_scan1(out, map = map, lodcolumn = "liver")
 ~~~
 {: .r}
+
 
 ![](../fig/lod-plot.png)
 

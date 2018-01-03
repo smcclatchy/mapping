@@ -20,16 +20,12 @@ source("../bin/chunk-options.R")
 knitr_fig_path("08-")
 ```
 
-Why would a use a linear mixed model?
-explanatory text and a graphic
-use an example
+Linear mixed models (LMMs) consider genome-wide similarity between all pairs of individuals to account for population structure, known kinship and unknown relatedness. Linear mixed models in association mapping studies can successfully correct for genetic relatedness between individuals in a population by incorporating kinship into the model. Earlier we [calculated a kinship matrix](https://smcclatchy.github.io/mapping/04-calc-kinship/) for input to a linear mixed model to account for relationships among individuals. 
 
-When experimental design uses multiple groups or batches, a linear mixed model is in order. For example, 2 strains of cucumber on 4 different plots at each of 5 different farms. group effect or batch effect; 
-
-To perform a genome scan using a linear mixed model, accounting for relationships among individuals using a random polygenic effect, you also use the function `scan1`; you just need to provide the argument `kinship`, a kinship matrix (or, for the LOCO method, a list of kinship matrices).
+To perform a genome scan using a linear mixed model you also use the function `scan1`; you just need to provide the argument `kinship`, a kinship matrix (or, for the LOCO method, a list of kinship matrices).
 
 ```{r scan1_pg, eval=FALSE}
-out_pg <- scan1(pr, iron$pheno, kinship, Xcovar=Xcovar)
+out_pg <- scan1(pr, iron$pheno, kinship=kinship, Xcovar=Xcovar)
 ```
 
 Again, on a multi-core machine, you can get some speed-up using the `cores` argument.
@@ -63,5 +59,4 @@ for(i in 1:2) {
 
 For the liver phenotype (top panel), the three methods give quite different results. The linear mixed model with an overall kinship matrix gives much lower LOD scores than the other two methods.  On chromosomes with some evidence of a QTL, the LOCO method gives higher LOD scores than Haley-Knott, except on chromosome 16 where it gives lower LOD scores.
 
-For the spleen phenotype (bottom panel), the linear mixed model with an overall kinship matrix again gives much lower LOD scores than the other two methods. However, in this case Haley-Knott regression and
-the LOCO method give quite similar results.
+For the spleen phenotype (bottom panel), the linear mixed model with an overall kinship matrix again gives much lower LOD scores than the other two methods. However, in this case Haley-Knott regression and the LOCO method give quite similar results.
