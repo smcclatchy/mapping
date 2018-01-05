@@ -18,6 +18,15 @@ source("../bin/chunk-options.R")
 knitr_fig_path("07-")
 ```
 
+```{r, include=FALSE}
+library(qtl2)
+iron <- read_cross2(file = system.file("extdata", "iron.zip", package="qtl2geno") )
+map <- insert_pseudomarkers(map=iron$gmap, step=1)
+pr <- calc_genoprob(cross=iron, map=map, error_prob=0.002)
+Xcovar <- get_x_covar(iron)
+out <- scan1(genoprobs = pr, pheno = iron$pheno, Xcovar=Xcovar)
+```
+
 Once we have LOD scores from a genome scan, we can look for QTL affecting the phenotype. High LOD scores indicate the neighborhood of a QTL but don't give its precise position. To find the exact position of a QTL, we define an interval that is likely to hold the QTL.
 
 We'll use two methods for defining this interval: 1) the LOD support interval; and 2) the Bayesian credible interval.
@@ -35,27 +44,45 @@ To find peaks above a given threshold LOD value, use the function `find_peaks()`
 
 You need to provide both the `scan1()` output as well as the marker/pseudomarker map.
 
-```{r find_peaks, eval=FALSE}
+```{r find_peaks}
 find_peaks(out, map, threshold=4, drop=1.5)
 ```
 
 The `find_peaks()` function can also pick out multiple peaks on a chromosome: each peak must exceed the chosen threshold, and the argument `peakdrop` indicates the amount that the LOD curve must drop between the lowest of two adjacent peaks.  Use this feature with caution.
 
-```{r find_multiple_peaks, eval=FALSE}
+```{r find_multiple_peaks}
 find_peaks(out, map, threshold=4, peakdrop=1.8, drop=1.5)
 ```
 
 The functions `lod_int()` and `bayes_int()` can be used to derive the LOD support or Bayes credible intervals for QTL, for a specific chromosome and LOD score column. For example, to obtain the Bayes
 interval for the locus on chromosome 9 for the second phenotype ("spleen"):
 
-```{r bayes_int, eval=FALSE}
+```{r bayes_int}
 bayes_int(out, map, lodcolumn=2, chr=9, prob=0.95)
 ```
 
 Both `lod_int()` and `bayes_int()` take a `peakdrop` argument, if you wish to try to identify multiple peaks on a chromosome. Again, use this feature with caution.
 
-```{r lod_int_multiple, eval=FALSE}
+```{r lod_int_multiple}
 lod_int(out, map, lodcolumn=1, chr=7, peakdrop=1.8, drop=1.5)
 ```
 
 Each row is a different peak; the columns are the lower interval endpoint, the estimated QTL position, and the upper interval endpoint.
+
+> ## Challenge 1
+> Find peaks in the genome scan object calld `out` that meet a threshold of 3 and are in the interval described by a 2 point LOD drop from the peak.
+>
+> > ## Solution to Challenge 1
+> > `find_peaks(out, map, threshold=3, drop=2)`
+> {: .solution}
+{: .challenge}
+
+
+> ## Challenge 2
+> Calculate the 90% Bayes credible interval on chromosome 16 for the liver phenotype (lodcolumn = 1).  
+>
+> > ## Solution to Challenge 2
+> >
+> > `bayes_int(out, map, lodcolumn=1, chr=16, prob=0.90)`
+> {: .solution}
+{: .challenge}
