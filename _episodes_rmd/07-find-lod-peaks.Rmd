@@ -26,7 +26,10 @@ LOD support intervals are defined by the drop from the maximum LOD score. A 1.5 
 
 ![](../fig/lod-support.png)
 
-The Bayes credible interval 
+The Bayes credible interval is the preferred method for defining QTL intervals. It describes the probability that the interval contains the true value. Credible intervals make a probabilistic statement about the true value, for example, a 95% credible interval states that there is a 95% chance that the true value lies within the interval.
+
+In contrast, confidence intervals describe the likelihood that the interval contains the true value.  They describe the uncertainty about whether the interval contains the true value or not, but don't make a probabilistic statement about the true value. A 95% confidence interval, for example, means that of 100 experiments run and confidence intervals generated, at least 95 of those intervals will contain the true value.
+
 To find peaks above a given threshold LOD value, use the function `find_peaks()` in the
 [qtl2scan](https://github.com/rqtl/qtl2scan) package. It can also provide LOD support or Bayes credible intervals, by using the arguments `drop` (the amount to drop in the LOD support intervals) or `prob` (the nominal coverage for the Bayes credible intervals).
 
