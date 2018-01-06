@@ -15,7 +15,7 @@ source: Rmd
 
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
-knitr_fig_path("15-")
+knitr_fig_path("13-")
 ```
 
 ```{r message=FALSE, echo=FALSE}

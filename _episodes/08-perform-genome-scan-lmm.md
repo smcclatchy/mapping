@@ -17,7 +17,7 @@ source: Rmd
 
 
 
-Linear mixed models (LMMs) consider genome-wide similarity between all pairs of individuals to account for population structure, known kinship and unknown relatedness. Linear mixed models in association mapping studies can successfully correct for genetic relatedness between individuals in a population by incorporating kinship into the model. Earlier we [calculated a kinship matrix](https://smcclatchy.github.io/mapping/04-calc-kinship/) for input to a linear mixed model to account for relationships among individuals. 
+Genetic mapping in mice presents a good example of why accounting for population structure is important. Laboratory mouse strains are descended from a small number of founders (fancy mice) and went through several population bottlenecks. Wild-derived strains are not descended from fancy mice and don't share the same history as laboratory strains. Linear mixed models were developed to solve problems with population structure created by differing ancestries, and to handle relatedness between individuals.  Linear mixed models (LMMs) consider genome-wide similarity between all pairs of individuals to account for population structure, known kinship and unknown relatedness. Linear mixed models in mapping studies can successfully correct for genetic relatedness between individuals in a population by incorporating kinship into the model. Earlier we [calculated a kinship matrix](https://smcclatchy.github.io/mapping/04-calc-kinship/) for input to a linear mixed model to account for relationships among individuals. 
 
 To perform a genome scan using a linear mixed model you also use the function `scan1`; you just need to provide the argument `kinship`, a kinship matrix (or, for the LOCO method, a list of kinship matrices).
 

@@ -105,7 +105,7 @@ plot_scan1(out, map = map, lodcolumn = "liver")
 
 ![](../fig/lod-plot.png)
 
-The LOD plot for liver clearly shows a peak on chromosome 16.
+The LOD plot for liver clearly shows the largest peak is on chromosome 16. There are smaller peaks on chromosomes 2, 7, and 8. Which of these peaks is significant, and why? We'll evaluate the significance of genome scan results in a later episode on [performing a permutation test](https://smcclatchy.github.io/mapping/10-perform-perm-test/).
 
 > ## Challenge 1
 > Use the `head()` function to view the first 30 rows of the scan output. What is the next genotyped marker in the scan output? What are its LOD scores for liver and spleen?

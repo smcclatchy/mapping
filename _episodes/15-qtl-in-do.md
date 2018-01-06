@@ -16,10 +16,6 @@ source: Rmd
 
 
 
-~~~
-Warning: package 'devtools' was built under R version 3.4.2
-~~~
-{: .error}
 This tutorial will take you through the process of mapping a QTL and searching for candidate genes.
 
 The data comes from a toxicology study in which Diversity Outbred (DO) mice were exposed to benzene via inhalation for 6 hours a day, 5 days a week for 4 weeks  [(French, J. E., et al. (2015) *Environ Health Perspect* 123(3): 237-245)](http://ehp.niehs.nih.gov/1408202/). The study was conducted in two equally sized cohort of 300 male mice each, for a total of 600 mice. They were then sacrificed and reticulocytes (red blood cell precursors) were isolated from bone marrow. The number of micro-nucleated reticulocytes, a measure of DNA damage, was then measured in each mouse. The goal is to map gene(s) that influence the level of DNA damage in the bone marrow.
@@ -105,7 +101,7 @@ axis(side = 2, at = 1:8, labels = LETTERS[8:1], las = 1, tick = F)
 ~~~
 {: .r}
 
-<img src="../fig/rmd-15-geno_plot-1.png" title="plot of chunk geno_plot" alt="plot of chunk geno_plot" style="display: block; margin: auto;" />
+<img src="../fig/rmd-13-geno_plot-1.png" title="plot of chunk geno_plot" alt="plot of chunk geno_plot" style="display: block; margin: auto;" />
 
 In the plot above, the founder contributions, which range between 0 and 1, are colored from white (= 0) to black (= 1.0). A value of ~0.5 is grey. The markers are on the X-axis and the eight founders (denoted by the letters A through H) on the Y-axis. Starting at the left, we see that this sample has genotype CD because both rows C and D are grey, indicating values of 0.5 for each one. Moving along the genome to the right, the genotype becomes DD where row D is black, then CD, AC, CH, CD, CH, etc. The values at each marker sum to 1.0.
 
@@ -173,7 +169,7 @@ axis(side = 2, at = 20 * 0:7, labels = 20 * 7:0, las = 1)
 ~~~
 {: .r}
 
-<img src="../fig/rmd-15-kinship_probs-1.png" title="plot of chunk kinship_probs" alt="plot of chunk kinship_probs" style="display: block; margin: auto;" />
+<img src="../fig/rmd-13-kinship_probs-1.png" title="plot of chunk kinship_probs" alt="plot of chunk kinship_probs" style="display: block; margin: auto;" />
 
 The figure above shows kinship between all pairs of samples. White ( = 1) indicates no kinship and red ( = 0) indicates full kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
 
@@ -206,7 +202,7 @@ plot(x = qtl, map = map, main = "Proportion of Micro-nucleated Bone Marrow Retic
 ~~~
 {: .r}
 
-<img src="../fig/rmd-15-qtl_plot-1.png" title="plot of chunk qtl_plot" alt="plot of chunk qtl_plot" style="display: block; margin: auto;" />
+<img src="../fig/rmd-13-qtl_plot-1.png" title="plot of chunk qtl_plot" alt="plot of chunk qtl_plot" style="display: block; margin: auto;" />
 
 There is clearly a large peak on Chr 10. Next, we must assess its statistical significance. This is most commonly done via [permutation](http://www.genetics.org/content/178/1/609.long). We advise running at least 1,000 permutations to obtain significance thresholds. In the interest of time, we perform 100 permutations here.
 
@@ -240,7 +236,7 @@ abline(h = thr, col = "red", lwd = 2)
 ~~~
 {: .r}
 
-<img src="../fig/rmd-15-qtl_plot_thr-1.png" title="plot of chunk qtl_plot_thr" alt="plot of chunk qtl_plot_thr" style="display: block; margin: auto;" />
+<img src="../fig/rmd-13-qtl_plot_thr-1.png" title="plot of chunk qtl_plot_thr" alt="plot of chunk qtl_plot_thr" style="display: block; margin: auto;" />
 
 The peak on Chr 10 is well above the red significance line.
 
@@ -303,7 +299,7 @@ plot_coefCC(x = coef10, map = map, scan1_output = qtl, main = "Proportion of Mic
 ~~~
 {: .r}
 
-<img src="../fig/rmd-15-coef_plot-1.png" title="plot of chunk coef_plot" alt="plot of chunk coef_plot" style="display: block; margin: auto;" />
+<img src="../fig/rmd-13-coef_plot-1.png" title="plot of chunk coef_plot" alt="plot of chunk coef_plot" style="display: block; margin: auto;" />
 
 The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele near 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective effect. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. 
 
@@ -387,7 +383,7 @@ plot_snpasso(scan1output = assoc[[1]], snpinfo = assoc[[2]], main = "Proportion 
 ~~~
 {: .r}
 
-<img src="../fig/rmd-15-assoc_fig-1.png" title="plot of chunk assoc_fig" alt="plot of chunk assoc_fig" style="display: block; margin: auto;" />
+<img src="../fig/rmd-13-assoc_fig-1.png" title="plot of chunk assoc_fig" alt="plot of chunk assoc_fig" style="display: block; margin: auto;" />
 
 
 This plot shows the LOD score for each SNP in the QTL interval. The SNPs occur in "shelves" because all of the SNPs in a haplotype block have the same founder strain pattern. The SNPs with the highest LOD scores are the ones for which CAST/EiJ contributes the alternate allele.
@@ -459,7 +455,7 @@ plot_genes(genes = genes, colors = "black")
 ~~~
 {: .r}
 
-<img src="../fig/rmd-15-plot_assoc2-1.png" title="plot of chunk plot_assoc2" alt="plot of chunk plot_assoc2" style="display: block; margin: auto;" />
+<img src="../fig/rmd-13-plot_assoc2-1.png" title="plot of chunk plot_assoc2" alt="plot of chunk plot_assoc2" style="display: block; margin: auto;" />
 
 ### Searching for Candidate Genes
 
