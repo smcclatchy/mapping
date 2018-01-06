@@ -19,6 +19,13 @@ source: Rmd
 
 Genetic mapping in mice presents a good example of why accounting for population structure is important. Laboratory mouse strains are descended from a small number of founders (fancy mice) and went through several population bottlenecks. Wild-derived strains are not descended from fancy mice and don't share the same history as laboratory strains. Linear mixed models were developed to solve problems with population structure created by differing ancestries, and to handle relatedness between individuals.  Linear mixed models (LMMs) consider genome-wide similarity between all pairs of individuals to account for population structure, known kinship and unknown relatedness. Linear mixed models in mapping studies can successfully correct for genetic relatedness between individuals in a population by incorporating kinship into the model. Earlier we [calculated a kinship matrix](https://smcclatchy.github.io/mapping/04-calc-kinship/) for input to a linear mixed model to account for relationships among individuals. 
 
+Recall that a linear model can take the form 
+
+$$y = B_0 + B_iX + \epsilon$$ 
+where $y$ is the response variable (phenotype in our case), $B_0$ is the y-intercept (mean phenotype), $X$ is the genotype, $B_i$ is a regression coefficient that in this case represents the slope of the line, and $\epsilon$ is the error. In the figure below, the linear model is $y = B_0 + B_iX + \epsilon$.
+
+![](../fig/residual.png)
+
 To perform a genome scan using a linear mixed model you also use the function `scan1`; you just need to provide the argument `kinship`, a kinship matrix (or, for the LOCO method, a list of kinship matrices).
 
 
