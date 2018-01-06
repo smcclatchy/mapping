@@ -23,9 +23,9 @@ Recall that a linear model can take the form
 
 $$y = B_0 + B_iX + \epsilon$$ 
 
-h<sub>&theta;</sub>(x) = &theta;<sub>o</sub> x + &theta;<sub>1</sub>x
+y = B<sub>0</sub> + B<sub>i</sub> X + &epsilon;
 
-where $y$ is the response variable (phenotype in our case), $B_0$ is the y-intercept (mean phenotype), $X$ is the genotype, $B_i$ is a regression coefficient that in this case represents the slope of the line, and $\epsilon$ is the error. In the figure below, the linear model is $y = B_0 + B_iX + \epsilon$.
+where y is the response variable (phenotype in our case), B<sub>0</sub> is the y-intercept (mean phenotype), X is the genotype, B<sub>i</sub> is a regression coefficient that in this case represents the slope of the line, and &epsilon; is the error. In the figure below, the linear model is y = B<sub>0</sub> + B<sub>i</sub> X + &epsilon;.
 
 ![](../fig/residual.png)
 
