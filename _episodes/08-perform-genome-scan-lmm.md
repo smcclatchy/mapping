@@ -17,17 +17,19 @@ source: Rmd
 
 
 
-Genetic mapping in mice presents a good example of why accounting for population structure is important. Laboratory mouse strains are descended from a small number of founders (fancy mice) and went through several population bottlenecks. Wild-derived strains are not descended from fancy mice and don't share the same history as laboratory strains. Linear mixed models were developed to solve problems with population structure created by differing ancestries, and to handle relatedness between individuals.  Linear mixed models (LMMs) consider genome-wide similarity between all pairs of individuals to account for population structure, known kinship and unknown relatedness. Linear mixed models in mapping studies can successfully correct for genetic relatedness between individuals in a population by incorporating kinship into the model. Earlier we [calculated a kinship matrix](https://smcclatchy.github.io/mapping/04-calc-kinship/) for input to a linear mixed model to account for relationships among individuals. For a current review of mixed models in genetics, see this preprint of [Martin and Eskin, 2017](https://www.biorxiv.org/content/early/2017/01/28/092106).
+Genetic mapping in mice presents a good example of why accounting for population structure is important. Laboratory mouse strains are descended from a small number of founders (fancy mice) and went through several population bottlenecks. Wild-derived strains are not descended from fancy mice and don't share the same history as laboratory strains. Linear mixed models were developed to solve problems with population structure created by differing ancestries, and to handle relatedness between individuals.  Linear mixed models (LMMs) consider genome-wide similarity between all pairs of individuals to account for population structure, known kinship and unknown relatedness. Linear mixed models in mapping studies can successfully correct for genetic relatedness between individuals in a population by incorporating kinship into the model. Earlier we [calculated a kinship matrix](https://smcclatchy.github.io/mapping/04-calc-kinship/) for input to a linear mixed model to account for relationships among individuals. For a current review of mixed models in genetics, see this [preprint of Martin and Eskin, 2017](https://www.biorxiv.org/content/early/2017/01/28/092106).
 
 Simple linear regression takes the form 
 
-<i>y</i> = &mu; + <i>&beta;X</i>
+<i>y</i> = <i>&mu;</i> + <i>&beta;X</i>
 
 which describes a line with slope &beta; and y-intercept &mu;.
 
 To model data from a cross, we use
 
-<i>y<sub>j</sub></i> = &mu; +  <i>&beta;<sub>k</sub>X<sub>jk</sub></i> + &epsilon<sub>j</sub>;
+<i>y<sub>j</sub></i> = <i>&mu;</i> +  <i>&beta;<sub>k</sub>X<sub>jk</sub></i> + &epsilon;<sub>j</sub>
+
+![](../fig/CodeCogsEqn.gif)
 
 where <i>y<sub>j</sub></i> is the phenotype of the <i>j</i>th individual, &mu; is the mean phenotype (y-intercept), <i>&beta;<sub>k</sub></i> is the effect of the <i>kth</i> genotype (slope), <i>X<sub>jk</sub></i> is the genotype for individual j, and &epsilon;<sub>j</sub> is the error for the <i>j</i>th individual. In the figure below, &mu; equals 110.2, and &beta; equals -5.8 for the alternative hypothesis (QTL exists). This linear model is <i>y</i> = 110.2 + -5.8X + &epsilon;. The model intersects the genotype groups AA and AB at their group means. In contrast, the null hypothesis would state that there is no difference in group means (no QTL anywhere). The linear model for the null hypothesis would be <i>y</i> = 101.6 + 0X + &epsilon;. This states that the phenotype is equal to the combined mean (101.6), plus some error (&epsilon;). Genotype doesn't affect the phenotype.
 
@@ -37,16 +39,17 @@ The linear models above describe the relationship between genotype and phenotype
 
 To model the phenotypes of all individuals in the data, we can adapt the simple linear model to include all individuals and their variants so that we capture the effect of all variants shared by individuals on their phenotypes.
 
-<i>y</i> = &mu;1 + &sigma;<sub>i=1</sub><sup>M</sup>&beta;<sub>i</sub>X<sub>i</sub> + &epsilon;
+<i>y</i> = <i>&mu;</i>1 + &Sigma;<sub>i=1</sub><sup>M</sup>&beta;<sub>i</sub>X<sub>i</sub> + &epsilon;
 
 Now, <i>y</i> represents the phenotypes of all individuals. The effect of the <i>i</i>th genotype on the phenotype is &beta;<sub>i</sub>, the mean is &mu; times 1, (mean multiplied by a vector of 1s) and the error is &epsilon;. Here, the number of genotypes is M.
 
 To model the effect of all genotypes and to account for relatedness, we test the effect of a single genotype while bringing all other genotypes into the model.
 
-<i>y</i> = &mu;1 + &beta;<sub>k</sub>X<sub>k</sub> + &sigma;<sub>i&#8800;k</sub>&beta;<sub>i</sub>X<sub>i</sub> + &epsilon;
+<i>y</i> = <i>&mu</i>;1 + <i>&beta;<sub>k</sub>X<sub>k</sub></i> + &Sigma;<sub>i&#8800;k</sub><i>&beta;<sub>i</sub>X<sub>i</sub></i> + &epsilon;
 
-&beta;<sub>k</sub> is the effect of the genotype X<sub>k</sub>, and &sigma;<sub>i&#8800;k</sub>&beta;<sub>i</sub>X<sub>i</sub> sums the effects of all other genotypes except genotype k. Where individuals are related to one another, failing to account for the effect of all other variants other than that being tested will result in many false positives.
+<i>&beta;<sub>k</sub></i> is the effect of the genotype <i>X<sub>k</sub></i>, and &Sigma;<sub>i&#8800;k</sub><i>&beta;<sub>i</sub>X<sub>i</sub></i> 
 
+sums the effects of all other genotypes except genotype k. Where individuals are related to one another, failing to account for the effect of all other variants other than that being tested will result in many false positives.
 
 To perform a genome scan using a linear mixed model you also use the function `scan1`; you just need to provide the argument `kinship`, a kinship matrix (or, for the LOCO method, a list of kinship matrices).
 
