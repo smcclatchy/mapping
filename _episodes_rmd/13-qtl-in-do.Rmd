@@ -41,7 +41,6 @@ The data for this tutorial has been saved as an R binary file that contains seve
 library(qtl2)
 library(qtl2convert)
 library(qtl2db)
-library(qtl2plot)
 load("../data/DOQTL_demo.Rdata")
 sessionInfo()
 ```
