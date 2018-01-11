@@ -1,4 +1,4 @@
-w---
+---
 title: "SNP association"
 teaching: 30
 exercises: 30
