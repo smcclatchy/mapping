@@ -24,7 +24,7 @@ Genetic mapping in mice presents a good example of why accounting for population
 
 Simple linear regression takes the form 
 
-<i>y</i> = <i>&mu;</i> + <i>&beta;X</i>
+<i>y</i> = <i>&alpha;</i> + <i>&beta;X</i>
 
 which describes a line with slope &beta; and y-intercept &mu;.
 
@@ -32,11 +32,9 @@ To model data from a cross, we use
 
 <i>y<sub>j</sub></i> = <i>&mu;</i> +  <i>&beta;<sub>k</sub>X<sub>jk</sub></i> + &epsilon;<sub>j</sub>
 
-![](../fig/CodeCogsEqn.gif)  
 
-![](../fig/CodeCogsEqn.png)  
-
-![](../fig/CodeCogsEqn.pdf)  
+![](../fig/linear-genetic-model.png)  
+ 
 
 where <i>y<sub>j</sub></i> is the phenotype of the <i>j</i>th individual, &mu; is the mean phenotype (y-intercept), <i>&beta;<sub>k</sub></i> is the effect of the <i>kth</i> genotype (slope), <i>X<sub>jk</sub></i> is the genotype for individual j, and &epsilon;<sub>j</sub> is the error for the <i>j</i>th individual. In the figure below, &mu; equals 110.2, and &beta; equals -5.8 for the alternative hypothesis (QTL exists). This linear model is <i>y</i> = 110.2 + -5.8X + &epsilon;. The model intersects the genotype groups AA and AB at their group means. In contrast, the null hypothesis would state that there is no difference in group means (no QTL anywhere). The linear model for the null hypothesis would be <i>y</i> = 101.6 + 0X + &epsilon;. This states that the phenotype is equal to the combined mean (101.6), plus some error (&epsilon;). Genotype doesn't affect the phenotype.
 
@@ -46,17 +44,18 @@ The linear models above describe the relationship between genotype and phenotype
 
 To model the phenotypes of all individuals in the data, we can adapt the simple linear model to include all individuals and their variants so that we capture the effect of all variants shared by individuals on their phenotypes.
 
-<i>y</i> = <i>&mu;</i>1 + &Sigma;<sub>i=1</sub><sup>M</sup>&beta;<sub>i</sub>X<sub>i</sub> + &epsilon;
+![](../fig/matrix-alg-model.png)
 
 Now, <i>y</i> represents the phenotypes of all individuals. The effect of the <i>i</i>th genotype on the phenotype is &beta;<sub>i</sub>, the mean is &mu; times 1, (mean multiplied by a vector of 1s) and the error is &epsilon;. Here, the number of genotypes is M.
 
 To model the effect of all genotypes and to account for relatedness, we test the effect of a single genotype while bringing all other genotypes into the model.
 
-<i>y</i> = <i>&mu</i>;1 + <i>&beta;<sub>k</sub>X<sub>k</sub></i> + &Sigma;<sub>i&#8800;k</sub><i>&beta;<sub>i</sub>X<sub>i</sub></i> + &epsilon;
+![](../fig/all-geno-model.png)
 
 <i>&beta;<sub>k</sub></i> is the effect of the genotype <i>X<sub>k</sub></i>, and &Sigma;<sub>i&#8800;k</sub><i>&beta;<sub>i</sub>X<sub>i</sub></i> 
 
-sums the effects of all other genotypes except genotype k. Where individuals are related to one another, failing to account for the effect of all other variants other than that being tested will result in many false positives.
+sums the effects of all other genotypes except genotype k. 
+If the sample contains divergent subpopulations, SNPs on different chromosomes will be correlated because of the  difference in allele frequencies between subpopulations caused by relatedness. To correct for correlations between chromosomes, we model all genotypes on the other chromosomes when testing for the association of a SNP. 
 
 To perform a genome scan using a linear mixed model you also use the function `scan1`; you just need to provide the argument `kinship`, a kinship matrix (or, for the LOCO method, a list of kinship matrices).
 

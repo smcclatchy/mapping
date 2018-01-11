@@ -40,7 +40,6 @@ The data for this tutorial has been saved as an R binary file that contains seve
 library(qtl2)
 library(qtl2convert)
 library(qtl2db)
-library(qtl2plot)
 load("../data/DOQTL_demo.Rdata")
 sessionInfo()
 ~~~
@@ -438,14 +437,7 @@ head(genes)
 ~~~
 {: .output}
 
-The `genes` object contains annotation information for each gene in the interval. The gene locations are in Mb and we need to change these to bp for the `plot_genes` function.
-
-
-~~~
-genes$start = genes$start * 1e6
-genes$stop = genes$stop * 1e6
-~~~
-{: .r}
+The `genes` object contains annotation information for each gene in the interval.
 
 Next, we will create a plot with two panels: one containing the association mapping LOD scores and one containing the genes in the QTL interval.
 
