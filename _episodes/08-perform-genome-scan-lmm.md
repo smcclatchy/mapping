@@ -23,7 +23,7 @@ Simple linear regression takes the form
 
 <i>y</i> = <i>&alpha;</i> + <i>&beta;X</i>
 
-which describes a line with slope &beta; and y-intercept &mu;.
+which describes a line with slope &beta; and y-intercept &alpha;.
 
 To model data from a cross, we use
 
