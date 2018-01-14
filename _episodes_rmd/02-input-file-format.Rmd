@@ -25,7 +25,9 @@ knitr_fig_path("02-")
 ```
 
 QTL mapping data consists of a set of tables of data: marker
-genotypes, phenotypes, marker maps, etc. These different tables are in different comma-separated value (CSV) files. In each file, the first column is a set of IDs for the rows, and the first row is a set of IDs for the columns. For example, the phenotype data file will have individual IDs in the first column and phenotype names in the first row.
+genotypes, phenotypes, marker maps, etc. These different tables are in different comma-separated value (CSV) files. In each file, the first column is a set of IDs for the rows, and the first row is a set of IDs for the columns. For example, the genotype data file will have individual IDs in the first column, marker names for the rest of the column headers.
+
+![](../fig/iron-geno-sample.png)
 
 R/qtl2 accepts the following files:
 1. genotypes
@@ -35,13 +37,28 @@ R/qtl2 accepts the following files:
 5. physical map (optional)  
 6. control file (YAML or JSON format, not CSV)
 
-We use both a genetic marker map and a physical map (if available). Numeric phenotypes are separate from the often non-numeric covariates. Phenotype covariates are [metadata](https://en.wikipedia.org/wiki/Metadata) describing the phenotypes. For example, in the case of a phenotype measured over time, one column in the phenotype covariate data could be the time of measurement. For gene expression data, we would have columns representing chromosome and physical position of genes, as well as gene IDs.
+We use both a genetic marker map and a physical map (if available). A sample from a genetic map of Mit markers is shown here.
+
+![](../fig/iron-geno-map-sample.png)
+
+A physical marker map provides location in bases rather than centiMorgans.
+
+![](../fig/iron-phys-map-sample.png)
+
+Numeric phenotypes are separate from the often non-numeric covariates.
+
+![](../fig/iron-pheno-sample.png)
+
+Phenotype covariates are [metadata](https://en.wikipedia.org/wiki/Metadata) describing the phenotypes. For example, in the case of a phenotype measured over time, one column in the phenotype covariate data could be the time of measurement. For gene expression data, we would have columns representing chromosome and physical position of genes, as well as gene IDs.
+
+![](../fig/iron-phenocovar-sample.png)
 
 In addition to the set of CSV files with the primary data, we need a separate control file with various control parameters
 (or metadata), including the names of all of the other data files and the genotype codes used in the genotype data file. The control file is in a specific format using either [YAML](http://www.yaml.org) or
 [JSON](http://json.org); these are human-readable text files for
 representing relatively complex data.
 
+![](../fig/iron-control-file-sample.png)
 A big advantage of this control file scheme is that it greatly
 simplifies the function for reading in the data. That function,
 `read_cross2()`, has a _single_ argument: the name (with path) of the control file.

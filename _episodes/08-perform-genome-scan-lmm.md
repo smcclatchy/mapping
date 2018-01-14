@@ -21,12 +21,11 @@ Genetic mapping in mice presents a good example of why accounting for population
 
 Simple linear regression takes the form 
 
-<i>y</i> = <i>&alpha;</i> + <i>&beta;X</i>
+<i>y</i> = <i>&alpha;</i> + <i>&beta;X</i> + <i>&epsilon;</i>
 
-which describes a line with slope &beta; and y-intercept &alpha;.
+which describes a line with slope &beta; and y-intercept &alpha;. The error (or residual) is represented by &epsilon;.
 
 To model data from a cross, we use
-
 
 ![](../fig/linear-genetic-model.png)  
  
@@ -47,9 +46,9 @@ To model the effect of all genotypes and to account for relatedness, we test the
 
 ![](../fig/all-geno-model.png)
 
-<i>&beta;<sub>k</sub></i> is the effect of the genotype <i>X<sub>k</sub></i>, and &Sigma;<sub>i&#8800;k</sub><i>&beta;<sub>i</sub>X<sub>i</sub></i> is the sum of all other genotypes. For the leave one chromosome out (LOCO) method, <i>&beta;<sub>k</sub></i><i>X<sub>k</sub></i> is the effect of genotypes on chromosome <i>k</i>, and <i>&beta;<sub>i</sub></i><i>X<sub>i</sub></i> represents effect of genotypes on all other chromosomes.
+<i>&beta;<sub>k</sub></i> is the effect of the genotype <i>X<sub>k</sub></i>, and &Sigma;<sub>i&#8800;k</sub><i>&beta;<sub>i</sub>X<sub>i</sub></i> sums the effects of all other genotypes except genotype k. For the leave one chromosome out (LOCO) method, <i>&beta;<sub>k</sub></i><i>X<sub>k</sub></i> is the effect of genotypes on chromosome <i>k</i>, and <i>&beta;<sub>i</sub></i><i>X<sub>i</sub></i> represents effect of genotypes on all other chromosomes.
 
-sums the effects of all other genotypes except genotype k. 
+ 
 If the sample contains divergent subpopulations, SNPs on different chromosomes will be correlated because of the  difference in allele frequencies between subpopulations caused by relatedness. To correct for correlations between chromosomes, we model all genotypes on the other chromosomes when testing for the association of a SNP. 
 
 To perform a genome scan using a linear mixed model you also use the function `scan1`; you just need to provide the argument `kinship`, a kinship matrix (or, for the LOCO method, a list of kinship matrices).
