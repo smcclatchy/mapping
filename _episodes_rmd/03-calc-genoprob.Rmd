@@ -23,18 +23,17 @@ source("../bin/chunk-options.R")
 knitr_fig_path("03-")
 ```
 
-The first basic task in QTL analysis is to calculate conditional genotype probabilities, given the observed marker data, at each putative QTL position. For example, the first step would be to determine the probabilities for genotypes AA and AB at the locus indicated below.
+The first task in QTL analysis is to calculate conditional genotype probabilities, given the observed marker data, at each putative QTL position. For example, the first step would be to determine the probabilities for genotypes AA and AB at the locus indicated below.
 
 ![](../fig/unknown_genotype.png)
 
 The `calc_genoprob()` function in the [qtl2geno](https://github.com/rqtl/qtl2geno)
-package calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. Unlike the corresponding function in [R/qtl](https://rqtl.org), `calc.genoprob()`, the result is not inserted back into the input cross object, but is returned as a list of three-dimensional arrays (one per chromosome). Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions.
+package calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. The result is returned as a list of three-dimensional arrays (one per chromosome). Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions.
 
 ![](../fig/threeD_array.png)
 
 
-If we wish to perform QTL calculations at positions between markers (so called "pseudomarkers"), we first need to insert such positions into the genetic map with the function `insert_pseudomarkers()`. Unlike [R/qtl](https://rqtl.org), the map is kept separate from the genotype
-probabilities.
+To find QTL at positions between markers (so called "pseudomarkers"), first  insert pseudomarkers into the genetic map with the function `insert_pseudomarkers()`.
 
 We'll use the
 [iron dataset](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron)
@@ -87,7 +86,7 @@ head(map, n=2)
 
 Notice that pseudomarkers are now spaced at 1 cM intervals from genotyped markers. The argument `step=1` generated pseudomarkers at these intervals. 
 
-Next we use `calc_genoprob()` to calculate the QTL genotype probabilities. In R/qtl2, these are maintained separate from the cross object.
+Next we use `calc_genoprob()` to calculate the QTL genotype probabilities.
 
 ```{r calc_genoprob}
 pr <- calc_genoprob(cross=iron, map=map, error_prob=0.002)

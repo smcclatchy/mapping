@@ -56,6 +56,8 @@ In addition to the set of CSV files with the primary data, we need a separate co
 representing relatively complex data.
 
 ![](../fig/iron-control-file-sample.png)
+
+
 A big advantage of this control file scheme is that it greatly
 simplifies the function for reading in the data. That function,
 `read_cross2()`, has a _single_ argument: the name (with path) of the control file.
