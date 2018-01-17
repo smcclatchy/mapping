@@ -21,9 +21,27 @@ Once we have LOD scores from a genome scan, we can look for QTL affecting the ph
 
 We'll use two methods for defining this interval: 1) the LOD support interval; and 2) the Bayesian credible interval.
 
-LOD support intervals are defined by the drop from the maximum LOD score. A 1.5 LOD support interval, for example, would encompass the range of map positions between maximum LOD minus 1.5. For the chromosome 16 peak, the maximum LOD score is 7.68. The 1.5 LOD support interval includes the range of map positions in which the LOD score is 7.68 minus 1.5 = 6.18 or greater. In the figure below, this is the interval from 25 to 33.
+LOD support intervals are defined by the drop from the maximum LOD score. A 1.5 LOD support interval, for example, would encompass the range of map positions between maximum LOD minus 1.5. For the chromosome 16 peak, the maximum LOD score is 7.68. The 1.5 LOD support interval includes the range of map positions in which the LOD score is 7.68 minus 1.5 = 6.18 or greater. In the figure below, this is the interval from 20.6 to 33.5.
 
 ![](../fig/lod-support.png)
+
+You can calculate the 1.5 LOD support interval for chromosome 16 with the `lod_int()` function.
+
+
+~~~
+lod_int(out, map, chr = 16, lodcolumn = 1, expand2markers = FALSE)
+~~~
+{: .r}
+
+
+
+~~~
+  ci_lo  pos ci_hi
+1  20.6 28.6  33.6
+~~~
+{: .output}
+
+Set the argument `expand2markers = FALSE` to keep from expanding the interval out to typed markers, or exclude this argument if you'd like to include flanking markers. The default LOD drop is 1.5. You can change this with the argument `drop`.
 
 The Bayes credible interval is the preferred method for defining QTL intervals. It describes the probability that the interval contains the true value. Credible intervals make a probabilistic statement about the true value, for example, a 95% credible interval states that there is a 95% chance that the true value lies within the interval.
 

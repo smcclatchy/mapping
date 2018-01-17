@@ -76,18 +76,8 @@ To plot the results, we again use `plot_scan1()` from the [qtl2plot](https://git
 
 Here is a plot of the LOD scores, by Haley-Knott regression and the linear mixed model using either the standard kinship matrix or the LOCO method.
 
-```{r plot_lod_scan1_vs_pg, eval=FALSE}
-color <- c("slateblue", "violetred", "green3")
-par(mar=c(4.1, 4.1, 1.6, 1.1))
-ymx <- max(maxlod(out), maxlod(out_pg), maxlod(out_pg_loco))
-for(i in 1:2) {
-    plot(out, map, lodcolumn=i, col=color[1], main=colnames(iron$pheno)[i],
-              ylim=c(0, ymx*1.02))
-    plot(out_pg, map, lodcolumn=i, col=color[2], add=TRUE)
-    plot(out_pg_loco, map, lodcolumn=i, col=color[3], add=TRUE, lty=2)
-    legend("topleft", lwd=2, col=color, c("H-K", "LMM", "LOCO"), bg="gray90", lty=c(1,1,2))
-}
-```
+![](../fig/lod-plot-compare-liver.png)
+![](../fig/lod-plot-compare-spleen.png)
 
 For the liver phenotype (top panel), the three methods give quite different results. The linear mixed model with an overall kinship matrix gives much lower LOD scores than the other two methods.  On chromosomes with some evidence of a QTL, the LOCO method gives higher LOD scores than Haley-Knott, except on chromosome 16 where it gives lower LOD scores.
 
