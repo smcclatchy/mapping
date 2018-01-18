@@ -14,6 +14,7 @@ source: Rmd
 
 
 
+
 The X chromosome must be treated differently from the autosomes in the mapping of quantitative trait loci (QTL). If the X chromosome is treated like an autosome, a sex difference in a phenotype, such as weight or height, can lead to spurious linkage on the X chromosome. The X chromosome varies depending on the sex of the animal and the direction of the cross, so accounting for these covariates is important under the null hypothesis of no QTL, to avoid spurious evidence of linkage. (See [Broman et al. (2006) Genetics 174:2151-2158](http://www.genetics.org/content/174/4/2151.long).)
 
 The particular X chromosome covariates depends on the cross, and can be obtained with the [qtl2geno](https://github.com/rqtl/qtl2geno) function `get_x_covar()`. In the iron data, sex and cross direction are indicated with 0s and 1s.
@@ -21,19 +22,6 @@ The particular X chromosome covariates depends on the cross, and can be obtained
 
 ~~~
 Xcovar <- get_x_covar(iron)
-~~~
-{: .r}
-
-
-
-~~~
-Error in "cross2" %in% class(x): object 'iron' not found
-~~~
-{: .error}
-
-
-
-~~~
 head(Xcovar)
 ~~~
 {: .r}
@@ -41,6 +29,12 @@ head(Xcovar)
 
 
 ~~~
-Error in head(Xcovar): object 'Xcovar' not found
+  sex direction
+1   1         0
+2   1         0
+3   1         0
+4   1         0
+5   1         0
+6   1         0
 ~~~
-{: .error}
+{: .output}

@@ -85,3 +85,21 @@ Here is a plot of the LOD scores, by Haley-Knott regression and the linear mixed
 For the liver phenotype (top panel), the three methods give quite different results. The linear mixed model with an overall kinship matrix gives much lower LOD scores than the other two methods.  On chromosomes with some evidence of a QTL, the LOCO method gives higher LOD scores than Haley-Knott, except on chromosome 16 where it gives lower LOD scores.
 
 For the spleen phenotype (bottom panel), the linear mixed model with an overall kinship matrix again gives much lower LOD scores than the other two methods. However, in this case Haley-Knott regression and the LOCO method give quite similar results.
+
+> ## Challenge 1
+> Earlier you inserted pseudomarkers for the `grav` data and saved the results to an object called `gravmap`.  Then you calculated genotype probabilities and saved the results to an object called `gravpr`.   
+> 1). Calculate kinship for the `grav` data using the LOCO method. 
+> 2). Run a genome scan with the genotype probabilities and kinship that you calculated.
+> 3). Find the maximum LOD score for the scan using
+`which(out_grav == maxlod(out_grav), arr.ind = TRUE)`.
+> 4). Plot the genome scan for this phenotype (hint: use the column number as lodcolumn).
+> >
+> > ## Solution to Challenge 1
+> >
+> > 1). `grav_kinship <- calc_kinship(gravpr, "loco")`
+> > 2). `out_grav <- scan1(genoprobs = gravpr,
+pheno = grav$pheno, kinship = grav_kinship)`
+> > 3). `which(out_grav == maxlod(out_grav), arr.ind = TRUE)` row 166, col 133
+> > 4). `plot(out_grav, lodcolumn = 133, map = gravmap)`
+> {: .solution}
+{: .challenge}

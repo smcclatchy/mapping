@@ -83,17 +83,17 @@ In this lesson, we'll work with data sets included in the `qtl2` package. You ca
 Additional sample data sets, including data on Diversity Outbred (DO) mice, are available at <https://github.com/rqtl/qtl2data>. Additional sample data sets, including data on Diversity Outbred (DO) mice, are available at <https://github.com/rqtl/qtl2data>.
 
 > ## Challenge 2
-> Go to <https://github.com/rqtl/qtl2data> to view additional sample data.
+> Go to <https://github.com/rqtl/qtl2data> to view additional sample data.  
 > 1). Find the Recla data and locate the phenotype data file. Open the file by clicking on the file name. What is in the first column? the first row?  
 > 2). Locate the genotype data file, click on the file name, and view the raw data. What is in the first column? the first row?  
-> 3). Locate the phenotype covariates file and open it by clicking on the file name. What kind of information does this file contain?  
+> 3). Locate the covariates file and open it by clicking on the file name. What kind of information does this file contain?  
 > 4). Locate the control file (YAML or JSON format) and open it. What kind of information does this file contain?  
 >
 > > ## Solution to Challenge 2
 > >
 > > 1). What is in the first column of the phenotype file? Animal ID. The first row? Phenotype variable names - OF_distance_first4, OF_distance, OF_corner_pct, OF_periphery_pct, ...  
 > > 2). What is in the first column of the genotype file? marker ID. the first row? Animal ID - 1,4,5,6,7,8,9,10, ...  
-> 3). Locate the phenotype covariates file and open it. What kind of information does this file contain? Animal ID, sex, cohort, group, subgroup, ngen, and coat color.  
+> 3). Locate the covariates file and open it. What kind of information does this file contain? Animal ID, sex, cohort, group, subgroup, ngen, and coat color.  
 > 4). Locate the control file (YAML or JSON format) and open it. What kind of information does this file contain? Names of primary data files, genotype and allele codes, cross type, description, and other metadata.
 > {: .solution}
 {: .challenge}
