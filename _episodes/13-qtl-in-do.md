@@ -189,8 +189,8 @@ Before we run the mapping function, let's look at the mapping model. At each mar
 ![](../fig/equation1.png)
 
   where:  
-<ul>
-  <li><i>y<sub>i</sub></i> is the phenotype for mouse <i>i</i>,
+  
+<ul><li><i>y<sub>i</sub></i> is the phenotype for mouse <i>i</i>,
   <li><i>&beta;<sub>s</sub></i> is the effect of study cohort,
   <li><i>s<sub>i</sub></i> is the study cohort for mouse <i>i</i>,</li>
   <li><i>&beta;<sub>j</sub></i> is the effect of founder allele <i>j</i>,</li>
@@ -331,8 +331,7 @@ Association mapping involves imputing the founder SNPs onto each DO genome and f
   
   where:
 
-<ul>
-  <li><i>y<sub>i</sub></i> is the phenotype for mouse <i>i</i>,</li>
+<ul><li><i>y<sub>i</sub></i> is the phenotype for mouse <i>i</i>,</li>
   <li><i>&beta;<sub>s</sub></i> is the effect of study cohort,</li>
   <li><i>s<sub>i</sub></i> is the study cohort for mouse <i>i</i>,</li>
   <li><i>&beta;<sub>m</sub></i> is the effect of adding one allele at marker <i>m</i>,</li>
