@@ -184,7 +184,22 @@ The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-ef
 
 **NOTE:** the sample IDs must be in the rownames of `pheno`, `addcovar`, `genoprobs` and `K`. `qtl2` uses the sample IDs to align the samples between objects. For more information about data file format, see [Karl Broman's vignette on input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
 
-In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the `scan1` function. To see the arguments for `scan1`, you can type `help(scan1)`.
+Before we run the mapping function, let's look at the mapping model. At each marker on the genotyping array, we will fit a model that regresses the phenotype (MN-RETs) on covariates and the founder allele proportions.
+
+![](../fig/equation1.png)
+where:
+
+* $y_i$ is the phenotype for mouse *i*,
+* $\beta_s is the effect of study cohort,
+* $s_i$ is the study cohort for mouse *i*,
+* $\beta_j$ is the effect of founder allele *j*,
+* $g_ij$ is the probability that mouse *i* carries an allele from founder *j*,
+* $\lambda_i$ is an adjustment for kinship-induced correlated errors for mouse *i*.
+* $\epsilon_i$ is the residual error for mouse *i*.
+
+Note that this model will give us an estimate of the effect of each founder allele at each marker. There are eight founder strains that contributed to the DO, so we will get eight founder allele effects.
+
+In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the [scan1](https://github.com/rqtl/qtl2/blob/master/R/plot_scan1.R) function. To see the arguments for [scan1](https://github.com/rqtl/qtl2/blob/master/R/plot_scan1.R), you can type `help(scan1)`.
 
 
 ~~~
@@ -239,7 +254,7 @@ abline(h = thr, col = "red", lwd = 2)
 
 The peak on Chr 10 is well above the red significance line.
 
-We can find all of the peaks above the significance threshold using the `find_peaks` function.
+We can find all of the peaks above the significance threshold using the [find_peaks](https://github.com/rqtl/qtl2/blob/master/R/find_peaks.R) function.
 
 
 ~~~
@@ -263,25 +278,25 @@ find_peaks(scan1_output = qtl, map = map, threshold = thr)
 > {: .solution}
 {: .challenge} 
 
-The support interval is determined using the [Bayesian Credible Interval](http://www.ncbi.nlm.nih.gov/pubmed/11560912) and represents the region most likely to contain the causative polymorphism(s). We can obtain this interval using the `bayesint` function.  We can determine the support interval for the QTL peak using the `bayes_int` function.
+The support interval is determined using the [Bayesian Credible Interval](http://www.ncbi.nlm.nih.gov/pubmed/11560912) and represents the region most likely to contain the causative polymorphism(s). We can obtain this interval by adding a `prob` argument to [find_peaks](https://github.com/rqtl/qtl2/blob/master/R/find_peaks.R). We pass in a value of `0.95` to request a support interval that contains the causal SNP 95% of the time.
 
 
 ~~~
-bayes_int(scan1_output = qtl, map = map, chr = 10)
+find_peaks(scan1_output = qtl, map = map, threshold = thr, prob = 0.95)
 ~~~
 {: .r}
 
 
 
 ~~~
-     ci_lo      pos    ci_hi
-1 30.16649 34.17711 35.49352
+  lodindex      lodcolumn chr      pos     lod    ci_lo    ci_hi
+1        1 prop.bm.MN.RET  10 34.17711 16.2346 30.16649 35.49352
 ~~~
 {: .output}
 
-From the output above, you can see that the support interval is 5.5 Mb wide (30.16649 to 35.49352 Mb). The location of the maximum LOD score is 34.17711 Mb.
+From the output above, you can see that the support interval is 5.5 Mb wide (30.16649 to 35.49352 Mb). The location of the maximum LOD score is at 34.17711 Mb.
 
-We will now zoom in on Chr 10 and look at the contribution of each of the eight founder alleles to the proportion of bone marrow reticulocytes that were micro-nucleated. The mapping model fits a term for each of the eight DO founders. We can plot these coefficients across Chr 10.
+We will now zoom in on Chr 10 and look at the contribution of each of the eight founder alleles to the proportion of bone marrow reticulocytes that were micro-nucleated. Remember, the mapping model above estimates the effect of each of the eight DO founders. We can plot these effects (also called 'coefficients') across Chr 10 using [scan1coef](https://github.com/rqtl/qtl2/blob/master/R/scan1coef.R).
 
 
 ~~~
@@ -290,7 +305,7 @@ coef10 = scan1coef(genoprobs = genoprobs[,chr], pheno = pheno[,"prop.bm.MN.RET",
 ~~~
 {: .r}
 
-This produces an object containing estimates of each of the eight DO founder allele effect. 
+This produces an object containing estimates of each of the eight DO founder allele effect. These are the $\beta_j$ values in the mapping equation above.
 
 
 ~~~
@@ -308,82 +323,54 @@ At this point, we have a 6 Mb wide support interval that contains a polymorphism
 
 ![](../fig/DO.impute.founders.sm.png)
 
-Association mapping involves several steps and we have encapulated the steps in a single function called `assoc_mapping`. Copy and paste this function into your R script.
+Association mapping involves imputing the founder SNPs onto each DO genome and fitting the mapping model at each SNP. At each marker, we fit the following model:
 
+![](../fig/equation2.png)
 
-~~~
-assoc_mapping = function(probs, pheno, idx, addcovar, intcovar = NULL, K, 
-                markers, chr, start, end, ncores = 1, 
-                snp.file = "../data/cc_variants.sqlite") {
+where:
 
-  # Make sure that we have only one chromosome.
-  if(length(probs) > 1) {
-    stop(paste("Please provide a probs object with only the current chromosome."))
-  } # if(length(probs) > 1)
+* $y_i$ is the phenotype for mouse *i*,
+* $\beta_s is the effect of study cohort,
+* $s_i$ is the study cohort for mouse *i*,
+* $\beta_m$ is the effect of adding one allele at marker *m*,
+* $g_im$ is the allele call for mouse *i* at marker *m*,
+* $\lambda_i$ is an adjustment for kinship-induced correlated errors for mouse *i*.
+* $\epsilon_i$ is the residual error for mouse *i*.
 
-  if(length(K) > 1) {
-    stop(paste("Please provide a kinship object for the current chromosome."))
-  } # if(length(K) > 1)
-
-  stopifnot(length(probs) == length(K))
-
-  # Create a function to query the SNPs.
-  query_variants = create_variant_query_func(snp.file)
-
-  # Convert marker positions to Mb if not already done.
-  # The longest mouse chromosome is ~200 Mb, so 300 should cover it.
-  if(max(markers[,3], na.rm = T) > 300) {
-    markers[,3] = markers[,3] * 1e-6
-  } # if(max(markers[,3], na.rm = T) > 300)
-
-  # Split up markers into a vector of map positions.
-  map = map_df_to_list(map = markers, pos_column = "pos")
-
-  # Extract SNPs from the database
-  snpinfo = query_variants(chr, start, end)
-
-  # Index groups of similar SNPs.
-  snpinfo = index_snps(map = map, snpinfo)
-
-  # Keep samples that are not NA.
-  keep = !is.na(pheno[,idx])
-
-  # Convert genoprobs to snpprobs.
-  snppr = genoprob_to_snpprob(probs[keep,], snpinfo)
-  
-  # Scan1.
-  assoc = scan1(pheno = pheno[keep,idx, drop = FALSE], kinship = K[[1]][keep, keep],
-          genoprobs = snppr, addcovar = addcovar[keep,,drop=FALSE], 
-          cores = ncores)
-
-  # Return the scan data.
-  return(list(assoc, snpinfo))
-
-} # assoc_mapping()
-~~~
-{: .r}
-
-We can call the `assoc_mapping` to perform association mapping in the QTL interval on Chr 10. The path to the SNP database (`snp.file` argument) points to the data directory on your computer.
+We can call [scan1snps](https://github.com/rqtl/qtl2/blob/master/R/scan1snps.R) to perform association mapping in the QTL interval on Chr 10. We first create variables for the chromosome and support interval where we are mapping. We then create a function to get the SNPs from the founder SNP database The path to the SNP database (`snpdb_file` argument) points to the data directory on your computer. Note that it is important to use the `keep_all_snps = TRUE` in order to return all SNPs.
 
 
 ~~~
 chr = 10
 start = 30
 end = 36
-assoc = assoc_mapping(probs = genoprobs[,chr], pheno = pheno, idx = pheno.column, addcovar = addcovar, K = K[chr],  markers = muga_snps, chr = chr, start = start, end = end,  snp.file = "../data/cc_variants.sqlite")
+snpdb_file = "../data/cc_variants.sqlite"
+query_fxn = create_variant_query_func(snpdb_file)
+assoc = scan1snps(genoprobs = genoprobs[,chr], map = map, pheno = pheno[,pheno.column,drop = FALSE], kinship = K, addcovar = addcovar, query_func = query_fxn, chr = chr, start = start, end = end, keep_all_snps = TRUE)
 ~~~
 {: .r}
 
-The `assoc` object is a list containing two objects: the LOD scores for each unique SNP and a `snpinfo` object that maps the LOD scores to each SNP. To plot the association mapping, we need to provide both objects to the `plot_snpasso` function.
 
 
 ~~~
-plot_snpasso(scan1output = assoc[[1]], snpinfo = assoc[[2]], main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+Error in scan1snps(genoprobs = genoprobs[, chr], map = map, pheno = pheno[, : could not find function "scan1snps"
+~~~
+{: .error}
+
+The `assoc` object is a list containing two objects: the LOD scores for each unique SNP and a `snpinfo` object that maps the LOD scores to each SNP. To plot the association mapping, we need to provide both objects to the [plot_snpasso](https://github.com/rqtl/qtl2/blob/master/R/plot_snpasso.R) function.
+
+
+~~~
+plot_snpasso(scan1output = assoc$lod, snpinfo = assoc$snpinfo, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ~~~
 {: .r}
 
-<img src="../fig/rmd-13-assoc_fig-1.png" title="plot of chunk assoc_fig" alt="plot of chunk assoc_fig" style="display: block; margin: auto;" />
 
+
+~~~
+Error in unique(snpinfo$index): object 'assoc' not found
+~~~
+{: .error}
 
 This plot shows the LOD score for each SNP in the QTL interval. The SNPs occur in "shelves" because all of the SNPs in a haplotype block have the same founder strain pattern. The SNPs with the highest LOD scores are the ones for which CAST/EiJ contributes the alternate allele.
 
@@ -435,19 +422,20 @@ head(genes)
 
 The `genes` object contains annotation information for each gene in the interval.
 
-Next, we will create a plot with two panels: one containing the association mapping LOD scores and one containing the genes in the QTL interval.
+Next, we will create a plot with two panels: one containing the association mapping LOD scores and one containing the genes in the QTL interval. We do this by passing in the `genes` argument to [plot_snpasso](https://github.com/rqtl/qtl2/blob/master/R/plot_snpasso.R).
 
 
 ~~~
-layout(matrix(1:2, 2, 1))
-par(plt = c(0.1, 0.99, 0, 0.88))
-plot_snpasso(assoc[[1]], assoc[[2]], main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
-par(plt = c(0.1, 0.99, 0.14, 1))
-plot_genes(genes = genes, colors = "black")
+plot_snpasso(assoc$lod, assoc$snpinfo, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes", genes = genes)
 ~~~
 {: .r}
 
-<img src="../fig/rmd-13-plot_assoc2-1.png" title="plot of chunk plot_assoc2" alt="plot of chunk plot_assoc2" style="display: block; margin: auto;" />
+
+
+~~~
+Error in unique(snpinfo$index): object 'assoc' not found
+~~~
+{: .error}
 
 ### Searching for Candidate Genes
 

@@ -163,8 +163,7 @@ The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-ef
 
 Before we run the mapping function, let's look at the mapping model. At each marker on the genotyping array, we will fit a model that regresses the phenotype (MN-RETs) on covariates and the founder allele proportions.
 
-$y_i = \beta_s s_i + \sum_{j=1}^8 \beta_j g_{ij} + +\lambda_i + \epsilon_i$
-
+![](../fig/equation1.png)
 where:
 
 * $y_i$ is the phenotype for mouse *i*,
@@ -265,7 +264,7 @@ At this point, we have a 6 Mb wide support interval that contains a polymorphism
 
 Association mapping involves imputing the founder SNPs onto each DO genome and fitting the mapping model at each SNP. At each marker, we fit the following model:
 
-$y_i = \beta_s s_i + \beta_m g_{im} + +\lambda_i + \epsilon_i$
+![](../fig/equation2.png)
 
 where:
 
@@ -277,7 +276,7 @@ where:
 * $\lambda_i$ is an adjustment for kinship-induced correlated errors for mouse *i*.
 * $\epsilon_i$ is the residual error for mouse *i*.
 
-We can call [scan1snps](https://github.com/rqtl/qtl2/blob/master/R/scan1snps.R) to perform association mapping in the QTL interval on Chr 10. We first craete variables for the chromosome and support interval where we are mapping. We then create a function to get the SNPs from the founder SNP database The path to the SNP database (`snpdb_file` argument) points to the data directory on your computer. Note that it is important to use the `keep_all_snps = TRUE` in order to return all SNPs.
+We can call [scan1snps](https://github.com/rqtl/qtl2/blob/master/R/scan1snps.R) to perform association mapping in the QTL interval on Chr 10. We first create variables for the chromosome and support interval where we are mapping. We then create a function to get the SNPs from the founder SNP database The path to the SNP database (`snpdb_file` argument) points to the data directory on your computer. Note that it is important to use the `keep_all_snps = TRUE` in order to return all SNPs.
 
 ```{r assoc_map}
 chr = 10
