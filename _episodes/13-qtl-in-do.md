@@ -18,7 +18,7 @@ source: Rmd
 
 This tutorial will take you through the process of mapping a QTL and searching for candidate genes.
 
-The data comes from a toxicology study in which Diversity Outbred (DO) mice were exposed to benzene via inhalation for 6 hours a day, 5 days a week for 4 weeks  [(French, J. E., et al. (2015) *Environ Health Perspect* 123(3): 237-245)](http://ehp.niehs.nih.gov/1408202/). The study was conducted in two equally sized cohort of 300 male mice each, for a total of 600 mice. They were then sacrificed and reticulocytes (red blood cell precursors) were isolated from bone marrow. The number of micro-nucleated reticulocytes, a measure of DNA damage, was then measured in each mouse. The goal is to map gene(s) that influence the level of DNA damage in the bone marrow.
+The data comes from a toxicology study in which Diversity Outbred (DO) mice were exposed to benzene via inhalation for 6 hours a day, 5 days a week for 4 weeks  [(French, J. E., et al. (2015) <i>Environ Health Perspect</i> 123(3): 237-245)](http://ehp.niehs.nih.gov/1408202/). The study was conducted in two equally sized cohort of 300 male mice each, for a total of 600 mice. They were then sacrificed and reticulocytes (red blood cell precursors) were isolated from bone marrow. The number of micro-nucleated reticulocytes, a measure of DNA damage, was then measured in each mouse. The goal is to map gene(s) that influence the level of DNA damage in the bone marrow.
 
 ![](../fig/benzene_study_design.png)
 
@@ -188,15 +188,17 @@ Before we run the mapping function, let's look at the mapping model. At each mar
 
 ![](../fig/equation1.png)
 
-  where:
-
-  $y_i$ is the phenotype for mouse *i*,
-  $\beta_s$ is the effect of study cohort,
-  $s_i$ is the study cohort for mouse *i*,
-  $\beta_j$ is the effect of founder allele *j*,
-  $g_ij$ is the probability that mouse *i* carries an allele from founder *j*,
-  $\lambda_i$ is an adjustment for kinship-induced correlated errors for mouse *i*,
-  $\epsilon_i$ is the residual error for mouse *i*.
+  where:  
+  
+<ul type = "none">
+  <li><i>y<sub>i</sub></i> is the phenotype for mouse <i>i</i>,
+  <li><i>&beta;<sub>s</sub></i> is the effect of study cohort,
+  <li><i>s<sub>i</sub></i> is the study cohort for mouse <i>i</i>,</li>
+  <li><i>&beta;<sub>j</sub></i> is the effect of founder allele <i>j</i>,</li>
+  <li><i>g<sub>ij</sub></i> is the probability that mouse <i>i</i> carries an allele from founder <i>j</i>,</li>
+  <li><i>&lambda;<sub>i</sub></i> is an adjustment for kinship-induced correlated errors for mouse <i>i</i>,</li>
+  <li><i>&epsilon;<sub>i</sub></i> is the residual error for mouse <i>i</i>.</li>
+</ul>
 
 Note that this model will give us an estimate of the effect of each founder allele at each marker. There are eight founder strains that contributed to the DO, so we will get eight founder allele effects.
 
@@ -306,7 +308,7 @@ coef10 = scan1coef(genoprobs = genoprobs[,chr], pheno = pheno[,"prop.bm.MN.RET",
 ~~~
 {: .r}
 
-This produces an object containing estimates of each of the eight DO founder allele effect. These are the $\beta_j$ values in the mapping equation above.
+This produces an object containing estimates of each of the eight DO founder allele effect. These are the <i>&beta;<sub>j</sub></i> values in the mapping equation above.
 
 
 ~~~
@@ -331,13 +333,15 @@ Association mapping involves imputing the founder SNPs onto each DO genome and f
   
   where:
 
-  $y_i$ is the phenotype for mouse *i*,
-  $\beta_s$ is the effect of study cohort,
-  $s_i$ is the study cohort for mouse *i*,
-  $\beta_m$ is the effect of adding one allele at marker *m*,
-  $g_im$ is the allele call for mouse *i* at marker *m*,
-  $\lambda_i$ is an adjustment for kinship-induced correlated errors for mouse *i*,
-  $\epsilon_i$ is the residual error for mouse *i*.
+<ul type = "none">
+  <li><i>y<sub>i</sub></i> is the phenotype for mouse <i>i</i>,</li></li>
+  <li><i>&beta;<sub>s</sub></i> is the effect of study cohort,</li>
+  <li><i>s<sub>i</sub></i> is the study cohort for mouse <i>i</i>,</li>
+  <li><i>&beta;<sub>m</sub></i> is the effect of adding one allele at marker <i>m</i>,</li>
+  <li><i>g<sub>im</sub></i> is the allele call for mouse <i>i</i> at marker <i>m</i>,</li>
+  <li><i>&lambda;<sub>i</sub></i> is an adjustment for kinship-induced correlated errors for mouse </i>i</i>,</li>
+  <li><i>&epsilon;<sub>i</sub></i> is the residual error for mouse <i>i</i>.</li>
+</ul>
 
 We can call [scan1snps](https://github.com/rqtl/qtl2/blob/master/R/scan1snps.R) to perform association mapping in the QTL interval on Chr 10. We first create variables for the chromosome and support interval where we are mapping. We then create a function to get the SNPs from the founder SNP database The path to the SNP database (`snpdb_file` argument) points to the data directory on your computer. Note that it is important to use the `keep_all_snps = TRUE` in order to return all SNPs.
 
@@ -428,39 +432,39 @@ One strategy for finding genes related to a phenotype is to search for genes wit
 
 ![](../fig/French.et.al.Figure3.png)
 
-As you can see, both *Sult3a1* and *Gm4794* have eQTL in the same location on Chr 10 and mice with CAST allele (in green) express these genes more highly. *Sult3a1* is a sulfotransferase that may be involved in adding a sulphate group to phenol, one of the metabolites of benzene. Go to the Ensembl web page for [Gm4794](http://www.ensembl.org/Mus_musculus/Gene/Summary?db=core;g=ENSMUSG00000090298;r=10:33766424-33786704).  Note that *Gm4794* has a new name: *Sult3a2*. In the menu on the left, click on the "Gene Tree (image)" link.
+As you can see, both <i>Sult3a1</i> and <i>Gm4794</i> have eQTL in the same location on Chr 10 and mice with CAST allele (in green) express these genes more highly. <i>Sult3a1</i> is a sulfotransferase that may be involved in adding a sulphate group to phenol, one of the metabolites of benzene. Go to the Ensembl web page for [Gm4794](http://www.ensembl.org/Mus_musculus/Gene/Summary?db=core;g=ENSMUSG00000090298;r=10:33766424-33786704).  Note that <i>Gm4794</i> has a new name: <i>Sult3a2</i>. In the menu on the left, click on the "Gene Tree (image)" link.
 
 ![](../fig/EnsEMBL_Sult3a1_Gm4794_paralog.png)
 
-As you can see, *Sult3a2* is a paralog of *Sult3a1* and hence both genes are sulfotransferases. These genes encode enzymes that attach a sulfate group to other compounds.
+As you can see, <i>Sult3a2</i> is a paralog of <i>Sult3a1</i> and hence both genes are sulfotransferases. These genes encode enzymes that attach a sulfate group to other compounds.
 
-We also looked at a public gene expression database in which liver, spleen and kidney gene expression were measured in 26 inbred strains, including the eight DO founders. You can search for *Sult3a1* and *Gm4794* in this [strain survey data](http://cgd.jax.org/gem/strainsurvey26/v1). We did this and plotted the spleen and liver expression values. We did not have bone marrow expression data from this experiment. We also plotted the expression of all of the genes in the QTL support interval that were measured on the array (data not shown).  *Sult3a1* and its paralog *Gm4794* were the only genes with a different expression pattern in CAST. Neither gene was expressed in the spleen.
+We also looked at a public gene expression database in which liver, spleen and kidney gene expression were measured in 26 inbred strains, including the eight DO founders. You can search for <i>Sult3a1</i> and <i>Gm4794</i> in this [strain survey data](http://cgd.jax.org/gem/strainsurvey26/v1). We did this and plotted the spleen and liver expression values. We did not have bone marrow expression data from this experiment. We also plotted the expression of all of the genes in the QTL support interval that were measured on the array (data not shown).  <i>Sult3a1</i> and its paralog <i>Gm4794</i> were the only genes with a different expression pattern in CAST. Neither gene was expressed in the spleen.
 
 ![](../fig/French.et.al.Sup.Figure2.png)
 
-Next, go to the [Sanger Mouse Genomes](http://www.sanger.ac.uk/sanger/Mouse_SnpViewer/rel-1505) website and enter *Sult3a1* into the Gene box. Scroll down and check only the DO/CC founders (129S1/SvImJ, A/J, CAST/EiJ, NOD/ShiLtJ, NZO/HlLtJ & WSB/EiJ) and then scroll up and press `Search`. This will show you SNPs in *Sult3a1*. Select the `Structural Variants` tab and note the copy number gain in CAST from 33,764,194 to 33,876,194 bp. Click on the G to see the location, copy this position (10:33764194-33876194) and go to the [Ensembl website](http://useast.ensembl.org/Mus_musculus/Info/Index). Enter the position into the search box and press `Go`. You will see a figure similar to the one below.
+Next, go to the [Sanger Mouse Genomes](http://www.sanger.ac.uk/sanger/Mouse_SnpViewer/rel-1505) website and enter <i>Sult3a1</i> into the Gene box. Scroll down and check only the DO/CC founders (129S1/SvImJ, A/J, CAST/EiJ, NOD/ShiLtJ, NZO/HlLtJ & WSB/EiJ) and then scroll up and press `Search`. This will show you SNPs in <i>Sult3a1</i>. Select the `Structural Variants` tab and note the copy number gain in CAST from 33,764,194 to 33,876,194 bp. Click on the G to see the location, copy this position (10:33764194-33876194) and go to the [Ensembl website](http://useast.ensembl.org/Mus_musculus/Info/Index). Enter the position into the search box and press `Go`. You will see a figure similar to the one below.
 
 ![](../fig/EnsEMBL.Sult3a1.png)
 
-Note that both *Gm4794* (aka *Sult3a2*) and part of *Sult3a1* are in the copy number gain region.
+Note that both <i>Gm4794</i> (aka <i>Sult3a2</i>) and part of <i>Sult3a1</i> are in the copy number gain region.
 
 In order to visualize the size of the copy number gain, we queried the [Sanger Mouse Genomes alignment files](ftp://ftp-mouse.sanger.ac.uk/current_bams/) for the eight founders. We piled up the reads at each base (which is beyond the scope of this tutorial) and made the figure below.
 
 ![](../fig/French.et.al.Sup.Figure3.png)
 
-As you can see, there appears to be a duplicatation in the CAST founders that covers four genes: *Clvs2*, *Gm15939*, *Gm4794* and *Sult3a1*. *Clvs2* is expressed in neurons and *Gm15939* is a predicted gene that may not produce a transcript.
+As you can see, there appears to be a duplicatation in the CAST founders that covers four genes: <i>Clvs2</i>, <i>Gm15939</i>, <i>Gm4794</i> and <i>Sult3a1</i>. <i>Clvs2</i> is expressed in neurons and <i>Gm15939</i> is a predicted gene that may not produce a transcript.
 
-Hence, we have three pieces of evidence that narrows our candidate gene list to *Sult3a1* and *Gm4794*:
+Hence, we have three pieces of evidence that narrows our candidate gene list to <i>Sult3a1</i> and <i>Gm4794</i>:
 
 1. Both genes have a liver eQTL in the same location as the micronucleated reticulocytes QTL.
-2. Among genes in the micronucleated reticulocytes QTL interval, only *Sult3a1* and *Gm4794* have differential expression of the CAST allele in the liver.
+2. Among genes in the micronucleated reticulocytes QTL interval, only <i>Sult3a1</i> and <i>Gm4794</i> have differential expression of the CAST allele in the liver.
 3. There is a copy number gain of these two genes in CAST.
 
 Sulfation is a prominent detoxification mechanism for benzene as well. The diagram below shows the metabolism pathway for benzene [(Monks, T. J., et al. (2010). Chem Biol Interact 184(1-2): 201-206.)](http://europepmc.org/articles/PMC4414400) Hydroquinone, phenol and catechol are all sulfated and excreted from the body.
 
 ![](../fig/Monks_ChemBiolInter_2010_Fig1.jpg)
 
-This analysis has led us to the following hypothesis. Inhaled benzene is absorbed by the lungs into the bloodstream and transported to the liver. There, it is metabolized and some metabolites are transported to the bone marrow. One class of genes that is involved in toxicant metabolism are sulfotransferases. [*Sult3a1*](http://www.informatics.jax.org/marker/MGI:1931469) is a phase II enzyme that conjugates compounds (such as phenol, which is a metabolite of benzene) with a sulfate group before transport into the bile. It is possible that a high level of *Sult3a1* expression could remove benzene by-products and be protective. Our hypothesis is that the copy number gain in the CAST allele increases liver gene expression of *Sult3a1* and *Gm4794*. High liver expression of these genes allows mice containing the CAST allele to rapidly conjugate harmful benzene metabolites and excrete them from the body before they can reach the bone marrow and cause DNA damage. Further experimental validation is required, but this is a plausible hypothesis.
+This analysis has led us to the following hypothesis. Inhaled benzene is absorbed by the lungs into the bloodstream and transported to the liver. There, it is metabolized and some metabolites are transported to the bone marrow. One class of genes that is involved in toxicant metabolism are sulfotransferases. [<i>Sult3a1</i>](http://www.informatics.jax.org/marker/MGI:1931469) is a phase II enzyme that conjugates compounds (such as phenol, which is a metabolite of benzene) with a sulfate group before transport into the bile. It is possible that a high level of <i>Sult3a1</i> expression could remove benzene by-products and be protective. Our hypothesis is that the copy number gain in the CAST allele increases liver gene expression of <i>Sult3a1</i> and <i>Gm4794</i>. High liver expression of these genes allows mice containing the CAST allele to rapidly conjugate harmful benzene metabolites and excrete them from the body before they can reach the bone marrow and cause DNA damage. Further experimental validation is required, but this is a plausible hypothesis.
 
 ![](../fig/benzene_hypothesis.png)
 
