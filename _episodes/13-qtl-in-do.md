@@ -189,7 +189,7 @@ Before we run the mapping function, let's look at the mapping model. At each mar
 ![](../fig/equation1.png)
 
   where:  
-  <ul type = "none">
+<ul>
   <li><i>y<sub>i</sub></i> is the phenotype for mouse <i>i</i>,
   <li><i>&beta;<sub>s</sub></i> is the effect of study cohort,
   <li><i>s<sub>i</sub></i> is the study cohort for mouse <i>i</i>,</li>
@@ -197,7 +197,7 @@ Before we run the mapping function, let's look at the mapping model. At each mar
   <li><i>g<sub>ij</sub></i> is the probability that mouse <i>i</i> carries an allele from founder <i>j</i>,</li>
   <li><i>&lambda;<sub>i</sub></i> is an adjustment for kinship-induced correlated errors for mouse <i>i</i>,</li>
   <li><i>&epsilon;<sub>i</sub></i> is the residual error for mouse <i>i</i>.</li>
-  </ul>  
+</ul>  
 
 Note that this model will give us an estimate of the effect of each founder allele at each marker. There are eight founder strains that contributed to the DO, so we will get eight founder allele effects.
 
@@ -332,7 +332,7 @@ Association mapping involves imputing the founder SNPs onto each DO genome and f
   
   where:
 
-<ul type = "none">
+<ul>
   <li><i>y<sub>i</sub></i> is the phenotype for mouse <i>i</i>,</li></li>
   <li><i>&beta;<sub>s</sub></i> is the effect of study cohort,</li>
   <li><i>s<sub>i</sub></i> is the study cohort for mouse <i>i</i>,</li>
