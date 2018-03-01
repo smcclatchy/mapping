@@ -190,13 +190,15 @@ Before we run the mapping function, let's look at the mapping model. At each mar
 
   where:  
   
-<ul><li><i>y<sub>i</sub></i> is the phenotype for mouse <i>i</i>,
-  <li><i>&beta;<sub>s</sub></i> is the effect of study cohort,
+<ul>
+<li><i>y<sub>i</sub></i> is the phenotype for mouse <i>i</i>,</li>
+  <li><i>&beta;<sub>s</sub></i> is the effect of study cohort,</li>
   <li><i>s<sub>i</sub></i> is the study cohort for mouse <i>i</i>,</li>
   <li><i>&beta;<sub>j</sub></i> is the effect of founder allele <i>j</i>,</li>
   <li><i>g<sub>ij</sub></i> is the probability that mouse <i>i</i> carries an allele from founder <i>j</i>,</li>
   <li><i>&lambda;<sub>i</sub></i> is an adjustment for kinship-induced correlated errors for mouse <i>i</i>,</li>
-  <li><i>&epsilon;<sub>i</sub></i> is the residual error for mouse <i>i</i>.</li></ul>  
+  <li><i>&epsilon;<sub>i</sub></i> is the residual error for mouse <i>i</i>.</li>
+  </ul>  
 
 Note that this model will give us an estimate of the effect of each founder allele at each marker. There are eight founder strains that contributed to the DO, so we will get eight founder allele effects.
 
@@ -331,13 +333,15 @@ Association mapping involves imputing the founder SNPs onto each DO genome and f
   
   where:
 
-<ul><li><i>y<sub>i</sub></i> is the phenotype for mouse <i>i</i>,</li>
+<ul>
+<li><i>y<sub>i</sub></i> is the phenotype for mouse <i>i</i>,</li>
   <li><i>&beta;<sub>s</sub></i> is the effect of study cohort,</li>
   <li><i>s<sub>i</sub></i> is the study cohort for mouse <i>i</i>,</li>
   <li><i>&beta;<sub>m</sub></i> is the effect of adding one allele at marker <i>m</i>,</li>
   <li><i>g<sub>im</sub></i> is the allele call for mouse <i>i</i> at marker <i>m</i>,</li>
   <li><i>&lambda;<sub>i</sub></i> is an adjustment for kinship-induced correlated errors for mouse </i>i</i>,</li>
-  <li><i>&epsilon;<sub>i</sub></i> is the residual error for mouse <i>i</i>.</li></ul>  
+  <li><i>&epsilon;<sub>i</sub></i> is the residual error for mouse <i>i</i>.</li>
+  </ul>  
 
 We can call [scan1snps](https://github.com/rqtl/qtl2/blob/master/R/scan1snps.R) to perform association mapping in the QTL interval on Chr 10. We first create variables for the chromosome and support interval where we are mapping. We then create a function to get the SNPs from the founder SNP database The path to the SNP database (`snpdb_file` argument) points to the data directory on your computer. Note that it is important to use the `keep_all_snps = TRUE` in order to return all SNPs.
 
