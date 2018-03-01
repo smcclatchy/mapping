@@ -41,33 +41,6 @@ from
 
 ~~~
 library(qtl2)
-~~~
-{: .r}
-
-
-
-~~~
-Loading qtl2geno
-~~~
-{: .output}
-
-
-
-~~~
-Loading qtl2scan
-~~~
-{: .output}
-
-
-
-~~~
-Loading qtl2plot
-~~~
-{: .output}
-
-
-
-~~~
 iron <- read_cross2(file = system.file("extdata", "iron.zip", package="qtl2geno") )
 ~~~
 {: .r}

@@ -184,18 +184,19 @@ The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-ef
 
 **NOTE:** the sample IDs must be in the rownames of `pheno`, `addcovar`, `genoprobs` and `K`. `qtl2` uses the sample IDs to align the samples between objects. For more information about data file format, see [Karl Broman's vignette on input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
 
-Before we run the mapping function, let's look at the mapping model. At each marker on the genotyping array, we will fit a model that regresses the phenotype (MN-RETs) on covariates and the founder allele proportions.
+Before we run the mapping function, let's look at the mapping model. At each marker on the genotyping array, we will fit a model that regresses the phenotype (MN-RETs) on covariates and the founder allele proportions.  
 
 ![](../fig/equation1.png)
-where:
 
-* $y_i$ is the phenotype for mouse *i*,
-* $\beta_s is the effect of study cohort,
-* $s_i$ is the study cohort for mouse *i*,
-* $\beta_j$ is the effect of founder allele *j*,
-* $g_ij$ is the probability that mouse *i* carries an allele from founder *j*,
-* $\lambda_i$ is an adjustment for kinship-induced correlated errors for mouse *i*.
-* $\epsilon_i$ is the residual error for mouse *i*.
+  where:
+
+  $y_i$ is the phenotype for mouse *i*,
+  $\beta_s$ is the effect of study cohort,
+  $s_i$ is the study cohort for mouse *i*,
+  $\beta_j$ is the effect of founder allele *j*,
+  $g_ij$ is the probability that mouse *i* carries an allele from founder *j*,
+  $\lambda_i$ is an adjustment for kinship-induced correlated errors for mouse *i*,
+  $\epsilon_i$ is the residual error for mouse *i*.
 
 Note that this model will give us an estimate of the effect of each founder allele at each marker. There are eight founder strains that contributed to the DO, so we will get eight founder allele effects.
 
@@ -323,19 +324,20 @@ At this point, we have a 6 Mb wide support interval that contains a polymorphism
 
 ![](../fig/DO.impute.founders.sm.png)
 
-Association mapping involves imputing the founder SNPs onto each DO genome and fitting the mapping model at each SNP. At each marker, we fit the following model:
+Association mapping involves imputing the founder SNPs onto each DO genome and fitting the mapping model at each SNP. At each marker, we fit the following model:  
 
 ![](../fig/equation2.png)
 
-where:
+  
+  where:
 
-* $y_i$ is the phenotype for mouse *i*,
-* $\beta_s is the effect of study cohort,
-* $s_i$ is the study cohort for mouse *i*,
-* $\beta_m$ is the effect of adding one allele at marker *m*,
-* $g_im$ is the allele call for mouse *i* at marker *m*,
-* $\lambda_i$ is an adjustment for kinship-induced correlated errors for mouse *i*.
-* $\epsilon_i$ is the residual error for mouse *i*.
+  $y_i$ is the phenotype for mouse *i*,
+  $\beta_s$ is the effect of study cohort,
+  $s_i$ is the study cohort for mouse *i*,
+  $\beta_m$ is the effect of adding one allele at marker *m*,
+  $g_im$ is the allele call for mouse *i* at marker *m*,
+  $\lambda_i$ is an adjustment for kinship-induced correlated errors for mouse *i*,
+  $\epsilon_i$ is the residual error for mouse *i*.
 
 We can call [scan1snps](https://github.com/rqtl/qtl2/blob/master/R/scan1snps.R) to perform association mapping in the QTL interval on Chr 10. We first create variables for the chromosome and support interval where we are mapping. We then create a function to get the SNPs from the founder SNP database The path to the SNP database (`snpdb_file` argument) points to the data directory on your computer. Note that it is important to use the `keep_all_snps = TRUE` in order to return all SNPs.
 
@@ -350,13 +352,6 @@ assoc = scan1snps(genoprobs = genoprobs[,chr], map = map, pheno = pheno[,pheno.c
 ~~~
 {: .r}
 
-
-
-~~~
-Error in scan1snps(genoprobs = genoprobs[, chr], map = map, pheno = pheno[, : could not find function "scan1snps"
-~~~
-{: .error}
-
 The `assoc` object is a list containing two objects: the LOD scores for each unique SNP and a `snpinfo` object that maps the LOD scores to each SNP. To plot the association mapping, we need to provide both objects to the [plot_snpasso](https://github.com/rqtl/qtl2/blob/master/R/plot_snpasso.R) function.
 
 
@@ -365,12 +360,7 @@ plot_snpasso(scan1output = assoc$lod, snpinfo = assoc$snpinfo, main = "Proportio
 ~~~
 {: .r}
 
-
-
-~~~
-Error in unique(snpinfo$index): object 'assoc' not found
-~~~
-{: .error}
+<img src="../fig/rmd-13-assoc_fig-1.png" title="plot of chunk assoc_fig" alt="plot of chunk assoc_fig" style="display: block; margin: auto;" />
 
 This plot shows the LOD score for each SNP in the QTL interval. The SNPs occur in "shelves" because all of the SNPs in a haplotype block have the same founder strain pattern. The SNPs with the highest LOD scores are the ones for which CAST/EiJ contributes the alternate allele.
 
@@ -430,12 +420,7 @@ plot_snpasso(assoc$lod, assoc$snpinfo, main = "Proportion of Micro-nucleated Bon
 ~~~
 {: .r}
 
-
-
-~~~
-Error in unique(snpinfo$index): object 'assoc' not found
-~~~
-{: .error}
+<img src="../fig/rmd-13-plot_assoc2-1.png" title="plot of chunk plot_assoc2" alt="plot of chunk plot_assoc2" style="display: block; margin: auto;" />
 
 ### Searching for Candidate Genes
 
