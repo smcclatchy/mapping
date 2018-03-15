@@ -341,23 +341,6 @@ View the first three rows of genotype probabilities for the first genotyped mark
 ~~~
 {: .output}
 
-**Parallel calculations (optional)** To speed up the calculations with large datasets on a multi-core machine, you can use the argument `cores`. With `cores=0`, the number of available cores will be detected via `parallel::detectCores()`. Otherwise, specify the number of cores as a positive integer.
-
-
-~~~
-pr <- calc_genoprob(cross=iron, map=map, error_prob=0.002, cores=4)
-~~~
-{: .r}
-
-**Allele probabilities (optional)** The genome scan functions use genotype probabilities as well as a matrix of phenotypes. If you wished to perform a genome scan via an additive allele model, you would first convert the genotype probabilities to allele probabilities, using the function `genoprob_to_alleleprob()`.
-
-
-~~~
-apr <- genoprob_to_alleleprob(probs=pr)
-~~~
-{: .r}
-
-
 > ## Challenge 1
 > Explain why calculating genotype probabilities is the first step in QTL analysis.
 >
@@ -388,5 +371,29 @@ apr <- genoprob_to_alleleprob(probs=pr)
 > {: .solution}
 {: .challenge}
 
+**Parallel calculations (optional)** To speed up the calculations with large datasets on a multi-core machine, you can use the argument `cores`. With `cores=0`, the number of available cores will be detected via `parallel::detectCores()`. Otherwise, specify the number of cores as a positive integer.
 
 
+~~~
+pr <- calc_genoprob(cross=iron, map=map, error_prob=0.002, cores=4)
+~~~
+{: .r}
+
+**Allele probabilities (optional)** The genome scan functions use genotype probabilities as well as a matrix of phenotypes. If you wished to perform a genome scan via an additive allele model, you would first convert the genotype probabilities to allele probabilities, using the function `genoprob_to_alleleprob()`.
+
+
+~~~
+apr <- genoprob_to_alleleprob(probs=pr)
+~~~
+{: .r}
+
+The figure below shows genotype and allele probabilities for 3 samples. In the Diversity Outbred, 
+there are 36 possible genotype states 
+(AA, AB, AC, ..., BB, BC, BD, ..., CC, CD, CE, ..., DD, DE, DF, ..., EE,...) or 8 + 7 + 6 + 5 + 4 + 3 + 2 + 1.
+The first SNP below has genotype BB. In the table describing alleles (8 state founder probabilities), the 
+probability that this SNP has a B allele is 1. The 2nd SNP has genotype BH, so the allele table shows a 
+probability of 0.5 for B and 0.5 for H. The third SNP is either BG or BH, and has a probability of 0.5
+for each of these genotypes. The allele table shows a probability of 0.5 for allele B, and 0.25 for both
+G and H.
+
+![](../fig/geno-to-allele-probs.png)
