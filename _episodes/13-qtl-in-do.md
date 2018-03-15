@@ -3,15 +3,17 @@ title: "QTL analysis in Diversity Outbred Mice"
 teaching: 30
 exercises: 30
 questions:
-- "?"
+- "How do I bring together each step in the workflow?"
+- "How is the workflow implemented in an actual study?"
 objectives:
-- 
+- Work through an actual QTL mapping workflow from a published study.
 - Convert genotype and allele probabilities from DOQTL to qtl2 format.
 keypoints:
 - "."
 - "."
 source: Rmd
 ---
+
 
 
 
