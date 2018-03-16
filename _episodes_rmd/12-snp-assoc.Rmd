@@ -1,5 +1,5 @@
 ---
-title: "SNP association"
+title: "SNP association mapping"
 teaching: 30
 exercises: 30
 questions:
