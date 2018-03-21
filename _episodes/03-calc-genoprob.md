@@ -24,7 +24,7 @@ The first task in QTL analysis is to calculate conditional genotype probabilitie
 
 ![](../fig/unknown_genotype.png)
 
-The `calc_genoprob()` function in the [qtl2geno](https://github.com/rqtl/qtl2geno)
+The `calc_genoprob()` function in the [qtl2](https://github.com/rqtl/qtl2)
 package calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. The result is returned as a list of three-dimensional arrays (one per chromosome). Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions.
 
 ![](../fig/threeD_array.png)
@@ -41,7 +41,7 @@ from
 
 ~~~
 library(qtl2)
-iron <- read_cross2(file = system.file("extdata", "iron.zip", package="qtl2geno") )
+iron <- read_cross2(file = system.file("extdata", "iron.zip", package="qtl2") )
 ~~~
 {: .r}
 
