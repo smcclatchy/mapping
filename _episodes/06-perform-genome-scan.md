@@ -43,11 +43,7 @@ As shown by the green circle in the figure, an individual of unknown genotype is
 
 To perform a genome scan by Haley-Knott regression
 ([Haley and Knott 1992](https://www.ncbi.nlm.nih.gov/pubmed/16718932)),
-use the function `scan1()` in
-[qtl2scan](https://github.com/rqtl/qtl2scan). (The previous functions 
-were all from [qtl2geno](https://github.com/rqtl/qtl2geno); from here
-forward, the functions are all from
-[qtl2scan](https://github.com/rqtl/qtl2scan).)
+use the function `scan1()`.
 
 `scan1()` takes as input the genotype probabilities, a matrix of phenotypes, and then optional additive and interactive covariates, and the special X chromosome covariates. Another option is to provide a vector of weights.
 
@@ -92,12 +88,10 @@ c1.loc36 0.1758305 0.3083145
 ~~~
 {: .output}
 
-The function `plot_scan1()` in the
-[qtl2plot](https://github.com/rqtl/qtl2plot) package can be used to plot the LOD curves. Use the argument `lodcolumn` to indicate which column to plot.
+The function `plot_scan1()` can be used to plot the LOD curves. Use the argument `lodcolumn` to indicate which column to plot.
 
 
 ~~~
-library(qtl2plot)
 plot_scan1(out, map = map, lodcolumn = "liver")
 ~~~
 {: .r}
