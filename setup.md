@@ -79,7 +79,7 @@ dir.create("./results")
 3. Please download the following large files **before the workshop**, and place them in your `data` folder. You will 
 need these for the final lesson episode on QTL analysis in Diversity Outbred mice.
 
-[DO QTL data](ftp://ftp.jax.org/dgatti/MDIBL_Aging2016/DOQTL_demo.Rdata)
+[DO QTL data](ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata)
 
 [MUGA SNPs](ftp://ftp.jax.org/MUGA/muga_snps.Rdata)
 
