@@ -13,16 +13,7 @@ RStudio is an environment for developing using R.
 It can be downloaded [here](https://www.rstudio.com/products/rstudio/download/).
 You will need the Desktop version for your computer.
 
-The [qtl2](https://github.com/rqtl/qtl2) package is
-inspired by the
-[tidyverse package](https://cran.r-project.org/package=tidyverse);
-it is basically empty, but when you install it, the
-[qtl2geno](https://github.com/rqtl/qtl2geno),
-[qtl2scan](https://github.com/rqtl/qtl2scan),
-[qtl2plot](https://github.com/rqtl/qtl2plot),
-[qtl2db](https://github.com/rqtl/qtl2db), and
-[qtl2convert](https://github.com/rqtl/qtl2convert) packages, plus a
-bunch of dependencies, will be installed.
+The [qtl2](https://github.com/rqtl/qtl2) package contains code for haplotype reconstruction, QTL mapping and plotting.
 
 R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), and
 is still under development. To retrieve the latest version, install R/qtl2 from its source on
@@ -53,8 +44,6 @@ Finally, install R/qtl2 using `devtools::install_github()`. Copy and paste the f
 ~~~
 library(devtools)
 install_github("rqtl/qtl2")
-install_github("rqtl/qtl2convert")
-install_github("rqtl/qtl2db")
 ~~~
 {: .r}
 
