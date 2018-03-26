@@ -9,7 +9,7 @@ assessment.txt
 data/qtl2_demo.Rdata
 data/cc_variants.sqlite
 data/mouse_genes.sqlite
-data/muga_snps.Rdata
+data/mouse_genes_mgi.sqlite
 fig/.Rhistory
 files/Gatti_MammGen_2018.pptx
 scripts/

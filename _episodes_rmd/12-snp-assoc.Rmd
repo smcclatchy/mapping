@@ -42,9 +42,7 @@ reduced set of markers.
 You can download the data from a single zip file, as follows:
 
 ```{r read_DOex_data}
-file <- paste0("https://raw.githubusercontent.com/rqtl/",
-               "qtl2data/master/DOex/DOex.zip")
-DOex <- read_cross2(file)
+DOex <- read_cross2(file = "https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/DOex.zip")
 ```
 
 Let's quickly whip through a basic analysis.
@@ -54,15 +52,6 @@ We first calculate genotype probabilities and convert them to allele probabiliti
 ```{r DOex_calc_genoprob}
 pr <- calc_genoprob(DOex, error_prob=0.002)
 apr <- genoprob_to_alleleprob(pr)
-```
-
-```{r download_alleleprobs, echo=FALSE, results="hide"}
-tmpfile <- tempfile()
-file <- paste0("https://raw.githubusercontent.com/rqtl/",
-               "qtl2data/master/DOex/DOex_alleleprobs.rds")
-download.file(file, tmpfile, quiet=TRUE)
-apr <- readRDS(tmpfile)
-unlink(tmpfile)
 ```
 
 We calculate kinship matrices (using the "LOCO" method, though with the caveat that here we are only considering genotypes on three chromosomes).
@@ -93,7 +82,6 @@ out <- scan1(apr, DOex$pheno, k, sex)
 Here's a plot of the results.
 
 ```{r plot_DOex_scan}
-par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot(out, DOex$gmap)
 ```
 
@@ -127,18 +115,11 @@ We want R/qtl2 to permit different ways of storing this information. For the CC 
 
 We provide a template for how to use R/qtl2 to connect to SNP and gene databases, with the functions `create_variant_query_func()` and `create_gene_query_func()`. Each returns a function for querying variant and gene databases, respectively. The query functions that are returned take just three arguments (chr, start, end end), and themselves return a data frame of variants on the one hand and genes on the other.
 
-If you are analyzing the CC lines or a DO population, you can download the SQLite databases that we have prepared and made available on Figshare:
+During [setup](https://smcclatchy.github.io/mapping/setup/) you would have downloaded the SQLite databases from Figshare and placed these in your `data` directory:
 
 - [cc_variants.sqlite doi:10.6084/m9.figshare.5280229.v2](https://figshare.com/articles/SQLite_database_of_variants_in_Collaborative_Cross_founder_mouse_strains/5280229/2), variants in the Collaborative Cross founders (3 GB)
 - [mouse_genes.sqlite doi:10.6084/m9.figshare.5280238.v4](https://figshare.com/articles/SQLite_database_with_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5280238/4) full set of mouse gene annotations (677 MB)
 - [mouse_genes_mgi.sqlite doi:10.6084/m9.figshare.5286019.v5](https://figshare.com/articles/SQLite_database_with_MGI_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5286019/5) just the MGI mouse gene annotations (11 MB)
-
-For example, to download cc_variants.sqlite and mouse_genes_mgi.sqlite, we’d go to the figshare sites above and determine the URLs for downloading the files, and then do the following:
-
-```{r download_files, eval=FALSE}
-download.file("https://ndownloader.figshare.com/files/9746485", "cc_variants.sqlite")
-download.file("https://ndownloader.figshare.com/files/9746452", "mouse_genes_mgi.sqlite")
-```
 
 To create a function for querying the CC variants, call `create_variant_query_func()` with the path to the `cc_variants.sqlite` file:
 
@@ -154,13 +135,13 @@ variants_2_97.5 <- query_variants(2, 97, 98)
 
 Similarly, to create a function for querying the MGI mouse gene annotations, you call `create_gene_query_func()` with the path to the `mouse_genes_mgi.sqlite` file:
 
-```{r query_MGI, eval=FALSE}
+```{r query_MGI}
 query_genes <- create_gene_query_func("../data/mouse_genes_mgi.sqlite")
 ```
 
 To grab the genes overlapping the interval 97-98 Mbp on chromosome 2, you’d then do the following:
 
-```{r query_chr2_genes, eval=FALSE}
+```{r query_chr2_genes}
 genes_2_97.5 <- query_genes(2, 97, 98)
 ```
 
@@ -172,7 +153,7 @@ Okay, now finally we get to the SNP associations. We have a large peak on chromo
 
 Well, actually, we first need to find the location of the inferred QTL.  The peak LOD score on chromosome 2 occurs at 52.4 cM. But to find nearby SNPs, we really want to know the Mbp position. The calculations were only performed at the marker positions, and so we can use `max()`, giving both the `scan1()` output and the physical map, and then pull out the position from the results.
 
-```{r DOex_find_peak_in_Mbp, eval=FALSE}
+```{r DOex_find_peak_in_Mbp}
 peak_Mbp <- max(out, DOex$pmap)$pos
 ```
 
@@ -180,7 +161,7 @@ The marker is at 97.5 Mbp. We’ll focus on a 2 Mbp interval centered at 97.5 Mb
 
 We can pull out the variants in the 2 Mbp interval centered at 97.5 on chr 2 using the query function we defined above:
 
-```{r DOex_find_peak_on_chr2, eval=FALSE}
+```{r DOex_find_peak_on_chr2}
 variants <- query_variants(2, peak_Mbp - 1, peak_Mbp + 1)
 ```
 
@@ -198,7 +179,7 @@ We do this assuming that the genotype probabilities were calculated sufficiently
 
 All of these steps are combined into a single function `scan1snps()`, which takes the genotype probabilities, a physical map of those locations, the phenotype, the kinship matrix, covariates, the query function for grabbing the SNPs in a given interval, and the chromosome, start, and end positions for the interval. (If `insert_pseudomarkers()` was used to insert pseudomarkers, you will need to use `interp_map()` to get interpolated Mbp positions for the pseudomarkers.)
 
-```{r make_lookup_table, eval=FALSE}
+```{r make_lookup_table}
 out_snps <- scan1snps(pr, DOex$pmap, DOex$pheno, k[["2"]], sex, query_func=query_variants,
                       chr=2, start=peak_Mbp-1, end=peak_Mbp+1, keep_all_snps=TRUE)
 ```
@@ -207,21 +188,21 @@ The output is a list with two components: `lod` is a matrix of LOD scores (with 
 
 The function `plot_snpasso()` can be used to plot the results, with points at each of the SNPs. The default is to plot *all* SNPs. In this case, there are 27737 variants in the region, but only 150 distinct ones.
 
-```{r plot_snp_asso, eval=FALSE}
+```{r plot_snp_asso}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_snpasso(out_snps$lod, out_snps$snpinfo)
 ```
 
 We can actually just type plot() rather than plot_snpasso(), because with the snpinfo table in place of a genetic map, plot() detects that a SNP association plot should be created.
 
-```{r plot_snp_asso_wplot, eval=FALSE}
+```{r plot_snp_asso_wplot}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot(out_snps$lod, out_snps$snpinfo)
 ```
 
 We can use our `query_genes()` function to identify the genes in the region, and `plot_genes()` to plot their locations. But also `plot_snpasso()` can take the gene locations with the argument genes and then display them below the SNP association results. Here, we are also highlighting the top SNPs in the SNP association plot using the `drop_hilit` argument. SNPs with LOD score within `drop_hilit` of the maximum are shown in pink.
 
-```{r id_and_plot_genes, eval=FALSE}
+```{r id_and_plot_genes}
 genes <- query_genes(2, peak_Mbp - 1, peak_Mbp + 1)
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5, genes=genes)
@@ -229,7 +210,7 @@ plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5, genes=genes)
 
 To get a table of the SNPs with the largest LOD scores, use the function `top_snps()`. This will show all SNPs with LOD score within some amount (the default is 1.5) of the maximum SNP LOD score. We’re going to display just a subset of the columns.
 
-```{r id_top_snps, eval=FALSE}
+```{r id_top_snps}
 top <- top_snps(out_snps$lod, out_snps$snpinfo)
 print(top[,c(1, 8:15, 20)], row.names=FALSE)
 ```
@@ -238,13 +219,13 @@ The top SNPs all have NZO and CAST with a common allele, different from the othe
 
 The `scan1snps()` function can also be used to perform a genome-wide SNP association scan, by providing a variant query function but leaving chr, start, and end unspecified. In this case it’s maybe best to use keep_all_snps=FALSE (the default) and only save the index SNPs.
 
-```{r gwas_scan, eval=FALSE}
+```{r gwas_scan}
 out_gwas <- scan1snps(pr, DOex$pmap, DOex$pheno, k, sex, query_func=query_variants, cores=0)
 ```
 
 We can make a Manhattan plot of the results as follows. We use `altcol` to define a color for alternate chromosomes and `gap=0` to have no gap between chromosomes.
 
-```{r plot_gwas_scan, eval=FALSE}
+```{r plot_gwas_scan}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot(out_gwas$lod, out_gwas$snpinfo, altcol="green4", gap=0)
 ```

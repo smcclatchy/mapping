@@ -83,7 +83,6 @@ download.file("ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", "./data/
 {: .r}
 
 
- You will
-need these for the final lesson episode on QTL analysis in Diversity Outbred mice.
+You will need these for the final lesson episodes on SNP association mapping and QTL analysis in Diversity Outbred mice.
 
 

@@ -40,9 +40,7 @@ You can download the data from a single zip file, as follows:
 
 
 ~~~
-file <- paste0("https://raw.githubusercontent.com/rqtl/",
-               "qtl2data/master/DOex/DOex.zip")
-DOex <- read_cross2(file)
+DOex <- read_cross2(file = "https://raw.githubusercontent.com/rqtl/qtl2data/master/DOex/DOex.zip")
 ~~~
 {: .r}
 
@@ -56,8 +54,6 @@ pr <- calc_genoprob(DOex, error_prob=0.002)
 apr <- genoprob_to_alleleprob(pr)
 ~~~
 {: .r}
-
-
 
 We calculate kinship matrices (using the "LOCO" method, though with the caveat that here we are only considering genotypes on three chromosomes).
 
@@ -96,7 +92,6 @@ Here's a plot of the results.
 
 
 ~~~
-par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot(out, DOex$gmap)
 ~~~
 {: .r}
@@ -143,20 +138,11 @@ We want R/qtl2 to permit different ways of storing this information. For the CC 
 
 We provide a template for how to use R/qtl2 to connect to SNP and gene databases, with the functions `create_variant_query_func()` and `create_gene_query_func()`. Each returns a function for querying variant and gene databases, respectively. The query functions that are returned take just three arguments (chr, start, end end), and themselves return a data frame of variants on the one hand and genes on the other.
 
-If you are analyzing the CC lines or a DO population, you can download the SQLite databases that we have prepared and made available on Figshare:
+During [setup](https://smcclatchy.github.io/mapping/setup/) you would have downloaded the SQLite databases from Figshare and placed these in your `data` directory:
 
 - [cc_variants.sqlite doi:10.6084/m9.figshare.5280229.v2](https://figshare.com/articles/SQLite_database_of_variants_in_Collaborative_Cross_founder_mouse_strains/5280229/2), variants in the Collaborative Cross founders (3 GB)
 - [mouse_genes.sqlite doi:10.6084/m9.figshare.5280238.v4](https://figshare.com/articles/SQLite_database_with_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5280238/4) full set of mouse gene annotations (677 MB)
 - [mouse_genes_mgi.sqlite doi:10.6084/m9.figshare.5286019.v5](https://figshare.com/articles/SQLite_database_with_MGI_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5286019/5) just the MGI mouse gene annotations (11 MB)
-
-For example, to download cc_variants.sqlite and mouse_genes_mgi.sqlite, we’d go to the figshare sites above and determine the URLs for downloading the files, and then do the following:
-
-
-~~~
-download.file("https://ndownloader.figshare.com/files/9746485", "cc_variants.sqlite")
-download.file("https://ndownloader.figshare.com/files/9746452", "mouse_genes_mgi.sqlite")
-~~~
-{: .r}
 
 To create a function for querying the CC variants, call `create_variant_query_func()` with the path to the `cc_variants.sqlite` file:
 
@@ -246,6 +232,8 @@ plot_snpasso(out_snps$lod, out_snps$snpinfo)
 ~~~
 {: .r}
 
+<img src="../fig/rmd-12-plot_snp_asso-1.png" title="plot of chunk plot_snp_asso" alt="plot of chunk plot_snp_asso" style="display: block; margin: auto;" />
+
 We can actually just type plot() rather than plot_snpasso(), because with the snpinfo table in place of a genetic map, plot() detects that a SNP association plot should be created.
 
 
@@ -254,6 +242,8 @@ par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot(out_snps$lod, out_snps$snpinfo)
 ~~~
 {: .r}
+
+<img src="../fig/rmd-12-plot_snp_asso_wplot-1.png" title="plot of chunk plot_snp_asso_wplot" alt="plot of chunk plot_snp_asso_wplot" style="display: block; margin: auto;" />
 
 We can use our `query_genes()` function to identify the genes in the region, and `plot_genes()` to plot their locations. But also `plot_snpasso()` can take the gene locations with the argument genes and then display them below the SNP association results. Here, we are also highlighting the top SNPs in the SNP association plot using the `drop_hilit` argument. SNPs with LOD score within `drop_hilit` of the maximum are shown in pink.
 
@@ -265,6 +255,8 @@ plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5, genes=genes)
 ~~~
 {: .r}
 
+<img src="../fig/rmd-12-id_and_plot_genes-1.png" title="plot of chunk id_and_plot_genes" alt="plot of chunk id_and_plot_genes" style="display: block; margin: auto;" />
+
 To get a table of the SNPs with the largest LOD scores, use the function `top_snps()`. This will show all SNPs with LOD score within some amount (the default is 1.5) of the maximum SNP LOD score. We’re going to display just a subset of the columns.
 
 
@@ -273,6 +265,88 @@ top <- top_snps(out_snps$lod, out_snps$snpinfo)
 print(top[,c(1, 8:15, 20)], row.names=FALSE)
 ~~~
 {: .r}
+
+
+
+~~~
+                 snp_id A_J C57BL_6J 129S1_SvImJ NOD_ShiLtJ NZO_HlLtJ
+            rs212414861   1        1           1          1         2
+            rs229578122   1        1           1          1         2
+            rs254318131   1        1           1          1         2
+            rs217679969   1        1           1          1         2
+            rs238404461   1        1           1          1         2
+            rs262749925   1        1           1          1         2
+            rs231282689   1        1           1          1         2
+            rs260286709   1        1           1          1         2
+             rs27396282   1        1           1          1         2
+            rs263841533   1        1           1          1         2
+            rs231205920   1        1           1          1         2
+            rs242885221   1        1           1          1         2
+            rs586746690   1        1           2          1         2
+             rs49002164   1        1           2          1         2
+ SV_2_96945406_96945414   1        1           1          1         2
+            rs244595995   1        1           2          1         2
+ SV_2_96993116_96993118   1        1           1          1         2
+            rs220351620   1        1           1          1         2
+ SV_2_98037843_98039847   1        1           1          1         2
+             rs52579091   1        1           1          1         2
+            rs243489710   1        1           1          1         2
+            rs244316263   1        1           1          1         2
+            rs219729956   1        1           1          1         2
+ SV_2_98133843_98141078   1        1           1          1         2
+ SV_2_98140843_98151843   1        1           1          1         2
+ SV_2_98153843_98189843   1        1           1          1         2
+            rs235315566   1        1           1          1         2
+            rs250167663   1        1           1          1         2
+            rs234831418   1        1           1          1         2
+            rs240832432   1        1           1          1         2
+            rs220815439   1        1           1          1         2
+            rs579950897   1        1           1          1         2
+            rs224994851   1        1           1          1         2
+            rs248208898   1        1           1          1         2
+            rs245525925   1        1           1          1         2
+            rs229631954   1        1           1          1         2
+            rs229965402   1        1           1          1         2
+ CAST_EiJ PWK_PhJ WSB_EiJ      lod
+        2       1       1 7.226368
+        2       1       1 7.226368
+        2       1       1 7.226368
+        2       1       1 7.226368
+        2       1       1 7.226368
+        2       1       1 7.226368
+        2       1       1 7.226368
+        2       1       1 7.226368
+        2       1       1 7.226368
+        2       1       1 7.226368
+        2       1       1 7.226368
+        2       1       1 7.226368
+        2       1       1 6.622040
+        2       1       1 6.622040
+        3       1       1 7.226368
+        2       1       1 6.622040
+        2       1       1 7.226368
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+        1       1       1 6.378804
+~~~
+{: .output}
 
 The top SNPs all have NZO and CAST with a common allele, different from the other 6 founders. The next-best SNPs have NZO, CAST, and 129 with a common allele, and then there’s a group of SNPs where NZO has a unique allele.
 
@@ -292,6 +366,8 @@ par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot(out_gwas$lod, out_gwas$snpinfo, altcol="green4", gap=0)
 ~~~
 {: .r}
+
+<img src="../fig/rmd-12-plot_gwas_scan-1.png" title="plot of chunk plot_gwas_scan" alt="plot of chunk plot_gwas_scan" style="display: block; margin: auto;" />
 
 Note that while there are LOD scores on the X chromosome that are as large as those on chromosome 2, we’re allowing a genotype × sex interaction on the X chromosome and so the test has 3 degrees of freedom (versus 2 degrees of freedom on the autosomes) and so the LOD scores will naturally be larger. If we’d used the allele probabilities (apr above, calculated from genoprob_to_alleleprob()) rather than the genotype probabilities, we would be performing a test with 1 degree of freedom on both the X chromosome and the autosomes.
 
