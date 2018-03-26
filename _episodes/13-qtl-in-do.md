@@ -7,7 +7,6 @@ questions:
 - "How is the workflow implemented in an actual study?"
 objectives:
 - Work through an actual QTL mapping workflow from a published study.
-- Convert genotype and allele probabilities from DOQTL to qtl2 format.
 keypoints:
 - "."
 - "."
@@ -35,17 +34,14 @@ The data for this tutorial has been saved as an R binary file that contains seve
 
 
 ~~~
-library(qtl2)
-library(qtl2convert)
-library(qtl2db)
-load("../data/DOQTL_demo.Rdata")
+load("~/Desktop/mapping/data/qtl2_demo.Rdata")
 sessionInfo()
 ~~~
 {: .r}
 
 The call to `sessionInfo` provides information about the R version running on your machine and the R packages that are installed. This information can help you to troubleshoot.
 
-We loaded in two data objects. Look in the Environment pane to see what was loaded.  You should see an object called `pheno` with 143 observations (in rows) of 5 variables (in columns) and an object called `probs`.
+We loaded in two data objects. Look in the Environment pane to see what was loaded.  You should see an object called `pheno` with 143 observations (in rows) of 5 variables (in columns), an object called `map` and an object called `probs`.
 
 #### Phenotypes  
 `pheno` is a data frame containing the phenotype data. Click on the triangle to the left of `pheno` in the Environment pane to view its contents.
@@ -96,31 +92,31 @@ This loaded an object called `muga_snps` into your R environment. Look at its st
 {: .challenge} 
 
 #### Genotype (allele) probabilities  
-`probs` is a 3 dimensional array containing the founder allele dosages for each sample at each marker on the array. These probabilities have been pre-calculated for you, so you can skip the step for [calculating genotype probabilities](https://smcclatchy.github.io/mapping/03-calc-genoprob/) and the optional step for calculating allele probabilities.
+Each element of `probs` is a 3 dimensional array containing the founder allele dosages for each sample at each marker on one chromosome. These probabilities have been pre-calculated for you, so you can skip the step for [calculating genotype probabilities](https://smcclatchy.github.io/mapping/03-calc-genoprob/) and the optional step for calculating allele probabilities.
 
-Next, we look at the dimensions of `probs`:
+Next, we look at the dimensions of `probs` for chromosome 1:
 
 
 ~~~
-dim(probs)
+dim(probs[[1]])
 ~~~
 {: .r}
 
 
 
 ~~~
-[1]  143    8 7654
+[1] 143   8 537
 ~~~
 {: .output}
 
-`probs` is a three dimensional array containing the proportion of each founder haplotype at each marker for each DO sample.  The 143 samples are in the first dimension, the 8 founders in the second and the markers along the mouse genome are in the third dimension.
+`probs` is a three dimensional array containing the proportion of each founder haplotype at each marker for each DO sample.  The 143 samples are in the first dimension, the 8 founders in the second and the markers along chromosome 1 are in the third dimension.
 Let's return to the `probs` object. Look at the contents for the first 500 markers of one sample.
 
 **NOTE:** the sample IDs must be in the rownames of `probs`.
 
 
 ~~~
-image(1:500, 1:ncol(probs), t(probs[1,8:1,1:500]), breaks = 0:100/100,
+image(1:500, 1:ncol(probs[[1]]), t(probs[[1]][1,8:1,1:500]), breaks = 0:100/100,
       col = grey(99:0/100), axes = F, xlab = "Markers", ylab = "Founders",
       main = "Founder Allele Contributions for Sample 1")
 abline(h = 0:8 + 0.5, col = "grey70")
@@ -135,32 +131,13 @@ axis(side = 2, at = 1:8, labels = LETTERS[8:1], las = 1, tick = F)
 
 In the plot above, the founder contributions, which range between 0 and 1, are colored from white (= 0) to black (= 1.0). A value of ~0.5 is grey. The markers are on the X-axis and the eight founders (denoted by the letters A through H) on the Y-axis. Starting at the left, we see that this sample has genotype CD because both rows C and D are grey, indicating values of 0.5 for each one. Moving along the genome to the right, the genotype becomes DD where row D is black, then CD, AC, CH, CD, CH, etc. The values at each marker sum to 1.0.  
 
-#### Convert genotype probabilities between different formats
-
-We used a subset of the markers to reconstruct the DO genomes. We need to subset the markers so that they match the haplotype probabilities.
-
-
-~~~
-muga_snps = muga_snps[dimnames(probs)[[3]],]
-stopifnot(rownames(muga_snps) == dimnames(probs)[[3]])
-~~~
-{: .r}
-
-Convert the genotype probabilities from DOQTL format to qtl2 format. Convert the SNPs to a qtl2 map object. The `qtl2convert` package contains functions for converting data between the R/qtl2, DOQTL, and R/qtl formats, for example to convert genotype probabilities produced by DOQTL to the format needed by `qtl2scan`.
-
-
-~~~
-genoprobs = probs_doqtl_to_qtl2(probs = probs, map = muga_snps, pos_column="pos")
-map = map_df_to_list(map = muga_snps, pos_column="pos")
-~~~
-{: .r}
 
 ### [Calculating A Kinship Matrix](https://smcclatchy.github.io/mapping/04-calc-kinship/)
 Next, we need to create a matrix that accounts for the kinship relationships between the mice. We do this by looking at the correlation between the founder haplotypes for each sample at each SNP. For each chromosome, we create a kinship matrix using all markers *except* the ones on the current chromosome using the loco (leave-one-chromosome-out) method. Simulations suggest that mapping using this approach increases the power to detect QTL.
            
 
 ~~~
-K = calc_kinship(probs = genoprobs, type = "loco", use_allele_probs = TRUE)
+K = calc_kinship(probs = probs, type = "loco", use_allele_probs = TRUE)
 ~~~
 {: .r}
 
@@ -184,11 +161,11 @@ Next, we need to create additive covariates that will be used in the mapping mod
 
 
 ~~~
-addcovar = model.matrix(~Study, data = pheno)[,-1, drop = FALSE]
+addcovar = pheno[,"Study", drop = FALSE]
 ~~~
 {: .r}
 
-The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-effect of the `model.matrix` function.
+The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-effect.
 
 **NOTE:** the sample IDs must be in the rownames of `pheno`, `addcovar`, `genoprobs` and `K`. `qtl2` uses the sample IDs to align the samples between objects. For more information about data file format, see [Karl Broman's vignette on input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
 
@@ -217,7 +194,7 @@ In order to map the proportion of bone marrow reticulocytes that were micro-nucl
 
 ~~~
 pheno.column = which(colnames(pheno) == "prop.bm.MN.RET")
-qtl = scan1(genoprobs = genoprobs, pheno = pheno[,pheno.column, drop = FALSE], kinship = K, addcovar = addcovar)
+qtl = scan1(genoprobs = probs, pheno = pheno[,pheno.column, drop = FALSE], kinship = K, addcovar = addcovar)
 ~~~
 {: .r}
 
@@ -238,7 +215,7 @@ There is clearly a large peak on Chr 10. Next, we must assess its statistical si
 
 
 ~~~
-perms = scan1perm(genoprobs = genoprobs, pheno = pheno[,"prop.bm.MN.RET", drop = FALSE], kinship = K, addcovar = addcovar, n_perm = 100)
+perms = scan1perm(genoprobs = probs, pheno = pheno[,"prop.bm.MN.RET", drop = FALSE], kinship = K, addcovar = addcovar, n_perm = 100)
 ~~~
 {: .r}
 
@@ -261,7 +238,7 @@ We can now add thresholds to the previous QTL plot. We use a significance thresh
 
 ~~~
 plot(x = qtl, map = map,  main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
-thr = quantile(perms, 0.95)
+thr = summary(perms)
 abline(h = thr, col = "red", lwd = 2)
 ~~~
 {: .r}
@@ -319,7 +296,7 @@ We will now zoom in on Chr 10 and look at the contribution of each of the eight 
 
 ~~~
 chr = 10
-coef10 = scan1coef(genoprobs = genoprobs[,chr], pheno = pheno[,"prop.bm.MN.RET", drop = FALSE], kinship = K[[chr]], addcovar = addcovar)
+coef10 = scan1blup(genoprobs = probs[,chr], pheno = pheno[,pheno.column, drop = FALSE], kinship = K[[chr]], addcovar = addcovar)
 ~~~
 {: .r}
 
@@ -365,9 +342,8 @@ We can call [scan1snps](https://github.com/rqtl/qtl2/blob/master/R/scan1snps.R) 
 chr = 10
 start = 30
 end = 36
-snpdb_file = "../data/cc_variants.sqlite"
-query_fxn = create_variant_query_func(snpdb_file)
-assoc = scan1snps(genoprobs = genoprobs[,chr], map = map, pheno = pheno[,pheno.column,drop = FALSE], kinship = K, addcovar = addcovar, query_func = query_fxn, chr = chr, start = start, end = end, keep_all_snps = TRUE)
+query_fxn = create_variant_query_func("../data/cc_variants.sqlite")
+assoc = scan1snps(genoprobs = probs[,chr], map = map, pheno = pheno[,pheno.column,drop = FALSE], kinship = K, addcovar = addcovar, query_func = query_fxn, chr = chr, start = start, end = end, keep_all_snps = TRUE)
 ~~~
 {: .r}
 
@@ -484,3 +460,6 @@ This analysis has led us to the following hypothesis. Inhaled benzene is absorbe
 ![](../fig/benzene_hypothesis.png)
 
 We hope that this tutorial has shown you how the DO can be used to map QTL and use the founder effects and bioinformatics resources to narrow down the candidate gene list. Here, we made used of external gene expression databases and the founder sequence data to build a case for a pair of genes.
+
+
+

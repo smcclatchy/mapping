@@ -38,8 +38,7 @@ Once you are in your scripts directory, create a new R script.
 The data for this tutorial has been saved as an R binary file that contains several data objects.  Load it in now by running the following command.
 
 ```{r load_data, message=FALSE, results='hide'}
-library(qtl2)
-load("../data/DOQTL_demo.Rdata")
+load("~/Desktop/mapping/data/qtl2_demo.Rdata")
 sessionInfo()
 ```
 
@@ -357,3 +356,6 @@ This analysis has led us to the following hypothesis. Inhaled benzene is absorbe
 ![](../fig/benzene_hypothesis.png)
 
 We hope that this tutorial has shown you how the DO can be used to map QTL and use the founder effects and bioinformatics resources to narrow down the candidate gene list. Here, we made used of external gene expression databases and the founder sequence data to build a case for a pair of genes.
+
+
+
