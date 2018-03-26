@@ -15,10 +15,10 @@ You will need the Desktop version for your computer.
 
 The [qtl2](https://github.com/rqtl/qtl2) package contains code for haplotype reconstruction, QTL mapping and plotting.
 
-R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), and
-is still under development. To retrieve the latest version, install R/qtl2 from its source on
-[GitHub](https://github.com/rqtl). (But note that compiling the C++
-code can be rather slow.)
+Option 1: R/qtl2 is not yet available on [CRAN](https://cran.r-project.org), but it can be installed from a mini-CRAN at [rqtl.org](http://www.rqtl.org/). Make sure you have the latest version of [R (3.4.4)](https://cran.r-project.org).
+
+Option 2: Alternatively, you can install R/qtl2 from its source on [GitHub](https://github.com/rqtl).
+(But note that compiling the C++ code can be rather slow.)
 
 On _Windows_, you'll need [Rtools](https://cran.r-project.org/bin/windows/Rtools/).
 
@@ -35,7 +35,7 @@ and [RcppEigen](https://github.com/RcppCore/RcppEigen).
 (Additional, secondary dependencies will also be installed.) Start RStudio, then copy and paste the following code into the R console in RStudio.
 
 ~~~
-install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen"))
+install.packages(c("devtools", "yaml", "jsonlite", "data.table", "RcppEigen", "RSQLite", "qtl"))
 ~~~
 {: .r}
 

@@ -33,7 +33,7 @@ As an example see the table below for phenotype and genotype frequencies between
 
 The full population consists of two equally represented subpopulations. In the overall population, the probability of the AA genotype is 0.5, and the probability of disease is also 0.5. The joint probability of both disease and AA genotype in the population (0.09) is less than either the probability of disease (0.5) or the probability of the AA genotype (0.5) alone, and is considerably less than the joint probability of 0.25 that would be calculated if subpopulations weren't taken into account. In a case-control study that fails to recognize subpopulations, most of the cases will come from subpopulation 1 since this subpopulation has a disease probability of 0.9. However, this subpopulation also has a low probability of the AA genotype. So a false association between AA genotype and disease would occur because only overall population probabilities would be considered.
 
-Linear mixed models (LMMs) consider genome-wide similarity between all pairs of individuals to account for population structure, known kinship and unknown relatedness. They model the covariance between individuals. Linear mixed models in association mapping studies can successfully correct for genetic relatedness between individuals in a population by incorporating kinship into the model. If you wish to perform a genome scan by a linear mixed model, accounting for the relationships among individuals (in other words, including a random polygenic effect), you'll need to calculate a kinship matrix for the individuals. This is accomplished with the `calc_kinship()`. It takes the genotype probabilities as input.
+Linear mixed models (LMMs) consider genome-wide similarity between all pairs of individuals to account for population structure, known kinship and unknown relatedness. They model the covariance between individuals. Linear mixed models in association mapping studies can successfully correct for genetic relatedness between individuals in a population by incorporating kinship into the model. If you wish to perform a genome scan by a linear mixed model, accounting for the relationships among individuals (in other words, including a random polygenic effect), you'll need to calculate a kinship matrix for the individuals. This is accomplished with the `calc_kinship()` function. It takes the genotype probabilities as input.
 
 
 ~~~
@@ -76,18 +76,10 @@ kinship_grid <- calc_kinship(pr_grid)
 ~~~
 {: .r}
 
-If, for your linear mixed model genome scan, you wish to use the "leave one chromosome out" (LOCO) method (scan each chromosome using a kinship matrix that is calculated using data from all other chromosomes), use `type="loco"` in the call to `calc_kinship()`.
-
-
-~~~
-kinship_loco <- calc_kinship(pr, "loco")
-~~~
-{: .r}
-
 On a multi-core machine, you can get some speed-up via the `cores` argument, as with `calc_genoprob()`.
 
 
 ~~~
-kinship_loco <- calc_kinship(pr, "loco", cores=4)
+kinship <- calc_kinship(pr, cores=4)
 ~~~
 {: .r}

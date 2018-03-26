@@ -18,7 +18,7 @@ source: Rmd
 
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
-knitr_fig_path("04-")
+knitr_fig_path("08-")
 library()
 ```
 
@@ -69,14 +69,8 @@ pr_grid <- probs_to_grid(pr, grid)
 kinship_grid <- calc_kinship(pr_grid)
 ```
 
-If, for your linear mixed model genome scan, you wish to use the "leave one chromosome out" (LOCO) method (scan each chromosome using a kinship matrix that is calculated using data from all other chromosomes), use `type="loco"` in the call to `calc_kinship()`.
-
-```{r calc_kinship_loco, eval=FALSE}
-kinship_loco <- calc_kinship(pr, "loco")
-```
-
 On a multi-core machine, you can get some speed-up via the `cores` argument, as with `calc_genoprob()`.
 
 ```{r calc_kinship_loco_multicore, eval=FALSE, eval=FALSE}
-kinship_loco <- calc_kinship(pr, "loco", cores=4)
+kinship <- calc_kinship(pr, cores=4)
 ```

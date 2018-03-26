@@ -15,10 +15,7 @@ keypoints:
 source: Rmd
 ---
 
-```{r, include=FALSE}
-source("../bin/chunk-options.R")
-knitr_fig_path("08-")
-```
+
 
 Genetic mapping in mice presents a good example of why accounting for population structure is important. Laboratory mouse strains are descended from a small number of founders (fancy mice) and went through several population bottlenecks. Wild-derived strains are not descended from fancy mice and don't share the same history as laboratory strains. Linear mixed models were developed to solve problems with population structure created by differing ancestries, and to handle relatedness between individuals.  Linear mixed models (LMMs) consider genome-wide similarity between all pairs of individuals to account for population structure, known kinship and unknown relatedness. Linear mixed models in mapping studies can successfully correct for genetic relatedness between individuals in a population by incorporating kinship into the model. Earlier we [calculated a kinship matrix](https://smcclatchy.github.io/mapping/04-calc-kinship/) for input to a linear mixed model to account for relationships among individuals. For a current review of mixed models in genetics, see this [preprint of Martin and Eskin, 2017](https://www.biorxiv.org/content/early/2017/01/28/092106).
 
@@ -56,21 +53,27 @@ If the sample contains divergent subpopulations, SNPs on different chromosomes w
 
 To perform a genome scan using a linear mixed model you also use the function `scan1`; you just need to provide the argument `kinship`, a kinship matrix (or, for the LOCO method, a list of kinship matrices).
 
-```{r scan1_pg, eval=FALSE}
+
+~~~
 out_pg <- scan1(pr, iron$pheno, kinship=kinship, Xcovar=Xcovar)
-```
+~~~
+{: .r}
 
 Again, on a multi-core machine, you can get some speed-up using the `cores` argument.
 
-```{r scan1_pg_multicore, eval=FALSE}
+
+~~~
 out_pg <- scan1(pr, iron$pheno, kinship, Xcovar=Xcovar, cores=4)
-```
+~~~
+{: .r}
 
 For the LOCO (leave one chromosome out) method, provide the list of kinship matrices as obtained from `calc_kinship()` with `method="loco"`.
 
-```{r scan1_pg_loco, eval=FALSE}
+
+~~~
 out_pg_loco <- scan1(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
-```
+~~~
+{: .r}
 
 To plot the results, we again use `plot_scan1()`.
 
@@ -100,3 +103,11 @@ pheno = grav$pheno, kinship = grav_kinship)`
 > > 4). `plot(out_grav, lodcolumn = 133, map = gravmap)`
 > {: .solution}
 {: .challenge}
+
+If, for your linear mixed model genome scan, you wish to use the "leave one chromosome out" (LOCO) method (scan each chromosome using a kinship matrix that is calculated using data from all other chromosomes), use `type="loco"` in the call to `calc_kinship()`.
+
+
+~~~
+kinship_loco <- calc_kinship(pr, "loco")
+~~~
+{: .r}

@@ -5,3 +5,12 @@
 .sass-cache
 __pycache__
 _site
+assessment.txt
+data/DOQTL_demo.Rdata
+data/cc_variants.sqlite
+data/mouse_genes.sqlite
+data/muga_snps.Rdata
+fig/.Rhistory
+files/Gatti_MammGen_2018.pptx
+scripts/
+

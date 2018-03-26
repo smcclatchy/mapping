@@ -16,7 +16,7 @@ source: Rmd
 
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
-knitr_fig_path("09-")
+knitr_fig_path("10-")
 ```
 
 The genome scans above were performed assuming that the residual variation followed a normal distribution. This will often provide reasonable results even if the residuals are not normal, but an important special case is that of a binary trait, with values 0 and 1, which is best treated differently. The `scan1` function can perform a genome scan with binary traits by logistic regression, using the argument `model="binary"`. (The default value for the `model` argument is `"normal"`.) At present, we _can not_ account for relationships among individuals in this analysis.
