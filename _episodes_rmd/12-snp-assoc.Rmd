@@ -51,7 +51,7 @@ Let's quickly whip through a basic analysis.
 
 We first calculate genotype probabilities and convert them to allele probabilities. We'll just use marker locations and not insert any pseudomarkers.
 
-```{r DOex_calc_genoprob, eval=FALSE}
+```{r DOex_calc_genoprob}
 pr <- calc_genoprob(DOex, error_prob=0.002)
 apr <- genoprob_to_alleleprob(pr)
 ```
@@ -86,20 +86,20 @@ sex <- setNames( (DOex$covar$Sex == "male")*1, rownames(DOex$covar) )
 
 We perform a genome scan with a linear mixed model (adjusting for a residual polygenic effect), with sex as an additive covariate.
 
-```{r DOex_scan1_pg, eval=FALSE}
+```{r DOex_scan1_pg}
 out <- scan1(apr, DOex$pheno, k, sex)
 ```
 
 Here's a plot of the results.
 
-```{r plot_DOex_scan, eval=FALSE}
+```{r plot_DOex_scan}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot(out, DOex$gmap)
 ```
 
 There's a strong peak on chromosome 2. Let's look at the QTL effects. We estimate them with `scan1coef()`. We need to subset the allele probabilities and the list of kinship matrices.
 
-```{r DOex_effects_c2, eval=FALSE}
+```{r DOex_effects_c2}
 coef_c2 <- scan1coef(apr[,"2"], DOex$pheno, k[["2"]], sex)
 ```
 
@@ -108,14 +108,14 @@ colors. (Well, actually _slightly_ modified colors, because I think the official
 due to the NZO allele. Note that `CCcolors` is a vector of colors included in the qtl2plot package; there's also a `CCorigcolors` object
 with the _official_ colors.
 
-```{r plot_DOex_effects, eval=FALSE}
+```{r plot_DOex_effects}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_coefCC(coef_c2, DOex$gmap["2"], bgcolor="gray95", legend="bottomleft")
 ```
 
 If you provide `plot_coefCC()` with the genome scan output, it will display the LOD curve below the coefficient estimates.
 
-```{r plot_DOex_lod_curve, eval=FALSE}
+```{r plot_DOex_lod_curve}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_coefCC(coef_c2, DOex$gmap["2"], scan1_output=out, bgcolor="gray95", legend="bottomleft")
 ```
@@ -142,20 +142,20 @@ download.file("https://ndownloader.figshare.com/files/9746452", "mouse_genes_mgi
 
 To create a function for querying the CC variants, call `create_variant_query_func()` with the path to the `cc_variants.sqlite` file:
 
-```{r query_variants, eval=FALSE}
-query_variants <- create_variant_query_func("~/Data/CCdb/cc_variants.sqlite")
+```{r query_variants}
+query_variants <- create_variant_query_func("../data/cc_variants.sqlite")
 ```
 
 To grab the variants in the interval 97-98 Mbp on chromosome 2, you’d then do the following:
 
-```{r grab_chr2_variants, eval=FALSE}
+```{r grab_chr2_variants}
 variants_2_97.5 <- query_variants(2, 97, 98)
 ```
 
 Similarly, to create a function for querying the MGI mouse gene annotations, you call `create_gene_query_func()` with the path to the `mouse_genes_mgi.sqlite` file:
 
 ```{r query_MGI, eval=FALSE}
-query_genes <- create_gene_query_func("~/Data/CCdb/mouse_genes_mgi.sqlite")
+query_genes <- create_gene_query_func("../data/mouse_genes_mgi.sqlite")
 ```
 
 To grab the genes overlapping the interval 97-98 Mbp on chromosome 2, you’d then do the following:

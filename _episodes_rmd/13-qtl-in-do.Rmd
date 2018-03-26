@@ -38,7 +38,7 @@ Once you are in your scripts directory, create a new R script.
 The data for this tutorial has been saved as an R binary file that contains several data objects.  Load it in now by running the following command.
 
 ```{r load_data, message=FALSE, results='hide'}
-load("~/Desktop/mapping/data/qtl2_demo.Rdata")
+load("../data/qtl2_demo.Rdata")
 sessionInfo()
 ```
 

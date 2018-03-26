@@ -65,13 +65,25 @@ dir.create("./results")
 ~~~
 {: .r}
 
-3. Please download the following large files **before the workshop**, and place them in your `data` folder. You will 
+3. Please download the following large files **before the workshop**, and place them in your `data` folder. You can download the files from the URLs below and move the files the same way that you would for downloading and moving any other kind of data.
+
+- [cc_variants.sqlite doi:10.6084/m9.figshare.5280229.v2](https://figshare.com/articles/SQLite_database_of_variants_in_Collaborative_Cross_founder_mouse_strains/5280229/2), variants in the Collaborative Cross founders (3 GB)
+- [mouse_genes.sqlite doi:10.6084/m9.figshare.5280238.v4](https://figshare.com/articles/SQLite_database_with_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5280238/4) full set of mouse gene annotations (677 MB)
+- [mouse_genes_mgi.sqlite doi:10.6084/m9.figshare.5286019.v5](https://figshare.com/articles/SQLite_database_with_MGI_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5286019/5) just the MGI mouse gene annotations (11 MB)
+- [DO QTL data](ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata) Dan's DO data from the benzene study
+
+Alternatively, you can copy and paste the following into the R console to download the data.
+~~~
+setwd("~/Desktop/mapping")
+download.file("https://ndownloader.figshare.com/files/9746485", "./data/cc_variants.sqlite")
+download.file("https://ndownloader.figshare.com/files/9746458", "./data/mouse_genes.sqlite")
+download.file("https://ndownloader.figshare.com/files/9746452", "./data/mouse_genes_mgi.sqlite")
+download.file("ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", "./data/qtl2_demo.Rdata")
+~~~
+{: .r}
+
+
+ You will
 need these for the final lesson episode on QTL analysis in Diversity Outbred mice.
 
-[DO QTL data](ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata)
 
-[MUGA SNPs](ftp://ftp.jax.org/MUGA/muga_snps.Rdata)
-
-[CC Variants](ftp://ftp.jax.org/dgatti/CC_SNP_DB/cc_variants.sqlite)
-
-[Mouse Genes](ftp://ftp.jax.org/dgatti/CC_SNP_DB/mouse_genes.sqlite)

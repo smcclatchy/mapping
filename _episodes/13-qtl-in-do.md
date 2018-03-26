@@ -34,7 +34,7 @@ The data for this tutorial has been saved as an R binary file that contains seve
 
 
 ~~~
-load("~/Desktop/mapping/data/qtl2_demo.Rdata")
+load("../data/qtl2_demo.Rdata")
 sessionInfo()
 ~~~
 {: .r}
