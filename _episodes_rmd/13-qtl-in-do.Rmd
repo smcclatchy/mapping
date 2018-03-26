@@ -68,27 +68,28 @@ We loaded in two data objects. Look in the Environment pane to see what was load
 > {: .solution}
 {: .challenge}
 
-#### The map  
-First, we need the locations of the markers on the genotyping array. The array is called the Mouse Universal Genotyping Array (MUGA) and contains 7,856 SNP markers. You would have downloaded this array into your data directory from [The Jackson Laboratory's FTP site](ftp://ftp.jax.org/MUGA) during [Setup](../setup.md).
+Some researchers are concerned about the reproducibility of DO studies. The argument is that each DO mouse is unique and therefor can never be reproduced. But this misses the point of using the DO. While mice are the sampling unit, in QTL mapping we are sampling the founder alleles at each locus. And an average of 1/8th of the alleles should come from each founder at any given locus. Also, DO mice are a *population* of mice, not a single strain. While it is true that results in an individual DO mouse may not be reproducible, results at the population level should be reproducible. This is similar to the human population in that results from one individual may not represent all humans, but results at the population level should be reproducible.
 
-```{r load_snps}
-load("../data/muga_snps.Rdata")
-```
+The benzene inhalation study was conducted in two separate cohorts (termed "Study" in the `pheno` file). Below, we plot the proportion of MN-RETs in bone marrow versus the benzene concentration for each study cohort. As you can see, while individual mice have varying MN-RETs, there is a dose-dependent increase in MN-RETs in both cohort. This is an example of how results in the DO reproduce at the population level.
 
-This loaded an object called `muga_snps` into your R environment. Look at its structure in the Environment tab in RStudio. 
+![](../fig/bm_mnret_by_dose_cohort.png)
+
+
+#### The Marker Map  
+
+The marker map for each chromosome is stored in the `map` object. Each list element is a numeric vector with each marker position in megabases (Mb). This is used to plot the LOD scores calculated at each marker during QTL mapping.
+
+The markers are from a genotyping array called the Mouse Universal Genotyping Array (MUGA) and contains 7,856 SNP markers. Marker locations for the MUGA and other mouse arrays are available from [The Jackson Laboratory's FTP site](ftp://ftp.jax.org/MUGA).
+
+Look at the structure of `map` in the Environment tab in RStudio. 
 
 > ## Challenge 2 Data Dimensions II
-> Determine the dimensions of `muga_snps`.  
-> 1). How many rows does it have?  
-> 2). How many columns does it have?  
-> 3). What variables does it contain?  
+> 1). Determine the length of `map`.  
+> 2). How mamy markers are chromosome 1?  
 >
-> > ## Solution to Challenge 2
-> > `dim(muga_snps)`  
-> > 1). 7854  
-> > 2). 9  
-> > 3). Use `colnames(muga_snps)` or click the triangle to the left of `muga_snps`
-> > in the Environment tab.  
+> > ## Solution to Challenge 2  
+> > 1). `length(map)`  
+> > 2). `length(map[[1]])`  
 > {: .solution}
 {: .challenge} 
 
