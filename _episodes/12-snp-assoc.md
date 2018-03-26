@@ -101,6 +101,8 @@ plot(out, DOex$gmap)
 ~~~
 {: .r}
 
+<img src="../fig/rmd-12-plot_DOex_scan-1.png" title="plot of chunk plot_DOex_scan" alt="plot of chunk plot_DOex_scan" style="display: block; margin: auto;" />
+
 There's a strong peak on chromosome 2. Let's look at the QTL effects. We estimate them with `scan1coef()`. We need to subset the allele probabilities and the list of kinship matrices.
 
 
@@ -121,6 +123,8 @@ plot_coefCC(coef_c2, DOex$gmap["2"], bgcolor="gray95", legend="bottomleft")
 ~~~
 {: .r}
 
+<img src="../fig/rmd-12-plot_DOex_effects-1.png" title="plot of chunk plot_DOex_effects" alt="plot of chunk plot_DOex_effects" style="display: block; margin: auto;" />
+
 If you provide `plot_coefCC()` with the genome scan output, it will display the LOD curve below the coefficient estimates.
 
 
@@ -129,6 +133,8 @@ par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_coefCC(coef_c2, DOex$gmap["2"], scan1_output=out, bgcolor="gray95", legend="bottomleft")
 ~~~
 {: .r}
+
+<img src="../fig/rmd-12-plot_DOex_lod_curve-1.png" title="plot of chunk plot_DOex_lod_curve" alt="plot of chunk plot_DOex_lod_curve" style="display: block; margin: auto;" />
 
 ### Connecting to SNP and gene databases
 To perform SNP association analysis in the region of a QTL, we’ll need to grab data on all of the SNPs in the region, including their genotypes in the eight founder strains for the CC and DO populations. As a related task, we’ll also want to identify the genes in the region.
@@ -156,7 +162,7 @@ To create a function for querying the CC variants, call `create_variant_query_fu
 
 
 ~~~
-query_variants <- create_variant_query_func("~/Data/CCdb/cc_variants.sqlite")
+query_variants <- create_variant_query_func("../data/cc_variants.sqlite")
 ~~~
 {: .r}
 
@@ -172,7 +178,7 @@ Similarly, to create a function for querying the MGI mouse gene annotations, you
 
 
 ~~~
-query_genes <- create_gene_query_func("~/Data/CCdb/mouse_genes_mgi.sqlite")
+query_genes <- create_gene_query_func("../data/mouse_genes_mgi.sqlite")
 ~~~
 {: .r}
 

@@ -16,54 +16,55 @@ source: Rmd
 
 
 
-Once we have LOD scores from a genome scan, we can look for QTL affecting the phenotype. High LOD scores indicate the neighborhood of a QTL but don't give its precise position. To find the exact position of a QTL, we define an interval that is likely to hold the QTL.
+Once we have LOD scores from a genome scan and a significance threshold, we can look for QTL peaks associated with the phenotype. High LOD scores indicate the neighborhood of a QTL but don't give its precise position. To find the exact position of a QTL, we define an interval that is likely to hold the QTL.
 
-We'll use the interval the Bayesian credible interval.
-
-The Bayesian credible interval is the preferred method for defining QTL intervals. It describes the probability that the interval contains the true value. Credible intervals make a probabilistic statement about the true value, for example, a 95% credible interval states that there is a 95% chance that the true value lies within the interval.
+We'll use the interval the Bayesian credible interval, which is a method for defining QTL intervals. It describes the probability that the interval contains the true value. Credible intervals make a probabilistic statement about the true value, for example, a 95% credible interval states that there is a 95% chance that the true value lies within the interval.
 
 To find peaks above a given threshold LOD value, use the function `find_peaks()`. It can also provide Bayesian credible intervals by using the argument `prob` (the nominal coverage for the Bayes credible intervals). Set the argument `expand2markers = FALSE` to keep from expanding the interval out to typed markers, or exclude this argument if you'd like to include flanking markers.
 
-You need to provide both the `scan1()` output as well as the marker/pseudomarker map.
+You need to provide both the `scan1()` output, the marker/pseudomarker map and a threshold. We will use the 95% threshold from the permutations in the previous lesson.
 
 
 ~~~
-find_peaks(out, map, threshold = 4, prob = 0.95, expand2markers = FALSE)
+thr = summary(operm)
 ~~~
 {: .r}
 
 
 
 ~~~
-  lodindex lodcolumn chr  pos       lod ci_lo ci_hi
-1        1     liver   2 56.8  4.957564  54.3  70.3
-2        1     liver   7 50.1  4.050766  17.1  53.6
-3        1     liver  16 28.6  7.681569  21.6  32.6
-4        2    spleen   8 13.6  4.302919   5.0  23.0
-5        2    spleen   9 56.6 12.063226  54.6  58.6
+Error in summary(operm): object 'operm' not found
 ~~~
-{: .output}
+{: .error}
+
+
+
+~~~
+find_peaks(out, map, threshold = thr, prob = 0.95, expand2markers = FALSE)
+~~~
+{: .r}
+
+
+
+~~~
+Error in find_peaks_and_bayesint(scan1_output, map, threshold, peakdrop, : object 'thr' not found
+~~~
+{: .error}
 
 The `find_peaks()` function can also pick out multiple peaks on a chromosome: each peak must exceed the chosen threshold, and the argument `peakdrop` indicates the amount that the LOD curve must drop between the lowest of two adjacent peaks.  Use this feature with caution.
 
 
 ~~~
-find_peaks(out, map, threshold = 4, peakdrop = 1.8, prob = 0.95, expand2markers = FALSE)
+find_peaks(out, map, threshold = thr, peakdrop = 1.8, prob = 0.95, expand2markers = FALSE)
 ~~~
 {: .r}
 
 
 
 ~~~
-  lodindex lodcolumn chr  pos       lod ci_lo ci_hi
-1        1     liver   2 56.8  4.957564  54.3  70.3
-2        1     liver   7 25.1  4.040021  15.1  27.1
-3        1     liver   7 50.1  4.050766  41.1  53.6
-4        1     liver  16 28.6  7.681569  21.6  32.6
-5        2    spleen   8 13.6  4.302919   5.0  23.0
-6        2    spleen   9 56.6 12.063226  54.6  58.6
+Error in find_peaks_and_bayesint(scan1_output, map, threshold, peakdrop, : object 'thr' not found
 ~~~
-{: .output}
+{: .error}
 
 Each row shows a different peak; the columns show the peak location, LOD score and the lower and upper interval endpoints.
 
