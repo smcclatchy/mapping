@@ -15,6 +15,26 @@ source: Rmd
 
 
 
+
+~~~
+Error in insert_pseudomarkers(map = iron$gmap, step = 1): object 'iron' not found
+~~~
+{: .error}
+
+
+
+~~~
+Error in "cross2" %in% class(x): object 'iron' not found
+~~~
+{: .error}
+
+
+
+~~~
+Error in calc_kinship(pr): object 'pr' not found
+~~~
+{: .error}
+
 The `scan1()` function returns only LOD scores. To obtain estimated QTL effects, use the function `scan1coef()`. This function takes a single phenotype and the genotype probabilities for a single chromosome and returns a matrix with the estimated coefficients at each putative QTL location along the chromosome.
 
 For example, to get the estimated effects on chromosome 2 for the liver phenotype, we'd do the following:

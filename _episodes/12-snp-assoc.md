@@ -92,6 +92,7 @@ Here's a plot of the results.
 
 
 ~~~
+par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot(out, DOex$gmap)
 ~~~
 {: .r}

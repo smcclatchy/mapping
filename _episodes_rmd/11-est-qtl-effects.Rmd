@@ -18,6 +18,12 @@ source("../bin/chunk-options.R")
 knitr_fig_path("11-")
 ```
 
+```{r load_dependencies, echo=FALSE}
+map <- insert_pseudomarkers(map=iron$gmap, step=1)
+pr <- calc_genoprob(cross=iron, map=map, error_prob=0.002)
+kinship <- calc_kinship(pr)
+```
+
 The `scan1()` function returns only LOD scores. To obtain estimated QTL effects, use the function `scan1coef()`. This function takes a single phenotype and the genotype probabilities for a single chromosome and returns a matrix with the estimated coefficients at each putative QTL location along the chromosome.
 
 For example, to get the estimated effects on chromosome 2 for the liver phenotype, we'd do the following:

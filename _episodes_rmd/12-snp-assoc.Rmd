@@ -82,6 +82,7 @@ out <- scan1(apr, DOex$pheno, k, sex)
 Here's a plot of the results.
 
 ```{r plot_DOex_scan}
+par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot(out, DOex$gmap)
 ```
 
