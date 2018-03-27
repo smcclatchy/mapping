@@ -155,11 +155,10 @@ axis(side = 2, at = 20 * 0:7, labels = 20 * 7:0, las = 1)
 The figure above shows kinship between all pairs of samples. White ( = 1) indicates no kinship and red ( = 0) indicates full kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
 
 #### Covariates    
-Next, we need to create additive covariates that will be used in the mapping model. We will use study cohort and benzene concentration as a covariates in the mapping model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
+Next, we need to create additive covariates that will be used in the mapping model. We will use study cohort as a covariate in the mapping model. If we were mapping with *all* mice, we would also add benzene concentration to the model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
 
 ```{r covariates}
-pheno$Conc = factor(pheno$Conc, levels = c(0, 1, 10, 100))
-addcovar = model.matrix(~Study + Conc, data = pheno)[,-1]
+addcovar = model.matrix(~Study, data = pheno)[,-1]
 ```         
 
 The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-effect.
@@ -413,6 +412,7 @@ We hope that this tutorial has shown you how the DO can be used to map QTL and u
 > > 1). hist(pheno$pre.prop.MN.RET)
 > > pheno$log.pre.prop.MN.RET = log(pheno$pre.prop.MN.RET)
 > > 2). index = which(colnames(pheno) == "log.pre.prop.MN.RET")
+> > addcovar = model.matrix(~Study + Conc, data = pheno)[,-1]
 > > qtl_pre = scan1(genoprobs = probs, pheno = pheno[,index, drop = FALSE], kinship = K, addcovar = addcovar)
 > > plot_scan1(x = qtl_pre, map = map, main = "Log-Transformed Pre-dose MN-RET")
 > > 3). find_peaks(qtl_pre, map, threshold = 10, prob = 0.95)
