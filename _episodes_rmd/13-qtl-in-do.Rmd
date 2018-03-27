@@ -228,7 +228,7 @@ index = which(colnames(pheno) == "prop.bm.MN.RET")
 There is clearly a large peak on Chr 10. Next, we must assess its statistical significance. This is most commonly done via [permutation](http://www.genetics.org/content/178/1/609.long). We advise running at least 1,000 permutations to obtain significance thresholds. In the interest of time, we perform 100 permutations here.
 
 ```{r perms, message=FALSE, results='hide', warning=FALSE}
-perms = scan1perm(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], kinship = K, addcovar = addcovar[c100,], n_perm = 100)
+perms = scan1perm(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], addcovar = addcovar, n_perm = 100)
 ```
 
 The `perms` object contains the maximum LOD score from each genome scan of permuted data.
