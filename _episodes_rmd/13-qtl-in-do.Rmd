@@ -173,8 +173,8 @@ Note that this model will give us an estimate of the effect of each founder alle
 In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the [scan1](https://github.com/rqtl/qtl2/blob/master/R/plot_scan1.R) function. To see the arguments for [scan1](https://github.com/rqtl/qtl2/blob/master/R/plot_scan1.R), you can type `help(scan1)`.
 
 ```{r QTL, warning=FALSE, error=FALSE}
-pheno.column = which(colnames(pheno) == "prop.bm.MN.RET")
-qtl = scan1(genoprobs = probs, pheno = pheno[,pheno.column, drop = FALSE], kinship = K, addcovar = addcovar)
+index = which(colnames(pheno) == "prop.bm.MN.RET")
+qtl = scan1(genoprobs = probs, pheno = pheno[,index, drop = FALSE], kinship = K, addcovar = addcovar)
 ```
 
 ### [Finding LOD peaks](https://smcclatchy.github.io/mapping/07-find-lod-peaks/)
@@ -244,7 +244,7 @@ We will now zoom in on Chr 10 and look at the contribution of each of the eight 
 
 ```{r coef}
 chr = 10
-coef10 = scan1blup(genoprobs = probs[,chr], pheno = pheno[,pheno.column, drop = FALSE], kinship = K[[chr]], addcovar = addcovar)
+coef10 = scan1blup(genoprobs = probs[,chr], pheno = pheno[,index, drop = FALSE], kinship = K[[chr]], addcovar = addcovar)
 ```
 
 This produces an object containing estimates of each of the eight DO founder allele effect. These are the <i>&beta;<sub>j</sub></i> values in the mapping equation above.
@@ -285,7 +285,8 @@ chr = 10
 start = 30
 end = 36
 query_fxn = create_variant_query_func("../data/cc_variants.sqlite")
-assoc = scan1snps(genoprobs = probs[,chr], map = map, pheno = pheno[,pheno.column,drop = FALSE], kinship = K, addcovar = addcovar, query_func = query_fxn, chr = chr, start = start, end = end, keep_all_snps = TRUE)
+assoc = scan1snps(genoprobs = probs[,chr], map = map, pheno = pheno[,index
+,drop = FALSE], kinship = K, addcovar = addcovar, query_func = query_fxn, chr = chr, start = start, end = end, keep_all_snps = TRUE)
 ```
 
 The `assoc` object is a list containing two objects: the LOD scores for each unique SNP and a `snpinfo` object that maps the LOD scores to each SNP. To plot the association mapping, we need to provide both objects to the [plot_snpasso](https://github.com/rqtl/qtl2/blob/master/R/plot_snpasso.R) function.
