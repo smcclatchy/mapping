@@ -48,22 +48,43 @@ We loaded in two data objects. Look in the Environment pane to see what was load
 
 **NOTE:** the sample IDs must be in the rownames of `pheno`. For more information about data file format, see the [Setup](../setup.md) instructions.
 
-`pheno` contains the sample ID, sex, the study cohort, the dose of benzene and the proportion of bone marrow reticulocytes that were micro-nucleated `(prop.bm.MN.RET)`.  Note that the sample IDs are also stored in the rownames of `pheno`. In order to save time for this tutorial, we will only map with 143 samples from the 100 ppm dosing group.
+`pheno` contains the sample ID, sex, the study cohort, the concentration of benzene and the proportion of bone marrow reticulocytes that were micro-nucleated `(prop.bm.MN.RET)`.  Note that the sample IDs are also stored in the rownames of `pheno`. In order to save time for this tutorial, we will only map with 143 samples from the 100 ppm dosing group.
 
-> ## Challenge 1 Data Dimensions I
+> ## Challenge 1 Look at the Data
 > Determine the dimensions of `pheno`.  
-> 1). How many rows does it have?  
-> 2). How many columns does it have?  
-> 3). What are the names of the variables it contains?  
+> 1). How many rows and columns does it have?  
+> 2). What are the names of the variables it contains?  
+> 3). What does the distribution of the `prop.bm.MN.RET` column look like? Is it normally distributed?  
 >
 > > ## Solution to Challenge 1
 > > `dim(pheno)`  
-> > 1). 143  
-> > 2). 5  
-> > 3). Use `colnames(pheno)` or click the triangle to the left of `pheno`
-> > in the Environment tab.
+> > 1). 143 rows and 5 columns  
+> > 2). Use `colnames(pheno)` or click the triangle to the left of `pheno`
+> > in the Environment tab.  
+> > 3). Use `hist(pheno$prop.bm.MN.RET)` to plot the distribution of the data. The data has a long right 
+> > tail and is not normally distributed.  
 > {: .solution}
 {: .challenge}
+
+Many statistical models, including the QTL mapping model in qtl2, expect that the incoming data will be normally distributed. You may use transformations such as log or square root to make your data more normally distributed. We will be mapping the proportion of MN-RETs in bone marrow (`prop.bm.MN.RET`) and, since the data does not contain zeros or negative numbers, we will log transform the data.
+
+
+~~~
+pheno$log.prop.bm.MN.RET = log(pheno$prop.bm.MN.RET)
+~~~
+{: .r}
+
+Now, let's make a histogram of the log-transformed data.
+
+
+~~~
+hist(pheno$log.prop.bm.MN.RET)
+~~~
+{: .r}
+
+<img src="../fig/rmd-13-hist_log_transform-1.png" title="plot of chunk hist_log_transform" alt="plot of chunk hist_log_transform" style="display: block; margin: auto;" />
+
+This looks much better!
 
 Some researchers are concerned about the reproducibility of DO studies. The argument is that each DO mouse is unique and therefor can never be reproduced. But this misses the point of using the DO. While mice are the sampling unit, in QTL mapping we are sampling the founder alleles at each locus. And an average of 1/8th of the alleles should come from each founder at any given locus. Also, DO mice are a *population* of mice, not a single strain. While it is true that results in an individual DO mouse may not be reproducible, results at the population level should be reproducible. This is similar to the human population in that results from one individual may not represent all humans, but results at the population level should be reproducible.
 
@@ -104,7 +125,7 @@ dim(probs[[1]])
 
 
 ~~~
-[1] 143   8 537
+[1] 590   8 537
 ~~~
 {: .output}
 
@@ -156,11 +177,11 @@ axis(side = 2, at = 20 * 0:7, labels = 20 * 7:0, las = 1)
 The figure above shows kinship between all pairs of samples. White ( = 1) indicates no kinship and red ( = 0) indicates full kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
 
 #### Covariates    
-Next, we need to create additive covariates that will be used in the mapping model. We will use study cohort as a covariate in the mapping model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
+Next, we need to create additive covariates that will be used in the mapping model. We will use study cohort as a covariate in the mapping model. If we were mapping with *all* mice, we would also add benzene concentration to the model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
 
 
 ~~~
-addcovar = pheno[,"Study", drop = FALSE]
+addcovar = model.matrix(~Study, data = pheno)[,-1]
 ~~~
 {: .r}
 
@@ -188,25 +209,52 @@ Before we run the mapping function, let's look at the mapping model. At each mar
 
 Note that this model will give us an estimate of the effect of each founder allele at each marker. There are eight founder strains that contributed to the DO, so we will get eight founder allele effects.
 
-In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the [scan1](https://github.com/rqtl/qtl2/blob/master/R/plot_scan1.R) function. To see the arguments for [scan1](https://github.com/rqtl/qtl2/blob/master/R/plot_scan1.R), you can type `help(scan1)`.
+There are almost 600 samples in this data set and it may take several minutes to map one trait. In order to save some time, we will map using only the samples in the 100 ppm concentration group.
 
 
 ~~~
-pheno.column = which(colnames(pheno) == "prop.bm.MN.RET")
-qtl = scan1(genoprobs = probs, pheno = pheno[,pheno.column, drop = FALSE], kinship = K, addcovar = addcovar)
+c100 = which(pheno$Conc == 100)
 ~~~
 {: .r}
 
-### [Finding LOD peaks](https://smcclatchy.github.io/mapping/07-find-lod-peaks/)
-We can then plot the QTL scan. Note that you must provide the marker map, which we loaded earlier in the MUGA SNP data.
+In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the [scan1](https://github.com/rqtl/qtl2/blob/master/R/plot_scan1.R) function. To see the arguments for [scan1](https://github.com/rqtl/qtl2/blob/master/R/plot_scan1.R), you can type `help(scan1)`. First, let's map the *untransformed* phenotype. (Recall that we log-transformed it above).
 
 
 ~~~
-plot(x = qtl, map = map, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
+index = which(colnames(pheno) == "prop.bm.MN.RET")
+qtl = scan1(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], kinship = K, addcovar = addcovar)
+~~~
+{: .r}
+
+Next, we plot the genome scan.
+
+
+~~~
+plot_scan1(x = qtl, map = map, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes")
 ~~~
 {: .r}
 
 <img src="../fig/rmd-13-qtl_plot-1.png" title="plot of chunk qtl_plot" alt="plot of chunk qtl_plot" style="display: block; margin: auto;" />
+
+> ## Challenge 3 How dose a log-tranformation change the QTL plot?
+> 1). Perform a genome scan on the column called `log.prop.bm.MN.RET`. (Hint: set `index` to the column index in `pheno`.)
+> 2). How does the LOD score for the peak on Chr 10 change?
+> > ## Solution to Challenge 3
+> > 1). index = which(colnames(pheno) == "prop.bm.MN.RET")
+> > qtl = scan1(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], kinship = K, addcovar = addcovar)
+> > plot_scan1(x = qtl, map = map, main = "Log-Transformed BM MN-RET")
+> > 2). The LOD increases from ~16 to ~26.
+> {: .solution}
+{: .challenge} 
+
+
+This challenge shows the importance of looking at your data and transforming it to meet the expectations of the mapping model. In this case, a log transformation improved the model fit and increased the LOD score. We will continue the rest of this lesson using the log-transformed data. Set your `index` variable equal to the column index of `prop.bm.MN.RET`.
+
+
+~~~
+index = which(colnames(pheno) == "prop.bm.MN.RET")
+~~~
+{: .r}
 
 ### [Performing a permutation test](https://smcclatchy.github.io/mapping/10-perform-perm-test/) 
 
@@ -214,18 +262,18 @@ There is clearly a large peak on Chr 10. Next, we must assess its statistical si
 
 
 ~~~
-perms = scan1perm(genoprobs = probs, pheno = pheno[,"prop.bm.MN.RET", drop = FALSE], kinship = K, addcovar = addcovar, n_perm = 100)
+perms = scan1perm(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], addcovar = addcovar, n_perm = 100)
 ~~~
 {: .r}
 
 The `perms` object contains the maximum LOD score from each genome scan of permuted data.
 
-> ## Challenge 3 What is significant?
+> ## Challenge 4 What is significant?
 > 1). Create a histogram of the LOD scores `perms`. Hint: use the `hist()` function.
 > 2). Estimate the value of the LOD score at the 95th percentile.  
 > 3). Then find the value of the LOD score at the 95th percentile using 
 > the `summary()` function.
-> > ## Solution to Challenge 3
+> > ## Solution to Challenge 4
 > > 1). hist(x = perms)` or `hist(x = perms, breaks = 15)`  
 > > 2). By counting number of occurrences of each LOD value (frequencies), we can approximate the 95th percentile at ~7.5.  
 > > 3). `summary(perms)`
@@ -246,6 +294,10 @@ abline(h = thr, col = "red", lwd = 2)
 
 The peak on Chr 10 is well above the red significance line.
 
+### [Finding LOD peaks](https://smcclatchy.github.io/mapping/07-find-lod-peaks/)
+We can then plot the QTL scan. Note that you must provide the marker map, which we loaded earlier in the MUGA SNP data.
+
+
 We can find all of the peaks above the significance threshold using the [find_peaks](https://github.com/rqtl/qtl2/blob/master/R/find_peaks.R) function.
 
 
@@ -258,13 +310,13 @@ find_peaks(scan1_output = qtl, map = map, threshold = thr)
 
 ~~~
   lodindex      lodcolumn chr      pos     lod
-1        1 prop.bm.MN.RET  10 34.17711 16.2346
+1        1 prop.bm.MN.RET  10 33.64838 15.9428
 ~~~
 {: .output}
 
-> ## Challenge 4 Find all peaks
+> ## Challenge 5 Find all peaks
 > Find all peaks for this scan whether or not they meet the 95% significance threshold.
-> > ## Solution to Challenge 4
+> > ## Solution to Challenge 5
 > > `find_peaks(scan1_output = qtl, map = map)`  
 > > Notice that some peaks are missing because they don't meet the default threshold value of 3. See `help(find_peaks)` for more information about this function.
 > {: .solution}
@@ -282,7 +334,7 @@ find_peaks(scan1_output = qtl, map = map, threshold = thr, prob = 0.95)
 
 ~~~
   lodindex      lodcolumn chr      pos     lod    ci_lo    ci_hi
-1        1 prop.bm.MN.RET  10 34.17711 16.2346 30.16649 35.49352
+1        1 prop.bm.MN.RET  10 33.64838 15.9428 30.91241 35.49352
 ~~~
 {: .output}
 
@@ -295,7 +347,7 @@ We will now zoom in on Chr 10 and look at the contribution of each of the eight 
 
 ~~~
 chr = 10
-coef10 = scan1blup(genoprobs = probs[,chr], pheno = pheno[,pheno.column, drop = FALSE], kinship = K[[chr]], addcovar = addcovar)
+coef10 = scan1blup(genoprobs = probs[,chr], pheno = pheno[c100,index, drop = FALSE], kinship = K[[chr]], addcovar = addcovar)
 ~~~
 {: .r}
 
@@ -309,7 +361,7 @@ plot_coefCC(x = coef10, map = map, scan1_output = qtl, main = "Proportion of Mic
 
 <img src="../fig/rmd-13-coef_plot-1.png" title="plot of chunk coef_plot" alt="plot of chunk coef_plot" style="display: block; margin: auto;" />
 
-The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. You can see that DO mice containing the CAST/EiJ allele near 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective effect. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. 
+The top panel shows the eight founder allele effects (or model coefficients) along Chr 10. The founder allele effects are centerd at zero and the units are the same as the phenotype. You can see that DO mice containing the CAST/EiJ allele near 34 Mb have lower levels of micro-nucleated reticulocytes. This means that the CAST allele is associated with less DNA damage and has a protective effect. The bottom panel shows the LOD score, with the support interval for the peak shaded blue. 
 
 ### [SNP Association Mapping](https://smcclatchy.github.io/mapping/12-snp-assoc/)
 
@@ -341,8 +393,8 @@ We can call [scan1snps](https://github.com/rqtl/qtl2/blob/master/R/scan1snps.R) 
 chr = 10
 start = 30
 end = 36
-query_fxn = create_variant_query_func("../data/cc_variants.sqlite")
-assoc = scan1snps(genoprobs = probs[,chr], map = map, pheno = pheno[,pheno.column,drop = FALSE], kinship = K, addcovar = addcovar, query_func = query_fxn, chr = chr, start = start, end = end, keep_all_snps = TRUE)
+query_func = create_variant_query_func("../data/cc_variants.sqlite")
+assoc = scan1snps(genoprobs = probs[,chr], map = map, pheno = pheno[c100,index,drop = FALSE], kinship = K, addcovar = addcovar, query_func = query_func, chr = chr, start = start, end = end, keep_all_snps = TRUE)
 ~~~
 {: .r}
 
@@ -460,5 +512,33 @@ This analysis has led us to the following hypothesis. Inhaled benzene is absorbe
 
 We hope that this tutorial has shown you how the DO can be used to map QTL and use the founder effects and bioinformatics resources to narrow down the candidate gene list. Here, we made used of external gene expression databases and the founder sequence data to build a case for a pair of genes.
 
+
+> ## Challenge 6 Map another trait.
+> 1). Make a histogram of the column `pre.prop.MN.RET` in `pheno`. Does it look like it should be log transformed? If so, add a column to `pheno` that contains the log of `pre.prop.MN.RET`.
+> 2). Perform a genome scan *using all samples* on the column called `pre.prop.MN.RET`. Since you're using all samples, the scan will take longer. (Hint: set `index` to the column index in `pheno`.)
+> 3). Which chromosome has the higest peak? Use `find_peaks` to get the location and support interval for the highest peak.
+> 4). Calculate and plot the BLUPs for the chromosome with the highest peak. (This may take a few minutes.)
+> 5). Perform association mapping in the support interval for the QTL peak, plot the results and plot the genes beneath the
+> association mapping plot.
+> > ## Solution to Challenge 3
+> > 1). hist(pheno$pre.prop.MN.RET)
+> > pheno$log.pre.prop.MN.RET = log(pheno$pre.prop.MN.RET)
+> > 2). index = which(colnames(pheno) == "log.pre.prop.MN.RET")
+> > addcovar = model.matrix(~Study + Conc, data = pheno)[,-1]
+> > qtl_pre = scan1(genoprobs = probs, pheno = pheno[,index, drop = FALSE], kinship = K, addcovar = addcovar)
+> > plot_scan1(x = qtl_pre, map = map, main = "Log-Transformed Pre-dose MN-RET")
+> > 3). find_peaks(qtl_pre, map, threshold = 10, prob = 0.95)
+> > 4). chr = 4
+> > coef4 = scan1blup(genoprobs = probs[,chr], pheno = pheno[,index, drop = FALSE], kinship = K[[chr]], addcovar = addcovar)
+> > plot_coefCC(x = coef4, map = map, scan1_output = qtl, main = "Log-Transformed Pre-dose MN-RET")
+> > 5). chr = 4
+> > start = 132.5
+> > end = 136
+> > assoc4 = scan1snps(genoprobs = probs[,chr], map = map, pheno = pheno[,index,drop = FALSE], kinship = K, 
+> > addcovar = addcovar, query_func = query_func, chr = chr, start = start, end = end, keep_all_snps = TRUE)
+> > genes = query_genes(chr, start, end)
+> > plot_snpasso(assoc4$lod, assoc4$snpinfo, main = "Log-Transformed Pre-dose MN-RET", genes = genes)
+> {: .solution}
+{: .challenge} 
 
 
