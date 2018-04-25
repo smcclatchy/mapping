@@ -31,14 +31,16 @@ The `calc_genoprob()` function calculates QTL genotype probabilities, conditiona
 
 ![](../fig/threeD_array.png)
 
+[See this page for a graphical review of data structures in R](http://venus.ifca.unican.es/Rintro/_images/dataStructuresNew.png).  
 
 To find QTL at positions between markers (so called "pseudomarkers"), first  insert pseudomarkers into the genetic map with the function `insert_pseudomarkers()`.
 
 We'll use the
 [iron dataset](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron)
-from
-[Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992)
-(an intercross) as an example. We first load the data using the function `system.file`, which finds files located in packages. 
+from [Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992)
+(an intercross) as an example. In this study spleen and liver iron levels were measured in an F2 cross between mouse strains C57BL/6J and SWR. C57BL/6J mice exhibit low levels of non-heme iron, while SWR mice exhibit high levels. Iron levels between spleen and liver in the F2s were poorly correlated, indicating tissue-specific regulation. Significant QTL were found on chromosomes 2 and 16 for liver, and on chromosomes 8 and 9 in spleen. Candidate genes included transferrin near the chromosome 9 peak, and <i>&beta;</i>2-microglobulin near the chromosome 2 peak.
+
+We first load the data using the function `system.file`, which finds files located in packages. 
 
 ```{r load_data}
 library(qtl2)
@@ -47,13 +49,13 @@ iron <- read_cross2(file = system.file("extdata", "iron.zip", package="qtl2") )
 
 To load your own data, you would use the file path to your data files. For example, if the file path to your data files is `/home/qtlproject/data`, the command to load your data would look like this:
 
-```{r load_my_data, eval=FALSE}
+```{r load_my_data, eval=FALSE, error=FALSE}
 myQTLdata <- read_cross2(file = "/home/qtlproject/data/myqtldata.yaml" )
 ```
 
 The YAML file contains all control information for your data, including names of data files, cross type, column specifications for sex and cross information, and more. This can also be in JSON format. Alternatively, all data files can be zipped together for loading.
 
-```{r load_my_zipdata, eval=FALSE}
+```{r load_my_zipdata, eval=FALSE, error=FALSE}
 myQTLdata <- read_cross2(file = "/home/qtlproject/data/myqtldata.zip" )
 ```
 

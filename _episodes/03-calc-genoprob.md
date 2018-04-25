@@ -28,14 +28,16 @@ The `calc_genoprob()` function calculates QTL genotype probabilities, conditiona
 
 ![](../fig/threeD_array.png)
 
+[See this page for a graphical review of data structures in R](http://venus.ifca.unican.es/Rintro/_images/dataStructuresNew.png).  
 
 To find QTL at positions between markers (so called "pseudomarkers"), first  insert pseudomarkers into the genetic map with the function `insert_pseudomarkers()`.
 
 We'll use the
 [iron dataset](https://github.com/kbroman/qtl2/tree/gh-pages/assets/sampledata/iron)
-from
-[Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992)
-(an intercross) as an example. We first load the data using the function `system.file`, which finds files located in packages. 
+from [Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992)
+(an intercross) as an example. In this study spleen and liver iron levels were measured in an F2 cross between mouse strains C57BL/6J and SWR. C57BL/6J mice exhibit low levels of non-heme iron, while SWR mice exhibit high levels. Iron levels between spleen and liver in the F2s were poorly correlated, indicating tissue-specific regulation. Significant QTL were found on chromosomes 2 and 16 for liver, and on chromosomes 8 and 9 in spleen. Candidate genes included transferrin near the chromosome 9 peak, and <i>&beta;</i>2-microglobulin near the chromosome 2 peak.
+
+We first load the data using the function `system.file`, which finds files located in packages. 
 
 
 ~~~
