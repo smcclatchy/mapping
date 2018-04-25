@@ -168,7 +168,6 @@ Kinship values between pairs of samples range between 0 (no relationship) and 1.
 image(1:nrow(K[[1]]), 1:ncol(K[[1]]), K[[1]][,ncol(K[[1]]):1], xlab = "Samples", 
       ylab = "Samples", yaxt = "n", main = "Kinship between samples", 
       breaks = 0:100/100, col = heat.colors(length(0:100) - 1))
-axis(side = 2, at = 20 * 0:7, labels = 20 * 7:0, las = 1)
 ~~~
 {: .r}
 
@@ -248,11 +247,11 @@ plot_scan1(x = qtl, map = map, main = "Proportion of Micro-nucleated Bone Marrow
 {: .challenge} 
 
 
-This challenge shows the importance of looking at your data and transforming it to meet the expectations of the mapping model. In this case, a log transformation improved the model fit and increased the LOD score. We will continue the rest of this lesson using the log-transformed data. Set your `index` variable equal to the column index of `prop.bm.MN.RET`.
+This challenge shows the importance of looking at your data and transforming it to meet the expectations of the mapping model. In this case, a log transformation improved the model fit and increased the LOD score. We will continue the rest of this lesson using the log-transformed data. Set your `index` variable equal to the column index of `log.prop.bm.MN.RET`.
 
 
 ~~~
-index = which(colnames(pheno) == "prop.bm.MN.RET")
+index = which(colnames(pheno) == "log.prop.bm.MN.RET")
 ~~~
 {: .r}
 
