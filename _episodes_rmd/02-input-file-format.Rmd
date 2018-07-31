@@ -80,7 +80,7 @@ For further details, see the separate [vignette on the input file format](http:/
 ## Sample data sets
 
 In this lesson, we'll work with data sets included in the `qtl2` package. You can find out more about the [sample data files](http://kbroman.org/qtl2/pages/sampledata.html) from the R/qtl2 web site. Zipped versions of these datasets are included with the [qtl2geno](https://github.com/rqtl/qtl2geno) package and can be loaded into R using the `read_cross2()` function.
-Additional sample data sets, including data on Diversity Outbred (DO) mice, are available at <https://github.com/rqtl/qtl2data>. Additional sample data sets, including data on Diversity Outbred (DO) mice, are available at <https://github.com/rqtl/qtl2data>.
+Additional sample data sets, including data on Diversity Outbred (DO) mice, are available at <https://github.com/rqtl/qtl2data>.
 
 > ## Challenge 2
 > Go to <https://github.com/rqtl/qtl2data> to view additional sample data.  
