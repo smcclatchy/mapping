@@ -2,21 +2,22 @@
 layout: lesson
 root: .
 ---
-This lesson introduces genetic mapping using qtl2, a R package for analyzing quantitative phenotypes and genetic data. Genetic mapping with qtl2 allows researchers in fields as diverse as agriculture, evolution, and medicine to identify specific chromosomal regions that contribute variation to phenotypes. The goal of this process is to identify the action, interaction, number, and precise location of these regions.
+This lesson introduces genetic mapping using qtl2, a R package for analyzing quantitative phenotypes and genetic data from complex crosses like the Diversity Outbred (DO). Genetic mapping with qtl2 allows researchers in fields as diverse as medicine, evolution, and agriculture to identify specific chromosomal regions that contribute to variation in phenotypes (quantitative trait loci or QTL). The goal is to identify the action, interaction, number, and precise location of these regions.
 
-Participants will be able to
+Participants will learn to
+* calculate genotype and allele probabilities
+* perform a genome scan and plot the results
+* evaluate statistical significance of results
+* find estimated effects of a QTL on a phenotype
+* account for relationships among individuals by using a kinship matrix
+* perform SNP association analysis
 
-
-The lesson borrows strongly from [Karl Broman's](http://kbroman.org/) [software](http://kbroman.org/pages/software.html), tutorials, and book co-authored with [Saunak Sen](http://senresearch.org/), [A Guide to QTL Mapping with R/qtl](http://www.rqtl.org/book/).
+The lesson concludes with a complete analytical workflow from a study of DO mice.The lesson is adapted from [Karl Broman's](http://kbroman.org/) [software](http://kbroman.org/pages/software.html), tutorials, and book co-authored with [Saunak Sen](http://senresearch.org/), [A Guide to QTL Mapping with R/qtl](http://www.rqtl.org/book/).
 
 > ## Prerequisites
->
+> Understand fundamental genetic principles
 > Know how to access files not in the working directory by specifying the path.  
 > Know how to install a R package.  
-> Know how to assign a value to a variable.   
-> Know how to create a plot.  
-> Know how to use a for loop.  
-> Know how to create a vector or list with the `c()` function.  
-> Know how to subset a vector with index notation and by name.   
-> Know how to apply a function.  
+> Know how to assign a value to a variable.
+> Know how to apply a built-in function.
 {: .prereq}
