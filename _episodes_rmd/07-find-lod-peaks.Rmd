@@ -35,6 +35,7 @@ To find peaks above a given threshold LOD value, use the function `find_peaks()`
 You need to provide both the `scan1()` output, the marker/pseudomarker map and a threshold. We will use the 95% threshold from the permutations in the previous lesson.
 
 ```{r find_peaks}
+operm <- scan1perm(pr, iron$pheno, Xcovar=Xcovar, n_perm=1000)
 thr = summary(operm)
 find_peaks(out, map, threshold = thr, prob = 0.95, expand2markers = FALSE)
 ```

@@ -26,20 +26,8 @@ You need to provide both the `scan1()` output, the marker/pseudomarker map and a
 
 
 ~~~
+operm <- scan1perm(pr, iron$pheno, Xcovar=Xcovar, n_perm=1000)
 thr = summary(operm)
-~~~
-{: .r}
-
-
-
-~~~
-Error in summary(operm): object 'operm' not found
-~~~
-{: .error}
-
-
-
-~~~
 find_peaks(out, map, threshold = thr, prob = 0.95, expand2markers = FALSE)
 ~~~
 {: .r}
@@ -47,9 +35,15 @@ find_peaks(out, map, threshold = thr, prob = 0.95, expand2markers = FALSE)
 
 
 ~~~
-Error in find_peaks_and_bayesint(scan1_output, map, threshold, peakdrop, : object 'thr' not found
+  lodindex lodcolumn chr  pos       lod ci_lo ci_hi
+1        1     liver   2 56.8  4.957564  54.3  70.3
+2        1     liver   7 50.1  4.050766  17.1  53.6
+3        1     liver   8 40.0  3.802511  34.0  55.0
+4        1     liver  16 28.6  7.681569  21.6  32.6
+5        2    spleen   8 13.6  4.302919   5.0  23.0
+6        2    spleen   9 56.6 12.063226  54.6  58.6
 ~~~
-{: .error}
+{: .output}
 
 The `find_peaks()` function can also pick out multiple peaks on a chromosome: each peak must exceed the chosen threshold, and the argument `peakdrop` indicates the amount that the LOD curve must drop between the lowest of two adjacent peaks.  Use this feature with caution.
 
@@ -62,9 +56,16 @@ find_peaks(out, map, threshold = thr, peakdrop = 1.8, prob = 0.95, expand2marker
 
 
 ~~~
-Error in find_peaks_and_bayesint(scan1_output, map, threshold, peakdrop, : object 'thr' not found
+  lodindex lodcolumn chr  pos       lod ci_lo ci_hi
+1        1     liver   2 56.8  4.957564  54.3  70.3
+2        1     liver   7 25.1  4.040021  15.1  27.1
+3        1     liver   7 50.1  4.050766  41.1  53.6
+4        1     liver   8 40.0  3.802511  34.0  55.0
+5        1     liver  16 28.6  7.681569  21.6  32.6
+6        2    spleen   8 13.6  4.302919   5.0  23.0
+7        2    spleen   9 56.6 12.063226  54.6  58.6
 ~~~
-{: .error}
+{: .output}
 
 Each row shows a different peak; the columns show the peak location, LOD score and the lower and upper interval endpoints.
 
