@@ -74,13 +74,6 @@ c2eff_pg <- scan1coef(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
 ~~~
 {: .r}
 
-
-
-~~~
-Error in scan1coef(pr[, "2"], iron$pheno[, "liver"], kinship_loco[["2"]]): object 'kinship_loco' not found
-~~~
-{: .error}
-
 Here's a plot of the estimates.
 
 
@@ -88,44 +81,13 @@ Here's a plot of the estimates.
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
 col <- c("slateblue", "violetred", "green3")
 plot(c2eff_pg, map["2"], columns=1:3, col=col, ylab="Phenotype average")
-~~~
-{: .r}
-
-
-
-~~~
-Error in plot(c2eff_pg, map["2"], columns = 1:3, col = col, ylab = "Phenotype average"): object 'c2eff_pg' not found
-~~~
-{: .error}
-
-
-
-~~~
 last_coef <- unclass(c2eff_pg)[nrow(c2eff_pg),]
-~~~
-{: .r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'c2eff_pg' not found
-~~~
-{: .error}
-
-
-
-~~~
 for(i in seq(along=last_coef))
     axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ~~~
 {: .r}
 
-
-
-~~~
-Error in axis(side = 4, at = last_coef[i], names(last_coef)[i], tick = FALSE, : plot.new has not been called yet
-~~~
-{: .error}
+<img src="../fig/rmd-11-plot_effects_pg_liver_c2-1.png" title="plot of chunk plot_effects_pg_liver_c2" alt="plot of chunk plot_effects_pg_liver_c2" style="display: block; margin: auto;" />
 
 You can also get estimated additive and dominance effects, using a matrix of contrasts.
 
@@ -136,57 +98,19 @@ c2effB_pg <- scan1coef(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]],
 ~~~
 {: .r}
 
-
-
-~~~
-Error in scan1coef(pr[, "2"], iron$pheno[, "liver"], kinship_loco[["2"]], : object 'kinship_loco' not found
-~~~
-{: .error}
-
 Here's a plot of the results.
 
 
 ~~~
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
 plot(c2effB_pg, map["2"], columns=2:3, col=col)
-~~~
-{: .r}
-
-
-
-~~~
-Error in plot(c2effB_pg, map["2"], columns = 2:3, col = col): object 'c2effB_pg' not found
-~~~
-{: .error}
-
-
-
-~~~
 last_coef <- unclass(c2effB_pg)[nrow(c2effB_pg),2:3]
-~~~
-{: .r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'c2effB_pg' not found
-~~~
-{: .error}
-
-
-
-~~~
 for(i in seq(along=last_coef))
     axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ~~~
 {: .r}
 
-
-
-~~~
-Error in axis(side = 4, at = last_coef[i], names(last_coef)[i], tick = FALSE, : plot.new has not been called yet
-~~~
-{: .error}
+<img src="../fig/rmd-11-plot_effects_pg_liver_c2_contr-1.png" title="plot of chunk plot_effects_pg_liver_c2_contr" alt="plot of chunk plot_effects_pg_liver_c2_contr" style="display: block; margin: auto;" />
 
 Another option for estimating the QTL effects is to treat them as random effects and calculate Best Linear Unbiased Predictors (BLUPs). This is particularly valuable for multi-parent populations such as the Collaborative Cross and Diversity Outbred mice, where the large number of possible genotypes at a QTL lead to considerable variability in the effect estimates. To calculate BLUPs, use `scan1blup()`; it takes the same arguments as `scan1coef()`, including
 the option of a kinship matrix to account for a residual polygenic effect.
@@ -197,13 +121,6 @@ c2blup <- scan1blup(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
 ~~~
 {: .r}
 
-
-
-~~~
-Error in scan1blup(pr[, "2"], iron$pheno[, "liver"], kinship_loco[["2"]]): object 'kinship_loco' not found
-~~~
-{: .error}
-
 Here is a plot of the BLUPs (as dashed curves) alongside the standard estimates. Note that the BLUPs are centered at 0, while the coefficient estimates are centered at the phenotype average.
 
 
@@ -211,60 +128,16 @@ Here is a plot of the BLUPs (as dashed curves) alongside the standard estimates.
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
 col <- c("slateblue", "violetred", "green3")
 ylim <- range(c(c2blup, c2eff))+c(-1,1)
-~~~
-{: .r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'c2blup' not found
-~~~
-{: .error}
-
-
-
-~~~
 plot(c2eff, map["2"], columns=1:3, col=col, ylab="Phenotype average", ylim=ylim,
      xlab="Chr 2 position")
-~~~
-{: .r}
-
-
-
-~~~
-Error in plot_coef_internal(unclass(x), map, columns = columns, col = col, : object 'ylim' not found
-~~~
-{: .error}
-
-
-
-~~~
 plot(c2blup, map["2"], columns=1:3, col=col, add=TRUE, lty=2)
-~~~
-{: .r}
-
-
-
-~~~
-Error in plot(c2blup, map["2"], columns = 1:3, col = col, add = TRUE, : object 'c2blup' not found
-~~~
-{: .error}
-
-
-
-~~~
 last_coef <- unclass(c2eff)[nrow(c2eff),]
 for(i in seq(along=last_coef))
     axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ~~~
 {: .r}
 
-
-
-~~~
-Error in axis(side = 4, at = last_coef[i], names(last_coef)[i], tick = FALSE, : plot.new has not been called yet
-~~~
-{: .error}
+<img src="../fig/rmd-11-plot_scan1blup-1.png" title="plot of chunk plot_scan1blup" alt="plot of chunk plot_scan1blup" style="display: block; margin: auto;" />
 
 The `scan1coef` function can also provide estimated QTL effects for binary traits, with `model="binary"`. (However, `scan1blup` has not yet been implemented for binary traits.)
 
