@@ -147,13 +147,6 @@ c2eff_bin <- scan1coef(pr[,"2"], bin_pheno[,"liver"], model="binary")
 ~~~
 {: .r}
 
-
-
-~~~
-Error in scan1coef(pr[, "2"], bin_pheno[, "liver"], model = "binary"): object 'bin_pheno' not found
-~~~
-{: .error}
-
 Here's a plot of the effects. They're a bit tricky to interpret, as they are basically log odds ratios.
 
 
@@ -161,44 +154,13 @@ Here's a plot of the effects. They're a bit tricky to interpret, as they are bas
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
 col <- c("slateblue", "violetred", "green3")
 plot(c2eff_bin, map["2"], columns=1:3, col=col)
-~~~
-{: .r}
-
-
-
-~~~
-Error in plot(c2eff_bin, map["2"], columns = 1:3, col = col): object 'c2eff_bin' not found
-~~~
-{: .error}
-
-
-
-~~~
 last_coef <- unclass(c2eff_bin)[nrow(c2eff_bin),] # pull out last coefficients
-~~~
-{: .r}
-
-
-
-~~~
-Error in eval(expr, envir, enclos): object 'c2eff_bin' not found
-~~~
-{: .error}
-
-
-
-~~~
 for(i in seq(along=last_coef))
     axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ~~~
 {: .r}
 
-
-
-~~~
-Error in axis(side = 4, at = last_coef[i], names(last_coef)[i], tick = FALSE, : plot.new has not been called yet
-~~~
-{: .error}
+<img src="../fig/rmd-11-plot_effects_binary-1.png" title="plot of chunk plot_effects_binary" alt="plot of chunk plot_effects_binary" style="display: block; margin: auto;" />
 
 Finally, to plot the raw phenotypes against the genotypes at a single putative QTL position, you can use the function plot_pxg(). This takes a vector of genotypes as produced by the maxmarg() function, which picks the most likely genotype from a set of genotype probabilities, provided it is greater than some specified value (the argument minprob). Note that the “marg” in “maxmarg” stands for “marginal”, as this function is selecting the genotype at each position that has maximum marginal probability.
 
