@@ -14,7 +14,6 @@ keypoints:
 objectives:
 - To specify which input files are required for qtl2 and how they should be formatted.
 - To locate sample data for qtl mapping.
-output: word_document
 questions:
 - How are the data files formatted for qtl2?
 - Which data files are required for qtl2?
