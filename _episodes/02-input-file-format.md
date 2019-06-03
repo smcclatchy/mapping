@@ -1,5 +1,14 @@
 ---
 title: "Input File Format"
+teaching: 15
+exercises: 30
+questions:
+- How are the data files formatted for qtl2?
+- Which data files are required for qtl2?
+- Where can I find sample data for mapping with the qtl2 package?
+objectives:
+- To specify which input files are required for qtl2 and how they should be formatted.
+- To locate sample data for qtl mapping.
 keypoints:
   marker maps, etc.'
 - These different tables are in separate comma-delimited (CSV) files.
@@ -11,17 +20,7 @@ keypoints:
 - These data can be used as a model for formatting your own QTL data.
 - 'QTL mapping data consists of a set of tables of data: marker genotypes, phenotypes,
   in either [YAML](http://www.yaml.org) or [JSON](http://json.org) format is required.
-objectives:
-- To specify which input files are required for qtl2 and how they should be formatted.
-- To locate sample data for qtl mapping.
-output: word_document
-questions:
-- How are the data files formatted for qtl2?
-- Which data files are required for qtl2?
-- Where can I find sample data for mapping with the qtl2 package?
 source: Rmd
-teaching: 15
-exercises: 30
 ---
 
 
