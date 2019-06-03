@@ -19,9 +19,14 @@ knitr_fig_path("11-")
 ```
 
 ```{r load_dependencies, echo=FALSE}
+library(qtl2)
+iron <- read_cross2( system.file("extdata", "iron.zip", package="qtl2") )
 map <- insert_pseudomarkers(map=iron$gmap, step=1)
 pr <- calc_genoprob(cross=iron, map=map, error_prob=0.002)
 kinship <- calc_kinship(pr)
+kinship_loco <- calc_kinship(pr, "loco")
+bin_pheno <- apply(iron$pheno, 2, function(a) as.numeric(a > median(a)))
+rownames(bin_pheno) <- rownames(iron$pheno)
 ```
 
 The `scan1()` function returns only LOD scores. To obtain estimated QTL effects, use the function `scan1coef()`. This function takes a single phenotype and the genotype probabilities for a single chromosome and returns a matrix with the estimated coefficients at each putative QTL location along the chromosome.

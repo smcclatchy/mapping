@@ -44,6 +44,10 @@ Huang X, Paulo MJ, Boer M, Effgen S, Keizer P, Koornneef M, van Eeuwijk FA. Anal
 
 Kover PX, Valdar W, Trakalo J, Scarcelli N, Ehrenreich IM, Purugganan MD, Durrant C, Mott R. A multiparent advanced generation inter-cross to fine-map quantitative traits in Arabidopsis thaliana. PLoS Genetics. 2009 Jul 10;5(7):e1000551.
 
+Review: Population Structure in Genetic Studies: Confounding Factors and Mixed Models
+Lana S. Martin, Eleazar Eskin
+bioRxiv 092106; doi: https://doi.org/10.1101/092106
+
 Svenson KL, Gatti DM, Valdar W, Welsh CE, Cheng R, Chesler EJ, Palmer AA, McMillan L, Churchill GA. High-resolution genetic mapping using the Mouse Diversity Outbred population. Genetics. 2012 Feb 1;190(2):437-47.
 
 
