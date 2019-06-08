@@ -189,3 +189,28 @@ X chromosome LOD thresholds (28243 permutations)
 0.05  3.86   3.77
 ~~~
 {: .output}
+
+> ## Challenge 1
+> Run the following code to shuffle the phenotype data and plot a genome
+> scan with this shuffled (permuted) data.
+>
+
+~~~
+new_order <- sample(rownames(iron$pheno))
+pheno_permuted <- iron$pheno
+rownames(pheno_permuted) <- new_order
+xcovar_permuted <- Xcovar
+rownames(xcovar_permuted) <- new_order
+out_permuted <- scan1(genoprobs = pr, pheno = pheno_permuted, Xcovar = xcovar_permuted)
+plot(out_permuted, map)
+head(new_order)
+~~~
+{: .r}
+> What is the maximum LOD score in the scan from this permuted data?
+> How does it compare to the maximum LOD scores obtained from the earlier scan?
+> How does it compare to the 5% and 20% LOD thresholds obtained earlier?
+> Paste the maximum LOD score in the scan from your permuted data into the etherpad.
+> > ## Solution to Challenge 1
+> >
+> {: .solution}
+{: .challenge}
