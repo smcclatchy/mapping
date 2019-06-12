@@ -161,6 +161,13 @@ variants_2_97.5 <- query_variants(2, 97, 98)
 ~~~
 {: .r}
 
+
+
+~~~
+Error in query_variants(2, 97, 98): File ../data/cc_variants.sqlite doesn't exist
+~~~
+{: .error}
+
 Similarly, to create a function for querying the MGI mouse gene annotations, you call `create_gene_query_func()` with the path to the `mouse_genes_mgi.sqlite` file:
 
 
@@ -176,6 +183,13 @@ To grab the genes overlapping the interval 97-98 Mbp on chromosome 2, you’d th
 genes_2_97.5 <- query_genes(2, 97, 98)
 ~~~
 {: .r}
+
+
+
+~~~
+Error in query_genes(2, 97, 98): File ../data/mouse_genes_mgi.sqlite doesn't exist
+~~~
+{: .error}
 
 The way we’ve set this up is a bit complicated, but it allows greatest flexibility on the part of the user. And for our own work, we like to have a local SQLite database, for rapid queries of SNPs and genes.
 
@@ -201,6 +215,13 @@ variants <- query_variants(2, peak_Mbp - 1, peak_Mbp + 1)
 ~~~
 {: .r}
 
+
+
+~~~
+Error in query_variants(2, peak_Mbp - 1, peak_Mbp + 1): File ../data/cc_variants.sqlite doesn't exist
+~~~
+{: .error}
+
 There are 27737 variants in the interval, including 27492 SNPs, 101 indels, and 144 structural variants. We’re treating all of them as biallelic markers (all but the major allele in the eight founder strains binned into a single allele). In the following, we’re going to just say “SNP” rather than “variant”, even though the variants include indels and structural variants.
 
 After identifying the variants in the interval of interest, we use our genotype probabilities and the founder SNP genotypes to infer the SNP genotypes for the DO mice. That is, at each SNP, we want to collapse the eight founder allele probabilities to two SNP allele probabilities, using the SNP genotypes of the founders.
@@ -222,6 +243,13 @@ out_snps <- scan1snps(pr, DOex$pmap, DOex$pheno, k[["2"]], sex, query_func=query
 ~~~
 {: .r}
 
+
+
+~~~
+Error in query_func(chr, start, end): File ../data/cc_variants.sqlite doesn't exist
+~~~
+{: .error}
+
 The output is a list with two components: `lod` is a matrix of LOD scores (with a single column, since we’re using just one phenotype), and `snpinfo` is a data frame with SNP information. With the argument `keep_all_snps=TRUE`, the `snpinfo` data frame contains information about all of the variants in the region with an index column indicating the equivalence classes.
 
 The function `plot_snpasso()` can be used to plot the results, with points at each of the SNPs. The default is to plot *all* SNPs. In this case, there are 27737 variants in the region, but only 150 distinct ones.
@@ -233,7 +261,12 @@ plot_snpasso(out_snps$lod, out_snps$snpinfo)
 ~~~
 {: .r}
 
-<img src="../fig/rmd-12-plot_snp_asso-1.png" title="plot of chunk plot_snp_asso" alt="plot of chunk plot_snp_asso" style="display: block; margin: auto;" />
+
+
+~~~
+Error in plot_snpasso(out_snps$lod, out_snps$snpinfo): object 'out_snps' not found
+~~~
+{: .error}
 
 We can actually just type plot() rather than plot_snpasso(), because with the snpinfo table in place of a genetic map, plot() detects that a SNP association plot should be created.
 
@@ -244,25 +277,61 @@ plot(out_snps$lod, out_snps$snpinfo)
 ~~~
 {: .r}
 
-<img src="../fig/rmd-12-plot_snp_asso_wplot-1.png" title="plot of chunk plot_snp_asso_wplot" alt="plot of chunk plot_snp_asso_wplot" style="display: block; margin: auto;" />
+
+
+~~~
+Error in plot(out_snps$lod, out_snps$snpinfo): object 'out_snps' not found
+~~~
+{: .error}
 
 We can use our `query_genes()` function to identify the genes in the region, and `plot_genes()` to plot their locations. But also `plot_snpasso()` can take the gene locations with the argument genes and then display them below the SNP association results. Here, we are also highlighting the top SNPs in the SNP association plot using the `drop_hilit` argument. SNPs with LOD score within `drop_hilit` of the maximum are shown in pink.
 
 
 ~~~
 genes <- query_genes(2, peak_Mbp - 1, peak_Mbp + 1)
+~~~
+{: .r}
+
+
+
+~~~
+Error in query_genes(2, peak_Mbp - 1, peak_Mbp + 1): File ../data/mouse_genes_mgi.sqlite doesn't exist
+~~~
+{: .error}
+
+
+
+~~~
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot(out_snps$lod, out_snps$snpinfo, drop_hilit=1.5, genes=genes)
 ~~~
 {: .r}
 
-<img src="../fig/rmd-12-id_and_plot_genes-1.png" title="plot of chunk id_and_plot_genes" alt="plot of chunk id_and_plot_genes" style="display: block; margin: auto;" />
+
+
+~~~
+Error in plot(out_snps$lod, out_snps$snpinfo, drop_hilit = 1.5, genes = genes): object 'out_snps' not found
+~~~
+{: .error}
 
 To get a table of the SNPs with the largest LOD scores, use the function `top_snps()`. This will show all SNPs with LOD score within some amount (the default is 1.5) of the maximum SNP LOD score. We’re going to display just a subset of the columns.
 
 
 ~~~
 top <- top_snps(out_snps$lod, out_snps$snpinfo)
+~~~
+{: .r}
+
+
+
+~~~
+Error in top_snps(out_snps$lod, out_snps$snpinfo): object 'out_snps' not found
+~~~
+{: .error}
+
+
+
+~~~
 print(top[,c(1, 8:15, 20)], row.names=FALSE)
 ~~~
 {: .r}
@@ -270,70 +339,9 @@ print(top[,c(1, 8:15, 20)], row.names=FALSE)
 
 
 ~~~
-                 snp_id A_J C57BL_6J 129S1_SvImJ NOD_ShiLtJ NZO_HlLtJ
-             rs33297153   1        1           2          1         2
-            rs226751615   1        1           1          1         2
-            rs230653109   1        1           1          1         2
-            rs250407660   1        1           1          1         2
-            rs248216267   1        1           1          1         2
-            rs237564299   1        1           1          1         2
-            rs255011323   1        1           1          1         2
-            rs212448521   1        1           1          1         2
-             rs27379206   1        1           1          1         2
-             rs27379194   1        1           1          1         2
-            rs244484646   1        1           1          1         2
-            rs215855380   1        1           1          1         2
-            rs236942088   1        1           1          1         2
-            rs212414861   1        1           1          1         2
-            rs229578122   1        1           1          1         2
-            rs254318131   1        1           1          1         2
-            rs217679969   1        1           1          1         2
-            rs238404461   1        1           1          1         2
-            rs262749925   1        1           1          1         2
-            rs231282689   1        1           1          1         2
-            rs260286709   1        1           1          1         2
-             rs27396282   1        1           1          1         2
-            rs263841533   1        1           1          1         2
-            rs231205920   1        1           1          1         2
-            rs242885221   1        1           1          1         2
-            rs586746690   1        1           2          1         2
-             rs49002164   1        1           2          1         2
- SV_2_96945406_96945414   1        1           1          1         2
-            rs244595995   1        1           2          1         2
- SV_2_96993116_96993118   1        1           1          1         2
- CAST_EiJ PWK_PhJ WSB_EiJ      lod
-        3       1       1 8.213182
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 7.949721
-        2       1       1 8.631497
-        2       1       1 8.631497
-        3       1       1 8.280942
-        2       1       1 8.631497
-        2       1       1 8.280942
+Error in print(top[, c(1, 8:15, 20)], row.names = FALSE): object 'top' not found
 ~~~
-{: .output}
+{: .error}
 
 The top SNPs all have NZO and CAST with a common allele, different from the other 6 founders. The next-best SNPs have NZO, CAST, and 129 with a common allele, and then there’s a group of SNPs where NZO has a unique allele.
 
@@ -345,6 +353,21 @@ out_gwas <- scan1snps(pr, DOex$pmap, DOex$pheno, k, sex, query_func=query_varian
 ~~~
 {: .r}
 
+
+
+~~~
+Warning in parallel::mclapply(..., mc.cores = cores): all scheduled cores
+encountered errors in user code
+~~~
+{: .error}
+
+
+
+~~~
+Error: $ operator is invalid for atomic vectors
+~~~
+{: .error}
+
 We can make a Manhattan plot of the results as follows. We use `altcol` to define a color for alternate chromosomes and `gap=0` to have no gap between chromosomes.
 
 
@@ -354,7 +377,12 @@ plot(out_gwas$lod, out_gwas$snpinfo, altcol="green4", gap=0)
 ~~~
 {: .r}
 
-<img src="../fig/rmd-12-plot_gwas_scan-1.png" title="plot of chunk plot_gwas_scan" alt="plot of chunk plot_gwas_scan" style="display: block; margin: auto;" />
+
+
+~~~
+Error in plot(out_gwas$lod, out_gwas$snpinfo, altcol = "green4", gap = 0): object 'out_gwas' not found
+~~~
+{: .error}
 
 Note that while there are LOD scores on the X chromosome that are as large as those on chromosome 2, we’re allowing a genotype × sex interaction on the X chromosome and so the test has 3 degrees of freedom (versus 2 degrees of freedom on the autosomes) and so the LOD scores will naturally be larger. If we’d used the allele probabilities (apr above, calculated from genoprob_to_alleleprob()) rather than the genotype probabilities, we would be performing a test with 1 degree of freedom on both the X chromosome and the autosomes.
 

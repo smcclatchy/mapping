@@ -96,6 +96,11 @@ Additional sample data sets, including data on Diversity Outbred (DO) mice, are 
 {: .challenge}
 
 
+## Preparing your Diversity Outbred (DO) data for qtl2
+
+Karl Broman provides detailed instructions for [preparing DO mouse data for R/qtl2](https://kbroman.org/qtl2/pages/prep_do_data.html).
+
+
 
 
 
