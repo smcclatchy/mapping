@@ -397,13 +397,6 @@ assoc = scan1snps(genoprobs = probs[,chr], map = map, pheno = pheno[c100,index,d
 ~~~
 {: .r}
 
-
-
-~~~
-Error in query_func(chr, start, end): File ../data/cc_variants.sqlite doesn't exist
-~~~
-{: .error}
-
 The `assoc` object is a list containing two objects: the LOD scores for each unique SNP and a `snpinfo` object that maps the LOD scores to each SNP. To plot the association mapping, we need to provide both objects to the [plot_snpasso](https://github.com/rqtl/qtl2/blob/master/R/plot_snpasso.R) function.
 
 
@@ -412,12 +405,7 @@ plot_snpasso(scan1output = assoc$lod, snpinfo = assoc$snpinfo, main = "Proportio
 ~~~
 {: .r}
 
-
-
-~~~
-Error in plot_snpasso(scan1output = assoc$lod, snpinfo = assoc$snpinfo, : object 'assoc' not found
-~~~
-{: .error}
+<img src="../fig/rmd-13-assoc_fig-1.png" title="plot of chunk assoc_fig" alt="plot of chunk assoc_fig" style="display: block; margin: auto;" />
 
 This plot shows the LOD score for each SNP in the QTL interval. The SNPs occur in "shelves" because all of the SNPs in a haplotype block have the same founder strain pattern. The SNPs with the highest LOD scores are the ones for which CAST/EiJ contributes the alternate allele.
 
@@ -429,19 +417,6 @@ First, we must query the database for the genes in the interval. The path of the
 ~~~
 query_genes = create_gene_query_func(dbfile = "../data/mouse_genes.sqlite", filter = "source='MGI'")
 genes = query_genes(chr, start, end)
-~~~
-{: .r}
-
-
-
-~~~
-Error in query_genes(chr, start, end): File ../data/mouse_genes.sqlite doesn't exist
-~~~
-{: .error}
-
-
-
-~~~
 head(genes)
 ~~~
 {: .r}
@@ -449,9 +424,36 @@ head(genes)
 
 
 ~~~
-Error in head(genes): object 'genes' not found
+  chr source       type    start     stop score strand phase
+1  10    MGI pseudogene 30.01095 30.01730    NA      +    NA
+2  10    MGI pseudogene 30.08426 30.08534    NA      -    NA
+3  10    MGI pseudogene 30.17971 30.18022    NA      +    NA
+4  10    MGI       gene 30.19457 30.20060    NA      -    NA
+5  10    MGI pseudogene 30.37292 30.37556    NA      +    NA
+6  10    MGI       gene 30.45052 30.45170    NA      +    NA
+               ID    Name Parent
+1 MGI:MGI:2685078   Gm232   <NA>
+2 MGI:MGI:3647013  Gm8767   <NA>
+3 MGI:MGI:3781001  Gm2829   <NA>
+4 MGI:MGI:1913561   Cenpw   <NA>
+5 MGI:MGI:3643405  Gm4780   <NA>
+6 MGI:MGI:5623507 Gm40622   <NA>
+                                          Dbxref                 mgiName
+1    NCBI_Gene:212813,ENSEMBL:ENSMUSG00000111554      predicted gene 232
+2    NCBI_Gene:667696,ENSEMBL:ENSMUSG00000111001     predicted gene 8767
+3 NCBI_Gene:100040542,ENSEMBL:ENSMUSG00000110776     predicted gene 2829
+4     NCBI_Gene:66311,ENSEMBL:ENSMUSG00000075266    centromere protein W
+5    NCBI_Gene:212815,ENSEMBL:ENSMUSG00000111047     predicted gene 4780
+6                            NCBI_Gene:105245128 predicted gene%2c 40622
+              bioType Alias
+1          pseudogene  <NA>
+2          pseudogene  <NA>
+3          pseudogene  <NA>
+4 protein coding gene  <NA>
+5          pseudogene  <NA>
+6         lncRNA gene  <NA>
 ~~~
-{: .error}
+{: .output}
 
 The `genes` object contains annotation information for each gene in the interval.
 
@@ -463,12 +465,7 @@ plot_snpasso(assoc$lod, assoc$snpinfo, main = "Proportion of Micro-nucleated Bon
 ~~~
 {: .r}
 
-
-
-~~~
-Error in plot_snpasso(assoc$lod, assoc$snpinfo, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes", : object 'assoc' not found
-~~~
-{: .error}
+<img src="../fig/rmd-13-plot_assoc2-1.png" title="plot of chunk plot_assoc2" alt="plot of chunk plot_assoc2" style="display: block; margin: auto;" />
 
 ### Searching for Candidate Genes
 
@@ -508,7 +505,7 @@ Sulfation is a prominent detoxification mechanism for benzene as well. The diagr
 
 ![](../fig/Monks_ChemBiolInter_2010_Fig1.jpg)
 
-This analysis has led us to the following hypothesis. Inhaled benzene is absorbed by the lungs into the bloodstream and transported to the liver. There, it is metabolized and some metabolites are transported to the bone marrow. One class of genes that is involved in toxicant metabolism are sulfotransferases. [<i>Sult3a1</i>](http://www.informatics.jax.org/marker/MGI:1931469) is a phase II enzyme that conjugates compounds (such as phenol, which is a metabolite of benzene) with a sulfate group before transport into the bile. It is possible that a high level of <i>Sult3a1</i> expression could remove benzene by-products and be protective. Our hypothesis is that the copy number gain in the CAST allele increases liver gene expression of <i>Sult3a1</i> and <i>Gm4794</i>. High liver expression of these genes allows mice containing the CAST allele to rapidly conjugate harmful benzene metabolites and excrete them from the body before they can reach the bone marrow and cause DNA damage. Further experimental validation is required, but this is a plausible hypothesis.
+This analysis has led us to the following hypothesis. Inhaled benzene is absorbed by the lungs into the bloodstream and transported to the liver. There, it is metabolized, and some metabolites are transported to the bone marrow. One class of genes that is involved in toxicant metabolism are sulfotransferases. [<i>Sult3a1</i>](http://www.informatics.jax.org/marker/MGI:1931469) is a phase II enzyme that conjugates compounds (such as phenol, which is a metabolite of benzene) with a sulfate group before transport into the bile. It is possible that a high level of <i>Sult3a1</i> expression could remove benzene by-products and be protective. Our hypothesis is that the copy number gain in the CAST allele increases liver gene expression of <i>Sult3a1</i> and <i>Gm4794</i>. High liver expression of these genes allows mice containing the CAST allele to rapidly conjugate harmful benzene metabolites and excrete them from the body before they can reach the bone marrow and cause DNA damage. Further experimental validation is required, but this is a plausible hypothesis.
 
 ![](../fig/benzene_hypothesis.png)
 
