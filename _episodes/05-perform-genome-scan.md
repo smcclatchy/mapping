@@ -23,7 +23,7 @@ The freely available chapter on [single-QTL analysis](http://www.rqtl.org/book/r
 
 Linear regression can be employed to identify presence of QTL in a cross. To identify QTL using regression, we compare the fit for two models: 1) the null hypothesis that there are no QTL anywhere in the genome; and 2) the alternative hypothesis that there is a QTL near a specific position. A sloped line indicates that there is a difference in mean phenotype between the two genotype groups, and that a QTL is present. A line with no slope indicates that there is no difference in mean phenotype between the two groups, and that no QTL exists. Regression aims to find the line of best fit to the data. In the case of a backcross with only two genotypes, a t-test is performed at the marker to determine whether the difference in phenotype means is zero.
 
-![](../fig/nullvalt.png)
+![adapted from Broman & Sen, 2009](../fig/nullvalt.png)
 
 To find the line of best fit, the residuals or errors are calculated, then squared for each case.
 
@@ -104,15 +104,17 @@ The LOD plot for liver clearly shows the largest peak is on chromosome 16. There
 > Use the `head()` function to view the first 30 rows of the scan output. What is the next genotyped marker in the scan output? What are its LOD scores for liver and spleen?
 >
 > > ## Solution to Challenge 1
+> > `head(out, n=30)`  
 > > D1Mit80  0.02154502 0.2216682
 > {: .solution}
 {: .challenge}
 
 > ## Challenge 2
-> Use the `sort()` function to sort the LOD scores for liver. Which pseudomarker has the highest LOD score? Which genotyped marker has the highest LOD score? What chromosome number are they on? 
+> Use the `sort()` function to sort the LOD scores for liver. Hint: run `dim(out)` for the row and column dimensions, or `colnames(out)` for the column names.   
+Which pseudomarker has the highest LOD score? Which genotyped marker has the highest LOD score? What chromosome number are they on? 
 >
 > > ## Solution to Challenge 2
-> > sort(out[,1]) or sort(out[,"liver"])
+> > `sort(out[,1])` for column 1 or `sort(out[,"liver"])` for the column named "liver".  
 > > The pseudomarker with the largest score is c16.loc29, with a LOD of 7.68. The genotyped marker with the largest LOD is D16Mit30 with a score of 7.28. Both are located on chromosome 16.
 > {: .solution}
 {: .challenge}
@@ -121,7 +123,7 @@ The LOD plot for liver clearly shows the largest peak is on chromosome 16. There
 > Use the `sort()` function to sort the LOD scores for spleen. Which pseudomarker has the highest LOD score? Which genotyped marker has the highest LOD score? What chromosome number are they on? 
 >
 > > ## Solution to Challenge 3
-> > sort(out[,2]) or sort(out[,"spleen"])
+> > `sort(out[,2])` or `sort(out[,"spleen"])`
 > > The pseudomarker with the largest score is c9.loc57, with a LOD of 12.1. The genotyped marker with the largest LOD is D9Mit182 with a score of 10.4. Both are located on chromosome 9.
 > {: .solution}
 {: .challenge}
@@ -130,7 +132,7 @@ The LOD plot for liver clearly shows the largest peak is on chromosome 16. There
 > Plot the LOD scores for spleen. Does the genome scan for spleen share any large-ish peaks with the scan for liver?
 >
 > > ## Solution to Challenge 4
-> > plot_scan1(out, map = map, lodcolumn = "spleen")
+> > `plot_scan1(out, map = map, lodcolumn = "spleen")`
 > > Both liver and spleen genome scans share a peak on chromosome 8 with a LOD score near 4.
 > {: .solution}
 {: .challenge}
