@@ -38,8 +38,6 @@ Linear mixed models (LMMs) consider genome-wide similarity between all pairs of 
 
 
 ~~~
-map <- insert_pseudomarkers(map = iron$gmap, step = 1)
-pr <- calc_genoprob(cross = iron, map = map, error_prob = 0.002)
 kinship <- calc_kinship(probs = pr)
 ~~~
 {: .r}
@@ -92,6 +90,16 @@ kinship <- calc_kinship(pr, cores=4)
 >
 >
 > > ## Solution to Challenge 1
+> >
+> {: .solution}
+{: .challenge}
+
+> ## Challenge 2
+> Think about what a kinship matrix is and what it 
+> represents. Share your understanding with a neighbor. 
+> Write your explanation in the collaborative document.
+>
+> > ## Solution to Challenge 2
 > >
 > {: .solution}
 {: .challenge}

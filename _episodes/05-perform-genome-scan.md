@@ -25,7 +25,7 @@ Linear regression can be employed to identify presence of QTL in a cross. To ide
 
 ![adapted from Broman & Sen, 2009](../fig/nullvalt.png)
 
-To find the line of best fit, the residuals or errors are calculated, then squared for each case.
+To find the line of best fit, the residuals or errors are calculated, then squared for each data point.
 
 ![](../fig/residual.png)
 ![](../fig/squared-residual.png)
@@ -90,7 +90,6 @@ The function `plot_scan1()` can be used to plot the LOD curves. Use the argument
 
 
 ~~~
-library(qtl2)
 plot_scan1(out, map = map, lodcolumn = "liver")
 ~~~
 {: .r}

@@ -59,13 +59,13 @@ Each row shows a different peak; the columns show the peak location, LOD score a
 
 
 > ## Challenge 2
-> 1). Calculate the 90% Bayes credible interval on chromosome 16 for the liver phenotype (lodcolumn = 1).
-What is the range of this interval that has a 90% chance of containing the true QTL position?  
-2). Calculate the 95% Bayes credible interval for the same chromosome and phenotype. How does the interval change as you increase the probability? Why?
+> 1). Calculate the 90% Bayes credible interval.
+For chromosome 16 in liver, what is the range of the interval that has a 90% chance of containing the true QTL position? 
+2). Compare with the 95% Bayes credible interval calculated earlier. How does the interval change as you increase the probability? Why?
 >
 > > ## Solution to Challenge 2
 > >
-> > 1). `find_peaks(out, map, lodcolumn=1, chr=16, prob=0.90, expand2markers = FALSE)` produces a range from 25.1 to 40.4.  
-> > 2). `find_peaks(out, map, lodcolumn=1, chr=16, prob=0.95, expand2markers = FALSE)` produces a range from 6.6 to 40.4, which is much broader than that of a 90% probability. The interval widens because the probability that the interval contains the true QTL position has increased. 
+> > 1). `find_peaks(out, map, prob=0.90, expand2markers = FALSE)` produces a range from 25.1 to 40.4.  
+> > 2). `find_peaks(out, map, prob=0.95, expand2markers = FALSE)` produces a range from 6.6 to 40.4, which is much broader than that of a 90% probability. The interval widens because the probability that the interval contains the true QTL position has increased. 
 > {: .solution}
 {: .challenge}

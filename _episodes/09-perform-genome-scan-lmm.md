@@ -67,6 +67,14 @@ out_pg <- scan1(pr, iron$pheno, kinship, Xcovar=Xcovar, cores=4)
 ~~~
 {: .r}
 
+If, for your linear mixed model genome scan, you wish to use the "leave one chromosome out" (LOCO) method (scan each chromosome using a kinship matrix that is calculated using data from all other chromosomes), use `type="loco"` in the call to `calc_kinship()`.
+
+
+~~~
+kinship_loco <- calc_kinship(pr, "loco")
+~~~
+{: .r}
+
 For the LOCO (leave one chromosome out) method, provide the list of kinship matrices as obtained from `calc_kinship()` with `method="loco"`.
 
 
@@ -77,21 +85,31 @@ out_pg_loco <- scan1(pr, iron$pheno, kinship_loco, Xcovar=Xcovar)
 
 To plot the results, we again use `plot_scan1()`.
 
-Here is a plot of the LOD scores, by Haley-Knott regression and the linear mixed model using either the standard kinship matrix or the LOCO method.
+Here is a plot of the LOD scores by Haley-Knott regression and the linear mixed model using either the standard kinship matrix or the LOCO method.
 
 ![](../fig/lod-plot-compare-liver.png)
 ![](../fig/lod-plot-compare-spleen.png)
+
+You can use the code below to generate overlaid plots for each method.
+
+
+~~~
+plot_scan1(out_pg_loco, map = map, lodcolumn = "liver", col = "black")
+plot_scan1(out_pg, map = map, lodcolumn = "liver", col = "blue", add = TRUE)
+plot_scan1(out, map = map, lodcolumn = "liver", add = TRUE, col = "green")
+~~~
+{: .r}
 
 For the liver phenotype (top panel), the three methods give quite different results. The linear mixed model with an overall kinship matrix gives much lower LOD scores than the other two methods.  On chromosomes with some evidence of a QTL, the LOCO method gives higher LOD scores than Haley-Knott, except on chromosome 16 where it gives lower LOD scores.
 
 For the spleen phenotype (bottom panel), the linear mixed model with an overall kinship matrix again gives much lower LOD scores than the other two methods. However, in this case Haley-Knott regression and the LOCO method give quite similar results.
 
 > ## Challenge 1
-> Earlier you inserted pseudomarkers for the `grav` data and saved the results to an object called `gravmap`.  Then you calculated genotype probabilities and saved the results to an object called `gravpr`.   
-> 1). Calculate kinship for the `grav` data using the LOCO method. 
-> 2). Run a genome scan with the genotype probabilities and kinship that you calculated.
+> Earlier you inserted pseudomarkers for the `grav` data and saved the results to an object called `gravmap`.  Then you calculated genotype probabilities and saved the results to an object called `gravpr`.    
+> 1). Calculate kinship for the `grav` data using the LOCO method.  
+> 2). Run a genome scan with the genotype probabilities and kinship that you calculated.  
 > 3). Find the maximum LOD score for the scan using
-`which(out_grav == maxlod(out_grav), arr.ind = TRUE)`.
+`which(out_grav == maxlod(out_grav), arr.ind = TRUE)`.  
 > 4). Plot the genome scan for this phenotype (hint: use the column number as lodcolumn).
 > >
 > > ## Solution to Challenge 1
@@ -104,10 +122,47 @@ pheno = grav$pheno, kinship = grav_kinship)`
 > {: .solution}
 {: .challenge}
 
-If, for your linear mixed model genome scan, you wish to use the "leave one chromosome out" (LOCO) method (scan each chromosome using a kinship matrix that is calculated using data from all other chromosomes), use `type="loco"` in the call to `calc_kinship()`.
+> ## Challenge 2
+> What are the benefits and disadvantages of the three 
+> methods for genome scanning (Haley-Knott regression,
+> kinship matrix, and leave-one-chromosome out (LOCO)?)  
+> Which method would you use to scan, and why?  
+> Think about the advantages and disadvantages of each,
+> discuss with a neighbor, and share your thoughts in the
+> collaborative document.
+> >
+> > ## Solution to Challenge 2
+> >
+> {: .solution}
+{: .challenge}
 
 
 ~~~
-kinship_loco <- calc_kinship(pr, "loco")
+file <- paste0("https://raw.githubusercontent.com/rqtl/",
+               "qtl2data/master/B6BTBR/b6btbr.zip")
+b6btbr <- read_cross2(file)
 ~~~
 {: .r}
+
+> ## Challenge 3
+> Run the code above to load the B6 x BTBR intercross data
+> into an object called `b6btbr`.  
+> 1. Insert pseudomarkers and calculate genotype probabilities.  
+> 2. Run a genome scan for the log10_insulin_10wk phenotype.  
+> 3. Calculate a kinship matrix.  
+> 4. Calculate a list of kinship matrices with the LOCO method.  
+> 5. Run genome scans with the regular kinship matrix and with the list of LOCO matrices.  
+> 6. Plot the 3 different genome scans in a single plot in
+> different colors.  
+> Which chromosomes appear to have peaks 
+> with a LOD score greater than 4?    
+> Which methods identify these peaks? Which don't?
+> 
+> >
+> > ## Solution to Challenge 3
+> >
+> {: .solution}
+{: .challenge}
+
+
+
