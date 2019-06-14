@@ -151,7 +151,7 @@ b6btbr <- read_cross2(file)
 > explains what needs to happen next, finds the relevant code in
 > the lesson, suggests new names for objects (i.e. NOT the ones
 > you've already used, such as "map", "pr", "out", etc.).
-
+>
 > 1. Run the code above to load the [B6 x BTBR intercross data](https://github.com/rqtl/qtl2data/tree/master/B6BTBR) 
 > into an object called b6btbr.
 > 2. Insert pseudomarkers and calculate genotype probabilities.

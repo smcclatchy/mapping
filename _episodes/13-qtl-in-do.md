@@ -39,7 +39,7 @@ sessionInfo()
 ~~~
 {: .r}
 
-The call to `sessionInfo` provides information about the R version running on your machine and the R packages that are installed. This information can help you to troubleshoot.
+The call to `sessionInfo` provides information about the R version running on your machine and the R packages that are installed. This information can help you to troubleshoot. If you can't load the data, try downloading the data again by typing the following into your browser: ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata
 
 We loaded in two data objects. Look in the Environment pane to see what was loaded.  You should see an object called `pheno` with 143 observations (in rows) of 5 variables (in columns), an object called `map` and an object called `probs`.
 
@@ -66,11 +66,11 @@ We loaded in two data objects. Look in the Environment pane to see what was load
 > {: .solution}
 {: .challenge}
 
-Many statistical models, including the QTL mapping model in qtl2, expect that the incoming data will be normally distributed. You may use transformations such as log or square root to make your data more normally distributed. We will be mapping the proportion of MN-RETs in bone marrow (`prop.bm.MN.RET`) and, since the data does not contain zeros or negative numbers, we will log transform the data.
+Many statistical models, including the QTL mapping model in qtl2, expect that the incoming data will be normally distributed. You may use transformations such as log or square root to make your data more normally distributed. We will be mapping the proportion of micronucleated reticulocytess in bone marrow (`prop.bm.MN.RET`) and, since the data does not contain zeros or negative numbers, we will log transform the data.
 
 
 ~~~
-pheno$log.prop.bm.MN.RET = log(pheno$prop.bm.MN.RET)
+pheno$log.MN.RET = log(pheno$prop.bm.MN.RET)
 ~~~
 {: .r}
 
@@ -78,7 +78,7 @@ Now, let's make a histogram of the log-transformed data.
 
 
 ~~~
-hist(pheno$log.prop.bm.MN.RET)
+hist(pheno$log.MN.RET)
 ~~~
 {: .r}
 
@@ -88,7 +88,7 @@ This looks much better!
 
 Some researchers are concerned about the reproducibility of DO studies. The argument is that each DO mouse is unique and therefor can never be reproduced. But this misses the point of using the DO. While mice are the sampling unit, in QTL mapping we are sampling the founder alleles at each locus. And an average of 1/8th of the alleles should come from each founder at any given locus. Also, DO mice are a *population* of mice, not a single strain. While it is true that results in an individual DO mouse may not be reproducible, results at the population level should be reproducible. This is similar to the human population in that results from one individual may not represent all humans, but results at the population level should be reproducible.
 
-The benzene inhalation study was conducted in two separate cohorts (termed "Study" in the `pheno` file). Below, we plot the proportion of MN-RETs in bone marrow versus the benzene concentration for each study cohort. As you can see, while individual mice have varying MN-RETs, there is a dose-dependent increase in MN-RETs in both cohort. This is an example of how results in the DO reproduce at the population level.
+The benzene inhalation study was conducted in two separate cohorts (termed "Study" in the `pheno` file). Below, we plot the proportion of micronucleated reticulocytess in bone marrow versus the benzene concentration for each study cohort. As you can see, while individual mice have varying micronucleated reticulocytess, there is a dose-dependent increase in micronucleated reticulocytess in both cohorts. This is an example of how results in the DO reproduce at the population level.
 
 ![](../fig/bm_mnret_by_dose_cohort.png)
 
@@ -190,7 +190,7 @@ The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-ef
 
 ### [Performing a genome scan](https://smcclatchy.github.io/mapping/06-perform-genome-scan/)  
 
-Before we run the mapping function, let's look at the mapping model. At each marker on the genotyping array, we will fit a model that regresses the phenotype (MN-RETs) on covariates and the founder allele proportions.  
+Before we run the mapping function, let's look at the mapping model. At each marker on the genotyping array, we will fit a model that regresses the phenotype (micronucleated reticulocytess) on covariates and the founder allele proportions.  
 
 ![](../fig/equation1.png)
 
@@ -236,22 +236,22 @@ plot_scan1(x = qtl, map = map, main = "Proportion of Micro-nucleated Bone Marrow
 <img src="../fig/rmd-13-qtl_plot-1.png" title="plot of chunk qtl_plot" alt="plot of chunk qtl_plot" style="display: block; margin: auto;" />
 
 > ## Challenge 3 How dose a log-tranformation change the QTL plot?
-> 1). Perform a genome scan on the column called `log.prop.bm.MN.RET`. (Hint: set `index` to the column index in `pheno`.)
+> 1). Perform a genome scan on the column called `log.MN.RET`. (Hint: set `index` to the column index in `pheno`.)
 > 2). How does the LOD score for the peak on Chr 10 change?
 > > ## Solution to Challenge 3
 > > 1). index = which(colnames(pheno) == "prop.bm.MN.RET")
 > > qtl = scan1(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], kinship = K, addcovar = addcovar)
-> > plot_scan1(x = qtl, map = map, main = "Log-Transformed BM MN-RET")
+> > plot_scan1(x = qtl, map = map, main = "Log-Transformed BM micronucleated reticulocytes")
 > > 2). The LOD increases from ~16 to ~26.
 > {: .solution}
 {: .challenge} 
 
 
-This challenge shows the importance of looking at your data and transforming it to meet the expectations of the mapping model. In this case, a log transformation improved the model fit and increased the LOD score. We will continue the rest of this lesson using the log-transformed data. Set your `index` variable equal to the column index of `log.prop.bm.MN.RET`.
+This challenge shows the importance of looking at your data and transforming it to meet the expectations of the mapping model. In this case, a log transformation improved the model fit and increased the LOD score. We will continue the rest of this lesson using the log-transformed data. Set your `index` variable equal to the column index of `log.MN.RET`.
 
 
 ~~~
-index = which(colnames(pheno) == "log.prop.bm.MN.RET")
+index = which(colnames(pheno) == "log.MN.RET")
 ~~~
 {: .r}
 
@@ -521,22 +521,22 @@ We hope that this tutorial has shown you how the DO can be used to map QTL and u
 > association mapping plot.
 > > ## Solution to Challenge 3
 > > 1). hist(pheno$pre.prop.MN.RET)
-> > pheno$log.pre.prop.MN.RET = log(pheno$pre.prop.MN.RET)
-> > 2). index = which(colnames(pheno) == "log.pre.prop.MN.RET")
+> > pheno$log.pre.MN.RET = log(pheno$pre.prop.MN.RET)
+> > 2). index = which(colnames(pheno) == "log.pre.MN.RET")
 > > addcovar = model.matrix(~Study + Conc, data = pheno)[,-1]
 > > qtl_pre = scan1(genoprobs = probs, pheno = pheno[,index, drop = FALSE], kinship = K, addcovar = addcovar)
-> > plot_scan1(x = qtl_pre, map = map, main = "Log-Transformed Pre-dose MN-RET")
+> > plot_scan1(x = qtl_pre, map = map, main = "Log-Transformed Pre-dose micronucleated reticulocytes")
 > > 3). find_peaks(qtl_pre, map, threshold = 10, prob = 0.95)
 > > 4). chr = 4
 > > coef4 = scan1blup(genoprobs = probs[,chr], pheno = pheno[,index, drop = FALSE], kinship = K[[chr]], addcovar = addcovar)
-> > plot_coefCC(x = coef4, map = map, scan1_output = qtl, main = "Log-Transformed Pre-dose MN-RET")
+> > plot_coefCC(x = coef4, map = map, scan1_output = qtl, main = "Log-Transformed Pre-dose micronucleated reticulocytes")
 > > 5). chr = 4
 > > start = 132.5
 > > end = 136
 > > assoc4 = scan1snps(genoprobs = probs[,chr], map = map, pheno = pheno[,index,drop = FALSE], kinship = K, 
 > > addcovar = addcovar, query_func = query_func, chr = chr, start = start, end = end, keep_all_snps = TRUE)
 > > genes = query_genes(chr, start, end)
-> > plot_snpasso(assoc4$lod, assoc4$snpinfo, main = "Log-Transformed Pre-dose MN-RET", genes = genes)
+> > plot_snpasso(assoc4$lod, assoc4$snpinfo, main = "Log-Transformed Pre-dose micronucleated reticulocytes", genes = genes)
 > {: .solution}
 {: .challenge} 
 
