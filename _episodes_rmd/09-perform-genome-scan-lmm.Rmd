@@ -136,21 +136,46 @@ b6btbr <- read_cross2(file)
 ```
 
 > ## Challenge 3
-> Run the code above to load the [B6 x BTBR intercross data](https://github.com/rqtl/qtl2data/tree/master/B6BTBR)
-> into an object called `b6btbr`.  
-> 1. Insert pseudomarkers and calculate genotype probabilities.  
-> 2. Run a genome scan for the log10_insulin_10wk phenotype.  
-> 3. Calculate a kinship matrix.  
-> 4. Calculate a list of kinship matrices with the LOCO method.  
-> 5. Run genome scans with the regular kinship matrix and with the list of LOCO matrices.  
-> 6. Plot the 3 different genome scans in a single plot in
-> different colors.  
-> Which chromosomes appear to have peaks 
-> with a LOD score greater than 4?    
+> Pair programming exercise: with your partner, review and carry 
+> out all of the steps in QTL mapping that we have covered so far,
+> using a new data set. One of you types the code, the other
+> explains what needs to happen next, finds the relevant code in
+> the lesson, suggests new names for objects (i.e. NOT the ones
+> you've already used, such as "map", "pr", "out", etc.).
+
+> 1. Run the code above to load the [B6 x BTBR intercross data](https://github.com/rqtl/qtl2data/tree/master/B6BTBR) 
+> into an object called b6btbr.
+> 2. Insert pseudomarkers and calculate genotype probabilities.
+> 3. Run a genome scan for the log10_insulin_10wk phenotype.
+> 4. Calculate a kinship matrix.
+> 5. Calculate a list of kinship matrices with the LOCO method.
+> 6. Run genome scans with the regular kinship matrix and with the
+> list of LOCO matrices.
+> 7. Plot the 3 different genome scans in a single plot in 
+> different colors.
+> 8. Which chromosomes appear to have peaks with a LOD score greater than 4? 
 > Which methods identify these peaks? Which don't?
 > 
 > >
 > > ## Solution to Challenge 3
+> >
+> > `file <- paste0("https://raw.githubusercontent.com/rqtl/", "qtl2data/master/B6BTBR/b6btbr.zip")`  
+> > `b6btbr <- read_cross2(file)`  
+> > `summary(b6btbr)`  
+> > `head(b6btbr$pheno)`  
+> > `colnames(b6btbr$pheno)`  
+> > `b6bmap <- insert_pseudomarkers(map=b6btbr$gmap, step=1)`  
+> > `prb6b <- calc_genoprob(cross=b6btbr, map=b6bmap, error_prob=0.002)`  
+> > `b6bXcovar <- get_x_covar(b6btbr)`  
+> > `b6bout <- scan1(genoprobs = prb6b, pheno = b6btbr$pheno, Xcovar=b6bXcovar)`  
+> > `plot(b6bout, map = b6bmap)`  
+> > `b6bkinship <- calc_kinship(probs = prb6b)`  
+> > `out_pg_b6b <- scan1(prb6b, b6btbr$pheno, kinship=b6bkinship, Xcovar=b6bXcovar)`  
+> > `kinship_loco_b6b <- calc_kinship(prb6b, "loco")`  
+> > `out_pg_loco_b6b <- scan1(prb6b, b6btbr$pheno, kinship_loco_b6b, Xcovar=b6bXcovar)`  
+> > `plot_scan1(out_pg_loco_b6b, map = b6bmap, lodcolumn = "log10_insulin_10wk", col = "black")`  
+> > `plot_scan1(out_pg_b6b, map = b6bmap, lodcolumn = "log10_insulin_10wk", col = "blue", add = TRUE)`  
+> > `plot_scan1(b6bout, map = b6bmap, lodcolumn = "log10_insulin_10wk", col = "green", add = TRUE)`  
 > >
 > {: .solution}
 {: .challenge}

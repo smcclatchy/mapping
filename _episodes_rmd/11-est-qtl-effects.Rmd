@@ -37,7 +37,7 @@ For example, to get the estimated effects on chromosome 2 for the liver phenotyp
 c2eff <- scan1coef(pr[,"2"], iron$pheno[,"liver"])
 ```
 
-The result is a matrix of `r nrow(c2eff)` positions &times; `r ncol(c2eff)` genotypes. 
+The result is a matrix of `r nrow(c2eff)` positions &times; `r ncol(c2eff)-1` genotypes. An additional column contains the y-axis intercept values.
 
 ```{r effects_matrix_dim}
 dim(c2eff)
@@ -116,7 +116,7 @@ for(i in seq(along=last_coef))
     axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ```
 
-Another option for estimating the QTL effects is to treat them as random effects and calculate Best Linear Unbiased Predictors (BLUPs). This is particularly valuable for multi-parent populations such as the Collaborative Cross and Diversity Outbred mice, where the large number of possible genotypes at a QTL lead to considerable variability in the effect estimates. To calculate BLUPs, use `scan1blup()`; it takes the same arguments as `scan1coef()`, including
+Another option for estimating the QTL effects is to treat them as [random effects](https://stats.stackexchange.com/questions/4700/what-is-the-difference-between-fixed-effect-random-effect-and-mixed-effect-mode#151800) and calculate [Best Linear Unbiased Predictors](https://en.wikipedia.org/wiki/Best_linear_unbiased_prediction) (BLUPs). This is particularly valuable for multi-parent populations such as the Collaborative Cross and Diversity Outbred mice, where the large number of possible genotypes at a QTL lead to considerable variability in the effect estimates. To calculate BLUPs, use `scan1blup()`; it takes the same arguments as `scan1coef()`, including
 the option of a kinship matrix to account for a residual polygenic effect.
 
 ```{r scan1blup}
