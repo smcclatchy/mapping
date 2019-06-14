@@ -27,7 +27,42 @@ c2eff <- scan1coef(pr[,"2"], iron$pheno[,"liver"])
 ~~~
 {: .r}
 
-The result is a matrix,  positions &times;  genotypes. To plot the effects, use the function `plot_coef()`. There is again an S3 method function `plot.scan1coef()`, so one can just type `plot()`, but in either case you need to provide the map for the relevant chromosome. Use the argument columns to indicate which coefficient columns to plot.
+The result is a matrix of 39 positions &times; 4 genotypes. 
+
+
+~~~
+dim(c2eff)
+~~~
+{: .r}
+
+
+
+~~~
+[1] 39  4
+~~~
+{: .output}
+
+
+
+~~~
+head(c2eff)
+~~~
+{: .r}
+
+
+
+~~~
+                SS        SB        BB intercept
+D2Mit379 -8.627249 -1.239968  9.867217  95.10455
+c2.loc39 -8.802858 -1.405183 10.208040  95.15023
+c2.loc40 -8.926486 -1.552789 10.479275  95.18752
+c2.loc41 -8.994171 -1.670822 10.664993  95.21294
+c2.loc42 -9.004121 -1.748738 10.752859  95.22372
+c2.loc43 -8.956705 -1.779555 10.736260  95.21841
+~~~
+{: .output}
+
+To plot the effects, use the function `plot_coef()`. Use the argument `columns` to indicate which coefficient columns to plot.
 
 
 ~~~
@@ -51,8 +86,42 @@ c2effB <- scan1coef(pr[,"2"], iron$pheno[,"liver"],
 ~~~
 {: .r}
 
-The result will then contain the estimates of `mu`, `a`, and `d`. Here's a plot of the additive and dominance effects, which are in the
-second and third columns.
+The result will then contain the estimates of `mu`, `a`, and `d`. 
+
+
+~~~
+dim(c2effB)
+~~~
+{: .r}
+
+
+
+~~~
+[1] 39  3
+~~~
+{: .output}
+
+
+
+~~~
+head(c2effB)
+~~~
+{: .r}
+
+
+
+~~~
+               mu        a         d
+D2Mit379 95.10455 9.247233 -1.239968
+c2.loc39 95.15023 9.505449 -1.405183
+c2.loc40 95.18752 9.702880 -1.552789
+c2.loc41 95.21294 9.829582 -1.670822
+c2.loc42 95.22372 9.878490 -1.748738
+c2.loc43 95.21841 9.846482 -1.779555
+~~~
+{: .output}
+
+Here's a plot of the additive and dominance effects, which are in the second and third columns.
 
 
 ~~~
@@ -71,8 +140,36 @@ If you provide a kinship matrix to `scan1coef()`, it fits a linear mixed model (
 
 ~~~
 c2eff_pg <- scan1coef(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
+dim(c2eff_pg)
 ~~~
 {: .r}
+
+
+
+~~~
+[1] 39  4
+~~~
+{: .output}
+
+
+
+~~~
+head(c2eff_pg)
+~~~
+{: .r}
+
+
+
+~~~
+                 SS         SB       BB intercept
+D2Mit379  -9.552159 -0.5954469 10.14761  94.54643
+c2.loc39  -9.868033 -0.7068007 10.57483  94.57886
+c2.loc40 -10.130889 -0.8028380 10.93373  94.60481
+c2.loc41 -10.332864 -0.8737574 11.20662  94.62137
+c2.loc42 -10.468249 -0.9112466 11.37950  94.62626
+c2.loc43 -10.533817 -0.9103486 11.44417  94.61832
+~~~
+{: .output}
 
 Here's a plot of the estimates.
 
@@ -162,7 +259,7 @@ for(i in seq(along=last_coef))
 
 <img src="../fig/rmd-11-plot_effects_binary-1.png" title="plot of chunk plot_effects_binary" alt="plot of chunk plot_effects_binary" style="display: block; margin: auto;" />
 
-Finally, to plot the raw phenotypes against the genotypes at a single putative QTL position, you can use the function plot_pxg(). This takes a vector of genotypes as produced by the maxmarg() function, which picks the most likely genotype from a set of genotype probabilities, provided it is greater than some specified value (the argument minprob). Note that the “marg” in “maxmarg” stands for “marginal”, as this function is selecting the genotype at each position that has maximum marginal probability.
+Finally, to plot the raw phenotypes against the genotypes at a single putative QTL position, you can use the function `plot_pxg()`. This takes a vector of genotypes as produced by the `maxmarg()` function, which picks the most likely genotype from a set of genotype probabilities, provided it is greater than some specified value (the argument `minprob`). Note that the “marg” in “maxmarg” stands for “marginal”, as this function is selecting the genotype at each position that has maximum marginal probability.
 
 For example, we could get inferred genotypes at the chr 2 QTL for the liver phenotype (at 28.6 cM) as follows:
 
@@ -185,7 +282,7 @@ plot_pxg(g, iron$pheno[,"liver"], ylab="Liver phenotype")
 
 <img src="../fig/rmd-11-plot_pheno_geno-1.png" title="plot of chunk plot_pheno_geno" alt="plot of chunk plot_pheno_geno" style="display: block; margin: auto;" />
 
-We can use swap_axes=TRUE to have the phenotype on the x-axis. And we can use SEmult=2 to include mean ± 2 SE intervals.
+We can use `swap_axes=TRUE` to have the phenotype on the x-axis. And we can use `SEmult=2` to include mean ± 2 SE intervals.
 
 
 ~~~

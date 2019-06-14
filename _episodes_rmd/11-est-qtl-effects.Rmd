@@ -37,7 +37,14 @@ For example, to get the estimated effects on chromosome 2 for the liver phenotyp
 c2eff <- scan1coef(pr[,"2"], iron$pheno[,"liver"])
 ```
 
-The result is a matrix, `r #nrow(c2eff)` positions &times; `r #ncol(c2eff)` genotypes. To plot the effects, use the function `plot_coef()`. There is again an S3 method function `plot.scan1coef()`, so one can just type `plot()`, but in either case you need to provide the map for the relevant chromosome. Use the argument columns to indicate which coefficient columns to plot.
+The result is a matrix of `r nrow(c2eff)` positions &times; `r ncol(c2eff)` genotypes. 
+
+```{r effects_matrix_dim}
+dim(c2eff)
+head(c2eff)
+```
+
+To plot the effects, use the function `plot_coef()`. Use the argument `columns` to indicate which coefficient columns to plot.
 
 ```{r plot_effects_liver_c2}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
@@ -56,8 +63,14 @@ c2effB <- scan1coef(pr[,"2"], iron$pheno[,"liver"],
 
 ```
 
-The result will then contain the estimates of `mu`, `a`, and `d`. Here's a plot of the additive and dominance effects, which are in the
-second and third columns.
+The result will then contain the estimates of `mu`, `a`, and `d`. 
+
+```{r add_dom_matrix_dim}
+dim(c2effB)
+head(c2effB)
+```
+
+Here's a plot of the additive and dominance effects, which are in the second and third columns.
 
 ```{r plot_effects_liver_c2_contr}
 par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
@@ -71,6 +84,8 @@ If you provide a kinship matrix to `scan1coef()`, it fits a linear mixed model (
 
 ```{r est_effects_pg_liver_c2}
 c2eff_pg <- scan1coef(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
+dim(c2eff_pg)
+head(c2eff_pg)
 ```
 
 Here's a plot of the estimates.
@@ -139,7 +154,7 @@ for(i in seq(along=last_coef))
     axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
 ```
 
-Finally, to plot the raw phenotypes against the genotypes at a single putative QTL position, you can use the function plot_pxg(). This takes a vector of genotypes as produced by the maxmarg() function, which picks the most likely genotype from a set of genotype probabilities, provided it is greater than some specified value (the argument minprob). Note that the “marg” in “maxmarg” stands for “marginal”, as this function is selecting the genotype at each position that has maximum marginal probability.
+Finally, to plot the raw phenotypes against the genotypes at a single putative QTL position, you can use the function `plot_pxg()`. This takes a vector of genotypes as produced by the `maxmarg()` function, which picks the most likely genotype from a set of genotype probabilities, provided it is greater than some specified value (the argument `minprob`). Note that the “marg” in “maxmarg” stands for “marginal”, as this function is selecting the genotype at each position that has maximum marginal probability.
 
 For example, we could get inferred genotypes at the chr 2 QTL for the liver phenotype (at 28.6 cM) as follows:
 
@@ -156,7 +171,7 @@ par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_pxg(g, iron$pheno[,"liver"], ylab="Liver phenotype")
 ```
 
-We can use swap_axes=TRUE to have the phenotype on the x-axis. And we can use SEmult=2 to include mean ± 2 SE intervals.
+We can use `swap_axes=TRUE` to have the phenotype on the x-axis. And we can use `SEmult=2` to include mean ± 2 SE intervals.
 
 ```{r plot_pheno_geno_se}
 par(mar=c(4.1, 4.1, 0.6, 0.6))

@@ -145,7 +145,7 @@ b6btbr <- read_cross2(file)
 {: .r}
 
 > ## Challenge 3
-> Run the code above to load the B6 x BTBR intercross data
+> Run the code above to load the [B6 x BTBR intercross data](https://github.com/rqtl/qtl2data/tree/master/B6BTBR)
 > into an object called `b6btbr`.  
 > 1. Insert pseudomarkers and calculate genotype probabilities.  
 > 2. Run a genome scan for the log10_insulin_10wk phenotype.  
