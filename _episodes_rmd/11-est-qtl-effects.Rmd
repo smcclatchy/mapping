@@ -156,10 +156,7 @@ par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_pxg(g, iron$pheno[,"liver"], ylab="Liver phenotype")
 ```
 
-We can use swap_axes=TRUE to have the phenotype on the x-axis. And we can use SEmult=2 to include mean ± 2 SE intervals.
+Challenge
 
-```{r plot_pheno_geno_se}
-par(mar=c(4.1, 4.1, 0.6, 0.6))
-plot_pxg(g, iron$pheno[,"liver"], SEmult=2, swap_axes=TRUE, xlab="Liver phenotype")
-```
-
+how would you decide which chr to plot? Discuss with your neighbor.
+then calc and plot blups for spleen on chr of your choice
