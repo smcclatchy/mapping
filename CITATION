@@ -4,6 +4,9 @@ Susan McClatchy, Daniel Gatti, Karl Broman, and Gary Churchill (eds): “Quantit
 Version 2018.04.0, April 2018,
 http://smcclatchy.github.io/mapping/
 
+To cite R/qtl2 in publications, use:
+Broman KW, Gatti DM, Simecek P, Furlotte NA, Prins P, Sen Ś, Yandell BS, Churchill GA (2018) R/qtl2: software for mapping quantitative trait loci with high-dimensional data and multi-parent populations. Genetics 211:495-502 doi:10.1534/genetics.118.301595 pdf
+
 To cite R/qtl in publications, use 
 Broman KW, Wu H, Sen Ś, Churchill GA (2003) R/qtl: QTL mapping in experimental crosses. Bioinformatics 19:889-890
 https://www.biostat.wisc.edu/~kbroman/publications/rqtl.pdf

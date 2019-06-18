@@ -22,7 +22,7 @@ source: Rmd
 
 The first task in QTL analysis is to calculate conditional genotype probabilities, given the observed marker data, at each putative QTL position. For example, the first step would be to determine the probabilities for genotypes AA and AB at the locus indicated below.
 
-![](../fig/unknown_genotype.png)
+![adapted from Broman & Sen, 2009](../fig/unknown_genotype.png)
 
 The `calc_genoprob()` function calculates QTL genotype probabilities, conditional on the available marker data. These are needed for most of the QTL mapping functions. The result is returned as a list of three-dimensional arrays (one per chromosome). Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions.
 
@@ -37,7 +37,7 @@ We'll use the
 from [Grant et al. (2006) Hepatology 44:174-185](https://www.ncbi.nlm.nih.gov/pubmed/16799992)
 (an intercross) as an example. In this study spleen and liver iron levels were measured in an F2 cross between mouse strains C57BL/6J and SWR. C57BL/6J mice exhibit low levels of non-heme iron, while SWR mice exhibit high levels. Iron levels between spleen and liver in the F2s were poorly correlated, indicating tissue-specific regulation. Significant QTL were found on chromosomes 2 and 16 for liver, and on chromosomes 8 and 9 in spleen. Candidate genes included transferrin near the chromosome 9 peak, and <i>&beta;</i>2-microglobulin near the chromosome 2 peak.
 
-We first load the data using the function `system.file`, which finds files located in packages. 
+We first load the data using the function `system.file`, which finds files located in packages. The iron data are built into the qtl2 package, so we can use the `system.file()` function to load them directly from the package.
 
 
 ~~~
@@ -46,11 +46,11 @@ iron <- read_cross2(file = system.file("extdata", "iron.zip", package="qtl2") )
 ~~~
 {: .r}
 
-To load your own data, you would use the file path to your data files. For example, if the file path to your data files is `/home/qtlproject/data`, the command to load your data would look like this:
+To load your own data from your machine, you would use the file path to your data files. For example, if the file path to your data files is `/Users/myUserName/qtlProject/data`, the command to load your data would look like this:
 
 
 ~~~
-myQTLdata <- read_cross2(file = "/home/qtlproject/data/myqtldata.yaml" )
+myQTLdata <- read_cross2(file = "/Users/myUserName/qtlProject/data/myqtldata.yaml" )
 ~~~
 {: .r}
 
@@ -58,7 +58,7 @@ The YAML file contains all control information for your data, including names of
 
 
 ~~~
-myQTLdata <- read_cross2(file = "/home/qtlproject/data/myqtldata.zip" )
+myQTLdata <- read_cross2(file = "/Users/myUserName/qtlProject/data/myqtldata.zip" )
 ~~~
 {: .r}
 
@@ -155,7 +155,7 @@ map <- insert_pseudomarkers(map=iron$gmap, step=1)
 ~~~
 {: .r}
 
-Now have a look at the new object called `map`. View only the first two chromosomes.
+Pseudomarkers are inserted at regular intervals, and genotype probabilities will be calculated at each of these intervals. Now have a look at the new object called `map`. View only the first two chromosomes.
 
 
 ~~~
@@ -343,7 +343,7 @@ View the first three rows of genotype probabilities for the first genotyped mark
 {: .output}
 
 > ## Challenge 1
-> Explain why calculating genotype probabilities is the first step in QTL analysis.
+> Find a partner and explain why calculating genotype probabilities is the first step in QTL analysis. Why do you need to insert pseudomarkers first? Listen to your partner's explanation, then write your responses in the collaborative document.
 >
 > > ## Solution to Challenge 1
 > >
@@ -352,9 +352,9 @@ View the first three rows of genotype probabilities for the first genotyped mark
 
 
 > ## Challenge 2
-> Calculate genotype probabilities for a different data set.   
-> 1). Load the grav2.zip file into an object called `grav`.  
-> 2). View a summary of the `grav` data.  
+> Calculate genotype probabilities for a different data set built into the qtl2 package, this one from a study of root gravitropism in *Arabidopsis*.   
+> 1). Load the grav2.zip file from the rqtl2 package into an object called `grav`.  
+> 2). View a summary of the `grav` data. How many individuals? phenotypes? chromosomes? markers? 
 > 3). View the genetic map for the `grav` data.  
 > 4). Insert pseudomarkers at 2 cM intervals. Assign the results to an object called `gravmap`.  
 > 5). Calculate genotype probabilities assuming a genotyping error probability of 0.001. Assign the results to an object called `gravpr`.  
@@ -364,11 +364,11 @@ View the first three rows of genotype probabilities for the first genotyped mark
 > > ## Solution to Challenge 2
 > >
 > > 1). `grav <- read_cross2(file = system.file("extdata", "grav2.zip", package="qtl2"))`  
-> > 2). `summary(grav)`  
+> > 2). `summary(grav)` shows 162 individuals, 241 phenotypes, 5 chromosomes, 234 markers.
 > > 3). `grav$gmap`  
 > > 4). `gravmap <- insert_pseudomarkers(map=grav$gmap, step=2)`  
 > > 5). `gravpr <- calc_genoprob(cross=grav, map=gravmap, error_prob=0.001)`  
-> > 6). `head((gravpr$`5`)[,,"c5.loc4"])`  
+> > 6). `head((gravpr$`5`)[,,"c5.loc4"])` for an example pseudomarker, or `head((gravpr$`5`)[,,"GB.102L-Col/105C"])` for an example of a genotyped marker
 > {: .solution}
 {: .challenge}
 
