@@ -18,6 +18,13 @@ install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
 ~~~
 {: .r}
 
+Make sure that the installation was successful by loading the qtl2 library. You shouldn't get any error messages.
+
+~~~
+library(qtl2)
+~~~
+{: .r}
+
 ## Data files and project organization
 
 1. Make a new folder in your Desktop called `mapping`. Move into this new folder.
@@ -35,6 +42,7 @@ dir.create("./scripts")
 dir.create("./results")
 ~~~
 {: .r}
+
 
 3. Please download the following large files **before the workshop**, and place them in your `data` folder. You can download the files from the URLs below and move the files the same way that you would for downloading and moving any other kind of data.
 
@@ -57,3 +65,31 @@ download.file("ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", "./data/
 You will need these for the final lesson episodes on SNP association mapping and QTL analysis in Diversity Outbred mice.
 
 
+Make sure that both the SNP and gene files downloaded correctly by running the following code. If you get an error, check the file path carefully or download the files again. Make sure to change the file path to the location where you saved the file.
+
+
+Check the SNP file.
+
+~~~
+snp_func = create_variant_query_func("/home/dmgatti/Desktop/mapping/data/cc_variants.sqlite")
+snps = snp_func(1, 10, 11)
+dim(snps)
+~~~
+{: .r}
+
+
+You should get a result that is 13150 rows by 16 columns.
+
+
+Check the gene file.
+
+
+~~~
+gene_func = create_gene_query_func("/home/dmgatti/Desktop/mapping/data/mouse_genes_mgi.sqlite")
+genes = gene_func(1, 10, 11)
+dim(genes)
+~~~
+{: .r}
+
+
+You should get a result that is 18 rows by 15 columns.
