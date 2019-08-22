@@ -2,6 +2,18 @@
 layout: lesson
 root: .
 ---
+
+<head>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-146162546-1"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-146162546-1');
+</script>
+</head>
+
 This lesson introduces genetic mapping using qtl2, a R package for analyzing quantitative phenotypes and genetic data from complex crosses like the Diversity Outbred (DO). Genetic mapping with qtl2 allows researchers in fields as diverse as medicine, evolution, and agriculture to identify specific chromosomal regions that contribute to variation in phenotypes (quantitative trait loci or QTL). The goal is to identify the action, interaction, number, and precise location of these regions.
 
 Participants will learn to
