@@ -171,10 +171,23 @@ par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_pxg(g, iron$pheno[,"liver"], ylab="Liver phenotype")
 ```
 
-We can use `swap_axes=TRUE` to have the phenotype on the x-axis. And we can use `SEmult=2` to include mean ± 2 SE intervals.
-
 ```{r plot_pheno_geno_se}
 par(mar=c(4.1, 4.1, 0.6, 0.6))
 plot_pxg(g, iron$pheno[,"liver"], SEmult=2, swap_axes=TRUE, xlab="Liver phenotype")
 ```
 
+> ## Challenge 1
+> In the code block above, we use `swap_axes=TRUE` to place the phenotype
+> on the x-axis. 
+> We can use `SEmult=2` to include the mean ± 2 SE intervals.
+> 1) How would you decide which chromosome to plot? Discuss this with 
+> your neighbor, then write your responses in the collaborative document.
+> 2) Calculate and plot the best linear unbiased predictors (blups) for
+> spleen on the chromosome of your choice.
+>
+> >
+> > ## Solution to Challenge 3
+> >
+> >
+> {: .solution}
+{: .challenge}
