@@ -71,7 +71,7 @@ Make sure that both the SNP and gene files downloaded correctly by running the f
 Check the SNP file.
 
 ~~~
-snp_func = create_variant_query_func("/home/dmgatti/Desktop/mapping/data/cc_variants.sqlite")
+snp_func = create_variant_query_func("~/Desktop/mapping/data/cc_variants.sqlite")
 snps = snp_func(1, 10, 11)
 dim(snps)
 ~~~
@@ -85,7 +85,7 @@ Check the gene file.
 
 
 ~~~
-gene_func = create_gene_query_func("/home/dmgatti/Desktop/mapping/data/mouse_genes_mgi.sqlite")
+gene_func = create_gene_query_func("~/Desktop/mapping/data/mouse_genes_mgi.sqlite")
 genes = gene_func(1, 10, 11)
 dim(genes)
 ~~~
