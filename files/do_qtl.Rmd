@@ -1,0 +1,185 @@
+---
+title: "QTL Mapping in DO Mice"
+author: "dmg"
+date: "8/23/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(qtl2)
+```
+
+Load in the data.
+
+```{r}
+load("../data/qtl2_demo.Rdata")
+```
+
+Histogram of prop.bm.MN.RET
+
+```{r}
+hist(pheno$prop.bm.MN.RET)
+```
+
+Log-transform prop.bm.MN.RET
+
+```{r}
+pheno$pbmr = log(pheno$prop.bm.MN.RET)
+```
+
+```{r}
+hist(pheno$pbmr)
+```
+
+Look at Marker Map
+
+```{r}
+length(map)
+```
+
+Look at genoprobs
+
+```{r}
+dim(probs[[1]])
+```
+
+Create Kinship Matrix
+
+```{r}
+K = calc_kinship(probs = probs, type = "loco")
+```
+
+```{r}
+heatmap(K[[1]])
+```
+
+Make our covariates.
+
+```{r}
+addcovar = model.matrix(~Study, data = pheno)[ ,-1, drop = FALSE]
+```
+
+Perform a Genome Scan
+
+Work with 100 ppm samples.
+```{r}
+c100 = which(pheno$Conc == 100)
+```
+
+```{r}
+index = which(colnames(pheno) == "pbmr")
+mnret = pheno[c100, index, drop = FALSE]
+
+qtl = scan1(genoprobs = probs, pheno = mnret, kinship = K, addcovar = addcovar)
+```
+
+```{r}
+plot_scan1(qtl, map, main = "BM MN-RET")
+```
+
+```{r}
+index2 = which(colnames(pheno) == "prop.bm.MN.RET")
+mnret2 = pheno[c100, index2, drop = FALSE]
+
+qtl2 = scan1(genoprobs = probs, pheno = mnret2, kinship = K, addcovar = addcovar)
+plot_scan1(qtl2, map, main = "BM MN RET (non-log)")
+```
+
+Run Permutations.
+
+```{r}
+perms = scan1perm(genoprobs = probs, pheno = mnret, addcovar = addcovar, n_perm = 100)
+```
+
+```{r}
+hist(perms)
+```
+
+```{r}
+summary(perms)
+```
+
+Put significance threshold on plot.
+
+```{r}
+thr = summary(perms)
+plot_scan1(qtl, map)
+add_threshold(map, thresholdA = thr, col = "red")
+```
+
+Find peaks
+
+```{r}
+find_peaks(qtl, map, threshold = thr, prob = 0.95)
+```
+
+Estimate Founder Allele Effects
+
+```{r}
+chr = 10
+coef10 = scan1blup(probs[,chr], mnret, K[[chr]], addcovar)
+```
+
+```{r}
+plot_coefCC(coef10, map, scan1_output = qtl, legend = "bottomright")
+```
+
+Perform Association Mapping
+
+```{r}
+chr   = 10
+start = 30
+end   = 36
+query_func = create_variant_query_func("../data/cc_variants.sqlite")
+assoc = scan1snps(probs[,chr], map, mnret, K[[10]], addcovar, query_func = query_func, 
+                  chr = chr, start = start, end = end, keep_all_snps = TRUE)
+```
+
+```{r}
+plot_snpasso(assoc$lod, assoc$snpinfo)
+```
+
+Add genes to plot
+
+```{r}
+query_genes = create_gene_query_func("../data/mouse_genes_mgi.sqlite")
+genes = query_genes(chr, start, end)
+head(genes)
+```
+
+```{r fig.height=10,fig.width=12}
+png("../mnret_assoc_chr10.png", width = 3000, height = 2400, res = 300)
+plot_snpasso(assoc$lod, assoc$snpinfo, genes = genes, drop_hilit = 1, top_panel_prop = 0.5,)
+dev.off()
+```
+
+```{r}
+top = top_snps(assoc$lod, assoc$snpinfo, drop = 1)
+top
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
