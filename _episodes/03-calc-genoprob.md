@@ -350,25 +350,27 @@ View the first three rows of genotype probabilities for the first genotyped mark
 > {: .solution}
 {: .challenge}
 
-
 > ## Challenge 2
-> Calculate genotype probabilities for a different data set built into the qtl2 package, this one from a study of root gravitropism in *Arabidopsis*.   
-> 1). Load the grav2.zip file from the rqtl2 package into an object called `grav`.  
-> 2). View a summary of the `grav` data. How many individuals? phenotypes? chromosomes? markers? 
-> 3). View the genetic map for the `grav` data.  
-> 4). Insert pseudomarkers at 2 cM intervals. Assign the results to an object called `gravmap`.  
-> 5). Calculate genotype probabilities assuming a genotyping error probability of 0.001. Assign the results to an object called `gravpr`.  
+> Calculate genotype probabilities for a different data set from the [qtl2 data repository](https://github.com/rqtl/qtl2data), this one from a study of obesity and diabetes in a C57BL/6 (B6) × BTBR intercross.   
+> 1). Create a new script in RStudio with File -> New File -> R Script.
+> 2)  Download the B6 x BTBR zip file from the [qtl2 data repository](https://github.com/rqtl/qtl2data) into an object called `b6btbr` by running this code:
+`b6btbr <- read_cross2(file = "https://raw.githubusercontent.com/rqtl/qtl2data/master/B6BTBR/b6btbr.zip")`
+> 2). View a summary of the `b6btbr` data. How many individuals? phenotypes? chromosomes? markers? 
+> 3). View the genetic map for the `b6btbr` data.  
+> 4). Insert pseudomarkers at 2 cM intervals. Assign the results to an object called `b6btbrmap`.  
+> 5). Calculate genotype probabilities assuming a genotyping error probability of 0.001. Assign the results to an object called `b6btbrpr`.  
 > 6). View the first several rows of genotype probabilities for 
-> any marker on chromosome 5.  
+> any marker on chromosome 18.  
 >
 > > ## Solution to Challenge 2
 > >
-> > 1). `grav <- read_cross2(file = system.file("extdata", "grav2.zip", package="qtl2"))`  
-> > 2). `summary(grav)` shows 162 individuals, 241 phenotypes, 5 chromosomes, 234 markers.
-> > 3). `grav$gmap`  
-> > 4). `gravmap <- insert_pseudomarkers(map=grav$gmap, step=2)`  
-> > 5). `gravpr <- calc_genoprob(cross=grav, map=gravmap, error_prob=0.001)`  
-> > 6). `head((gravpr$`5`)[,,"c5.loc4"])` for an example pseudomarker, or `head((gravpr$`5`)[,,"GB.102L-Col/105C"])` for an example of a genotyped marker
+> > 1). Create a new script in RStudio with File -> New File -> R Script.
+> > 2). `b6btbr <- read_cross2(file = "https://raw.githubusercontent.com/rqtl/qtl2data/master/B6BTBR/b6btbr.zip`  
+> > 3). `summary(b6btbr)` shows 544 individuals, 3 phenotypes, 20 chromosomes, 2057 markers.
+> > 4). `b6btbr$gmap`  
+> > 5). `b6btbrmap <- insert_pseudomarkers(map=b6btbr$gmap, step=2)`  
+> > 6). `b6btbrpr <- calc_genoprob(cross=b6btbr, map=b6btbrmap, error_prob=0.001)`  
+> > 7). `dimnames((b6btbrpr$`18`))` shows all marker names for chromosome 18. `head((b6btbrpr$`18`)[,,"c18.loc48"])` gives genotype probabilities for an example pseudomarker, while `head((b6btbrpr$`18`)[,,"rs6338896"])`  gives genotype probabilities for a genotyped marker.
 > {: .solution}
 {: .challenge}
 

@@ -30,9 +30,10 @@ To model data from a cross, we use
 ![](../fig/linear-genetic-model.png)  
  
 
-where <i>y<sub>j</sub></i> is the phenotype of the <i>j</i>th individual, &mu; is the mean phenotype (y-intercept), <i>&beta;<sub>k</sub></i> is the effect of the <i>kth</i> genotype (slope), <i>X<sub>jk</sub></i> is the genotype for individual j, and &epsilon;<sub>j</sub> is the error for the <i>j</i>th individual. In the figure below, &mu; equals 110.2, and &beta; equals -5.8 for the alternative hypothesis (QTL exists). This linear model is <i>y</i> = 110.2 + -5.8X + &epsilon;. The model intersects the genotype groups AA and AB at their group means. In contrast, the null hypothesis would state that there is no difference in group means (no QTL anywhere). The linear model for the null hypothesis would be <i>y</i> = 101.6 + 0X + &epsilon;. This states that the phenotype is equal to the combined mean (101.6), plus some error (&epsilon;). Genotype doesn't affect the phenotype.
+where <i>y<sub>j</sub></i> is the phenotype of the <i>j</i>th individual, &mu; is the mean phenotype value, <i>&beta;<sub>k</sub></i> is the effect of the <i>kth</i> genotype (slope), <i>X<sub>jk</sub></i> is the genotype for individual j, and &epsilon;<sub>j</sub> is the error for the <i>j</i>th individual. In the figure below, &mu; equals 110.2, and &beta; equals -5.8 for the alternative hypothesis (QTL exists). This linear model is <i>y</i> = 110.2 + -5.8X + &epsilon;. The model intersects the genotype groups AA and AB at their group means. In contrast, the null hypothesis would state that there is no difference in group means (no QTL anywhere). The linear model for the null hypothesis would be <i>y</i> = 101.6 + 0X + &epsilon;. This states that the phenotype is equal to the combined mean (101.6), plus some error (&epsilon;). Genotype doesn't affect the phenotype.
 
 ![](../fig/model-equation.png)
+## make a figure with SS, SB, and BB genotypes for the iron intercross, so there are 3 genotypes consistent with the genotype sample file alleles; update text above to reflect new data
 
 The linear models above describe the relationship between genotype and phenotype but are inadequate for describing the relationship between genotype and phenotype in large datasets. They don't account for relatedness among individuals. In real populations, the effect of a single genotype is influenced by many other genotypes that affect the phenotype. A  true genetic model takes into account the effect of all variants on the phenotype. 
 
@@ -151,7 +152,7 @@ b6btbr <- read_cross2(file)
 > explains what needs to happen next, finds the relevant code in
 > the lesson, suggests new names for objects (i.e. NOT the ones
 > you've already used, such as "map", "pr", "out", etc.).
-
+>
 > 1. Run the code above to load the [B6 x BTBR intercross data](https://github.com/rqtl/qtl2data/tree/master/B6BTBR) 
 > into an object called b6btbr.
 > 2. Insert pseudomarkers and calculate genotype probabilities.

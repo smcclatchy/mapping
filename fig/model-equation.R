@@ -1,23 +1,44 @@
-library(qtl)
-data(hyper)
-x <- pull.geno(hyper)[,"D4Mit214"]
-u <- runif(length(x), -0.075, 0.075)
-y <- hyper$pheno[,1]
+library(qtl2)
+iron <- read_cross2(file = system.file("extdata",
+                                       "iron.zip",
+                                       package = "qtl2"))
+g <- maxmarg(pr, map, chr=2, pos=56.8, return_char=TRUE)
 
 png(filename = "model-equation.png", width = 600, height = 600)
-plot(y ~ x, type="n", xlab="Genotype", ylab="Blood Pressure",
-     xlim=c(0, 3), xaxs="i", xaxt="n", main = "Null and Alternative\nHypotheses")
-abline(v=1:2, lty=2, col="gray90")
-points(x + 0.3 * u, y, col = "gray90")
-axis(side=1, at=1:2, labels=c("AA","AB"))
-me <- tapply(y, x, mean)
-segments(x0 = 0, y0 = mean(y), x1 = 3, y1 = mean(y), lwd=2, col="purple4")
-segments((1:2)-0.15, mean(y), (1:2)+0.15, mean(y), lwd=3, col="green2")
-abline(lm(y~x)$coef, col="sienna1", lwd=2)
-segments((1:2)-0.15, me, (1:2)+0.15, me, lwd=3, col="orange1")
-text(x = 0.4, y = 99.5, labels = "y = 101.6 + error", cex=0.9)
-text(x = 0.5, y = 111, labels = "y = 110.2 + -5.8X + error", cex=0.9)
-points(1, 119.58, col = "red")
-segments(x0 = 1, y0 = 104.4, y1 = 119.5, lwd=2, col="red")
-text(x = 1.15, y = 117, labels = "error or\n residual", cex=0.9)
+par(mai = c(1, 1, 1, 1.5))
+plot_pxg(g, iron$pheno[,"liver"], ylab="Liver phenotype", 
+         main = "Null and Alternative\nHypotheses",
+         seg_col = "mediumorchid3", seg_lwd = 4)
+segments(3.4, c2eff["D2Mit17",4],
+         3.5, c2eff["D2Mit17",4],
+         col = "mediumorchid", lwd = 3)
+segments(3.4, (c2eff["D2Mit17",4] + c2eff["D2Mit17",3]),
+         3.5, (c2eff["D2Mit17",4] + c2eff["D2Mit17",3]),
+         col = "mediumorchid", lwd = 3)
+segments(3.4, (c2eff["D2Mit17",4] + c2eff["D2Mit17",1]),
+         3.5, (c2eff["D2Mit17",4] + c2eff["D2Mit17",1]),
+         col = "mediumorchid", lwd = 3)
+mtext(expression(+ beta), side = 4, line = 0.3, las = 1,
+      at=(c2eff["D2Mit17",4] + c2eff["D2Mit17",3]))
+mtext(expression(- beta), side = 4, line = 0.3, las = 1,
+      at=(c2eff["D2Mit17",4] + c2eff["D2Mit17",1]))
+mtext(expression(alpha), side = 4, line = 0.3, las = 1,
+      at=(c2eff["D2Mit17",4]))
+abline(a = (c2eff["D2Mit17",4] + (2 * c2eff["D2Mit17",3])), 
+       b = c2eff["D2Mit17", 1],
+       col = "mediumorchid")
+abline(a = (c2eff["D2Mit17",4]), 
+       b = c2eff["D2Mit17", 2],
+       col = "mediumorchid")
+text(x = 2.5, y = 102, 
+     labels = "Null\ny = 94.6 + error", cex=0.8)
+text(x = 2.5, y = 75, 
+     labels = paste0("Alternative\ny = 94.6 + ",
+                     expression(beta),
+                     "*X\n + error"),
+     cex=0.8)
+points(2, 157, col = "black", lwd = 2)
+segments(x0 = 2, y0 = 95, y1 = 156, lwd=2, lty = 1)
+text(x = 1.7, y = 160, labels = "error", cex=0.8)
+segments(x0 = 1.8, y0 = 159, x1 = 2, y1 = 151, lwd=1, lty = 2)
 dev.off()

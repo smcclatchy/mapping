@@ -425,11 +425,11 @@ head(genes)
 
 ~~~
   chr source       type    start     stop score strand phase
-1  10    MGI pseudogene 30.01130 30.01730    NA      +    NA
+1  10    MGI pseudogene 30.01095 30.01730    NA      +    NA
 2  10    MGI pseudogene 30.08426 30.08534    NA      -    NA
 3  10    MGI pseudogene 30.17971 30.18022    NA      +    NA
-4  10    MGI       gene 30.19601 30.20054    NA      -    NA
-5  10    MGI pseudogene 30.37327 30.37451    NA      +    NA
+4  10    MGI       gene 30.19457 30.20060    NA      -    NA
+5  10    MGI pseudogene 30.37292 30.37556    NA      +    NA
 6  10    MGI       gene 30.45052 30.45170    NA      +    NA
                ID    Name Parent
 1 MGI:MGI:2685078   Gm232   <NA>
@@ -438,20 +438,20 @@ head(genes)
 4 MGI:MGI:1913561   Cenpw   <NA>
 5 MGI:MGI:3643405  Gm4780   <NA>
 6 MGI:MGI:5623507 Gm40622   <NA>
-                                      Dbxref                 mgiName
-1                           NCBI_Gene:212813      predicted gene 232
-2                           NCBI_Gene:667696     predicted gene 8767
-3                        NCBI_Gene:100040542     predicted gene 2829
-4 NCBI_Gene:66311,ENSEMBL:ENSMUSG00000075266    centromere protein W
-5                           NCBI_Gene:212815     predicted gene 4780
-6                        NCBI_Gene:105245128 predicted gene%2c 40622
-              bioType
-1          pseudogene
-2          pseudogene
-3          pseudogene
-4 protein coding gene
-5          pseudogene
-6         lncRNA gene
+                                          Dbxref                 mgiName
+1    NCBI_Gene:212813,ENSEMBL:ENSMUSG00000111554      predicted gene 232
+2    NCBI_Gene:667696,ENSEMBL:ENSMUSG00000111001     predicted gene 8767
+3 NCBI_Gene:100040542,ENSEMBL:ENSMUSG00000110776     predicted gene 2829
+4     NCBI_Gene:66311,ENSEMBL:ENSMUSG00000075266    centromere protein W
+5    NCBI_Gene:212815,ENSEMBL:ENSMUSG00000111047     predicted gene 4780
+6                            NCBI_Gene:105245128 predicted gene%2c 40622
+              bioType Alias
+1          pseudogene  <NA>
+2          pseudogene  <NA>
+3          pseudogene  <NA>
+4 protein coding gene  <NA>
+5          pseudogene  <NA>
+6         lncRNA gene  <NA>
 ~~~
 {: .output}
 
