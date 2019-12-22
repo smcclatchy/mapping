@@ -1,0 +1,309 @@
+---
+title: "qtl2-workshop"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(qtl2)
+```
+
+## Load data
+```{r}
+iron <- read_cross2(file = system.file("extdata", "iron.zip", package = "qtl2"))
+summary(iron)
+names(iron)
+```
+
+```{r}
+head(iron$gmap)
+```
+
+```{r}
+map <- insert_pseudomarkers(map = iron$gmap, step = 1)
+```
+
+```{r}
+head(map, n=2)
+```
+
+## Calculate genotype probabilities
+
+```{r}
+pr <- calc_genoprob(cross = iron, map = map, error_prob = 0.002)
+names(pr)
+```
+
+```{r}
+dimnames(pr$`19`)
+```
+
+
+```{r}
+(pr$`19`)[1:3, ,"D19Mit68"] # genotyped marker
+```
+```{r}
+(pr$`19`)[1:3, ,"c19.loc4"] # pseudomarker 1 cm away
+```
+```{r}
+(pr$`19`)[1:3, ,"c19.loc5"] # pseudomarker 2 cm away
+```
+
+## Special covariates for the X chromosome
+
+```{r}
+Xcovar <- get_x_covar(iron)
+```
+
+```{r}
+head(Xcovar)
+```
+
+Perform a genome scan.
+
+```{r}
+out = scan1(genoprobs = pr, pheno = iron$pheno, Xcovar = Xcovar)
+```
+
+```{r}
+head(out, n = 10)
+```
+
+Plot genome scan.
+
+```{r}
+plot_scan1(out, map = map, lodcolumn = "liver")
+```
+
+Challenge 1
+
+```{r}
+head(out, n = 30)
+```
+
+Challenge 2
+
+```{r}
+sort(out[,"liver"], decreasing = TRUE)
+```
+
+Challenge 4
+
+```{r}
+plot_scan1(out, map = map, lodcolumn = "spleen")
+```
+
+Performing Permutations
+
+```{r}
+operm = scan1perm(genoprobs = pr, pheno = iron$pheno, Xcovar = Xcovar, n_perm = 1000)
+```
+
+```{r}
+summary(operm)
+```
+
+```{r}
+summary(operm, alpha = c(0.2, 0.05))
+```
+
+Permutations with X chr
+
+```{r}
+operm2 = scan1perm(genoprobs = pr, pheno = iron$pheno, Xcovar = Xcovar, perm_Xsp = TRUE, 
+                   chr_lengths = chr_lengths(map), n_perm = 100)
+```
+
+
+```{r}
+summary(operm2, alpha = c(0.2, 0.05))
+```
+
+```{r}
+shuffled_order <- sample(rownames(iron$pheno))
+pheno_permuted <- iron$pheno
+rownames(pheno_permuted) <- shuffled_order
+xcovar_permuted <- Xcovar
+rownames(xcovar_permuted) <- shuffled_order
+out_permuted <- scan1(genoprobs = pr, pheno = pheno_permuted, Xcovar = xcovar_permuted)
+plot(out_permuted, map)
+head(shuffled_order)
+```
+
+```{r}
+summary(operm)
+```
+
+
+```{r}
+thr = summary(operm2)
+plot_scan1(out, map, lodcolumn = "liver")
+add_threshold(map, thresholdA = thr$A[1], thresholdX = thr$X[1], col = "red")
+#abline(h = thr[1], col = "red")
+```
+
+
+
+```{r}
+thr = summary(operm2)
+plot_scan1(out, map, lodcolumn = "spleen")
+add_threshold(map, thresholdA = thr$A[2], thresholdX = thr$X[2], col = "red")
+```
+
+Histogram of Permuatations
+
+```{r}
+hist(operm[,"liver"])
+abline(v = quantile(operm[,"liver"], 0.95), col = 'red')
+```
+
+
+Finding LOD peaks
+
+```{r}
+operm = scan1perm(genoprobs = pr, pheno = iron$pheno, Xcovar = Xcovar, n_perm = 100)
+```
+
+```{r}
+thr = summary(operm)
+peaks = find_peaks(out, map = map, threshold = thr, prob = 0.95, expand2markers = FALSE)
+peaks
+```
+
+```{r}
+peaks = find_peaks(out, map = map, threshold = thr, prob = 0.95, peakdrop = 1.5, expand2markers = FALSE)
+peaks
+```
+
+```{r}
+peaks = find_peaks(out, map = map, threshold = thr, prob = 0.95, peakdrop = 1.5, expand2markers = TRUE)
+peaks
+```
+
+```{r}
+plot_scan1(out, map, lodcolumn = "liver", chr = 7)
+add_threshold(map, thresholdA = thr[1], col = "red")
+```
+
+Challenge 1
+
+```{r}
+find_peaks(out, map, threshold = 3, peakdrop = 2)
+```
+
+Challenge 2
+
+```{r}
+find_peaks(out, map, threshold = thr[1], prob = 0.9, expand2markers = FALSE)
+```
+
+```{r}
+find_peaks(out, map, threshold = thr[1], prob = 0.95, expand2markers = FALSE)
+```
+
+Calculating a Kinship Matrix
+
+```{r}
+kinship = calc_kinship(probs = pr)
+```
+
+```{r}
+kinship[1:5, 1:5]
+```
+
+```{r}
+range(kinship[upper.tri(kinship, diag = FALSE)])
+```
+
+
+```{r}
+kinship = calc_kinship(probs = pr, cores = 4)
+```
+
+```{r}
+heatmap(kinship)
+```
+
+
+```{r}
+out_pg <- scan1(pr, iron$pheno, kinship = kinship, Xcovar = Xcovar)
+```
+
+
+```{r}
+kinship_loco <- calc_kinship(pr, "loco")
+```
+
+
+```{r}
+out_pg_loco <- scan1(pr, iron$pheno, kinship = kinship_loco, Xcovar = Xcovar)
+```
+
+
+```{r}
+plot_scan1(out_pg_loco, map = map, lodcolumn = "liver", col = "black")
+plot_scan1(out_pg, map = map, lodcolumn = "liver", col = "blue", add = TRUE)
+plot_scan1(out, map = map, lodcolumn = "liver", col = "green", add = TRUE)
+```
+
+## Performing a genome scan with binary traits
+
+```{r}
+bin_pheno <- apply(iron$pheno, 2, function(a) as.numeric(a > median(a)))
+rownames(bin_pheno) <- rownames(iron$pheno)
+```
+
+```{r}
+unique(bin_pheno)
+```
+
+```{r}
+out_bin <- scan1(pr, bin_pheno, Xcovar = Xcovar, model = "binary")
+```
+
+```{r}
+par(mar=c(5.1, 4.1, 1.1, 1.1))
+ymx <- maxlod(out_bin)
+plot(out_bin, map, lodcolumn=1, col="slateblue", ylim=c(0, ymx*1.02))
+plot(out_bin, map, lodcolumn=2, col="violetred", add=TRUE)
+legend("topleft", lwd=2, col=c("slateblue", "violetred"), colnames(out_bin), bg="gray90")
+```
+
+```{r}
+find_peaks(out_bin, map, threshold=3.5, drop=1.5)
+```
+
+
+# Estimated QTL Effects
+
+```{r}
+c2eff <- scan1coef(pr[,"2"], iron$pheno[, "liver"])
+```
+
+
+```{r}
+dim(c2eff)
+head(c2eff)
+```
+
+```{r}
+par(mar=c(4.1, 4.1, 1.1, 2.6), las=1)
+col <- c("slateblue", "violetred", "green3")
+plot(c2eff, map["2"], columns=1:3, col=col)
+last_coef <- unclass(c2eff)[nrow(c2eff),] # pull out last coefficients
+for(i in seq(along=last_coef))
+    axis(side=4, at=last_coef[i], names(last_coef)[i], tick=FALSE, col.axis=col[i])
+```
+
+```{r}
+g <- maxmarg(pr, map=map, chr=2, pos = 28.6, return_char = TRUE)
+```
+
+```{r}
+par(mar = c(4.1, 4.1, 0.6, 0.6))
+plot_pxg(g, iron$pheno[, "liver"], ylab="liver phenotype")
+```
+
+
+
+
