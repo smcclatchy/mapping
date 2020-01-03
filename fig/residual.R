@@ -1,17 +1,27 @@
-x <- pull.geno(hyper)[,"D4Mit214"]
-u <- runif(length(x), -0.075, 0.075)
-y <- hyper$pheno[,1]
+library(qtl2)
+iron <- read_cross2(file = system.file("extdata",
+                                       "iron.zip",
+                                       package = "qtl2"))
+g <- maxmarg(pr, map, chr=2, pos=56.8, return_char=TRUE)
+c2eff <- scan1coef(pr[,"2"], iron$pheno[,"liver"])
 
 png(filename = "residual.png", width = 600, height = 600)
-plot(y ~ x, type="n", xlab="Genotype", ylab="Blood Pressure",
-     xlim=c(0, 3), xaxs="i", xaxt="n", main = "Line of Best Fit")
-abline(v=1:2, lty=2, col="gray90")
-points(x + 0.3 * u, y, col = "gray90")
-axis(side=1, at=1:2, labels=c("AA","AB"))
-me <- tapply(y, x, mean)
-segments((1:2)-0.15, me, (1:2)+0.15, me, lwd=3, col="orange1")
-abline(lm(y~x)$coef, col="blue", lwd=2)
-points(1, 119.58, col = "red")
-segments(x0 = 1, y0 = 104.4, y1 = 119.5, lwd=2, col="red")
-text(x = 0.8, y = 112, labels = "error or\n residual")
+
+plot_pxg(g, iron$pheno[,"liver"], ylab="Liver phenotype", 
+         main = "Line of Best Fit",
+         seg_col = "#d7191c", 
+         seg_lwd = 4,
+         bg = "#f7f7f7",
+         lwd = 1,
+         col = "#969696")
+
+abline(a = (c2eff["D2Mit17",4] + (2 * c2eff["D2Mit17",3])), 
+       b = c2eff["D2Mit17", 1],
+       col = "#d7191c")
+points(2, 157, lwd = 3)
+segments(x0 = 2, y0 = 95, y1 = 155,
+         lwd=2)
+text(x = 1.7, y = 160, labels = "error or\n residual", cex=0.8)
+segments(x0 = 1.8, y0 = 159, x1 = 2, y1 = 151, 
+         lwd=1)
 dev.off()
