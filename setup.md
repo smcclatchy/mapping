@@ -45,18 +45,18 @@ dir.create("./results")
 
 
 3. Please download the following large files **before the workshop**, and place them in your `data` folder. You can download the files from the URLs below and move the files the same way that you would for downloading and moving any other kind of data.
-
-- [cc_variants.sqlite doi:10.6084/m9.figshare.5280229.v2](https://figshare.com/articles/SQLite_database_of_variants_in_Collaborative_Cross_founder_mouse_strains/5280229/2), variants in the Collaborative Cross founders (3 GB)
-- [mouse_genes.sqlite doi:10.6084/m9.figshare.5280238.v4](https://figshare.com/articles/SQLite_database_with_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5280238/4) full set of mouse gene annotations (677 MB)
-- [mouse_genes_mgi.sqlite doi:10.6084/m9.figshare.5286019.v5](https://figshare.com/articles/SQLite_database_with_MGI_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5286019/5) just the MGI mouse gene annotations (11 MB)
-- [DO QTL data](ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata) Dan's DO data from the benzene study
+ 
+1. [SQLite database of variants in Collaborative Cross founder mouse strains (v3)](https://figshare.com/articles/SQLite_database_of_variants_in_Collaborative_Cross_founder_mouse_strains/5280229/3): SNP, indel, and structural variants in the Collaborative Cross founders (3.87 GB)
+1. [SQLite database with mouse gene annotations from Mouse Genome Informatics (v6)](https://figshare.com/articles/dataset/SQLite_database_with_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5280238): full set of mouse gene annotations from build 38 mm10 (529.89 MB)
+1. [SQLite database with MGI mouse gene annotations from Mouse Genome Informatics (v7)](https://figshare.com/articles/dataset/SQLite_database_with_MGI_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5286019): like the previous, but including only non-duplicate gene records sourced from MGI (11.16 MB)
+1. [DO QTL data](ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata) Dan's DO data from the benzene study
 
 Alternatively, you can copy and paste the following into the R console to download the data.
 ~~~
 setwd("~/Desktop/mapping")
-download.file("https://ndownloader.figshare.com/files/9746485", "./data/cc_variants.sqlite")
-download.file("https://ndownloader.figshare.com/files/9746458", "./data/mouse_genes.sqlite")
-download.file("https://ndownloader.figshare.com/files/9746452", "./data/mouse_genes_mgi.sqlite")
+download.file("https://ndownloader.figshare.com/files/18533342", "./data/cc_variants.sqlite")
+download.file("https://ndownloader.figshare.com/files/17609261", "./data/mouse_genes.sqlite")
+download.file("https://ndownloader.figshare.com/files/17609252", "./data/mouse_genes_mgi.sqlite")
 download.file("ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", "./data/qtl2_demo.Rdata")
 ~~~
 {: .r}
