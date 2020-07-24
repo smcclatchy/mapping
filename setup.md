@@ -65,15 +65,15 @@ download.file("ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", "./data/
 You will need these for the final lesson episodes on SNP association mapping and QTL analysis in Diversity Outbred mice.
 
 
-Make sure that both the SNP and gene files downloaded correctly by running the following code. If you get an error, check the file path carefully or download the files again. Make sure to change the file path to the location where you saved the file.
+Make sure that both the SNP and gene files downloaded correctly by running the following code. If you get an error, check the file path (e.g. "~/Desktop/mapping/data/cc_variants.sqlite") carefully or download the files again. Make sure to change the file path to the location where you saved the file.
 
 
-Check the SNP file.
+Check part of the SNP file. It is a very large file, so checking only a sample of the file should do.
 
 ~~~
-snp_func = create_variant_query_func("~/Desktop/mapping/data/cc_variants.sqlite")
-snps = snp_func(1, 10, 11)
-dim(snps)
+snp_func = create_variant_query_func("~/Desktop/mapping/data/cc_variants.sqlite") # create a function to query the SNP file
+snps = snp_func(chr = 1, start = 10, stop = 11) # use this new function to select SNPs on chromosome 1 from 10 to 11 Mbp
+dim(snps) # check the dimensions of this sample of the SNP file
 ~~~
 {: .r}
 
@@ -81,13 +81,13 @@ dim(snps)
 You should get a result that is 13150 rows by 16 columns.
 
 
-Check the gene file.
+Check the gene file in the same way.
 
 
 ~~~
-gene_func = create_gene_query_func("~/Desktop/mapping/data/mouse_genes_mgi.sqlite")
-genes = gene_func(1, 10, 11)
-dim(genes)
+gene_func = create_gene_query_func("~/Desktop/mapping/data/mouse_genes_mgi.sqlite") # create a function to query the gene file
+genes = gene_func(chr = 1, start = 10, stop = 11) # select genes on the same region as above
+dim(genes) # check the dimensions
 ~~~
 {: .r}
 
