@@ -43,7 +43,6 @@ dir.create("./results")
 ~~~
 {: .r}
 
-
 3. Please download the following large files **before the workshop**, and place them in your `data` folder. You can download the files from the URLs below and move the files the same way that you would for downloading and moving any other kind of data.
  
 + [SQLite database of variants in Collaborative Cross founder mouse strains (v3)](https://figshare.com/articles/SQLite_database_of_variants_in_Collaborative_Cross_founder_mouse_strains/5280229/3): SNP, indel, and structural variants in the Collaborative Cross founders (3.87 GB)
