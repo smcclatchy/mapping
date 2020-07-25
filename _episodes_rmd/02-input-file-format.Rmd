@@ -76,12 +76,14 @@ simplifies the function for reading in the data. That function,
 For further details, see the separate [vignette on the input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
 
 > ## Challenge 1
-> Which data files are required by `qtl2`?  
-> Which ones are optional?  
-> How should they be formatted?
+> 1. Which data files are required by `qtl2`?  
+> 2. Which ones are optional?  
+> 3. How should they be formatted?
 >
 > > ## Solution to Challenge 1
-> >
+> > 1. marker genotypes, phenotypes, genetic map
+> > 2. physical map
+> > 1. csv; JSON or YAML for control file
 > {: .solution}
 {: .challenge}
 

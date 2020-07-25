@@ -25,11 +25,14 @@ QTL mapping data consists of a set of tables of data: marker
 genotypes, phenotypes, marker maps, etc. These different tables are in different comma-separated value (CSV) files. In each file, the first column is a set of IDs for the rows, and the first row is a set of IDs for the columns. For example, the genotype data file will have individual IDs in the first column, marker names for the rest of the column headers.
 
 ![](../fig/iron-geno-sample.png)
-The sample genotype file above shows two alleles: S and B. These represent the founder strains, which are C57BL/6 (B) and (S). The B and S alleles themselves represent the haplotypes inherited from the parental strains. In the DO and CC, alleles represent haplotypes of founder strains.
 
-## insert a semblance of Dan's figure here: 
-## create S and B allele depictions
-![](../fig/Unknown.png)
+The sample genotype file above shows two alleles: S and B. These represent the founder strains, which are C57BL/6 (BB) and (SS). The B and S alleles themselves represent the haplotypes inherited from the parental strains.  
+
+![](../fig/unknown_genotype.png)
+
+In the Diversity Outbred (DO) and Collaborative Cross (CC), alleles A to H represent haplotypes of the 8 founder strains.
+
+![](../fig/cc-founder-alleles.png)
 
 R/qtl2 accepts the following files:
 1. genotypes
@@ -70,12 +73,14 @@ simplifies the function for reading in the data. That function,
 For further details, see the separate [vignette on the input file format](http://kbroman.org/qtl2/assets/vignettes/input_files.html).
 
 > ## Challenge 1
-> Which data files are required by `qtl2`?  
-> Which ones are optional?  
-> How should they be formatted?
+> 1. Which data files are required by `qtl2`?  
+> 2. Which ones are optional?  
+> 3. How should they be formatted?
 >
 > > ## Solution to Challenge 1
-> >
+> > 1. marker genotypes, phenotypes, genetic map
+> > 2. physical map
+> > 1. csv; JSON or YAML for control file
 > {: .solution}
 {: .challenge}
 
