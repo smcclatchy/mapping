@@ -33,6 +33,17 @@ The sample genotype file above shows two alleles: S and B. These represent the f
 In the Diversity Outbred (DO) and Collaborative Cross (CC), alleles A to H represent haplotypes of the 8 founder strains.
 
 ![](../fig/cc-founder-alleles.png)
+CC lines have very low heterozygosity throughout their genome. For most loci, 
+CC lines will be homozygous for one of the founder strains A-H above, and as
+such will have one of only 8 genotypes (*e.g.* AA, BB, CC, ...). In contrast,
+DO *mice* (not lines) have high heterozygosity throughout their genomes. Each
+locus will have one of 36 possible genotypes (*e.g.* AA, AB, AC, ..., BB, BC, BD,...).
+
+![](../fig/cc-do-genome-comparison.png)
+For the purposes of learning QTL mapping, this lesson begins with the simplest
+cases: backcrosses (2 possible genotypes) and intercrosses (3 possible genotypes).
+Once we have learned how to use `qtl2` for these simpler cases, we will advance
+to the most complex case involving mapping in DO mice.
 
 R/qtl2 accepts the following files:
 1. genotypes
@@ -42,7 +53,7 @@ R/qtl2 accepts the following files:
 5. physical map (optional)  
 6. control file (YAML or JSON format, not CSV)
 
-We use both a genetic marker map and a physical map (if available). A sample from a genetic map of Mit markers is shown here.
+We use both a genetic marker map and a physical map (if available). A sample from a genetic map of MIT markers is shown here.
 
 ![](../fig/iron-geno-map-sample.png)
 
