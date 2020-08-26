@@ -12,7 +12,7 @@ objectives:
 - Infer SNP genotypes for Diversity Outbred mice.
 - Perform SNP association analysis 
 keypoints:
-- "."
+- "SNP association analysis with DO mice requires SNPs in the QTL regions."
 - "."
 source: Rmd
 ---
@@ -20,6 +20,7 @@ source: Rmd
 ```{r, include=FALSE}
 source("../bin/chunk-options.R")
 knitr_fig_path("12-")
+library(qtl2)
 ```
 
 For multi-parent crosses, it can be useful to collapse the genotype or allele probabilities according to the founder genotypes of the various
@@ -118,9 +119,9 @@ We provide a template for how to use R/qtl2 to connect to SNP and gene databases
 
 During [setup](https://smcclatchy.github.io/mapping/setup/) you would have downloaded the SQLite databases from Figshare and placed these in your `data` directory:
 
-- [cc_variants.sqlite doi:10.6084/m9.figshare.5280229.v2](https://figshare.com/articles/SQLite_database_of_variants_in_Collaborative_Cross_founder_mouse_strains/5280229/2), variants in the Collaborative Cross founders (3 GB)
-- [mouse_genes.sqlite doi:10.6084/m9.figshare.5280238.v4](https://figshare.com/articles/SQLite_database_with_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5280238/4) full set of mouse gene annotations (677 MB)
-- [mouse_genes_mgi.sqlite doi:10.6084/m9.figshare.5286019.v5](https://figshare.com/articles/SQLite_database_with_MGI_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5286019/5) just the MGI mouse gene annotations (11 MB)
++ [SQLite database of variants in Collaborative Cross founder mouse strains (v3)](https://figshare.com/articles/SQLite_database_of_variants_in_Collaborative_Cross_founder_mouse_strains/5280229/3): SNP, indel, and structural variants in the Collaborative Cross founders (3.87 GB)
++ [SQLite database with mouse gene annotations from Mouse Genome Informatics (v6)](https://figshare.com/articles/dataset/SQLite_database_with_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5280238): full set of mouse gene annotations from build 38 mm10 (529.89 MB)
++ [SQLite database with MGI mouse gene annotations from Mouse Genome Informatics (v7)](https://figshare.com/articles/dataset/SQLite_database_with_MGI_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5286019): like the previous, but including only non-duplicate gene records sourced from MGI (11.16 MB)
 
 To create a function for querying the CC variants, call `create_variant_query_func()` with the path to the `cc_variants.sqlite` file:
 
@@ -166,7 +167,7 @@ We can pull out the variants in the 2 Mbp interval centered at 97.5 on chr 2 usi
 variants <- query_variants(2, peak_Mbp - 1, peak_Mbp + 1)
 ```
 
-There are 27737 variants in the interval, including 27492 SNPs, 101 indels, and 144 structural variants. We’re treating all of them as biallelic markers (all but the major allele in the eight founder strains binned into a single allele). In the following, we’re going to just say “SNP” rather than “variant”, even though the variants include indels and structural variants.
+There are `r dim(variants)[1]` variants in the interval, including `r table(variants$type)[["snp"]]` SNPs, `r table(variants$type)[["indel"]]` indels, and `r table(variants$type)[["SV"]]` structural variants. We’re treating all of them as biallelic markers (all but the major allele in the eight founder strains binned into a single allele). In the following, we’re going to just say “SNP” rather than “variant”, even though the variants include indels and structural variants.
 
 After identifying the variants in the interval of interest, we use our genotype probabilities and the founder SNP genotypes to infer the SNP genotypes for the DO mice. That is, at each SNP, we want to collapse the eight founder allele probabilities to two SNP allele probabilities, using the SNP genotypes of the founders.
 
