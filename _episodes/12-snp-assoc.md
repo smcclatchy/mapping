@@ -201,7 +201,7 @@ variants <- query_variants(2, peak_Mbp - 1, peak_Mbp + 1)
 ~~~
 {: .r}
 
-There are 27737 variants in the interval, including 27492 SNPs, 101 indels, and 144 structural variants. We’re treating all of them as biallelic markers (all but the major allele in the eight founder strains binned into a single allele). In the following, we’re going to just say “SNP” rather than “variant”, even though the variants include indels and structural variants.
+There are 27355 variants in the interval, including 27108 SNPs, 127 indels, and 120 structural variants. We’re treating all of them as biallelic markers (all but the major allele in the eight founder strains binned into a single allele). In the following, we’re going to just say “SNP” rather than “variant”, even though the variants include indels and structural variants.
 
 After identifying the variants in the interval of interest, we use our genotype probabilities and the founder SNP genotypes to infer the SNP genotypes for the DO mice. That is, at each SNP, we want to collapse the eight founder allele probabilities to two SNP allele probabilities, using the SNP genotypes of the founders.
 
