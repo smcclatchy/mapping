@@ -100,7 +100,7 @@ Look at the structure of `map` in the Environment tab in RStudio.
 
 > ## Challenge 2 Data Dimensions II
 > 1). Determine the length of `map`.  
-> 2). How mamy markers are chromosome 1?  
+> 2). How many markers are on chromosome 1?  
 >
 > > ## Solution to Challenge 2  
 > > 1). `length(map)`  

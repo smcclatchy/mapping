@@ -103,7 +103,7 @@ Look at the structure of `map` in the Environment tab in RStudio.
 
 > ## Challenge 2 Data Dimensions II
 > 1). Determine the length of `map`.  
-> 2). How mamy markers are chromosome 1?  
+> 2). How many markers are on chromosome 1?  
 >
 > > ## Solution to Challenge 2  
 > > 1). `length(map)`  
@@ -417,19 +417,6 @@ First, we must query the database for the genes in the interval. The path of the
 ~~~
 query_genes = create_gene_query_func(dbfile = "../data/mouse_genes.sqlite", filter = "source='MGI'")
 genes = query_genes(chr, start, end)
-~~~
-{: .r}
-
-
-
-~~~
-Error in query_genes(chr, start, end): File ../data/mouse_genes.sqlite doesn't exist
-~~~
-{: .error}
-
-
-
-~~~
 head(genes)
 ~~~
 {: .r}
@@ -437,9 +424,29 @@ head(genes)
 
 
 ~~~
-Error in head(genes): object 'genes' not found
+  chr source       type    start     stop score strand phase              ID
+1  10    MGI pseudogene 30.01095 30.01730    NA      +    NA MGI:MGI:2685078
+2  10    MGI pseudogene 30.08426 30.08534    NA      -    NA MGI:MGI:3647013
+3  10    MGI pseudogene 30.17971 30.18022    NA      +    NA MGI:MGI:3781001
+4  10    MGI       gene 30.19457 30.20060    NA      -    NA MGI:MGI:1913561
+5  10    MGI pseudogene 30.37292 30.37556    NA      +    NA MGI:MGI:3643405
+6  10    MGI       gene 30.45052 30.45170    NA      +    NA MGI:MGI:5623507
+     Name Parent                                         Dbxref
+1   Gm232   <NA>    NCBI_Gene:212813,ENSEMBL:ENSMUSG00000111554
+2  Gm8767   <NA>    NCBI_Gene:667696,ENSEMBL:ENSMUSG00000111001
+3  Gm2829   <NA> NCBI_Gene:100040542,ENSEMBL:ENSMUSG00000110776
+4   Cenpw   <NA>     NCBI_Gene:66311,ENSEMBL:ENSMUSG00000075266
+5  Gm4780   <NA>    NCBI_Gene:212815,ENSEMBL:ENSMUSG00000111047
+6 Gm40622   <NA>                            NCBI_Gene:105245128
+                  mgiName             bioType Alias
+1      predicted gene 232          pseudogene  <NA>
+2     predicted gene 8767          pseudogene  <NA>
+3     predicted gene 2829          pseudogene  <NA>
+4    centromere protein W protein coding gene  <NA>
+5     predicted gene 4780          pseudogene  <NA>
+6 predicted gene%2c 40622         lncRNA gene  <NA>
 ~~~
-{: .error}
+{: .output}
 
 The `genes` object contains annotation information for each gene in the interval.
 
@@ -451,12 +458,7 @@ plot_snpasso(assoc$lod, assoc$snpinfo, main = "Proportion of Micro-nucleated Bon
 ~~~
 {: .r}
 
-
-
-~~~
-Error in plot_snpasso(assoc$lod, assoc$snpinfo, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes", : object 'genes' not found
-~~~
-{: .error}
+<img src="../fig/rmd-13-plot_assoc2-1.png" title="plot of chunk plot_assoc2" alt="plot of chunk plot_assoc2" style="display: block; margin: auto;" />
 
 ### Searching for Candidate Genes
 
