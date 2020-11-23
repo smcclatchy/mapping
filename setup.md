@@ -27,16 +27,18 @@ library(qtl2)
 
 ## Data files and project organization
 
-1. Make a new folder in your Desktop called `mapping`. Move into this new folder.
+1. Create a new project in your Desktop called `mapping`. 
+- Click the `File` menu button, then `New Project`.
+- Click `New Directory`. 
+- Click `New Project`.
+- Type `mapping` as the directory name. Browse to your Desktop to create the project there.
+- Click the `Create Project` button.
 
-2. Create  a `data` folder to hold the data, a `scripts` folder to house your scripts, and a `results` folder to hold results. 
+2. Use the `Files` tab to create  a `data` folder to hold the data, a `scripts` folder to house your scripts, and a `results` folder to hold results. 
 
-Alternatively, you can use the R console to run the following commands for steps 1 and 2.
+Alternatively, you can use the R console to run the following commands for step 2.
 
 ~~~
-setwd("~/Desktop")
-dir.create("./mapping")
-setwd("~/Desktop/mapping")
 dir.create("./data")
 dir.create("./scripts")
 dir.create("./results")
