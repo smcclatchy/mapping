@@ -11,7 +11,7 @@ R is a programming language that is especially powerful for data exploration, vi
 
 2. Install the latest version of RStudio [here](https://www.rstudio.com/products/rstudio/download/). Choose the free RStudio Desktop version for Windows, Mac, or Linux. 
 
-3. Start RStudio. The [qtl2](https://github.com/rqtl/qtl2) package contains code for haplotype reconstruction, QTL mapping and plotting. Install qtl2 by running the following code in the R console.
+3. Start RStudio. The [qtl2](https://github.com/rqtl/qtl2) package contains code for haplotype reconstruction, QTL mapping and plotting. Install qtl2 by copying and pasting the following code in the R console.
 
 ~~~
 install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
