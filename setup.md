@@ -18,7 +18,7 @@ install.packages("qtl2", repos="http://rqtl.org/qtl2cran")
 ~~~
 {: .r}
 
-Make sure that the installation was successful by loading the qtl2 library. You shouldn't get any error messages.
+Make sure that the installation was successful by loading the qtl2 library, either by copy-paste to the Console or by checking the box next to `qtl2` in the RStudio Packages tab. You shouldn't get any error messages.
 
 ~~~
 library(qtl2)
