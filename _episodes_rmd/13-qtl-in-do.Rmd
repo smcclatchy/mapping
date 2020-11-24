@@ -31,7 +31,7 @@ The data comes from a toxicology study in which Diversity Outbred (DO) mice were
 
 ### Load and explore the data
 
-Make sure that you are in your scripts directory. If you're not sure where you are working right now, you can check your working directory with `getwd()`. If you are not in your scripts directory, use `setwd()` in the Console or Session -> Set Working Directory -> Choose Directory in the RStudio menu to set your working directory to the scripts directory.
+Make sure that you are in your scripts directory. If you're not sure where you are working right now, you can check your working directory with `getwd()`. If you are not in your scripts directory, run `setwd("scripts")` in the Console or Session -> Set Working Directory -> Choose Directory in the RStudio menu to set your working directory to the scripts directory.
 
 Once you are in your scripts directory, create a new R script.
 
