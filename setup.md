@@ -53,7 +53,7 @@ dir.create("./results")
 Alternatively, you can copy and paste the following into the R console to download the data.
 ~~~
 options(timeout=900) # set the download timeout to 900 seconds from the default 60 seconds to help with large file downloads
-# these four commands download files from a url and places them in data directory you created
+# these four commands download files from a url and places them in the data directory you created
 download.file(url="https://ndownloader.figshare.com/files/18533342", destfile="./data/cc_variants.sqlite") 
 download.file(url="https://ndownloader.figshare.com/files/24607961", destfile="./data/mouse_genes.sqlite")
 download.file(url="https://ndownloader.figshare.com/files/24607970", destfile="./data/mouse_genes_mgi.sqlite")
