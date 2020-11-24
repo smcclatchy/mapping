@@ -34,9 +34,7 @@ library(qtl2)
 - Type `mapping` as the directory name. Browse to your Desktop to create the project there.
 - Click the `Create Project` button.
 
-2. Use the `Files` tab to create  a `data` folder to hold the data, a `scripts` folder to house your scripts, and a `results` folder to hold results. 
-
-Alternatively, you can use the R console to run the following commands for step 2.
+2. Use the `Files` tab to create  a `data` folder to hold the data, a `scripts` folder to house your scripts, and a `results` folder to hold results. Alternatively, you can use the R console to run the following commands for step 2 only. You still need to create a project with step 1.
 
 ~~~
 dir.create("./data")
@@ -54,7 +52,6 @@ dir.create("./results")
 
 Alternatively, you can copy and paste the following into the R console to download the data.
 ~~~
-setwd("~/Desktop/mapping")
 download.file("https://ndownloader.figshare.com/files/18533342", "./data/cc_variants.sqlite")
 download.file("https://ndownloader.figshare.com/files/24607961", "./data/mouse_genes.sqlite")
 download.file("https://ndownloader.figshare.com/files/24607970", "./data/mouse_genes_mgi.sqlite")
