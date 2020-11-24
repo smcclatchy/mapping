@@ -45,10 +45,10 @@ sessionInfo()
 
 The call to `sessionInfo` provides information about the R version running on your machine and the R packages that are installed. This information can help you to troubleshoot. If you can't load the data, try downloading the data again by copying and pasting the following into your browser: ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata
 
-We loaded in three data objects. Check the Environment tab to see what was loaded.  You should see a phenotypes object called `pheno` with 598 observations (in rows) of 12 variables (in columns), an object called `map` and an object called `probs`.
+We loaded in three data objects. Check the Environment tab to see what was loaded.  You should see a phenotypes object called `pheno` with `r dim(pheno)[1]` observations (in rows) of `r dim(pheno)[2]` variables (in columns), an object called `map` (physical map), and an object called `probs` (genotype probabilities).
 
 #### Phenotypes  
-`pheno` is a data frame containing the phenotype data. Click on the triangle to the left of `pheno` in the Environment pane to view its contents.
+`pheno` is a data frame containing the phenotype data. Click on the triangle to the left of `pheno` in the Environment pane to view its contents. Run `names(pheno)` to list the variables.
 
 **NOTE:** the sample IDs must be in the rownames of `pheno`. For more information about data file format, see the [Setup](../setup.md) instructions.
 
