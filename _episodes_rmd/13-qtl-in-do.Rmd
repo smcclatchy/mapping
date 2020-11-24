@@ -35,7 +35,7 @@ Make sure that you are in your scripts directory. If you're not sure where you a
 
 Once you are in your scripts directory, create a new R script with File -> New File -> R script, or use the +document icon at upper left.
 
-The data for this tutorial has been saved as an R binary file that contains several data objects.  Load it in now by running the following command.
+The data for this tutorial has been saved as an R binary file that contains several data objects.  Load it in now by running the following command in your new script.
 
 ```{r load_data, message=FALSE, results='hide'}
 load("../data/qtl2_demo.Rdata")
