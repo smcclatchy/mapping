@@ -63,7 +63,7 @@ download.file("ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", "./data/
 You will need these for the final lesson episodes on SNP association mapping and QTL analysis in Diversity Outbred mice.
 
 
-Make sure that both the SNP and gene files downloaded correctly by running the following code. If you get an error, check the file path (e.g. "~/Desktop/mapping/data/cc_variants.sqlite") carefully or download the files again. Make sure to change the file path to the location where you saved the file.
+Make sure that both the SNP and gene files downloaded correctly by running the following code. If you get an error, use `getwd()` to check the file path (e.g. `"~/Desktop/mapping/data/cc_variants.sqlite"`) carefully or download the files again. Make sure to use `setwd()` to change the file path to the location where you saved the file.
 
 
 Check part of the SNP file. It is a very large file, so checking only a sample of the file should do.
