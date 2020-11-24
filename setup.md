@@ -56,8 +56,8 @@ Alternatively, you can copy and paste the following into the R console to downlo
 ~~~
 setwd("~/Desktop/mapping")
 download.file("https://ndownloader.figshare.com/files/18533342", "./data/cc_variants.sqlite")
-download.file("https://ndownloader.figshare.com/files/17609261", "./data/mouse_genes.sqlite")
-download.file("https://ndownloader.figshare.com/files/17609252", "./data/mouse_genes_mgi.sqlite")
+download.file("https://ndownloader.figshare.com/files/24607961", "./data/mouse_genes.sqlite")
+download.file("https://ndownloader.figshare.com/files/24607970", "./data/mouse_genes_mgi.sqlite")
 download.file("ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", "./data/qtl2_demo.Rdata")
 ~~~
 {: .r}
