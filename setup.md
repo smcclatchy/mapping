@@ -45,7 +45,7 @@ dir.create("./results")
 
 3. Please download the following large files **before the workshop**, and place them in your `data` folder. You can download the files from the URLs below and move the files the same way that you would for downloading and moving any other kind of data.
  
-+ [SQLite database of variants in Collaborative Cross founder mouse strains (v3)](https://figshare.com/articles/SQLite_database_of_variants_in_Collaborative_Cross_founder_mouse_strains/5280229/3): SNP, indel, and structural variants in the Collaborative Cross founders (4.91 GB)
++ [SQLite database of variants in Collaborative Cross founder mouse strains (v3)](https://figshare.com/articles/SQLite_database_of_variants_in_Collaborative_Cross_founder_mouse_strains/5280229/3): SNP, indel, and structural variants in the Collaborative Cross founders (3.87 GB)
 + [SQLite database with mouse gene annotations from Mouse Genome Informatics (v7)](https://figshare.com/articles/dataset/SQLite_database_with_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5280238): full set of mouse gene annotations from build 38 mm10 (568.98 MB)
 + [SQLite database with MGI mouse gene annotations from Mouse Genome Informatics (v8)](https://figshare.com/articles/dataset/SQLite_database_with_MGI_mouse_gene_annotations_from_Mouse_Genome_Informatics_MGI_at_The_Jackson_Laboratory/5286019): like the previous, but including only non-duplicate gene records sourced from MGI (11.36 MB)
 + [DO QTL data](ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata) from benzene study described in [French, John E., et al. Env Health Perspectives (2015): 237-245.](https://ehp.niehs.nih.gov/doi/10.1289/ehp.1408202) (240.8 MB)
