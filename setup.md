@@ -74,8 +74,8 @@ Check part of the SNP file. It is a very large file, so checking only a sample o
 ~~~
 # create a function to query the SNP file, then use this new function  
 # to select SNPs on chromosome 1 from 10 to 11 Mbp
-snp_func = create_variant_query_func("~/Desktop/mapping/data/cc_variants.sqlite") 
-snps = snp_func(chr = 1, start = 10, stop = 11) 
+snp_func = create_variant_query_func(dbfile = "~/Desktop/mapping/data/cc_variants.sqlite") 
+snps = snp_func(chr = 1, start = 10, end = 11) 
 
 # check the dimensions of this sample of the SNP file
 dim(snps) 
@@ -91,8 +91,8 @@ Check the gene file in the same way.
 
 ~~~
 # create a function to query the gene file, then select genes in the same region as above
-gene_func = create_gene_query_func("~/Desktop/mapping/data/mouse_genes_mgi.sqlite") 
-genes = gene_func(chr = 1, start = 10, stop = 11) 
+gene_func = create_gene_query_func(dbfile = "~/Desktop/mapping/data/mouse_genes_mgi.sqlite") 
+genes = gene_func(chr = 1, start = 10, end = 11) 
 dim(genes) # check the dimensions
 ~~~
 {: .r}
