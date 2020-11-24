@@ -52,10 +52,11 @@ dir.create("./results")
 
 Alternatively, you can copy and paste the following into the R console to download the data.
 ~~~
-download.file("https://ndownloader.figshare.com/files/18533342", "./data/cc_variants.sqlite")
-download.file("https://ndownloader.figshare.com/files/24607961", "./data/mouse_genes.sqlite")
-download.file("https://ndownloader.figshare.com/files/24607970", "./data/mouse_genes_mgi.sqlite")
-download.file("ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", "./data/qtl2_demo.Rdata")
+options(timeout=900)
+download.file(url="https://ndownloader.figshare.com/files/18533342", destfile="./data/cc_variants.sqlite")
+download.file(url="https://ndownloader.figshare.com/files/24607961", destfile="./data/mouse_genes.sqlite")
+download.file(url="https://ndownloader.figshare.com/files/24607970", destfile="./data/mouse_genes_mgi.sqlite")
+download.file(url="ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", destfile="./data/qtl2_demo.Rdata")
 ~~~
 {: .r}
 
