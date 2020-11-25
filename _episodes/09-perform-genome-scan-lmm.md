@@ -21,20 +21,18 @@ Genetic mapping in mice presents a good example of why accounting for population
 
 Simple linear regression takes the form 
 
-<i>y</i> = <i>&alpha;</i> + <i>&beta;X</i> + <i>&epsilon;</i>
+<i>y</i> = <i>&mu;</i> + <i>&beta;X</i> + <i>&epsilon;</i>
 
-which describes a line with slope &beta; and y-intercept &alpha;. The error (or residual) is represented by &epsilon;.
+which describes a line with slope &beta; and y-intercept &mu;. The error (or residual) is represented by &epsilon;.
 
 To model data from a cross, we use
 
 ![](../fig/linear-genetic-model.png)  
  
 
-where <i>y<sub>j</sub></i> is the phenotype of the <i>j</i>th individual, &mu; is the mean phenotype value, <i>&beta;<sub>k</sub></i> is the effect of the <i>kth</i> genotype (slope), <i>X<sub>jk</sub></i> is the genotype for individual j, and &epsilon;<sub>j</sub> is the error for the <i>j</i>th individual. In the figure below, &mu; equals 94.6, and &beta; equals -5.8 for the alternative hypothesis (QTL exists). This linear model is <i>y</i> = 94.6 + -5.8X + &epsilon;. The model intersects the genotype groups AA and AB at their group means. In contrast, the null hypothesis would state that there is no difference in group means (no QTL anywhere). The linear model for the null hypothesis would be <i>y</i> = 94.6 + 0X + &epsilon;. This states that the phenotype is equal to the combined mean (94.6), plus some error (&epsilon;). Genotype doesn't affect the phenotype.
+where <i>y<sub>j</sub></i> is the phenotype of the <i>j</i>th individual, &mu; is the mean phenotype value, <i>&beta;<sub>k</sub></i> is the effect of the <i>kth</i> genotype (slope), <i>X<sub>jk</sub></i> is the genotype for individual j, and &epsilon;<sub>j</sub> is the error for the <i>j</i>th individual. In the figure below, &mu; equals 94.6, and &beta; equals -5.8 for the alternative hypothesis (QTL exists). This linear model is <i>y</i> = 94.6 + -5.8X + &epsilon;. The model intersects the genotype groups BB and SB at their group means. In contrast, the null hypothesis would state that there is no difference in group means (no QTL anywhere). The linear model for the null hypothesis would be <i>y</i> = 94.6 + 0X + &epsilon;. This states that the phenotype is equal to the combined mean (94.6), plus some error (&epsilon;). Genotype doesn't affect the phenotype.
 
 ![](../fig/nullvalt.png)
-
-## make a figure with SS, SB, and BB genotypes for the iron intercross, so there are 3 genotypes consistent with the genotype sample file alleles; update text above to reflect new data
 
 The linear models above describe the relationship between genotype and phenotype but are inadequate for describing the relationship between genotype and phenotype in large datasets. They don't account for relatedness among individuals. In real populations, the effect of a single genotype is influenced by many other genotypes that affect the phenotype. A  true genetic model takes into account the effect of all variants on the phenotype. 
 
