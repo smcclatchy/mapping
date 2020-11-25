@@ -17,20 +17,21 @@ source: Rmd
 
 
 
-This tutorial will take you through the process of mapping a QTL and searching for candidate genes.
+This tutorial will take you through the process of mapping a QTL and searching for candidate genes for DNA damage from benzene exposure. The adverse health effects of benzene, including leukemia and aplastic anemia, were first studied in occupational settings in which workers were exposed to high benzene concentrations. Environmental sources of benzene exposure typically come from the petrochemical industry, however, a person’s total exposure can be increased from cigarettes, consumer products, gas stations, and gasoline powered engines or tools stored at home. 
 
-The data comes from a toxicology study in which Diversity Outbred (DO) mice were exposed to benzene via inhalation for 6 hours a day, 5 days a week for 4 weeks  [(French, J. E., et al. (2015) <i>Environ Health Perspect</i> 123(3): 237-245)](http://ehp.niehs.nih.gov/1408202/). The study was conducted in two equally sized cohort of 300 male mice each, for a total of 600 mice. They were then sacrificed and reticulocytes (red blood cell precursors) were isolated from bone marrow. The number of micro-nucleated reticulocytes, a measure of DNA damage, was then measured in each mouse. The goal is to map gene(s) that influence the level of DNA damage in the bone marrow.
+Exposure thresholds for toxicants are often determined using animal models that have limited genetic diversity, including standard inbred and outbred rats and mice. These animal models fail to capture the influence of genetic diversity on toxicity response, an important component of human responses to chemicals such as benzene. The Diversity Outbred (DO) mice reflect a level of genetic diversity similar to that of humans.
 
+The data comes from a toxicology study in which Diversity Outbred (DO) mice were exposed to benzene via inhalation for 6 hours a day, 5 days a week for 4 weeks  [(French, J. E., et al. (2015) <i>Environ Health Perspect</i> 123(3): 237-245)](http://ehp.niehs.nih.gov/1408202/). The study was conducted in two equally sized cohort of 300 male mice each, for a total of 600 mice. They were then sacrificed and reticulocytes (red blood cell precursors) were isolated from bone marrow. The number of micro-nucleated reticulocytes, a measure of DNA damage, was then measured in each mouse. The goal is to map gene(s) that influence the level of DNA damage in the bone marrow. 
 ![](../fig/benzene_study_design.png)
 
 
 ### Load and explore the data
 
-Make sure that you are in your scripts directory. If you're not sure where you are working right now, you can check your working directory with `getwd()`. If you are not in your scripts directory, use `setwd()` in the Console or Session -> Set Working Directory -> Choose Directory in the RStudio menu to set your working directory to the scripts directory.
+Make sure that you are in your scripts directory. If you're not sure where you are working right now, you can check your working directory with `getwd()`. If you are not in your scripts directory, run `setwd("scripts")` in the Console or Session -> Set Working Directory -> Choose Directory in the RStudio menu to set your working directory to the scripts directory.
 
-Once you are in your scripts directory, create a new R script.
+Once you are in your scripts directory, create a new R script with File -> New File -> R script, or use the +document icon at upper left.
 
-The data for this tutorial has been saved as an R binary file that contains several data objects.  Load it in now by running the following command.
+The data for this tutorial has been saved as an R binary file that contains several data objects.  Load it in now by running the following command in your new script.
 
 
 ~~~
@@ -39,16 +40,16 @@ sessionInfo()
 ~~~
 {: .r}
 
-The call to `sessionInfo` provides information about the R version running on your machine and the R packages that are installed. This information can help you to troubleshoot. If you can't load the data, try downloading the data again by typing the following into your browser: ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata
+The call to `sessionInfo` provides information about the R version running on your machine and the R packages that are installed. This information can help you to troubleshoot. If you can't load the data, try downloading the data again by copying and pasting the following into your browser: ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata
 
-We loaded in two data objects. Look in the Environment pane to see what was loaded.  You should see an object called `pheno` with 143 observations (in rows) of 5 variables (in columns), an object called `map` and an object called `probs`.
+We loaded in three data objects. Check the Environment tab to see what was loaded.  You should see a phenotypes object called `pheno` with 598 observations (in rows) of 12 variables (in columns), an object called `map` (physical map), and an object called `probs` (genotype probabilities).
 
 #### Phenotypes  
-`pheno` is a data frame containing the phenotype data. Click on the triangle to the left of `pheno` in the Environment pane to view its contents.
+`pheno` is a data frame containing the phenotype data. Click on the triangle to the left of `pheno` in the Environment pane to view its contents. Run `names(pheno)` to list the variables.
 
 **NOTE:** the sample IDs must be in the rownames of `pheno`. For more information about data file format, see the [Setup](../setup.md) instructions.
 
-`pheno` contains the sample ID, sex, the study cohort, the concentration of benzene and the proportion of bone marrow reticulocytes that were micro-nucleated `(prop.bm.MN.RET)`.  Note that the sample IDs are also stored in the rownames of `pheno`. In order to save time for this tutorial, we will only map with 143 samples from the 100 ppm dosing group.
+`pheno` contains the sample ID, sex, the study cohort, the concentration of benzene and the proportion of bone marrow reticulocytes that were micro-nucleated `(prop.bm.MN.RET)`.  Note that the sample IDs are also stored in the rownames of `pheno`. In order to save time for this tutorial, we will only map with 598 samples from the 100 ppm dosing group.
 
 > ## Challenge 1 Look at the Data
 > Determine the dimensions of `pheno`.  
@@ -58,8 +59,8 @@ We loaded in two data objects. Look in the Environment pane to see what was load
 >
 > > ## Solution to Challenge 1
 > > `dim(pheno)`  
-> > 1). 143 rows and 5 columns  
-> > 2). Use `colnames(pheno)` or click the triangle to the left of `pheno`
+> > 1). `dim(pheno)[1]` gives the number of rows and `dim(pheno)[2]` the number of columns  
+> > 2). Use `colnames(pheno)` or `names(pheno)`, or click the triangle to the left of `pheno`
 > > in the Environment tab.  
 > > 3). Use `hist(pheno$prop.bm.MN.RET)` to plot the distribution of the data. The data has a long right 
 > > tail and is not normally distributed.  
@@ -70,7 +71,7 @@ Many statistical models, including the QTL mapping model in qtl2, expect that th
 
 
 ~~~
-pheno$log.MN.RET = log(pheno$prop.bm.MN.RET)
+pheno$log.MN.RET <- log(pheno$prop.bm.MN.RET)
 ~~~
 {: .r}
 
@@ -86,9 +87,9 @@ hist(pheno$log.MN.RET)
 
 This looks much better!
 
-Some researchers are concerned about the reproducibility of DO studies. The argument is that each DO mouse is unique and therefor can never be reproduced. But this misses the point of using the DO. While mice are the sampling unit, in QTL mapping we are sampling the founder alleles at each locus. And an average of 1/8th of the alleles should come from each founder at any given locus. Also, DO mice are a *population* of mice, not a single strain. While it is true that results in an individual DO mouse may not be reproducible, results at the population level should be reproducible. This is similar to the human population in that results from one individual may not represent all humans, but results at the population level should be reproducible.
+Some researchers are concerned about the reproducibility of DO studies. The argument is that each DO mouse is unique and therefore can never be reproduced. But this misses the point of using the DO. While mice are the sampling unit, in QTL mapping we are sampling the founder alleles at each locus. An average of 1/8th of the alleles should come from each founder at any given locus. Also, DO mice are a *population* of mice, not a single strain. While it is true that results in an individual DO mouse may not be reproducible, results at the population level should be reproducible. This is similar to the human population in that results from one individual may not represent all humans, but results at the population level should be reproducible.
 
-The benzene inhalation study was conducted in two separate cohorts (termed "Study" in the `pheno` file). Below, we plot the proportion of micronucleated reticulocytess in bone marrow versus the benzene concentration for each study cohort. As you can see, while individual mice have varying micronucleated reticulocytess, there is a dose-dependent increase in micronucleated reticulocytess in both cohorts. This is an example of how results in the DO reproduce at the population level.
+The benzene inhalation study was conducted in two separate cohorts (termed *Study* in the `pheno` object). Below, we plot the proportion of micronucleated reticulocytes in bone marrow versus the benzene concentration for each study cohort. As you can see, while individual mice have varying micronucleated reticulocytes, there is a dose-dependent increase in micronucleated reticulocytes in both cohorts. This is an example of how results in the DO reproduce at the population level.
 
 ![](../fig/bm_mnret_by_dose_cohort.png)
 
@@ -99,7 +100,7 @@ The marker map for each chromosome is stored in the `map` object. Each list elem
 
 The markers are from a genotyping array called the Mouse Universal Genotyping Array (MUGA) and contains 7,856 SNP markers. Marker locations for the MUGA and other mouse arrays are available from [The Jackson Laboratory's FTP site](ftp://ftp.jax.org/MUGA).
 
-Look at the structure of `map` in the Environment tab in RStudio. 
+Look at the structure of `map` in the Environment tab by clicking the triangle to the left or by running `str(map)` in the Console. 
 
 > ## Challenge 2 Data Dimensions II
 > 1). Determine the length of `map`.  
@@ -129,7 +130,7 @@ dim(probs[[1]])
 ~~~
 {: .output}
 
-`probs` is a three dimensional array containing the proportion of each founder haplotype at each marker for each DO sample.  The 143 samples are in the first dimension, the 8 founders in the second and the markers along chromosome 1 are in the third dimension.
+`probs` is a three dimensional array containing the proportion of each founder haplotype at each marker for each DO sample.  The 590 samples are in the first dimension, the 8 founders in the second and the 537 markers along chromosome 1 are in the third dimension.
 Let's return to the `probs` object. Look at the contents for the first 500 markers of one sample.
 
 **NOTE:** the sample IDs must be in the rownames of `probs`.
@@ -149,7 +150,7 @@ axis(side = 2, at = 1:8, labels = LETTERS[8:1], las = 1, tick = F)
 
 <img src="../fig/rmd-13-geno_plot-1.png" title="plot of chunk geno_plot" alt="plot of chunk geno_plot" style="display: block; margin: auto;" />
 
-In the plot above, the founder contributions, which range between 0 and 1, are colored from white (= 0) to black (= 1.0). A value of ~0.5 is grey. The markers are on the X-axis and the eight founders (denoted by the letters A through H) on the Y-axis. Starting at the left, we see that this sample has genotype CD because both rows C and D are grey, indicating values of 0.5 for each one. Moving along the genome to the right, the genotype becomes DD where row D is black, then CD, AC, CH, CD, CH, etc. The values at each marker sum to 1.0.  
+In the plot above, the founder contributions, which range between 0 and 1, are colored from white (= 0) to black (= 1.0). A value of ~0.5 is grey. The markers are on the X-axis and the eight founders (denoted by the letters A through H) on the Y-axis. Starting at the left, we see that this sample has genotype BB because the row for B is black, indicating values of 1.0. Moving along the genome to the right, the genotype becomes CE where rows C and E are gray, followed by CD, FH, AG, GH, etc. The values at each marker sum to 1.0.  
 
 
 ### [Calculating A Kinship Matrix](https://smcclatchy.github.io/mapping/04-calc-kinship/)
@@ -157,7 +158,7 @@ Next, we need to create a matrix that accounts for the kinship relationships bet
            
 
 ~~~
-K = calc_kinship(probs = probs, type = "loco", use_allele_probs = TRUE)
+K <- calc_kinship(probs = probs, type = "loco", use_allele_probs = TRUE)
 ~~~
 {: .r}
 
@@ -180,7 +181,7 @@ Next, we need to create additive covariates that will be used in the mapping mod
 
 
 ~~~
-addcovar = model.matrix(~Study, data = pheno)[,-1]
+addcovar <- model.matrix(~Study, data = pheno)[,-1]
 ~~~
 {: .r}
 
@@ -212,7 +213,7 @@ There are almost 600 samples in this data set and it may take several minutes to
 
 
 ~~~
-c100 = which(pheno$Conc == 100)
+c100 <- which(pheno$Conc == 100)
 ~~~
 {: .r}
 
@@ -220,8 +221,8 @@ In order to map the proportion of bone marrow reticulocytes that were micro-nucl
 
 
 ~~~
-index = which(colnames(pheno) == "prop.bm.MN.RET")
-qtl = scan1(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], kinship = K, addcovar = addcovar)
+index <- which(colnames(pheno) == "prop.bm.MN.RET")
+qtl <- scan1(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], kinship = K, addcovar = addcovar)
 ~~~
 {: .r}
 
@@ -251,7 +252,7 @@ This challenge shows the importance of looking at your data and transforming it 
 
 
 ~~~
-index = which(colnames(pheno) == "log.MN.RET")
+index <- which(colnames(pheno) == "log.MN.RET")
 ~~~
 {: .r}
 
@@ -261,7 +262,7 @@ There is clearly a large peak on Chr 10. Next, we must assess its statistical si
 
 
 ~~~
-perms = scan1perm(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], addcovar = addcovar, n_perm = 100)
+perms <- scan1perm(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], addcovar = addcovar, n_perm = 100)
 ~~~
 {: .r}
 
@@ -345,8 +346,8 @@ We will now zoom in on Chr 10 and look at the contribution of each of the eight 
 
 
 ~~~
-chr = 10
-coef10 = scan1blup(genoprobs = probs[,chr], pheno = pheno[c100,index, drop = FALSE], kinship = K[[chr]], addcovar = addcovar)
+chr <- 10
+coef10 <- scan1blup(genoprobs = probs[,chr], pheno = pheno[c100,index, drop = FALSE], kinship <- K[[chr]], addcovar = addcovar)
 ~~~
 {: .r}
 
@@ -389,11 +390,11 @@ We can call [scan1snps](https://github.com/rqtl/qtl2/blob/master/R/scan1snps.R) 
 
 
 ~~~
-chr = 10
-start = 30
-end = 36
-query_func = create_variant_query_func("../data/cc_variants.sqlite")
-assoc = scan1snps(genoprobs = probs[,chr], map = map, pheno = pheno[c100,index,drop = FALSE], kinship = K, addcovar = addcovar, query_func = query_func, chr = chr, start = start, end = end, keep_all_snps = TRUE)
+chr <- 10
+start <- 30
+end <- 36
+query_func <- create_variant_query_func("../data/cc_variants.sqlite")
+assoc <- scan1snps(genoprobs = probs[,chr], map = map, pheno = pheno[c100,index,drop = FALSE], kinship = K, addcovar = addcovar, query_func = query_func, chr = chr, start = start, end = end, keep_all_snps = TRUE)
 ~~~
 {: .r}
 
@@ -415,8 +416,8 @@ First, we must query the database for the genes in the interval. The path of the
 
 
 ~~~
-query_genes = create_gene_query_func(dbfile = "../data/mouse_genes.sqlite", filter = "source='MGI'")
-genes = query_genes(chr, start, end)
+query_genes <- create_gene_query_func(dbfile = "../data/mouse_genes.sqlite", filter = "source='MGI'")
+genes <- query_genes(chr, start, end)
 head(genes)
 ~~~
 {: .r}

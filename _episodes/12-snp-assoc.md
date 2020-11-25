@@ -356,6 +356,4 @@ plot(out_gwas$lod, out_gwas$snpinfo, altcol="green4", gap=0)
 
 <img src="../fig/rmd-12-plot_gwas_scan-1.png" title="plot of chunk plot_gwas_scan" alt="plot of chunk plot_gwas_scan" style="display: block; margin: auto;" />
 
-Note that while there are LOD scores on the X chromosome that are as large as those on chromosome 2, we’re allowing a genotype × sex interaction on the X chromosome and so the test has 3 degrees of freedom (versus 2 degrees of freedom on the autosomes) and so the LOD scores will naturally be larger. If we’d used the allele probabilities (apr above, calculated from genoprob_to_alleleprob()) rather than the genotype probabilities, we would be performing a test with 1 degree of freedom on both the X chromosome and the autosomes.
-
-
+Note that while there are LOD scores on the X chromosome that are as large as those on chromosome 2, we’re allowing a genotype × sex interaction on the X chromosome and so the test has 3 degrees of freedom (versus 2 degrees of freedom on the autosomes) and so the LOD scores will naturally be larger. If we’d used the allele probabilities (apr above, calculated from `genoprob_to_alleleprob()`) rather than the genotype probabilities, we would be performing a test with 1 degree of freedom on both the X chromosome and the autosomes.

@@ -301,7 +301,7 @@ plot_pxg(g, iron$pheno[,"liver"], SEmult=2, swap_axes=TRUE, xlab="Liver phenotyp
 > spleen on the chromosome of your choice.
 >
 > >
-> > ## Solution to Challenge 3
+> > ## Solution to Challenge 1
 > >
 > >
 > {: .solution}
