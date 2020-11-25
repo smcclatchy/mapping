@@ -24,7 +24,7 @@ library(qtl2)
 
 This tutorial will take you through the process of mapping a QTL and searching for candidate genes for DNA damage from benzene exposure. The adverse health effects of benzene, including leukemia and aplastic anemia, were first studied in occupational settings in which workers were exposed to high benzene concentrations. Environmental sources of benzene exposure typically come from the petrochemical industry, however, a person’s total exposure can be increased from cigarettes, consumer products, gas stations, and gasoline powered engines or tools stored at home. 
 
-Exposure thresholds for toxicants are often determined using animal models that have limited genetic diversity, including both inbred and outbred rats and mice. These animal models fail to capture the influence of genetic diversity on toxicity responses, an important component of human responses to toxicants such as benzene. The Diversity Outbred (DO) mice reflect a level of genetic diversity similar to that of humans.
+Exposure thresholds for toxicants are often determined using animal models that have limited genetic diversity, including standard inbred and outbred rats and mice. These animal models fail to capture the influence of genetic diversity on toxicity response, an important component of human responses to chemicals such as benzene. The Diversity Outbred (DO) mice reflect a level of genetic diversity similar to that of humans.
 
 The data comes from a toxicology study in which Diversity Outbred (DO) mice were exposed to benzene via inhalation for 6 hours a day, 5 days a week for 4 weeks  [(French, J. E., et al. (2015) <i>Environ Health Perspect</i> 123(3): 237-245)](http://ehp.niehs.nih.gov/1408202/). The study was conducted in two equally sized cohort of 300 male mice each, for a total of 600 mice. They were then sacrificed and reticulocytes (red blood cell precursors) were isolated from bone marrow. The number of micro-nucleated reticulocytes, a measure of DNA damage, was then measured in each mouse. The goal is to map gene(s) that influence the level of DNA damage in the bone marrow. 
 ![](../fig/benzene_study_design.png)
@@ -73,7 +73,7 @@ We loaded in three data objects. Check the Environment tab to see what was loade
 Many statistical models, including the QTL mapping model in qtl2, expect that the incoming data will be normally distributed. You may use transformations such as log or square root to make your data more normally distributed. We will be mapping the proportion of micronucleated reticulocytess in bone marrow (`prop.bm.MN.RET`) and, since the data does not contain zeros or negative numbers, we will log transform the data.
 
 ```{r log_transform}
-pheno$log.MN.RET = log(pheno$prop.bm.MN.RET)
+pheno$log.MN.RET <- log(pheno$prop.bm.MN.RET)
 ```
 
 Now, let's make a histogram of the log-transformed data.
@@ -141,7 +141,7 @@ In the plot above, the founder contributions, which range between 0 and 1, are c
 Next, we need to create a matrix that accounts for the kinship relationships between the mice. We do this by looking at the correlation between the founder haplotypes for each sample at each SNP. For each chromosome, we create a kinship matrix using all markers *except* the ones on the current chromosome using the loco (leave-one-chromosome-out) method. Simulations suggest that mapping using this approach increases the power to detect QTL.
            
 ```{r kinship, message=FALSE, results='hide'}
-K = calc_kinship(probs = probs, type = "loco", use_allele_probs = TRUE)
+K <- calc_kinship(probs = probs, type = "loco", use_allele_probs = TRUE)
 ```
 
 Kinship values between pairs of samples range between 0 (no relationship) and 1.0 (completely identical). Let's look at the kinship matrix.
@@ -158,7 +158,7 @@ The figure above shows kinship between all pairs of samples. White ( = 1) indica
 Next, we need to create additive covariates that will be used in the mapping model. We will use study cohort as a covariate in the mapping model. If we were mapping with *all* mice, we would also add benzene concentration to the model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
 
 ```{r covariates}
-addcovar = model.matrix(~Study, data = pheno)[,-1]
+addcovar <- model.matrix(~Study, data = pheno)[,-1]
 ```         
 
 The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-effect.
@@ -188,14 +188,14 @@ Note that this model will give us an estimate of the effect of each founder alle
 There are almost 600 samples in this data set and it may take several minutes to map one trait. In order to save some time, we will map using only the samples in the 100 ppm concentration group.
 
 ```{r select_100ppm}
-c100 = which(pheno$Conc == 100)
+c100 <- which(pheno$Conc == 100)
 ```
 
 In order to map the proportion of bone marrow reticulocytes that were micro-nucleated, you will use the [scan1](https://github.com/rqtl/qtl2/blob/master/R/plot_scan1.R) function. To see the arguments for [scan1](https://github.com/rqtl/qtl2/blob/master/R/plot_scan1.R), you can type `help(scan1)`. First, let's map the *untransformed* phenotype. (Recall that we log-transformed it above).
 
 ```{r QTL, warning=FALSE, error=FALSE}
-index = which(colnames(pheno) == "prop.bm.MN.RET")
-qtl = scan1(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], kinship = K, addcovar = addcovar)
+index <- which(colnames(pheno) == "prop.bm.MN.RET")
+qtl <- scan1(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], kinship = K, addcovar = addcovar)
 ```
 
 Next, we plot the genome scan.
@@ -219,7 +219,7 @@ plot_scan1(x = qtl, map = map, main = "Proportion of Micro-nucleated Bone Marrow
 This challenge shows the importance of looking at your data and transforming it to meet the expectations of the mapping model. In this case, a log transformation improved the model fit and increased the LOD score. We will continue the rest of this lesson using the log-transformed data. Set your `index` variable equal to the column index of `log.MN.RET`.
 
 ```{r set_pheno_index_to_log}
-index = which(colnames(pheno) == "log.MN.RET")
+index <- which(colnames(pheno) == "log.MN.RET")
 ```
 
 ### [Performing a permutation test](https://smcclatchy.github.io/mapping/10-perform-perm-test/) 
@@ -227,7 +227,7 @@ index = which(colnames(pheno) == "log.MN.RET")
 There is clearly a large peak on Chr 10. Next, we must assess its statistical significance. This is most commonly done via [permutation](http://www.genetics.org/content/178/1/609.long). We advise running at least 1,000 permutations to obtain significance thresholds. In the interest of time, we perform 100 permutations here.
 
 ```{r perms, message=FALSE, results='hide', warning=FALSE}
-perms = scan1perm(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], addcovar = addcovar, n_perm = 100)
+perms <- scan1perm(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], addcovar = addcovar, n_perm = 100)
 ```
 
 The `perms` object contains the maximum LOD score from each genome scan of permuted data.
@@ -285,8 +285,8 @@ From the output above, you can see that the support interval is 5.5 Mb wide (30.
 We will now zoom in on Chr 10 and look at the contribution of each of the eight founder alleles to the proportion of bone marrow reticulocytes that were micro-nucleated. Remember, the mapping model above estimates the effect of each of the eight DO founders. We can plot these effects (also called 'coefficients') across Chr 10 using [scan1coef](https://github.com/rqtl/qtl2/blob/master/R/scan1coef.R).
 
 ```{r coef}
-chr = 10
-coef10 = scan1blup(genoprobs = probs[,chr], pheno = pheno[c100,index, drop = FALSE], kinship = K[[chr]], addcovar = addcovar)
+chr <- 10
+coef10 <- scan1blup(genoprobs = probs[,chr], pheno = pheno[c100,index, drop = FALSE], kinship <- K[[chr]], addcovar = addcovar)
 ```
 
 This produces an object containing estimates of each of the eight DO founder allele effect. These are the <i>&beta;<sub>j</sub></i> values in the mapping equation above.
@@ -323,11 +323,11 @@ Association mapping involves imputing the founder SNPs onto each DO genome and f
 We can call [scan1snps](https://github.com/rqtl/qtl2/blob/master/R/scan1snps.R) to perform association mapping in the QTL interval on Chr 10. We first create variables for the chromosome and support interval where we are mapping. We then create a function to get the SNPs from the founder SNP database The path to the SNP database (`snpdb_file` argument) points to the data directory on your computer. Note that it is important to use the `keep_all_snps = TRUE` in order to return all SNPs.
 
 ```{r assoc_map}
-chr = 10
-start = 30
-end = 36
-query_func = create_variant_query_func("../data/cc_variants.sqlite")
-assoc = scan1snps(genoprobs = probs[,chr], map = map, pheno = pheno[c100,index,drop = FALSE], kinship = K, addcovar = addcovar, query_func = query_func, chr = chr, start = start, end = end, keep_all_snps = TRUE)
+chr <- 10
+start <- 30
+end <- 36
+query_func <- create_variant_query_func("../data/cc_variants.sqlite")
+assoc <- scan1snps(genoprobs = probs[,chr], map = map, pheno = pheno[c100,index,drop = FALSE], kinship = K, addcovar = addcovar, query_func = query_func, chr = chr, start = start, end = end, keep_all_snps = TRUE)
 ```
 
 The `assoc` object is a list containing two objects: the LOD scores for each unique SNP and a `snpinfo` object that maps the LOD scores to each SNP. To plot the association mapping, we need to provide both objects to the [plot_snpasso](https://github.com/rqtl/qtl2/blob/master/R/plot_snpasso.R) function.
@@ -343,8 +343,8 @@ We can add a plot containing the genes in the QTL interval using the `plot_genes
 First, we must query the database for the genes in the interval. The path of the first argument points to the data directory on your computer.
 
 ```{r get_genes}
-query_genes = create_gene_query_func(dbfile = "../data/mouse_genes.sqlite", filter = "source='MGI'")
-genes = query_genes(chr, start, end)
+query_genes <- create_gene_query_func(dbfile = "../data/mouse_genes.sqlite", filter = "source='MGI'")
+genes <- query_genes(chr, start, end)
 head(genes)
 ```
 
