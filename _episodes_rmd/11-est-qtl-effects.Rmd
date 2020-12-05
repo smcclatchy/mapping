@@ -8,8 +8,8 @@ objectives:
 - Obtain estimated QTL effects.
 - Plot estimated QTL effects.
 keypoints:
-- "."
-- "."
+- "Estimated founder allele effects can be plotted from the mapping model coefficients."
+- "Additive and dominance effects can be plotted using contrasts."
 source: Rmd
 ---
 
