@@ -343,10 +343,10 @@ head(genes)
 
 The `genes` object contains annotation information for each gene in the interval.
 
-Next, we will create a plot with two panels: one containing the association mapping LOD scores and one containing the genes in the QTL interval. We do this by passing in the `genes` argument to [plot_snpasso](https://github.com/rqtl/qtl2/blob/master/R/plot_snpasso.R).
+Next, we will create a plot with two panels: one containing the association mapping LOD scores and one containing the genes in the QTL interval. We do this by passing in the `genes` argument to [plot_snpasso](https://github.com/rqtl/qtl2/blob/master/R/plot_snpasso.R). We can also adjust the proportion of the plot allocated for SNPs (on the top) and genes (on th bottom) using the 'top_panel_prop' argument.
 
 ```{r plot_assoc2,fig.width=12,fig.height=12}
-plot_snpasso(assoc$lod, assoc$snpinfo, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes", genes = genes)
+plot_snpasso(assoc$lod, assoc$snpinfo, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes", genes = genes, top_panel_prop = 0.5)
 ```
 
 ### Searching for Candidate Genes
