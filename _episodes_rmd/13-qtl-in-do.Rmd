@@ -124,14 +124,7 @@ Let's return to the `probs` object. Look at the contents for the first 500 marke
 **NOTE:** the sample IDs must be in the rownames of `probs`.
 
 ```{r geno_plot, fig.width=8, fig.height=6}
-image(1:500, 1:ncol(probs[[1]]), t(probs[[1]][1,8:1,1:500]), breaks = 0:100/100,
-      col = grey(99:0/100), axes = F, xlab = "Markers", ylab = "Founders",
-      main = "Founder Allele Contributions for Sample 1")
-abline(h = 0:8 + 0.5, col = "grey70")
-usr = par("usr")
-rect(usr[1], usr[3], usr[2], usr[4])
-axis(side = 1, at = 0:5 * 100, labels = 0:5 * 100)
-axis(side = 2, at = 1:8, labels = LETTERS[8:1], las = 1, tick = F)
+plot_genoprob(probs, map, ind = 1, chr = 1)
 ```
 
 In the plot above, the founder contributions, which range between 0 and 1, are colored from white (= 0) to black (= 1.0). A value of ~0.5 is grey. The markers are on the X-axis and the eight founders (denoted by the letters A through H) on the Y-axis. Starting at the left, we see that this sample has genotype BB because the row for B is black, indicating values of 1.0. Moving along the genome to the right, the genotype becomes CE where rows C and E are gray, followed by CD, FH, AG, GH, etc. The values at each marker sum to 1.0.  
