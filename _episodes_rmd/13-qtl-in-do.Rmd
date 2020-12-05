@@ -140,12 +140,11 @@ K <- calc_kinship(probs = probs, type = "loco", use_allele_probs = TRUE)
 Kinship values between pairs of samples range between 0 (no relationship) and 1.0 (completely identical). Let's look at the kinship matrix.
 
 ```{r kinship_probs, fig.width=8, fig.height=8}
-image(1:nrow(K[[1]]), 1:ncol(K[[1]]), K[[1]][,ncol(K[[1]]):1], xlab = "Samples", 
-      ylab = "Samples", yaxt = "n", main = "Kinship between samples", 
-      breaks = 0:100/100, col = heat.colors(length(0:100) - 1))
+n_samples = 50
+heatmap(K[[1]][1:n_samples,1:n_samples])
 ```
 
-The figure above shows kinship between all pairs of samples. White ( = 1) indicates no kinship and red ( = 0) indicates full kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
+The figure above shows kinship between all pairs of samples. Light yellow indicates low kinship and dark red indicates higher kinship. Orange values indicate varying levels of kinship between 0 and 1. The dark red diagonal of the matrix indicates that each sample is identical to itself. The orange blocks along the diagonal may indicate close relatives (i.e. siblings or cousins).
 
 #### Covariates    
 Next, we need to create additive covariates that will be used in the mapping model. We will use study cohort as a covariate in the mapping model. If we were mapping with *all* mice, we would also add benzene concentration to the model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
