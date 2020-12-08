@@ -47,6 +47,15 @@ Also note that, as with `scan1()`, you can speed up the calculations on a multi-
 operm <- scan1perm(pr, iron$pheno, Xcovar=Xcovar, n_perm=1000, cores=0)
 ```
 
+`operm` now contains the maximum LOD score for each permutation for the liver and spleen phenotypes. There should be 1000 values for each phenotypes. We can view the liver permutation LOD scores by making a histogram.
+
+```{r hist_perm}
+hist(operm[,'liver'], breaks = 50)
+abline(v = summary(operm)[,'liver'], col = 'red', lwd = 2)
+```
+
+In the histogram above, you can see that most of the maximum LOD scores fall between 1 and 3. This means that we expect LOD scores less than 3 to occur by chance fairly often. The red line indicates the alpha = 0.05 threshold, which means that, under permutation, we only see LOD value as high or higher, 5% of the time. This is one way of estimating a significane threshold for QTL plots.
+
 To get estimated significance thresholds, use the function `summary()`.
 
 ```{r create_summary, echo=FALSE}
