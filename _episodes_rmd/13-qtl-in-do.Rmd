@@ -70,7 +70,13 @@ We loaded in three data objects. Check the Environment tab to see what was loade
 > {: .solution}
 {: .challenge}
 
-Many statistical models, including the QTL mapping model in qtl2, expect that the incoming data will be normally distributed. You may use transformations such as log or square root to make your data more normally distributed. We will be mapping the proportion of micronucleated reticulocytess in bone marrow (`prop.bm.MN.RET`) and, since the data does not contain zeros or negative numbers, we will log transform the data.
+Many statistical models, including the QTL mapping model in qtl2, expect that the incoming data will be normally distributed. You may use transformations such as log or square root to make your data more normally distributed. We will be mapping the proportion of micronucleated reticulocytes in bone marrow (`prop.bm.MN.RET`) and, since the data does not contain zeros or negative numbers, we will log transform the data. Here is a histogram of the untransformed data.
+
+```{r hist_untransformed}
+hist(pheno$prop.bm.MN.RET)
+```
+
+Apply the `log()` function to this data.
 
 ```{r log_transform}
 pheno$log.MN.RET <- log(pheno$prop.bm.MN.RET)
@@ -144,15 +150,15 @@ Next, we need to create a matrix that accounts for the kinship relationships bet
 K <- calc_kinship(probs = probs, type = "loco", use_allele_probs = TRUE)
 ```
 
-Kinship values between pairs of samples range between 0 (no relationship) and 1.0 (completely identical). Let's look at the kinship matrix.
+Kinship values between pairs of samples range between 0 (no relationship) and 1.0 (completely identical). Let's look at the kinship matrix for the first 100 animals.
 
 ```{r kinship_probs, fig.width=8, fig.height=8}
-image(1:nrow(K[[1]]), 1:ncol(K[[1]]), K[[1]][,ncol(K[[1]]):1], xlab = "Samples", 
-      ylab = "Samples", yaxt = "n", main = "Kinship between samples", 
-      breaks = 0:100/100, col = heat.colors(length(0:100) - 1))
+image(1:100, 1:100, K[[1]][1:100,100:1], xlab = "Samples",
+      ylab = "Samples", yaxt = "n", main = "Kinship between samples",
+      breaks = 0:100/100, col = hcl.colors(length(0:100) - 1, palette = "YlOrRd"))
 ```
 
-The figure above shows kinship between all pairs of samples. White ( = 1) indicates no kinship and red ( = 0) indicates full kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
+The figure above shows kinship between all pairs of samples. Bright blue  indicates high kinship and dark purple indicates no kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
 
 #### Covariates    
 Next, we need to create additive covariates that will be used in the mapping model. We will use study cohort as a covariate in the mapping model. If we were mapping with *all* mice, we would also add benzene concentration to the model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
