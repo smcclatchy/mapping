@@ -51,7 +51,7 @@ operm <- scan1perm(pr, iron$pheno, Xcovar=Xcovar, n_perm=1000, cores=0)
 
 
 ~~~
-hist(operm[,'liver'], breaks = 50)
+hist(operm[,'liver'], breaks = 50, xlab = "LOD", main = "LOD scores for liver scan with threshold in red")
 abline(v = summary(operm)[,'liver'], col = 'red', lwd = 2)
 ~~~
 {: .r}
@@ -69,6 +69,15 @@ To get estimated significance thresholds, use the function `summary()`.
 summary(operm)
 ~~~
 {: .r}
+
+
+
+~~~
+LOD thresholds (1000 permutations)
+     liver spleen
+0.05  3.46   3.46
+~~~
+{: .output}
 
 
 ~~~

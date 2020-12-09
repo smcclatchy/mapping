@@ -60,7 +60,7 @@ operm <- scan1perm(pr, iron$pheno, Xcovar=Xcovar, n_perm=1000, cores=0)
 `operm` now contains the maximum LOD score for each permutation for the liver and spleen phenotypes. There should be 1000 values for each phenotypes. We can view the liver permutation LOD scores by making a histogram.
 
 ```{r hist_perm}
-hist(operm[,'liver'], breaks = 50)
+hist(operm[,'liver'], breaks = 50, xlab = "LOD", main = "LOD scores for liver scan with threshold in red")
 abline(v = summary(operm)[,'liver'], col = 'red', lwd = 2)
 ```
 
@@ -76,7 +76,7 @@ operm_summary <- structure(c(3.46116054889584, 3.46335159869951), .Dim = 1:2, .D
                  NULL, c("liver", "spleen"))))
 ```
 
-```{r summary_scan1perm, eval=FALSE}
+```{r summary_scan1perm}
 summary(operm)
 ```
 
