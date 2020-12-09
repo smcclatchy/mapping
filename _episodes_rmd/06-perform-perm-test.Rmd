@@ -47,6 +47,15 @@ Also note that, as with `scan1()`, you can speed up the calculations on a multi-
 operm <- scan1perm(pr, iron$pheno, Xcovar=Xcovar, n_perm=1000, cores=0)
 ```
 
+`operm` now contains the maximum LOD score for each permutation for the liver and spleen phenotypes. There should be 1000 values for each phenotypes. We can view the liver permutation LOD scores by making a histogram.
+
+```{r hist_perm}
+hist(operm[,'liver'], breaks = 50)
+abline(v = summary(operm)[,'liver'], col = 'red', lwd = 2)
+```
+
+In the histogram above, you can see that most of the maximum LOD scores fall between 1 and 3. This means that we expect LOD scores less than 3 to occur by chance fairly often. The red line indicates the alpha = 0.05 threshold, which means that, under permutation, we only see LOD value as high or higher, 5% of the time. This is one way of estimating a significane threshold for QTL plots.
+
 To get estimated significance thresholds, use the function `summary()`.
 
 ```{r create_summary, echo=FALSE}
@@ -120,39 +129,6 @@ summary(operm2, alpha=c(0.2, 0.05))
 
 ```{r summary_scan1perm_C_run, echo=FALSE}
 print(operm2_summary)
-```
-
-Permutations for a genome scan with a linear mixed model-based are performed by specifying the `kinship` argument. We can use the "leave one chromosome out" (loco) method by providing `kinship_loco`, the list of kinship matrices calculated above with `calc_kinship()`.
-
-```{r set_seed_yet_again, echo=FALSE}
-set.seed(49237170)
-```
-
-```{r scan1perm_lmm, eval=FALSE}
-operm3 <- scan1perm(pr, iron$pheno, kinship_loco, Xcovar=Xcovar, n_perm=1000,
-                    perm_Xsp=TRUE, chr_lengths=chr_lengths(map))
-```
-
-Here are the estimated significance thresholds:
-
-```{r create_summary_D, echo=FALSE}
-# skipped the permutations above and am hard-coding the results here
-operm3_summary <- structure(list(A = structure(c(2.64158056099834, 3.2863616632467,
-                  2.62334670551258, 3.28542642483703), .Dim = c(2L, 2L), .Dimnames = list(
-                  c("0.2", "0.05"), c("liver", "spleen"))), X = structure(c(3.13853435409231,
-                  3.81699660922065, 4.36511444098698, 5.49658348000439), .Dim = c(2L,
-                  2L), .Dimnames = list(c("0.2", "0.05"), c("liver", "spleen")))), .Names = c("A",
-                  "X"), class = c("summary.scan1perm", "list"), n_perm = structure(c(1000,
-                  28243, 1000, 28243), .Dim = c(2L, 2L), .Dimnames = list(c("A",
-                  "X"), c("liver", "spleen"))))
-```
-
-```{r summary_scan1perm_D, eval=FALSE}
-summary(operm3, alpha=c(0.2, 0.05))
-```
-
-```{r summary_scan1perm_D_run, echo=FALSE}
-print(operm3_summary)
 ```
 
 As with `scan1`, we can use `scan1perm` with binary traits, using the argument `model="binary"`. Again, this can't be used with a kinship matrix, but all of the other arguments can be applied.

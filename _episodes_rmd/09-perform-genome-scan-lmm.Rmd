@@ -89,8 +89,8 @@ You can use the code below to generate overlaid plots for each method.
 
 ```{r, eval=FALSE}
 plot_scan1(out_pg_loco, map = map, lodcolumn = "liver", col = "black")
-plot_scan1(out_pg, map = map, lodcolumn = "liver", col = "blue", add = TRUE)
-plot_scan1(out, map = map, lodcolumn = "liver", add = TRUE, col = "green")
+plot_scan1(out_pg,      map = map, lodcolumn = "liver", col = "blue",  add = TRUE)
+plot_scan1(out,         map = map, lodcolumn = "liver", col = "green", add = TRUE)
 ```
 
 For the liver phenotype (top panel), the three methods give quite different results. The linear mixed model with an overall kinship matrix gives much lower LOD scores than the other two methods.  On chromosomes with some evidence of a QTL, the LOCO method gives higher LOD scores than Haley-Knott, except on chromosome 16 where it gives lower LOD scores.

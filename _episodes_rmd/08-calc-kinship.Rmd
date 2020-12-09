@@ -58,6 +58,16 @@ Take a look at the kinship values calculated for the first 5 individuals.
 kinship[1:5, 1:5]
 ```
 
+We can also look at the first 50 mice in the kinship matrix.
+
+```{r plot_kinship}
+n_samples = 50
+heatmap(kinship[1:n_samples, 1:n_samples], symm = TRUE)
+```
+
+The mice are listed in the same order on both sides of the matrix. The comb-like structures are called "dendrograms" and they indicate how the mice are clustered together. Each cell represents the degree of allele sharing between mice. Red colors indicate higher kinship and yellow colors indicate lower kinship. Each mouse is closely related to itself, so the cells along the diagonal tend to be darker than the other cells. You can see some evidence of related mice, possibly siblings, in the orange-shaded blocks along the diagonal.
+
+
 By default, the genotype probabilities are converted to allele probabilities, and the kinship matrix is calculated as the proportion of shared alleles. To use genotype probabilities instead, use `use_allele_probs=FALSE` in the call to `calc_kinship()`. Further, by default we omit the X chromosome and only use the autosomes. To include the X chromosome, use `omit_x=FALSE`.
 
 In calculating the kinship matrix, you can eliminate the effect of varying marker density across the genome, and only use the probabilities along the grid of pseudomarkers (defined by the `step` argument to `insert_pseudomarkers()`. To do so, we need to first use `calc_grid()` to determine the grid of pseudomarkers, and then `probs_to_grid()` to probabilities for positions that are not on the grid.

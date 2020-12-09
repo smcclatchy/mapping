@@ -8,8 +8,8 @@ objectives:
 - Obtain estimated QTL effects.
 - Plot estimated QTL effects.
 keypoints:
-- "."
-- "."
+- "Estimated founder allele effects can be plotted from the mapping model coefficients."
+- "Additive and dominance effects can be plotted using contrasts."
 source: Rmd
 ---
 
@@ -46,6 +46,11 @@ head(c2eff)
 
 To plot the effects, use the function `plot_coef()`. Use the argument `columns` to indicate which coefficient columns to plot.
 
+```{r plot_effects_liver_c2}
+colors = c("slateblue", "violetred", "green3")
+
+plot_coef(c2eff, map, columns = 1:3, col = colors, scan1_output = out, main = 'scan1coef')
+```
 
 The default is to provide phenotype averages for each genotype group. If instead you want additive and dominance effects, you can provide a square matrix of _contrasts_, as follows:
 
@@ -75,6 +80,9 @@ head(c2eff_pg)
 
 Here's a plot of the estimates.
 
+```{r plot_effects_pg_liver_c2}
+plot_coef(c2eff_pg, map, columns = 1:3, col = colors, scan1_output = out_pg, main = 'scan1coef')
+```
 
 You can also get estimated additive and dominance effects, using a matrix of contrasts.
 

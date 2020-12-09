@@ -130,14 +130,7 @@ Let's return to the `probs` object. Look at the contents for the first 500 marke
 **NOTE:** the sample IDs must be in the rownames of `probs`.
 
 ```{r geno_plot, fig.width=8, fig.height=6}
-image(1:500, 1:ncol(probs[[1]]), t(probs[[1]][1,8:1,1:500]), breaks = 0:100/100,
-      col = grey(99:0/100), axes = F, xlab = "Markers", ylab = "Founders",
-      main = "Founder Allele Contributions for Sample 1")
-abline(h = 0:8 + 0.5, col = "grey70")
-usr = par("usr")
-rect(usr[1], usr[3], usr[2], usr[4])
-axis(side = 1, at = 0:5 * 100, labels = 0:5 * 100)
-axis(side = 2, at = 1:8, labels = LETTERS[8:1], las = 1, tick = F)
+plot_genoprob(probs, map, ind = 1, chr = 1)
 ```
 
 In the plot above, the founder contributions, which range between 0 and 1, are colored from white (= 0) to black (= 1.0). A value of ~0.5 is grey. The markers are on the X-axis and the eight founders (denoted by the letters A through H) on the Y-axis. Starting at the left, we see that this sample has genotype BB because the row for B is black, indicating values of 1.0. Moving along the genome to the right, the genotype becomes CE where rows C and E are gray, followed by CD, FH, AG, GH, etc. The values at each marker sum to 1.0.  
@@ -150,15 +143,14 @@ Next, we need to create a matrix that accounts for the kinship relationships bet
 K <- calc_kinship(probs = probs, type = "loco", use_allele_probs = TRUE)
 ```
 
-Kinship values between pairs of samples range between 0 (no relationship) and 1.0 (completely identical). Let's look at the kinship matrix for the first 100 animals.
+Kinship values between pairs of samples range between 0 (no relationship) and 1.0 (completely identical). Let's look at the kinship matrix.
 
 ```{r kinship_probs, fig.width=8, fig.height=8}
-image(1:100, 1:100, K[[1]][1:100,100:1], xlab = "Samples",
-      ylab = "Samples", yaxt = "n", main = "Kinship between samples",
-      breaks = 0:100/100, col = hcl.colors(length(0:100) - 1, palette = "YlOrRd"))
+n_samples = 50
+heatmap(K[[1]][1:n_samples,1:n_samples])
 ```
 
-The figure above shows kinship between all pairs of samples. Bright blue  indicates high kinship and dark purple indicates no kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
+The figure above shows kinship between all pairs of samples. Light yellow indicates low kinship and dark red indicates higher kinship. Orange values indicate varying levels of kinship between 0 and 1. The dark red diagonal of the matrix indicates that each sample is identical to itself. The orange blocks along the diagonal may indicate close relatives (i.e. siblings or cousins).
 
 #### Covariates    
 Next, we need to create additive covariates that will be used in the mapping model. We will use study cohort as a covariate in the mapping model. If we were mapping with *all* mice, we would also add benzene concentration to the model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
@@ -356,15 +348,15 @@ head(genes)
 
 The `genes` object contains annotation information for each gene in the interval.
 
-Next, we will create a plot with two panels: one containing the association mapping LOD scores and one containing the genes in the QTL interval. We do this by passing in the `genes` argument to [plot_snpasso](https://github.com/rqtl/qtl2/blob/master/R/plot_snpasso.R).
+Next, we will create a plot with two panels: one containing the association mapping LOD scores and one containing the genes in the QTL interval. We do this by passing in the `genes` argument to [plot_snpasso](https://github.com/rqtl/qtl2/blob/master/R/plot_snpasso.R). We can also adjust the proportion of the plot allocated for SNPs (on the top) and genes (on th bottom) using the 'top_panel_prop' argument.
 
 ```{r plot_assoc2,fig.width=12,fig.height=12}
-plot_snpasso(assoc$lod, assoc$snpinfo, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes", genes = genes)
+plot_snpasso(assoc$lod, assoc$snpinfo, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes", genes = genes, top_panel_prop = 0.5)
 ```
 
 ### Searching for Candidate Genes
 
-One strategy for finding genes related to a phenotype is to search for genes with expression QTL (eQTL) in the same location. Ideally, we would have liver and bone marrow gene expression data in the DO mice from this experiment. Unfortunately, we did not collect this data. However, we have liver gene expression for a separate set of untreated DO mice [Liver eQTL Viewer](http://churchill-lab.jax.org/qtl/svenson/DO478/). We searched for genes in the QTL interval that had an eQTL in the same location. Then, we looked at the pattern of founder effects to see if CAST stood out. We found two genes that met these criteria.
+One strategy for finding genes related to a phenotype is to search for genes with expression QTL (eQTL) in the same location. Ideally, we would have liver and bone marrow gene expression data in the DO mice from this experiment. Unfortunately, we did not collect this data. However, we have liver gene expression for a separate set of untreated DO mice [Liver eQTL Viewer](https://churchilllab.jax.org/qtlviewer/svenson/DOHFD). We searched for genes in the QTL interval that had an eQTL in the same location. Then, we looked at the pattern of founder effects to see if CAST stood out. We found two genes that met these criteria.
 
 ![](../fig/French.et.al.Figure3.png)
 
