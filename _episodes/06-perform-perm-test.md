@@ -45,6 +45,37 @@ operm <- scan1perm(pr, iron$pheno, Xcovar=Xcovar, n_perm=1000, cores=0)
 ~~~
 {: .r}
 
+`operm` now contains the maximum LOD score for each permutation for the liver and spleen phenotypes. There should be 1000 values for each phenotypes. We can view the liver permutation LOD scores by making a histogram.
+
+
+~~~
+hist(operm[,'liver'], breaks = 50)
+~~~
+{: .r}
+
+
+
+~~~
+Error in hist(operm[, "liver"], breaks = 50): object 'operm' not found
+~~~
+{: .error}
+
+
+
+~~~
+abline(v = summary(operm)[,'liver'], col = 'red', lwd = 2)
+~~~
+{: .r}
+
+
+
+~~~
+Error in summary(operm): object 'operm' not found
+~~~
+{: .error}
+
+In the histogram above, you can see that most of the maximum LOD scores fall between 1 and 3. This means that we expect LOD scores less than 3 to occur by chance fairly often. The red line indicates the alpha = 0.05 threshold, which means that, under permutation, we only see LOD value as high or higher, 5% of the time. This is one way of estimating a significane threshold for QTL plots.
+
 To get estimated significance thresholds, use the function `summary()`.
 
 
@@ -119,41 +150,6 @@ X chromosome LOD thresholds (28243 permutations)
      liver spleen
 0.2    3.1   4.02
 0.05   3.9   5.18
-~~~
-{: .output}
-
-Permutations for a genome scan with a linear mixed model-based are performed by specifying the `kinship` argument. We can use the "leave one chromosome out" (loco) method by providing `kinship_loco`, the list of kinship matrices calculated above with `calc_kinship()`.
-
-
-
-
-~~~
-operm3 <- scan1perm(pr, iron$pheno, kinship_loco, Xcovar=Xcovar, n_perm=1000,
-                    perm_Xsp=TRUE, chr_lengths=chr_lengths(map))
-~~~
-{: .r}
-
-Here are the estimated significance thresholds:
-
-
-
-
-~~~
-summary(operm3, alpha=c(0.2, 0.05))
-~~~
-{: .r}
-
-
-~~~
-Autosome LOD thresholds (1000 permutations)
-     liver spleen
-0.2   2.64   2.62
-0.05  3.29   3.29
-
-X chromosome LOD thresholds (28243 permutations)
-     liver spleen
-0.2   3.14   4.37
-0.05  3.82   5.50
 ~~~
 {: .output}
 

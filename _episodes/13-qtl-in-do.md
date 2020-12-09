@@ -67,7 +67,17 @@ We loaded in three data objects. Check the Environment tab to see what was loade
 > {: .solution}
 {: .challenge}
 
-Many statistical models, including the QTL mapping model in qtl2, expect that the incoming data will be normally distributed. You may use transformations such as log or square root to make your data more normally distributed. We will be mapping the proportion of micronucleated reticulocytess in bone marrow (`prop.bm.MN.RET`) and, since the data does not contain zeros or negative numbers, we will log transform the data.
+Many statistical models, including the QTL mapping model in qtl2, expect that the incoming data will be normally distributed. You may use transformations such as log or square root to make your data more normally distributed. We will be mapping the proportion of micronucleated reticulocytes in bone marrow (`prop.bm.MN.RET`) and, since the data does not contain zeros or negative numbers, we will log transform the data. Here is a histogram of the untransformed data.
+
+
+~~~
+hist(pheno$prop.bm.MN.RET)
+~~~
+{: .r}
+
+<img src="../fig/rmd-13-hist_untransformed-1.png" title="plot of chunk hist_untransformed" alt="plot of chunk hist_untransformed" style="display: block; margin: auto;" />
+
+Apply the `log()` function to this data.
 
 
 ~~~
@@ -137,14 +147,7 @@ Let's return to the `probs` object. Look at the contents for the first 500 marke
 
 
 ~~~
-image(1:500, 1:ncol(probs[[1]]), t(probs[[1]][1,8:1,1:500]), breaks = 0:100/100,
-      col = grey(99:0/100), axes = F, xlab = "Markers", ylab = "Founders",
-      main = "Founder Allele Contributions for Sample 1")
-abline(h = 0:8 + 0.5, col = "grey70")
-usr = par("usr")
-rect(usr[1], usr[3], usr[2], usr[4])
-axis(side = 1, at = 0:5 * 100, labels = 0:5 * 100)
-axis(side = 2, at = 1:8, labels = LETTERS[8:1], las = 1, tick = F)
+plot_genoprob(probs, map, ind = 1, chr = 1)
 ~~~
 {: .r}
 
@@ -166,15 +169,14 @@ Kinship values between pairs of samples range between 0 (no relationship) and 1.
 
 
 ~~~
-image(1:nrow(K[[1]]), 1:ncol(K[[1]]), K[[1]][,ncol(K[[1]]):1], xlab = "Samples", 
-      ylab = "Samples", yaxt = "n", main = "Kinship between samples", 
-      breaks = 0:100/100, col = heat.colors(length(0:100) - 1))
+n_samples = 50
+heatmap(K[[1]][1:n_samples,1:n_samples])
 ~~~
 {: .r}
 
 <img src="../fig/rmd-13-kinship_probs-1.png" title="plot of chunk kinship_probs" alt="plot of chunk kinship_probs" style="display: block; margin: auto;" />
 
-The figure above shows kinship between all pairs of samples. White ( = 1) indicates no kinship and red ( = 0) indicates full kinship. Orange values indicate varying levels of kinship between 0 and 1. The white diagonal of the matrix indicates that each sample is identical to itself. The lighter yellow blocks off of the diagonal may indicate siblings or cousins.
+The figure above shows kinship between all pairs of samples. Light yellow indicates low kinship and dark red indicates higher kinship. Orange values indicate varying levels of kinship between 0 and 1. The dark red diagonal of the matrix indicates that each sample is identical to itself. The orange blocks along the diagonal may indicate close relatives (i.e. siblings or cousins).
 
 #### Covariates    
 Next, we need to create additive covariates that will be used in the mapping model. We will use study cohort as a covariate in the mapping model. If we were mapping with *all* mice, we would also add benzene concentration to the model. This study contained only male mice, but in most cases, you would include sex as an additive covariate as well.
@@ -451,11 +453,11 @@ head(genes)
 
 The `genes` object contains annotation information for each gene in the interval.
 
-Next, we will create a plot with two panels: one containing the association mapping LOD scores and one containing the genes in the QTL interval. We do this by passing in the `genes` argument to [plot_snpasso](https://github.com/rqtl/qtl2/blob/master/R/plot_snpasso.R).
+Next, we will create a plot with two panels: one containing the association mapping LOD scores and one containing the genes in the QTL interval. We do this by passing in the `genes` argument to [plot_snpasso](https://github.com/rqtl/qtl2/blob/master/R/plot_snpasso.R). We can also adjust the proportion of the plot allocated for SNPs (on the top) and genes (on th bottom) using the 'top_panel_prop' argument.
 
 
 ~~~
-plot_snpasso(assoc$lod, assoc$snpinfo, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes", genes = genes)
+plot_snpasso(assoc$lod, assoc$snpinfo, main = "Proportion of Micro-nucleated Bone Marrow Reticulocytes", genes = genes, top_panel_prop = 0.5)
 ~~~
 {: .r}
 
@@ -463,7 +465,7 @@ plot_snpasso(assoc$lod, assoc$snpinfo, main = "Proportion of Micro-nucleated Bon
 
 ### Searching for Candidate Genes
 
-One strategy for finding genes related to a phenotype is to search for genes with expression QTL (eQTL) in the same location. Ideally, we would have liver and bone marrow gene expression data in the DO mice from this experiment. Unfortunately, we did not collect this data. However, we have liver gene expression for a separate set of untreated DO mice [Liver eQTL Viewer](http://churchill-lab.jax.org/qtl/svenson/DO478/). We searched for genes in the QTL interval that had an eQTL in the same location. Then, we looked at the pattern of founder effects to see if CAST stood out. We found two genes that met these criteria.
+One strategy for finding genes related to a phenotype is to search for genes with expression QTL (eQTL) in the same location. Ideally, we would have liver and bone marrow gene expression data in the DO mice from this experiment. Unfortunately, we did not collect this data. However, we have liver gene expression for a separate set of untreated DO mice [Liver eQTL Viewer](https://churchilllab.jax.org/qtlviewer/svenson/DOHFD). We searched for genes in the QTL interval that had an eQTL in the same location. Then, we looked at the pattern of founder effects to see if CAST stood out. We found two genes that met these criteria.
 
 ![](../fig/French.et.al.Figure3.png)
 

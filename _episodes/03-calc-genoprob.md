@@ -334,6 +334,23 @@ View the first three rows of genotype probabilities for the first genotyped mark
 ~~~
 {: .output}
 
+We can also view the genotype probabilities using [plot_genoprob](https://github.com/rqtl/qtl2/blob/master/R/plot_genoprob.R). The arguments to this function specify:
+
+1. pr: the genotype probabilities,
+1. map: the marker map,
+1. ind: the index of the individual to plot,
+1. chr: the index of the chromosome to plot.
+
+
+~~~
+plot_genoprob(pr, map, ind = 1, chr = 19)
+~~~
+{: .r}
+
+<img src="../fig/rmd-03-plot_genoprob-1.png" title="plot of chunk plot_genoprob" alt="plot of chunk plot_genoprob" style="display: block; margin: auto;" />
+
+The coordinates along chromosome 19 are shown on the horizontal axis and the three genotypes are shown on the vertical axis. Higher genotype probabilities are plotted in darker shades. This mouse has a BB genotype on the proximal end of the chromosome and transitions to SB toward the distal end.
+
 > ## Challenge 1
 > Find a partner and explain why calculating genotype probabilities is the first step in QTL analysis. Why do you need to insert pseudomarkers first? Listen to your partner's explanation, then write your responses in the collaborative document.
 >

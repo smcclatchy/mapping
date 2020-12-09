@@ -95,8 +95,8 @@ You can use the code below to generate overlaid plots for each method.
 
 ~~~
 plot_scan1(out_pg_loco, map = map, lodcolumn = "liver", col = "black")
-plot_scan1(out_pg, map = map, lodcolumn = "liver", col = "blue", add = TRUE)
-plot_scan1(out, map = map, lodcolumn = "liver", add = TRUE, col = "green")
+plot_scan1(out_pg,      map = map, lodcolumn = "liver", col = "blue",  add = TRUE)
+plot_scan1(out,         map = map, lodcolumn = "liver", col = "green", add = TRUE)
 ~~~
 {: .r}
 
