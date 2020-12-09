@@ -25,6 +25,9 @@ map <- insert_pseudomarkers(map=iron$gmap, step=1)
 pr <- calc_genoprob(cross=iron, map=map, error_prob=0.002)
 kinship <- calc_kinship(pr)
 kinship_loco <- calc_kinship(pr, "loco")
+Xcovar <- get_x_covar(iron)
+out <- scan1(genoprobs = pr, pheno = iron$pheno, Xcovar=Xcovar)
+out_pg <- scan1(pr, iron$pheno, kinship=kinship, Xcovar=Xcovar)
 bin_pheno <- apply(iron$pheno, 2, function(a) as.numeric(a > median(a)))
 rownames(bin_pheno) <- rownames(iron$pheno)
 ```
@@ -48,7 +51,6 @@ To plot the effects, use the function `plot_coef()`. Use the argument `columns` 
 
 ```{r plot_effects_liver_c2}
 colors = c("slateblue", "violetred", "green3")
-
 plot_coef(c2eff, map, columns = 1:3, col = colors, scan1_output = out, main = 'scan1coef')
 ```
 

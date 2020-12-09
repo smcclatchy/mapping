@@ -67,17 +67,11 @@ To plot the effects, use the function `plot_coef()`. Use the argument `columns` 
 
 ~~~
 colors = c("slateblue", "violetred", "green3")
-
 plot_coef(c2eff, map, columns = 1:3, col = colors, scan1_output = out, main = 'scan1coef')
 ~~~
 {: .r}
 
-
-
-~~~
-Error in plot_coef(c2eff, map, columns = 1:3, col = colors, scan1_output = out, : object 'out' not found
-~~~
-{: .error}
+<img src="../fig/rmd-11-plot_effects_liver_c2-1.png" title="plot of chunk plot_effects_liver_c2" alt="plot of chunk plot_effects_liver_c2" style="display: block; margin: auto;" />
 
 The default is to provide phenotype averages for each genotype group. If instead you want additive and dominance effects, you can provide a square matrix of _contrasts_, as follows:
 
@@ -170,12 +164,7 @@ plot_coef(c2eff_pg, map, columns = 1:3, col = colors, scan1_output = out_pg, mai
 ~~~
 {: .r}
 
-
-
-~~~
-Error in plot_coef(c2eff_pg, map, columns = 1:3, col = colors, scan1_output = out_pg, : object 'out_pg' not found
-~~~
-{: .error}
+<img src="../fig/rmd-11-plot_effects_pg_liver_c2-1.png" title="plot of chunk plot_effects_pg_liver_c2" alt="plot of chunk plot_effects_pg_liver_c2" style="display: block; margin: auto;" />
 
 You can also get estimated additive and dominance effects, using a matrix of contrasts.
 
