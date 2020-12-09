@@ -34,6 +34,13 @@ operm <- scan1perm(genoprobs = pr, pheno = iron$pheno, Xcovar = Xcovar, n_perm =
 ~~~
 {: .r}
 
+
+
+~~~
+Error in scan1perm(genoprobs = pr, pheno = iron$pheno, Xcovar = Xcovar, : object 'pr' not found
+~~~
+{: .error}
+
 Note the need to specify special covariates for the X chromosome (via `Xcovar`), to be included under the null hypothesis of no QTL. And note that when these are provided, the default is to perform a stratified permutation test, using strata defined by the rows in
 `Xcovar`. In general, when the X chromosome is considered, one will wish to stratify at least by sex.
 

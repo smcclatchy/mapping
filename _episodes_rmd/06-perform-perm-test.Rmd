@@ -34,7 +34,7 @@ RNGkind("Mersenne-Twister")
 
 To perform a permutation test with the `iron` data, we run `scan1perm()`, provide it with the genotype probabilities, the phenotype data, X covariates and number of permutations. For expediency, we'll use only 10 permutations, although 1000 is recommended.
 
-```{r scan1perm, eval=FALSE}
+```{r scan1perm}
 operm <- scan1perm(genoprobs = pr, pheno = iron$pheno, Xcovar = Xcovar, n_perm = 1000)
 ```
 
