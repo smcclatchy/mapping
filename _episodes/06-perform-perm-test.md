@@ -74,7 +74,7 @@ Error in summary(operm): object 'operm' not found
 ~~~
 {: .error}
 
-In the histogram above, you can see that most of the maximum LOD scores fall between 1 and 3. This means that we expect LOD scores less than 3 to occur by chance fairly often. The red line indicates the alpha = 0.05 threshold, which means that, under permutation, we only see LOD value as high or higher, 5% of the time. This is one way of estimating a significane threshold for QTL plots.
+In the histogram above, you can see that most of the maximum LOD scores fall between 1 and 3. This means that we expect LOD scores less than 3 to occur by chance fairly often. The red line indicates the alpha = 0.05 threshold, which means that, under permutation, we only see LOD value as high or higher, 5% of the time. This is one way of estimating a significance threshold for QTL plots.
 
 To get estimated significance thresholds, use the function `summary()`.
 
