@@ -73,7 +73,7 @@ We loaded in three data objects. Check the Environment tab to see what was loade
 Many statistical models, including the QTL mapping model in qtl2, expect that the incoming data will be normally distributed. You may use transformations such as log or square root to make your data more normally distributed. We will be mapping the proportion of micronucleated reticulocytes in bone marrow (`prop.bm.MN.RET`) and, since the data does not contain zeros or negative numbers, we will log transform the data. Here is a histogram of the untransformed data.
 
 ```{r hist_untransformed}
-hist(pheno$prop.bm.MN.RET)
+hist(pheno$prop.bm.MN.RET, main = "Proportion of micronucleated reticulocytes")
 ```
 
 Apply the `log()` function to this data.
@@ -85,7 +85,7 @@ pheno$log.MN.RET <- log(pheno$prop.bm.MN.RET)
 Now, let's make a histogram of the log-transformed data.
 
 ```{r hist_log_transform}
-hist(pheno$log.MN.RET)
+hist(pheno$log.MN.RET, main = "Proportion of micronucleated reticulocytes (log-transformed)")
 ```
 
 This looks much better!
@@ -165,7 +165,7 @@ The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-ef
 
 ### [Performing a genome scan](https://smcclatchy.github.io/mapping/06-perform-genome-scan/)  
 
-Before we run the mapping function, let's look at the mapping model. At each marker on the genotyping array, we will fit a model that regresses the phenotype (micronucleated reticulocytess) on covariates and the founder allele proportions.  
+Before we run the mapping function, let's look at the mapping model. At each marker on the genotyping array, we will fit a model that regresses the phenotype (micronucleated reticulocytes) on covariates and the founder allele proportions.  
 
 ![](../fig/equation1.png)
 

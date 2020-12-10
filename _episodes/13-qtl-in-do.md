@@ -71,7 +71,7 @@ Many statistical models, including the QTL mapping model in qtl2, expect that th
 
 
 ~~~
-hist(pheno$prop.bm.MN.RET)
+hist(pheno$prop.bm.MN.RET, main = "Proportion of micronucleated reticulocytes")
 ~~~
 {: .r}
 
@@ -89,7 +89,7 @@ Now, let's make a histogram of the log-transformed data.
 
 
 ~~~
-hist(pheno$log.MN.RET)
+hist(pheno$log.MN.RET, main = "Proportion of micronucleated reticulocytes (log-transformed)")
 ~~~
 {: .r}
 
@@ -193,7 +193,7 @@ The code above copies the `rownames(pheno)` to `rownames(addcovar)` as a side-ef
 
 ### [Performing a genome scan](https://smcclatchy.github.io/mapping/06-perform-genome-scan/)  
 
-Before we run the mapping function, let's look at the mapping model. At each marker on the genotyping array, we will fit a model that regresses the phenotype (micronucleated reticulocytess) on covariates and the founder allele proportions.  
+Before we run the mapping function, let's look at the mapping model. At each marker on the genotyping array, we will fit a model that regresses the phenotype (micronucleated reticulocytes) on covariates and the founder allele proportions.  
 
 ![](../fig/equation1.png)
 
