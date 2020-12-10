@@ -20,7 +20,7 @@ source: Rmd
 
 
 
-The first task in QTL analysis is to calculate conditional genotype probabilities, given the observed marker data, at each putative QTL position. For example, the first step would be to determine the probabilities for genotypes AA and AB at the locus indicated below.
+The first task in QTL analysis is to calculate conditional genotype probabilities, given the observed marker data, at each putative QTL position. For example, the first step would be to determine the probabilities for genotypes SS and SB at the locus indicated below.
 
 ![adapted from Broman & Sen, 2009](../fig/unknown_genotype.png)
 
@@ -232,7 +232,7 @@ names(pr)
 ~~~
 {: .output}
 
-Each 3d array of probabilities is arranged as individuals &times; genotypes &times; positions. Have a look at the names of each of the three dimensions for chromosome 19.
+Each three-dimensional array of probabilities is arranged as individuals &times; genotypes &times; positions. Have a look at the names of each of the three dimensions for chromosome 19.
 
 
 ~~~
@@ -361,21 +361,21 @@ The coordinates along chromosome 19 are shown on the horizontal axis and the thr
 
 > ## Challenge 2
 > Calculate genotype probabilities for a different data set from the [qtl2 data repository](https://github.com/rqtl/qtl2data), this one from a study of obesity and diabetes in a C57BL/6 (B6) × BTBR intercross.   
-> 1). Create a new script in RStudio with File -> New File -> R Script.
+> 1). Create a new script in RStudio with File -> New File -> R Script.  
 > 2)  Download the B6 x BTBR zip file from the [qtl2 data repository](https://github.com/rqtl/qtl2data) into an object called `b6btbr` by running this code:
-`b6btbr <- read_cross2(file = "https://raw.githubusercontent.com/rqtl/qtl2data/master/B6BTBR/b6btbr.zip")`
-> 2). View a summary of the `b6btbr` data. How many individuals? phenotypes? chromosomes? markers? 
-> 3). View the genetic map for the `b6btbr` data.  
-> 4). Insert pseudomarkers at 2 cM intervals. Assign the results to an object called `b6btbrmap`.  
-> 5). Calculate genotype probabilities assuming a genotyping error probability of 0.001. Assign the results to an object called `b6btbrpr`.  
-> 6). View the first several rows of genotype probabilities for 
+`b6btbr <- read_cross2(file = "https://raw.githubusercontent.com/rqtl/qtl2data/master/B6BTBR/b6btbr.zip")`  
+> 3). View a summary of the `b6btbr` data. How many individuals? phenotypes? chromosomes? markers? 
+> 4). View the genetic map for the `b6btbr` data.  
+> 5). Insert pseudomarkers at 2 cM intervals. Assign the results to an object called `b6btbrmap`.    
+> 6). Calculate genotype probabilities assuming a genotyping error probability of 0.001. Assign the results to an object called `b6btbrpr`.    
+> 7). View the first several rows of genotype probabilities for 
 > any marker on chromosome 18.  
 >
 > > ## Solution to Challenge 2
 > >
-> > 1). Create a new script in RStudio with File -> New File -> R Script.
+> > 1). Create a new script in RStudio with File -> New File -> R Script.  
 > > 2). `b6btbr <- read_cross2(file = "https://raw.githubusercontent.com/rqtl/qtl2data/master/B6BTBR/b6btbr.zip`  
-> > 3). `summary(b6btbr)` shows 544 individuals, 3 phenotypes, 20 chromosomes, 2057 markers.
+> > 3). `summary(b6btbr)` shows 544 individuals, 3 phenotypes, 20 chromosomes, 2057 markers.  
 > > 4). `b6btbr$gmap`  
 > > 5). `b6btbrmap <- insert_pseudomarkers(map=b6btbr$gmap, step=2)`  
 > > 6). `b6btbrpr <- calc_genoprob(cross=b6btbr, map=b6btbrmap, error_prob=0.001)`  

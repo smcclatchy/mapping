@@ -167,7 +167,7 @@ Here's a plot of the estimates.
 
 
 ~~~
-plot_coef(c2eff_pg, map, columns = 1:3, col = colors, scan1_output = out_pg, main = "Chromosome 2 QTL effects and LOD scores", legend = "bottomright")
+plot_coef(c2eff_pg, map, columns = 1:3, col = colors, scan1_output = out_pg_loco, main = "Chromosome 2 QTL effects and LOD scores", legend = "bottomright")
 ~~~
 {: .r}
 
