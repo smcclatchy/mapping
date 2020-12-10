@@ -19,7 +19,7 @@ source: Rmd
 
 The `scan1()` function returns only LOD scores. To obtain estimated QTL effects, use the function `scan1coef()`. This function takes a single phenotype and the genotype probabilities for a single chromosome and returns a matrix with the estimated coefficients at each putative QTL location along the chromosome.
 
-For example, to get the estimated effects on chromosome 2 for the liver phenotype, we'd do the following:
+For example, to get the estimated effects on chromosome 2 for the liver phenotype, we would provide the chromosome 2 genotype probabilities and the liver phenotype to the function `scan1coef()` as follows:
 
 
 ~~~
@@ -67,13 +67,13 @@ To plot the effects, use the function `plot_coef()`. Use the argument `columns` 
 
 ~~~
 colors = c("slateblue", "violetred", "green3")
-plot_coef(c2eff, map, columns = 1:3, col = colors, scan1_output = out, main = 'scan1coef')
+plot_coef(c2eff, map, columns = 1:3, col = colors, scan1_output = out, main = "Chromosome 2 QTL effects and LOD scores", legend = "bottomright")
 ~~~
 {: .r}
 
 <img src="../fig/rmd-11-plot_effects_liver_c2-1.png" title="plot of chunk plot_effects_liver_c2" alt="plot of chunk plot_effects_liver_c2" style="display: block; margin: auto;" />
 
-The default is to provide phenotype averages for each genotype group. If instead you want additive and dominance effects, you can provide a square matrix of _contrasts_, as follows:
+*The default is to provide phenotype averages for each genotype group*. If instead you want additive and dominance effects, you can provide a square matrix of _contrasts_, as follows:
 
 
 ~~~
@@ -119,7 +119,14 @@ c2.loc43 95.21841 9.846482 -1.779555
 
 Here's a plot of the additive and dominance effects, which are in the second and third columns.
 
+
+~~~
+plot_coef(c2effB, map["2"], columns=2:3, col=col)
+~~~
+{: .r}
+
 ![](../fig/chr2_effects_contrasts.png)
+
 If you provide a kinship matrix to `scan1coef()`, it fits a linear mixed model (LMM) to account for a residual polygenic effect. Here let's use the kinship matrix from the LOCO method.
 
 
@@ -160,7 +167,7 @@ Here's a plot of the estimates.
 
 
 ~~~
-plot_coef(c2eff_pg, map, columns = 1:3, col = colors, scan1_output = out_pg, main = 'scan1coef')
+plot_coef(c2eff_pg, map, columns = 1:3, col = colors, scan1_output = out_pg, main = "Chromosome 2 QTL effects and LOD scores", legend = "bottomright")
 ~~~
 {: .r}
 
@@ -177,6 +184,12 @@ c2effB_pg <- scan1coef(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]],
 
 Here's a plot of the results.
 
+
+~~~
+plot(c2effB_pg, map["2"], columns=2:3, col=col)
+~~~
+{: .r}
+
 ![](../fig/chr2_effects_pg_add_dom.png)
 
 Another option for estimating the QTL effects is to treat them as [random effects](https://stats.stackexchange.com/questions/4700/what-is-the-difference-between-fixed-effect-random-effect-and-mixed-effect-mode#151800) and calculate [Best Linear Unbiased Predictors](https://en.wikipedia.org/wiki/Best_linear_unbiased_prediction) (BLUPs). This is particularly valuable for multi-parent populations such as the Collaborative Cross and Diversity Outbred mice, where the large number of possible genotypes at a QTL leads to considerable variability in the effect estimates. To calculate BLUPs, use `scan1blup()`; it takes the same arguments as `scan1coef()`, including
@@ -188,7 +201,7 @@ c2blup <- scan1blup(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
 ~~~
 {: .r}
 
-Here is a plot of the BLUPs (as dashed curves) alongside the standard estimates. Note that the BLUPs are centered at 0, while the coefficient estimates are centered at the phenotype average.
+Here is a plot of the BLUPs (as dashed curves) alongside the standard estimates. *Note that the BLUPs are centered at 0, while the coefficient estimates are centered at the phenotype average*.
 
 The `scan1coef` function can also provide estimated QTL effects for binary traits, with `model="binary"`. (However, `scan1blup` has not yet been implemented for binary traits.)
 
