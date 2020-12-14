@@ -28,6 +28,7 @@ QTL mapping data consists of a set of tables of data: marker
 genotypes, phenotypes, marker maps, etc. These different tables are in different comma-separated value (CSV) files. In each file, the first column is a set of IDs for the rows, and the first row is a set of IDs for the columns. For example, the genotype data file will have individual IDs in the first column, marker names for the rest of the column headers.
 
 ![](../fig/iron-geno-sample.png)
+
 The sample genotype file above shows two alleles: S and B. These represent the founder strains for an intercross, which are C57BL/6 (BB) and SWR (SS) [(Grant et al. (2006) Hepatology 44:174-185)](https://pubmed.ncbi.nlm.nih.gov/16799992/). The B and S alleles themselves represent the haplotypes inherited from the parental strains C57BL/6 and SWR.  
 
 In the Diversity Outbred (DO) and Collaborative Cross (CC), alleles A to H represent haplotypes of the 8 founder strains.
