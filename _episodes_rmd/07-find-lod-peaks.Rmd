@@ -37,7 +37,7 @@ You need to provide both the `scan1()` output, the marker/pseudomarker map and a
 
 ```{r find_peaks}
 operm <- scan1perm(pr, iron$pheno, Xcovar=Xcovar, n_perm=1000)
-thr = summary(operm)
+thr <- summary(operm)
 find_peaks(scan1_output = out, map = map, threshold = thr, prob = 0.95, expand2markers = FALSE)
 ```
 
