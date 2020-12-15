@@ -27,7 +27,7 @@ You need to provide both the `scan1()` output, the marker/pseudomarker map and a
 
 ~~~
 operm <- scan1perm(pr, iron$pheno, Xcovar=Xcovar, n_perm=1000)
-thr = summary(operm)
+thr <- summary(operm)
 find_peaks(scan1_output = out, map = map, threshold = thr, prob = 0.95, expand2markers = FALSE)
 ~~~
 {: .r}
@@ -80,7 +80,7 @@ Each row shows a different peak; the columns show the peak location, LOD score a
 
 > ## Challenge 2
 > 1). Calculate the 90% Bayes credible interval.
-For chromosome 16 in liver, what is the range of the interval that has a 90% chance of containing the true QTL position? 
+For chromosome 16 in liver, what is the range of the interval that has a 90% chance of containing the true QTL position?  
 2). Compare with the 95% Bayes credible interval calculated earlier. How does the interval change as you increase the probability? Why?
 >
 > > ## Solution to Challenge 2
