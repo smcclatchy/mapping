@@ -43,7 +43,11 @@ is the mean phenotype value, <i>&beta;<sub>k</sub></i> is the effect of the
 <i>kth</i> genotype, <i>X<sub>jk</sub></i> is the genotype for individual j, and &epsilon;<sub>j</sub> is the error for the <i>j</i>th individual. In the figure 
 below, &mu; equals `r round(c2eff["D2Mit17", 4], 1)`, and &beta; equals 
 `r round(abs(c2eff["D2Mit17", 1]), 1)` for the alternative hypothesis 
-(QTL exists). This linear model is <i>y</i> = `r round(c2eff["D2Mit17",4], 1)` + 
+(QTL exists).
+
+![](../fig/nullvalt.png)
+
+This linear model is <i>y</i> = `r round(c2eff["D2Mit17",4], 1)` + 
 `r round(abs(c2eff["D2Mit17",1]), 1)`X + &epsilon;. The model intersects the 
 genotype groups at their group means, and is based on &mu; and 
 <i>&beta;<sub>k</sub></i> for chromosome 2 marker D2Mit17 located at 56.8 cM.  
@@ -93,7 +97,7 @@ coefficients to plot. Add `scan1_output` to include a LOD plot at the bottom.
 ```{r plot_effects_liver_c2}
 plot_coef(c2eff, map, columns = 1:3, scan1_output = out, 
           main = "Chromosome 2 QTL effects and LOD scores",
-          legend = "bottomright")
+          legend = "topright")
 ```
 
 If instead you want additive and dominance effects, you can provide a square matrix of _contrasts_, as follows:
@@ -131,7 +135,7 @@ head(c2eff_pg)
 Here's a plot of the estimates.
 
 ```{r plot_effects_pg_liver_c2}
-plot_coef(c2eff_pg, map, columns = 1:3, col = colors, scan1_output = out_pg_loco, main = "Chromosome 2 QTL effects and LOD scores", legend = "bottomright")
+plot_coef(c2eff_pg, map, columns = 1:3, scan1_output = out_pg_loco, main = "Chromosome 2 QTL effects and LOD scores", legend = "topright")
 ```
 
 You can also get estimated additive and dominance effects, using a matrix of contrasts.
@@ -197,23 +201,23 @@ plot_pxg(g, iron$pheno[,"liver"], SEmult=2, swap_axes=TRUE, xlab="Liver phenotyp
 
 
 > ## Challenge 1
-> Find the QTL effects for chromosome 16 for the liver phenotype.
+> Find the QTL effects for chromosome 16 for the liver phenotype.  
 > 1) Create an object `c16eff` to contain the effects.  
 > 2) Plot the chromosome 16 coefficients and add the LOD plot at bottom.
 >
 > >
 > > ## Solution to Challenge 1
-> > `c16eff <- scan1coef(pr[,"16"], iron$pheno[,"liver"])`
-> > `plot_coef(c16eff, map, legend = "topright", scan1_output = out)`
+> > 1) `c16eff <- scan1coef(pr[,"16"], iron$pheno[,"liver"])`  
+> > 2) `plot_coef(c16eff, map, legend = "topright", scan1_output = out)`
 > {: .solution}
 {: .challenge}
 
 > ## Challenge 2
 > In the code block above, we use `swap_axes=TRUE` to place the phenotype
 > on the x-axis. 
-> We can use `SEmult=2` to include the mean ± 2 SE intervals.
+> We can use `SEmult=2` to include the mean ± 2 SE intervals.  
 > 1) How would you decide which chromosome to plot? Discuss this with 
-> your neighbor, then write your responses in the collaborative document.
+> your neighbor, then write your responses in the collaborative document.  
 > 2) Calculate and plot the best linear unbiased predictors (blups) for
 > spleen on the chromosome of your choice.
 >
