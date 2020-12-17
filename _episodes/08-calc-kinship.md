@@ -66,7 +66,7 @@ We can also look at the first 50 mice in the kinship matrix.
 
 
 ~~~
-n_samples = 50
+n_samples <- 25
 heatmap(kinship[1:n_samples, 1:n_samples], symm = TRUE)
 ~~~
 {: .r}
@@ -97,21 +97,29 @@ kinship <- calc_kinship(pr, cores=4)
 {: .r}
 
 > ## Challenge 1
-> Insert pseudomarkers into a new map called `sparser_map` at 2 cM intervals.  
-> Calculate genotype probabilities, leaving the error probability at the default value.  
-> Calculate kinship with these new probabilities.
-> View the first several rows and columns of the kinship matrix.
+> 1). Insert pseudomarkers into a new map called `sparser_map` at  
+> 2 cM intervals.  
+> 2). Calculate genotype probabilities and save as an object called `pr2`.   
+> Leave the error probability at the default value.  
+> 3). Calculate kinship with these new probabilities. Save as `kinship2`.  
+> 4). View the first several rows and columns of the `kinship2` matrix and  
+> compare to the original `kinship` matrix with a heatmap.
 >
 >
 > > ## Solution to Challenge 1
 > >
+> > 1). `sparser_map <- insert_pseudomarkers(map = map, step = 2)`   
+> > 2). `pr2 <- calc_genoprob(cross = iron, map = sparser_map)`  
+> > 3). `kinship2 <- calc_kinship(probs = pr2)`  
+> > 4). `kinship2[1:5, 1:5]` and `heatmap(kinship2[1:n_samples, 1:n_samples], symm = TRUE)`
 > {: .solution}
 {: .challenge}
 
 > ## Challenge 2
 > Think about what a kinship matrix is and what it 
 > represents. Share your understanding with a neighbor. 
-> Write your explanation in the collaborative document.
+> Write your explanation in the collaborative document or in your  
+> own personal notes.
 >
 > > ## Solution to Challenge 2
 > >

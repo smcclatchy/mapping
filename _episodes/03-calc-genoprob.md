@@ -360,18 +360,50 @@ The coordinates along chromosome 19 are shown on the horizontal axis and the thr
 {: .challenge}
 
 > ## Challenge 2
-> Calculate genotype probabilities for a different data set from the [qtl2 data repository](https://github.com/rqtl/qtl2data), this one from a study of obesity and diabetes in a C57BL/6 (B6) × BTBR intercross.   
+> 1). Load a second dataset from Arabidopsis recombinant inbred  
+> lines ([Moore et al, Genetics, 2013](https://www.genetics.org/content/195/3/1077)) in a study of  
+> plant root response to gravity (gravitropism).  
+> `grav <- read_cross2(file = system.file('extdata', 'grav2.zip', package = 'qtl2'))`  
+> 2). How many individuals were in the study? How many phenotypes?  
+> How many chromosomes?  
+> 3). Insert pseudomarkers at 1cM intervals and save the results  
+> to an object called `gravmap`. Have a look at the first chromosome.  
+> 4). Calculate genotype probabilities and save the results to an object 
+> called `gravpr`. View the genotypes for the first three markers and  
+> pseudomarkers on chromosome 1 for the first five individuals.   
+>
+> > ## Solution to Challenge 2
+> >
+> > 1). `grav <- read_cross2(file = system.file('extdata', 'grav2.zip', package = 'qtl2'))`  
+> > 2). `summary(grav)`   
+> > 3). `gravmap <- insert_pseudomarkers(map = grav$gmap, step = 1)`  
+> > followed by `head(gravmap, n=1)`   
+> > 4). `gravpr  <- calc_genoprob(cross = grav, map = gravmap)` followed by  
+> > `(gravpr$`1`)[1:5,,"PVV4"]`, `(gravpr$`1`)[1:5,,"c1.loc1"]`, and  
+> > `(gravpr$`1`)[1:5,,"c1.loc2"]`
+> {: .solution}
+{: .challenge}
+
+> ## Challenge 3
+> Calculate genotype probabilities for a different data set from the  
+> [qtl2 data repository](https://github.com/rqtl/qtl2data), this one from a  
+> study of obesity and diabetes in a C57BL/6 (B6) × BTBR intercross.   
 > 1). Create a new script in RStudio with File -> New File -> R Script.  
-> 2)  Download the B6 x BTBR zip file from the [qtl2 data repository](https://github.com/rqtl/qtl2data) into an object called `b6btbr` by running this code:
-`b6btbr <- read_cross2(file = "https://raw.githubusercontent.com/rqtl/qtl2data/master/B6BTBR/b6btbr.zip")`  
-> 3). View a summary of the `b6btbr` data. How many individuals? phenotypes? chromosomes? markers? 
+> 2)  Download the B6 x BTBR zip file from the 
+> [qtl2 data repository](https://github.com/rqtl/qtl2data) into an object  
+> called `b6btbr` by running this code:  
+> `b6btbr <- read_cross2(file = "https://raw.githubusercontent.com/rqtl/qtl2data/master/B6BTBR/b6btbr.zip")`  
+> 3). View a summary of the `b6btbr` data. How many individuals? phenotypes?  
+> chromosomes? markers? 
 > 4). View the genetic map for the `b6btbr` data.  
-> 5). Insert pseudomarkers at 2 cM intervals. Assign the results to an object called `b6btbrmap`.    
-> 6). Calculate genotype probabilities assuming a genotyping error probability of 0.001. Assign the results to an object called `b6btbrpr`.    
+> 5). Insert pseudomarkers at 2 cM intervals. Assign the results to an object  
+> called `b6btbrmap`.    
+> 6). Calculate genotype probabilities assuming a genotyping error probability  
+> of 0.001. Assign the results to an object called `b6btbrpr`.    
 > 7). View the first several rows of genotype probabilities for 
 > any marker on chromosome 18.  
 >
-> > ## Solution to Challenge 2
+> > ## Solution to Challenge 3
 > >
 > > 1). Create a new script in RStudio with File -> New File -> R Script.  
 > > 2). `b6btbr <- read_cross2(file = "https://raw.githubusercontent.com/rqtl/qtl2data/master/B6BTBR/b6btbr.zip`  
