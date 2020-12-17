@@ -33,13 +33,13 @@ abline(a = (c2eff["D2Mit17",4]),
        b = c2eff["D2Mit17", 2],
        col = "#2c7bb6")
 text(x = 2.5, y = 102, 
-     labels = "Null\n",
+     labels = "NULL\n",
      cex=0.8, col = "#2c7bb6")
 text(x = 2.5, y = 98, 
      labels = "y = 94.6 + error",
      cex=0.8)
 text(x = 2.5, y = 78, 
-     labels = paste0("Alternative\n"),
+     labels = paste0("ALTERNATIVE\n"),
      cex=0.8, col = "#d7191c")
 text(x = 2.5, y = 72, 
      labels = paste0("y = 94.6 + ",
@@ -49,7 +49,7 @@ text(x = 2.5, y = 72,
 points(2, 157, lwd = 3)
 segments(x0 = 2, y0 = 95, y1 = 155,
          lwd=2, lty = 1)
-text(x = 1.7, y = 160, labels = "error", cex=0.8)
+text(x = 1.7, y = 160, labels = "ERROR", cex=0.8)
 segments(x0 = 1.8, y0 = 159, x1 = 2, y1 = 151, 
          lwd=1, lty = 2, col = "#2c7bb6")
 dev.off()

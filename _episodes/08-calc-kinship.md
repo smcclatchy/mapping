@@ -97,13 +97,13 @@ kinship <- calc_kinship(pr, cores=4)
 {: .r}
 
 > ## Challenge 1
-> 1). Insert pseudomarkers into a new map called `sparser_map` at  
-> 2 cM intervals.  
-> 2). Calculate genotype probabilities and save as an object called `pr2`.   
-> Leave the error probability at the default value.  
+> 1). Insert pseudomarkers into a new map called `sparser_map` at 
+2 cM intervals.  
+> 2). Calculate genotype probabilities and save as an object called `pr2`. 
+Leave the error probability at the default value.  
 > 3). Calculate kinship with these new probabilities. Save as `kinship2`.  
-> 4). View the first several rows and columns of the `kinship2` matrix and  
-> compare to the original `kinship` matrix with a heatmap.
+> 4). View the first several rows and columns of the `kinship2` matrix and 
+compare to the original `kinship` matrix with a heatmap.
 >
 >
 > > ## Solution to Challenge 1
@@ -116,10 +116,9 @@ kinship <- calc_kinship(pr, cores=4)
 {: .challenge}
 
 > ## Challenge 2
-> Think about what a kinship matrix is and what it 
-> represents. Share your understanding with a neighbor. 
-> Write your explanation in the collaborative document or in your  
-> own personal notes.
+> Think about what a kinship matrix is and what it represents. Share your 
+understanding with a neighbor. Write your explanation in the collaborative 
+document or in your own personal notes.
 >
 > > ## Solution to Challenge 2
 > >

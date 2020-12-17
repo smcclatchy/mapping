@@ -17,6 +17,9 @@ source: Rmd
 
 
 
+
+
+
 Genetic mapping in mice presents a good example of why accounting for population structure is important. Laboratory mouse strains are descended from a small number of founders (fancy mice) and went through several population bottlenecks. Wild-derived strains are not descended from fancy mice and don't share the same history as laboratory strains. Linear mixed models were developed to solve problems with population structure created by differing ancestries, and to handle relatedness between individuals.  Linear mixed models (LMMs) consider genome-wide similarity between all pairs of individuals to account for population structure, known kinship and unknown relatedness. Linear mixed models in mapping studies can successfully correct for genetic relatedness between individuals in a population by incorporating kinship into the model. Earlier we [calculated a kinship matrix](https://smcclatchy.github.io/mapping/04-calc-kinship/) for input to a linear mixed model to account for relationships among individuals. For a current review of mixed models in genetics, see this [preprint of Martin and Eskin, 2017](https://www.biorxiv.org/content/early/2017/01/28/092106).
 
 Simple linear regression takes the form 
@@ -30,7 +33,19 @@ To model data from a cross, we use
 ![](../fig/linear-genetic-model.png)  
  
 
-where <i>y<sub>j</sub></i> is the phenotype of the <i>j</i>th individual, &mu; is the mean phenotype value, <i>&beta;<sub>k</sub></i> is the effect of the <i>kth</i> genotype (slope), <i>X<sub>jk</sub></i> is the genotype for individual j, and &epsilon;<sub>j</sub> is the error for the <i>j</i>th individual. In the figure below, &mu; equals 94.6, and &beta; equals -5.8 for the alternative hypothesis (QTL exists). This linear model is <i>y</i> = 94.6 + -5.8X + &epsilon;. The model intersects the genotype groups BB and SB at their group means. In contrast, the null hypothesis would state that there is no difference in group means (no QTL anywhere). The linear model for the null hypothesis would be <i>y</i> = 94.6 + 0X + &epsilon;. This states that the phenotype is equal to the combined mean (94.6), plus some error (&epsilon;). Genotype doesn't affect the phenotype.
+where <i>y<sub>j</sub></i> is the phenotype of the <i>j</i>th individual, &mu; 
+is the mean phenotype value, <i>&beta;<sub>k</sub></i> is the effect of the 
+<i>kth</i> genotype, <i>X<sub>jk</sub></i> is the genotype for individual j, and &epsilon;<sub>j</sub> is the error for the <i>j</i>th individual. In the figure 
+below, &mu; equals 94.6, and &beta; equals 
+15.4 for the alternative hypothesis 
+(QTL exists). This linear model is <i>y</i> = 94.6 + 
+15.4X + &epsilon;. The model intersects the 
+genotype groups at their group means. In contrast, the null hypothesis would 
+state that there is no difference in group means (no QTL anywhere). The linear 
+model for the null hypothesis would be <i>y</i> = 94.6 + 0X + &epsilon;. 
+This states that the phenotype is equal to the combined mean (94.6), plus 
+some error (&epsilon;). In other words, genotype doesn't affect the phenotype.
+
 
 ![](../fig/nullvalt.png)
 

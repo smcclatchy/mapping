@@ -17,9 +17,38 @@ source: Rmd
 
 
 
-The `scan1()` function returns only LOD scores. To obtain estimated QTL effects, use the function `scan1coef()`. This function takes a single phenotype and the genotype probabilities for a single chromosome and returns a matrix with the estimated coefficients at each putative QTL location along the chromosome.
+Recall that to model data from a cross, we use
 
-For example, to get the estimated effects on chromosome 2 for the liver phenotype, we would provide the chromosome 2 genotype probabilities and the liver phenotype to the function `scan1coef()` as follows:
+![](../fig/linear-genetic-model.png)  
+ 
+
+where <i>y<sub>j</sub></i> is the phenotype of the <i>j</i>th individual, &mu; 
+is the mean phenotype value, <i>&beta;<sub>k</sub></i> is the effect of the 
+<i>kth</i> genotype, <i>X<sub>jk</sub></i> is the genotype for individual j, and &epsilon;<sub>j</sub> is the error for the <i>j</i>th individual. In the figure 
+below, &mu; equals 94.6, and &beta; equals 
+15.4 for the alternative hypothesis 
+(QTL exists). This linear model is <i>y</i> = 94.6 + 
+15.4X + &epsilon;. The model intersects the 
+genotype groups at their group means, and is based on &mu; and 
+<i>&beta;<sub>k</sub></i> for chromosome 2 marker D2Mit17 located at 
+`56.8 cM.  
+
+The effect of genotype BB (the &beta; for the 
+BB genotype) at marker D2Mit17 is 
+15.5, while the effect of the 
+SS genotype is -15.4 on 
+the liver phenotype. The effect of the SB genotype is 
+-0.1 relative to &mu; equals 
+94.6.
+
+The `scan1()` function returns only LOD scores. To obtain estimated QTL effects,
+use the function `scan1coef()`. This function takes a single phenotype and the 
+genotype probabilities for a single chromosome and returns a matrix with the 
+estimated coefficients at each putative QTL location along the chromosome.
+
+For example, to get the estimated QTL effects on chromosome 2 for the liver 
+phenotype, we would provide the chromosome 2 genotype probabilities and the 
+liver phenotype to the function `scan1coef()` as follows:
 
 
 ~~~
@@ -27,7 +56,8 @@ c2eff <- scan1coef(pr[,"2"], iron$pheno[,"liver"])
 ~~~
 {: .r}
 
-The result is a matrix of 39 positions &times; 3 genotypes. An additional column contains the y-axis intercept values.
+The result is a matrix of 39 positions &times; 3 
+genotypes. An additional column contains the intercept values (&mu;).
 
 
 ~~~
@@ -62,18 +92,34 @@ c2.loc43 -8.956705 -1.779555 10.736260  95.21841
 ~~~
 {: .output}
 
-To plot the effects, use the function `plot_coef()`. Use the argument `columns` to indicate which coefficient columns to plot.
+To plot the QTL effects, use the function `plot_coef()`.
 
 
 ~~~
-colors = c("slateblue", "violetred", "green3")
-plot_coef(c2eff, map, columns = 1:3, col = colors, scan1_output = out, main = "Chromosome 2 QTL effects and LOD scores", legend = "bottomright")
+plot_coef(c2eff, map, legend = "topright")
+~~~
+{: .r}
+
+<img src="../fig/rmd-11-plot_effects_liver_simple-1.png" title="plot of chunk plot_effects_liver_simple" alt="plot of chunk plot_effects_liver_simple" style="display: block; margin: auto;" />
+
+The plot shows effect values on the y-axis and cM values on the x-axis. The
+value of the intercept (&mu;) appears at the top. The effect of the SB genotype is centered around zero, with the effects
+of the other two genotypes above and below.  
+
+To plot only the effects, use the argument `columns` to indicate which 
+coefficients to plot. Add `scan1_output` to include a LOD plot at the bottom.
+
+
+~~~
+plot_coef(c2eff, map, columns = 1:3, scan1_output = out, 
+          main = "Chromosome 2 QTL effects and LOD scores",
+          legend = "bottomright")
 ~~~
 {: .r}
 
 <img src="../fig/rmd-11-plot_effects_liver_c2-1.png" title="plot of chunk plot_effects_liver_c2" alt="plot of chunk plot_effects_liver_c2" style="display: block; margin: auto;" />
 
-*The default is to provide phenotype averages for each genotype group*. If instead you want additive and dominance effects, you can provide a square matrix of _contrasts_, as follows:
+If instead you want additive and dominance effects, you can provide a square matrix of _contrasts_, as follows:
 
 
 ~~~
@@ -82,7 +128,7 @@ c2effB <- scan1coef(pr[,"2"], iron$pheno[,"liver"],
 ~~~
 {: .r}
 
-The result will then contain the estimates of `mu`, `a`, and `d`. 
+The result will then contain the estimates of `mu`, `a` (the additive effect), and `d` (the dominance effect). 
 
 
 ~~~
@@ -116,8 +162,9 @@ c2.loc42 95.22372 9.878490 -1.748738
 c2.loc43 95.21841 9.846482 -1.779555
 ~~~
 {: .output}
+For marker D2Mit17, `mu`, `a`, and `d` are 94.616915, 15.4026314, -0.1033269.
 
-Here's a plot of the additive and dominance effects, which are in the second and third columns.
+Here's a plot of the chromosome 2 additive and dominance effects, which are in the second and third columns.
 
 
 ~~~
@@ -171,7 +218,12 @@ plot_coef(c2eff_pg, map, columns = 1:3, col = colors, scan1_output = out_pg_loco
 ~~~
 {: .r}
 
-<img src="../fig/rmd-11-plot_effects_pg_liver_c2-1.png" title="plot of chunk plot_effects_pg_liver_c2" alt="plot of chunk plot_effects_pg_liver_c2" style="display: block; margin: auto;" />
+
+
+~~~
+Error in plot_coef(x, map, columns = columns, col = col, scan1_output = NULL, : Need at least 3 colors
+~~~
+{: .error}
 
 You can also get estimated additive and dominance effects, using a matrix of contrasts.
 
@@ -201,7 +253,16 @@ c2blup <- scan1blup(pr[,"2"], iron$pheno[,"liver"], kinship_loco[["2"]])
 ~~~
 {: .r}
 
-Here is a plot of the BLUPs (as dashed curves) alongside the standard estimates. *Note that the BLUPs are centered at 0, while the coefficient estimates are centered at the phenotype average*.
+Here is a plot of the BLUPs (as dashed curves) alongside the standard estimates.
+
+
+~~~
+plot_coef(c2eff, map["2"], columns=1:3)
+plot(c2blup, map["2"], columns=1:3, add=TRUE, lty=2, legend = "topright")
+~~~
+{: .r}
+
+<img src="../fig/rmd-11-plotblup-1.png" title="plot of chunk plotblup" alt="plot of chunk plotblup" style="display: block; margin: auto;" />
 
 The `scan1coef` function can also provide estimated QTL effects for binary traits, with `model="binary"`. (However, `scan1blup` has not yet been implemented for binary traits.)
 
@@ -247,7 +308,20 @@ plot_pxg(g, iron$pheno[,"liver"], SEmult=2, swap_axes=TRUE, xlab="Liver phenotyp
 
 <img src="../fig/rmd-11-plot_pheno_geno_se-1.png" title="plot of chunk plot_pheno_geno_se" alt="plot of chunk plot_pheno_geno_se" style="display: block; margin: auto;" />
 
+
 > ## Challenge 1
+> Find the QTL effects for chromosome 16 for the liver phenotype.
+> 1) Create an object `c16eff` to contain the effects.  
+> 2) Plot the chromosome 16 coefficients and add the LOD plot at bottom.
+>
+> >
+> > ## Solution to Challenge 1
+> > `c16eff <- scan1coef(pr[,"16"], iron$pheno[,"liver"])`
+> > `plot_coef(c16eff, map, legend = "topright", scan1_output = out)`
+> {: .solution}
+{: .challenge}
+
+> ## Challenge 2
 > In the code block above, we use `swap_axes=TRUE` to place the phenotype
 > on the x-axis. 
 > We can use `SEmult=2` to include the mean ± 2 SE intervals.
@@ -257,7 +331,7 @@ plot_pxg(g, iron$pheno[,"liver"], SEmult=2, swap_axes=TRUE, xlab="Liver phenotyp
 > spleen on the chromosome of your choice.
 >
 > >
-> > ## Solution to Challenge 1
+> > ## Solution to Challenge 2
 > >
 > >
 > {: .solution}
