@@ -24,6 +24,8 @@ pr <- calc_genoprob(cross=iron, map=map, error_prob=0.002)
 Xcovar <- get_x_covar(iron)
 bin_pheno <- apply(iron$pheno, 2, function(a) as.numeric(a > median(a)))
 rownames(bin_pheno) <- rownames(iron$pheno)
+
+# run code/run_perms.R to create the next 3 data objects
 load("../data/operm.Rdata")
 load("../data/operm2.Rdata")
 load("../data/operm_bin.Rdata")
