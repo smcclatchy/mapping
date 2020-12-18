@@ -26,13 +26,11 @@ The `scan1perm()` function takes the same arguments as `scan1()`, plus additiona
 
 As with `scan1()`, you may provide a kinship matrix (or vector of kinship matrices, for the "leave one chromosome out" (loco) approach), in order to fit linear mixed models. If `kinship` is unspecified, the function performs ordinary Haley-Knott regression.
 
-
-
 To perform a permutation test with the `iron` data, we run `scan1perm()`, provide it with the genotype probabilities, the phenotype data, X covariates and number of permutations. For expediency, we'll use only 10 permutations, although 1000 is recommended.
 
 
 ~~~
-operm <- scan1perm(genoprobs = pr, pheno = iron$pheno, Xcovar = Xcovar, n_perm = 1000)
+operm <- scan1perm(genoprobs = pr, pheno = iron$pheno, Xcovar = Xcovar, n_perm = 1000) # replace 1000 with 10 for expediency
 ~~~
 {: .r}
 
@@ -58,11 +56,9 @@ abline(v = summary(operm)[,'liver'], col = 'red', lwd = 2)
 
 <img src="../fig/rmd-06-hist_perm-1.png" title="plot of chunk hist_perm" alt="plot of chunk hist_perm" style="display: block; margin: auto;" />
 
-In the histogram above, you can see that most of the maximum LOD scores fall between 1 and 3. This means that we expect LOD scores less than 3 to occur by chance fairly often. The red line indicates the alpha = 0.05 threshold, which means that, under permutation, we only see LOD value as high or higher, 5% of the time. This is one way of estimating a significance threshold for QTL plots.
+In the histogram above, you can see that most of the maximum LOD scores fall between 1 and 3. This means that we expect LOD scores less than 3 to occur by chance fairly often. The red line indicates the alpha = 0.05 threshold, which means that, under permutation, we only see LOD values as high or higher, 5% of the time. This is one way of estimating a significance threshold for QTL plots.
 
 To get estimated significance thresholds, use the function `summary()`.
-
-
 
 
 ~~~
@@ -75,22 +71,11 @@ summary(operm)
 ~~~
 LOD thresholds (1000 permutations)
      liver spleen
-0.05  3.46   3.46
+0.05  3.34   3.79
 ~~~
 {: .output}
 
-
-~~~
-LOD thresholds (1000 permutations)
-     liver spleen
-0.05  3.46   3.46
-~~~
-{: .output}
-
-The default is to return the 5% significance thresholds. Thresholds for other (or for multiple) significance levels can be obtained via the
-`alpha` argument.
-
-
+The default is to return the 5% significance thresholds. Thresholds for other (or for multiple) significance levels can be obtained via the `alpha` argument.
 
 
 ~~~
@@ -99,17 +84,16 @@ summary(operm, alpha=c(0.2, 0.05))
 {: .r}
 
 
+
 ~~~
 LOD thresholds (1000 permutations)
      liver spleen
-0.2   2.63   2.64
-0.05  3.46   3.46
+0.2   2.65   2.73
+0.05  3.34   3.79
 ~~~
 {: .output}
 
 To obtain autosome/X chromosome-specific significance thresholds, specify `perm_Xsp=TRUE`. In this case, you need to provide chromosome lengths, which may be obtained with the function `chr_lengths()`.
-
-
 
 
 ~~~
@@ -125,24 +109,23 @@ See [Broman et al. (2006) Genetics
 The significance thresholds are again derived via `summary()`:
 
 
-
-
 ~~~
 summary(operm2, alpha=c(0.2, 0.05))
 ~~~
 {: .r}
 
 
+
 ~~~
 Autosome LOD thresholds (1000 permutations)
      liver spleen
-0.2   2.65   2.54
-0.05  3.42   3.22
+0.2   2.64   2.62
+0.05  3.33   3.32
 
 X chromosome LOD thresholds (28243 permutations)
      liver spleen
-0.2    3.1   4.02
-0.05   3.9   5.18
+0.2   3.13   4.01
+0.05  3.74   5.03
 ~~~
 {: .output}
 
@@ -150,14 +133,13 @@ As with `scan1`, we can use `scan1perm` with binary traits, using the argument `
 
 
 ~~~
-operm_bin <- scan1perm(pr, bin_pheno, Xcovar=Xcovar, model="binary",
-                       n_perm=1000, perm_Xsp=TRUE, chr_lengths=chr_lengths(map))
+operm_bin <- scan1perm(pr, bin_pheno, Xcovar=Xcovar, n_perm=1000, 
+                       perm_Xsp=TRUE, chr_lengths=chr_lengths(map),
+                       model="binary")
 ~~~
 {: .r}
 
 Here are the estimated 5% and 20% significance thresholds.
-
-
 
 
 ~~~
@@ -166,16 +148,17 @@ summary(operm_bin, alpha=c(0.2, 0.05))
 {: .r}
 
 
+
 ~~~
 Autosome LOD thresholds (1000 permutations)
      liver spleen
-0.2   2.60   2.63
-0.05  3.33   3.41
+0.2   2.68   2.61
+0.05  3.45   3.33
 
 X chromosome LOD thresholds (28243 permutations)
      liver spleen
-0.2   3.16   3.06
-0.05  3.86   3.77
+0.2   3.09   3.12
+0.05  3.80   3.81
 ~~~
 {: .output}
 
@@ -205,5 +188,18 @@ head(shuffled_order)
 >
 > > ## Solution to Challenge 1
 > >
+> {: .solution}
+{: .challenge}
+
+> ## Challenge 2
+> 1) Find the 1% and 10% significance thresholds for the first set of 
+permutations contained in the object `operm`.  
+> 2) What do the 1% and 10% significance thresholds say about LOD scores?
+> 
+> > ## Solution to Challenge 2
+> > 1) `summary(operm, alpha=c(0.01, 0.10))`  
+> > 2) These LOD thresholds indicate maximum LOD scores that can be obtained
+by random chance at the 1% and 10% significance levels. We expect to see LOD 
+values this high or higher 1% and 10% of the time respectively.
 > {: .solution}
 {: .challenge}

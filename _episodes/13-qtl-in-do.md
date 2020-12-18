@@ -59,7 +59,8 @@ We loaded in three data objects. Check the Environment tab to see what was loade
 >
 > > ## Solution to Challenge 1
 > > `dim(pheno)`  
-> > 1). `dim(pheno)[1]` gives the number of rows and `dim(pheno)[2]` the number of columns  
+> > 1). `dim(pheno)[1]` gives the number of rows and `dim(pheno)[2]` the number of columns.
+You can also use the structure command `str(pheno)`, which will tell you that this is a data frame with 598 observations of 12 variables. It will also list the 12 variable names for you.
 > > 2). Use `colnames(pheno)` or `names(pheno)`, or click the triangle to the left of `pheno`
 > > in the Environment tab.  
 > > 3). Use `hist(pheno$prop.bm.MN.RET)` to plot the distribution of the data. The data has a long right 
@@ -161,7 +162,7 @@ Next, we need to create a matrix that accounts for the kinship relationships bet
            
 
 ~~~
-K <- calc_kinship(probs = probs, type = "loco", use_allele_probs = TRUE)
+K <- calc_kinship(probs = probs, type = "loco")
 ~~~
 {: .r}
 
@@ -169,8 +170,8 @@ Kinship values between pairs of samples range between 0 (no relationship) and 1.
 
 
 ~~~
-n_samples = 50
-heatmap(K[[1]][1:n_samples,1:n_samples])
+n_samples <- 50
+heatmap(K[[1]][1:n_samples, 1:n_samples])
 ~~~
 {: .r}
 
@@ -238,23 +239,24 @@ plot_scan1(x = qtl, map = map, main = "Proportion of Micro-nucleated Bone Marrow
 
 <img src="../fig/rmd-13-qtl_plot-1.png" title="plot of chunk qtl_plot" alt="plot of chunk qtl_plot" style="display: block; margin: auto;" />
 
-> ## Challenge 3 How dose a log-tranformation change the QTL plot?
+> ## Challenge 3 How does a log-tranformation change the QTL plot?
 > 1). Perform a genome scan on the column called `log.MN.RET`. (Hint: set `index` to the column index in `pheno`.)
 > 2). How does the LOD score for the peak on Chr 10 change?
 > > ## Solution to Challenge 3
-> > 1). index = which(colnames(pheno) == "prop.bm.MN.RET")
-> > qtl = scan1(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], kinship = K, addcovar = addcovar)
-> > plot_scan1(x = qtl, map = map, main = "Log-Transformed BM micronucleated reticulocytes")
+> > 1). `index <- which(colnames(pheno) == "prop.bm.MN.RET")`  
+> > `qtl <- scan1(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], kinship = K, addcovar = addcovar)`  
+> > `plot_scan1(x = qtl, map = map, main = "Log-Transformed BM micronucleated reticulocytes")`  
 > > 2). The LOD increases from ~16 to ~26.
 > {: .solution}
 {: .challenge} 
 
 
-This challenge shows the importance of looking at your data and transforming it to meet the expectations of the mapping model. In this case, a log transformation improved the model fit and increased the LOD score. We will continue the rest of this lesson using the log-transformed data. Set your `index` variable equal to the column index of `log.MN.RET`.
+This challenge shows the importance of looking at your data and transforming it to meet the expectations of the mapping model. In this case, a log transformation improved the model fit and increased the LOD score. We will continue the rest of this lesson using the log-transformed data. Set your `index` variable equal to the column index of `log.MN.RET`. Redo the genome scan with the log-transformed reticulocytes.
 
 
 ~~~
 index <- which(colnames(pheno) == "log.MN.RET")
+qtl <- scan1(genoprobs = probs, pheno = pheno[c100, index,  drop = FALSE], kinship = K, addcovar = addcovar)
 ~~~
 {: .r}
 
@@ -271,10 +273,9 @@ perms <- scan1perm(genoprobs = probs, pheno = pheno[c100,index, drop = FALSE], a
 The `perms` object contains the maximum LOD score from each genome scan of permuted data.
 
 > ## Challenge 4 What is significant?
-> 1). Create a histogram of the LOD scores `perms`. Hint: use the `hist()` function.
+> 1). Create a histogram of the LOD scores `perms`. Hint: use the `hist()` function.  
 > 2). Estimate the value of the LOD score at the 95th percentile.  
-> 3). Then find the value of the LOD score at the 95th percentile using 
-> the `summary()` function.
+> 3). Then find the value of the LOD score at the 95th percentile using the `summary()` function.
 > > ## Solution to Challenge 4
 > > 1). hist(x = perms)` or `hist(x = perms, breaks = 15)`  
 > > 2). By counting number of occurrences of each LOD value (frequencies), we can approximate the 95th percentile at ~7.5.  
@@ -311,8 +312,8 @@ find_peaks(scan1_output = qtl, map = map, threshold = thr)
 
 
 ~~~
-  lodindex      lodcolumn chr      pos     lod
-1        1 prop.bm.MN.RET  10 33.64838 15.9428
+  lodindex  lodcolumn chr      pos      lod
+1        1 log.MN.RET  10 33.64838 26.22947
 ~~~
 {: .output}
 
@@ -335,8 +336,8 @@ find_peaks(scan1_output = qtl, map = map, threshold = thr, prob = 0.95)
 
 
 ~~~
-  lodindex      lodcolumn chr      pos     lod    ci_lo    ci_hi
-1        1 prop.bm.MN.RET  10 33.64838 15.9428 30.91241 35.49352
+  lodindex  lodcolumn chr      pos      lod   ci_lo    ci_hi
+1        1 log.MN.RET  10 33.64838 26.22947 31.8682 34.17711
 ~~~
 {: .output}
 
@@ -509,29 +510,27 @@ We hope that this tutorial has shown you how the DO can be used to map QTL and u
 
 
 > ## Challenge 6 Map another trait.
-> 1). Make a histogram of the column `pre.prop.MN.RET` in `pheno`. Does it look like it should be log transformed? If so, add a column to `pheno` that contains the log of `pre.prop.MN.RET`.
-> 2). Perform a genome scan *using all samples* on the column called `pre.prop.MN.RET`. Since you're using all samples, the scan will take longer. (Hint: set `index` to the column index in `pheno`.)
-> 3). Which chromosome has the higest peak? Use `find_peaks` to get the location and support interval for the highest peak.
-> 4). Calculate and plot the BLUPs for the chromosome with the highest peak. (This may take a few minutes.)
-> 5). Perform association mapping in the support interval for the QTL peak, plot the results and plot the genes beneath the
-> association mapping plot.
-> > ## Solution to Challenge 3
+> 1). Make a histogram of the column `pre.prop.MN.RET` in `pheno`. Does it look like it should be log transformed? If so, add a column to `pheno` that contains the log of `pre.prop.MN.RET`.  
+> 2). Perform a genome scan *using all samples* on the column called `pre.prop.MN.RET`. Since you're using all samples, the scan will take longer. (Hint: set `index` to the column index in `pheno`.)  
+> 3). Which chromosome has the higest peak? Use `find_peaks` to get the location and support interval for the highest peak.  
+> 4). Calculate and plot the BLUPs for the chromosome with the highest peak. (This may take a few minutes.)  
+> 5). Perform association mapping in the support interval for the QTL peak, plot the results and plot the genes beneath the association mapping plot.  
+> > ## Solution to Challenge 6
 > > 1). hist(pheno$pre.prop.MN.RET)
-> > pheno$log.pre.MN.RET = log(pheno$pre.prop.MN.RET)
-> > 2). index = which(colnames(pheno) == "log.pre.MN.RET")
-> > addcovar = model.matrix(~Study + Conc, data = pheno)[,-1]
-> > qtl_pre = scan1(genoprobs = probs, pheno = pheno[,index, drop = FALSE], kinship = K, addcovar = addcovar)
-> > plot_scan1(x = qtl_pre, map = map, main = "Log-Transformed Pre-dose micronucleated reticulocytes")
-> > 3). find_peaks(qtl_pre, map, threshold = 10, prob = 0.95)
-> > 4). chr = 4
-> > coef4 = scan1blup(genoprobs = probs[,chr], pheno = pheno[,index, drop = FALSE], kinship = K[[chr]], addcovar = addcovar)
-> > plot_coefCC(x = coef4, map = map, scan1_output = qtl, main = "Log-Transformed Pre-dose micronucleated reticulocytes")
-> > 5). chr = 4
-> > start = 132.5
-> > end = 136
-> > assoc4 = scan1snps(genoprobs = probs[,chr], map = map, pheno = pheno[,index,drop = FALSE], kinship = K, 
-> > addcovar = addcovar, query_func = query_func, chr = chr, start = start, end = end, keep_all_snps = TRUE)
-> > genes = query_genes(chr, start, end)
+> > pheno$log.pre.MN.RET <- log(pheno$pre.prop.MN.RET)  
+> > 2). index <- which(colnames(pheno) == "log.pre.MN.RET")
+> > addcovar <- model.matrix(~Study + Conc, data = pheno)[,-1]  
+> > qtl_pre <- scan1(genoprobs = probs, pheno = pheno[,index, drop = FALSE], kinship = K, addcovar = addcovar)  
+> > plot_scan1(x = qtl_pre, map = map, main = "Log-Transformed Pre-dose micronucleated reticulocytes")  
+> > 3). find_peaks(qtl_pre, map, threshold = 10, prob = 0.95)  
+> > 4). chr <- 4  
+> > coef4 <- scan1blup(genoprobs = probs[,chr], pheno = pheno[,index, drop = FALSE], kinship = K[[chr]], addcovar = addcovar)  
+> > plot_coefCC(x = coef4, map = map, scan1_output = qtl, main = "Log-Transformed Pre-dose micronucleated reticulocytes")  
+> > 5). chr <- 4  
+> > start <- 132.5  
+> > end <- 136  
+> > assoc4 = scan1snps(genoprobs = probs[,chr], map = map, pheno = pheno[,index,drop = FALSE], kinship = K, addcovar = addcovar, query_func = query_func, chr = chr, start = start, end = end, keep_all_snps = TRUE)  
+> > genes <- query_genes(chr, start, end)  
 > > plot_snpasso(assoc4$lod, assoc4$snpinfo, main = "Log-Transformed Pre-dose micronucleated reticulocytes", genes = genes)
 > {: .solution}
 {: .challenge} 
