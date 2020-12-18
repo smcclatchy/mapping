@@ -59,6 +59,10 @@ download.file(url="https://ndownloader.figshare.com/files/24607961", destfile=".
 download.file(url="https://ndownloader.figshare.com/files/24607970", destfile="./data/mouse_genes_mgi.sqlite")
 download.file(url="ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", destfile="./data/qtl2_demo.Rdata")
 options(timeout=60) # reset the download timeout to the default 60 seconds
+
+# for Windows machine, add the argument mode=wb to the download.file() command
+# for example
+download.file(url="ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", destfile="./data/qtl2_demo.Rdata", mode = "wb)
 ~~~
 {: .r}
 
