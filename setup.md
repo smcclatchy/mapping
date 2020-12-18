@@ -62,7 +62,7 @@ options(timeout=60) # reset the download timeout to the default 60 seconds
 
 # for Windows machine, add the argument mode=wb to the download.file() command
 # for example
-download.file(url="ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", destfile="./data/qtl2_demo.Rdata", mode = "wb)
+download.file(url="ftp://ftp.jax.org/dgatti/qtl2_workshop/qtl2_demo.Rdata", destfile="./data/qtl2_demo.Rdata", mode = "wb")
 ~~~
 {: .r}
 
