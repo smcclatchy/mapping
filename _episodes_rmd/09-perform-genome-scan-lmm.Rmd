@@ -129,16 +129,16 @@ For the spleen phenotype (bottom panel), the linear mixed model with an overall 
 > Earlier you inserted pseudomarkers for the `grav` data and saved the results to an object called `gravmap`.  Then you calculated genotype probabilities and saved the results to an object called `gravpr`.    
 > 1). Calculate kinship for the `grav` data using the LOCO method.  
 > 2). Run a genome scan with the genotype probabilities and kinship that you calculated.  
-> 3). Find the maximum LOD score for the scan using
-`which(out_grav == maxlod(out_grav), arr.ind = TRUE)`.  
+> 3). Find the maximum LOD score with `maxlod()`. The use `find_peaks()` to
+locate the position and phenotype of the maximum LOD score.   
 > 4). Plot the genome scan for this phenotype (hint: use the column number as lodcolumn).
 > >
 > > ## Solution to Challenge 1
 > >
-> > 1). `grav_kinship <- calc_kinship(gravpr, "loco")`
-> > 2). `out_grav <- scan1(genoprobs = gravpr,
-pheno = grav$pheno, kinship = grav_kinship)`
-> > 3). `which(out_grav == maxlod(out_grav), arr.ind = TRUE)` row 166, col 133
+> > 1). `grav_kinship <- calc_kinship(gravpr, "loco")`  
+> > 2). `out_grav <- scan1(genoprobs = gravpr, pheno = grav$pheno, kinship = grav_kinship)`  
+> > 3). `maxlod <- maxlod(out_grav)` then 
+`find_peaks(out_grav, gravmap, threshold = maxlod)` 
 > > 4). `plot(out_grav, lodcolumn = 133, map = gravmap)`
 > {: .solution}
 {: .challenge}
